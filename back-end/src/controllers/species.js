@@ -1,5 +1,5 @@
-import Species from "./../models/species";
-import { speciesSchema } from "./../schemas/species";
+import Species from "../models/species";
+import { speciesSchema } from "../schemas/species";
 
 export const getAll = async (req, res) => {
   try {
