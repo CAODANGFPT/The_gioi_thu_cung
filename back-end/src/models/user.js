@@ -1,4 +1,4 @@
-import connection from "./../db";
+import connection from "../db";
 
 export default class User {
   static createUser(name, email, password, phone, address, img) {
