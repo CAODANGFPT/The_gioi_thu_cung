@@ -73,8 +73,8 @@ export const sendResetLinkEmail = async (req, res) => {
     },
   });
   const hashedEmail = await bcrypt.hash(
-    email,
-    parseInt(process.env.BCRYPT_SALT_ROUND)
+    // email,
+    // parseInt(process.env.BCRYPT_SALT_ROUND)
   );
 
   try {
