@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api",servicesRouter);
+app.use("/api", servicesRouter);
 app.use("/api", authRouter);
 app.use("/api", speciesRouter);
 app.use("/api", petRouter);
