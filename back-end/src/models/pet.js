@@ -1,7 +1,7 @@
-import connection from "./../db";
+import connection from "../db";
 
 export default class Pet {
-  static getAllPets() {
+  static getAllPet() {
     return new Promise((resolve, reject) => {
       connection.query("SELECT * FROM pets", (err, results) => {
         if (err) reject(err);

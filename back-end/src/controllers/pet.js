@@ -3,7 +3,7 @@ import { petSchema } from "../schemas/pet";
 
 export const listPet = async (req, res) => {
   try {
-    const pets = await Pet.getAllPets();
+    const pets = await Pet.getAllPet();
     res.json(pets);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -71,7 +71,7 @@ export const updatePet = async (req, res) => {
   }
 };
 
-export const destroyPet = async (req, res) => {
+export const deletePet = async (req, res) => {
   try {
     await Pet.deletePet(req.params.id);
     res.json({ message: "Xóa thông tin thú cưng thành công" });
