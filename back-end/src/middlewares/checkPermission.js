@@ -15,7 +15,7 @@ export const checkPermission = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: error.message || "Token không hợp lệ",
+      message: "Token không hợp lệ",
     });
   }
 };
