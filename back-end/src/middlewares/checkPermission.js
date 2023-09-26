@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "./../models/user";
+import User from "../models/user";
 
 export const checkPermission = async (req, res, next) => {
   try {
@@ -15,7 +15,7 @@ export const checkPermission = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: error.message || "Token không hợp lệ",
+      message: "Token không hợp lệ",
     });
   }
 };

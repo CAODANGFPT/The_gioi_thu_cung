@@ -11,5 +11,4 @@ router.post("/register", Register);
 router.post("/login", Login);
 router.post("/forgotPassword", sendResetLinkEmail);
 
-
 export default router;

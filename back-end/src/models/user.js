@@ -1,6 +1,18 @@
-import connection from "./../db";
+import connection from "../db";
 
 export default class User {
+  static getUserById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM users WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results[0]);
+        }
+      );
+    });
+  }
   static createUser(name, email, password, phone, address, img) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -13,12 +25,26 @@ export default class User {
       );
     });
   }
+
+  static getUserById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+          "SELECT * FROM users WHERE id = ?",
+          [id],
+          (err, results) => {
+            if (err) reject(err);
+            resolve(results[0]);
+          }
+      );
+    });
+  }
+
   static checkEmailExists(email) {
     return new Promise((resolve, reject) => {
       const query = "SELECT * FROM users WHERE email = ?";
       connection.query(query, [email], (err, results) => {
-          if (err) reject(err);
-          resolve(results.length > 0 ? results[0] : null);
+        if (err) reject(err);
+        resolve(results.length > 0 ? results[0] : null);
       });
     });
   }
