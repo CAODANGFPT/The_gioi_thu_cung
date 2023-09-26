@@ -1,11 +1,11 @@
 import mysql from "mysql2";
 
 const connection = mysql.createConnection({
-  host: "mysql-147290-0.cloudclusters.net",
-  port: 18579,
-  user: "admin",
-  password: "D2LGYtG5",
-  database: "duantotnghiep",
+  host: "sql12.freesqldatabase.com",
+  port: 3306,
+  user: "sql12649048",
+  password: "5l17yNeUZp",
+  database: "sql12649048",
 });
 
 export default connection;
