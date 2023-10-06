@@ -8,6 +8,7 @@ import contactRouter from "./routers/contact";
 import profileRouter from "./routers/profile";
 import petRouter from "./routers/pet";
 import aboutRouter from "./routers/about";
+import newsRouter from "./routers/news";
 import reviewRouter from "./routers/reviews";
 import appointmentRouter from "./routers/appointments";
 
@@ -23,6 +24,7 @@ app.use("/api", statusRouter);
 app.use("/api", contactRouter);
 app.use("/api", profileRouter);
 app.use("/api", aboutRouter);
+app.use("/api", newsRouter);
 app.use("/api", reviewRouter);
 app.use("/api", appointmentRouter);
 
