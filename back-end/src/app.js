@@ -3,6 +3,7 @@ import express from "express";
 import servicesRouter from "./routers/services";
 import authRouter from "./routers/auth";
 import speciesRouter from "./routers/species";
+import breedRouter from "./routers/breed";
 import petRouter from "./routers/pet";
 import pethouseRouter from "./routers/pethouse";
 import roleRouter from "./routers/role";
@@ -22,6 +23,7 @@ app.use("/api", servicesRouter);
 app.use("/api", authRouter);
 app.use("/api", speciesRouter);
 app.use("/api", petRouter);
+app.use("/api", breedRouter);
 app.use("/api", pethouseRouter)
 app.use("/api", roleRouter);
 app.use("/api", statusRouter);
