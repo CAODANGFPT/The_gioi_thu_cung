@@ -12,10 +12,14 @@
   font-family: $fontFamily;
   .singup-top {
     padding: 8px;
-    display: flex;
-    justify-content: space-between;
+    margin: 0 100px;
+    @include Flex(flex, space-between, center);
     @include max-screen($xxl) {
       display: none;
+    }
+    .help {
+      text-decoration: none;
+      color: $MidnightGreen;
     }
   }
   .singup-bottom {
@@ -28,20 +32,34 @@
       }
     }
     .f-singup {
-      width: 38%;
+      box-shadow: 0 10px 30px -12px black;
+      border-radius: 8px;
+      width: 40%;
       position: absolute;
       top: 6%;
-      bottom: 9%;
-      right: 15%;
+      bottom: 8%;
+      right: 10%;
       background-color: white;
       padding: 25px;
+      h1,
+      p {
+        text-align: start;
+        .text-login {
+          color: $MidnightGreen;
+          font-weight: bold;
+          text-decoration: none;
+          margin: 4px;
+        }
+      }
       .btn-f {
-        border-radius: 8px;
-        border-color: gray;
+        border: 0.5px solid $SonicSilver;
+        border-radius: 40px;
         margin-bottom: 14px;
+        background-color: white;
         width: 100%;
         padding: 14px;
         outline: none;
+        cursor: pointer;
       }
       .input-flex {
         margin: 8px;
@@ -49,14 +67,20 @@
         flex-direction: column;
       }
       .bg-submit {
+        text-transform: uppercase;
+        font-size: 16px;
         color: white;
-        background-color: #00575c;
+        background-color: $MidnightGreen;
         &:hover {
           color: white;
-          background-color: #5ebdc2;
+          background-color: $SeaSerpent;
         }
       }
+      .or {
+        text-align: center;
+      }
       .btn-flex {
+        margin-bottom: 8px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -69,6 +93,7 @@
       }
       .bg-with {
         margin: 10px;
+        outline: none;
         @include Flex(flex, center, center);
         @include max-screen($lg) {
           width: 50%;
@@ -76,12 +101,19 @@
         @include max-screen($s) {
           width: 95%;
         }
-        div {
-          margin-left: 4px;
+        .google {
+          color: black;
+          margin-left: 8px;
+          text-decoration: none;
         }
-        &:hover {
-          color: white;
-          background-color: #00575c;
+      }
+      .rule {
+        margin-top: 40px;
+        text-align: center;
+        .rule-click {
+          padding: 4px;
+          text-decoration: none;
+          color: $MidnightGreen;
         }
       }
       @include max-screen($xxl) {
@@ -91,6 +123,7 @@
         right: 0;
         bottom: 0;
         left: 0;
+        box-shadow: none;
       }
     }
   }
