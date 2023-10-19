@@ -1,0 +1,106 @@
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  font-family: $fontFamily;
+  .singup-top {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    @include max-screen($xxl) {
+      display: none;
+    }
+  }
+  .singup-bottom {
+    position: relative;
+    text-align: center;
+    .img-bg {
+      width: 100%;
+      @include max-screen($xxl) {
+        display: none;
+      }
+    }
+    .f-singup {
+      width: 38%;
+      position: absolute;
+      top: 6%;
+      bottom: 9%;
+      right: 15%;
+      background-color: white;
+      padding: 25px;
+      .btn-f {
+        border-radius: 8px;
+        border-color: gray;
+        margin-bottom: 14px;
+        width: 100%;
+        padding: 14px;
+        outline: none;
+      }
+      .input-flex {
+        margin: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+      .bg-submit {
+        color: white;
+        background-color: #00575c;
+        &:hover {
+          color: white;
+          background-color: #5ebdc2;
+        }
+      }
+      .btn-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include max-screen($lg) {
+          flex-direction: row;
+        }
+        @include max-screen($s) {
+          flex-direction: column;
+        }
+      }
+      .bg-with {
+        margin: 10px;
+        @include Flex(flex, center, center);
+        @include max-screen($lg) {
+          width: 50%;
+        }
+        @include max-screen($s) {
+          width: 95%;
+        }
+        div {
+          margin-left: 4px;
+        }
+        &:hover {
+          color: white;
+          background-color: #00575c;
+        }
+      }
+      @include max-screen($xxl) {
+        width: 100%;
+        text-align: start;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+  }
+  @include max-screen($lg) {
+    max-width: 768px;
+  }
+  @include max-screen($sm) {
+    max-width: 600px;
+  }
+  @include max-screen($s) {
+    max-width: 400px;
+  }
+}
