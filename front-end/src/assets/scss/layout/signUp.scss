@@ -65,6 +65,11 @@
         margin: 8px;
         display: flex;
         flex-direction: column;
+        .error {
+          color: red;
+          text-align: center;
+          display: block;
+        }
       }
       .bg-submit {
         text-transform: uppercase;
