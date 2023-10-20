@@ -1,0 +1,184 @@
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    font-family: $fontFamily;
+
+    .singin-top {
+        padding: 20px 10px;
+        margin: 0 100px;
+        font-weight: 600;
+        @include Flex(flex, space-between, center);
+
+        @include max-screen($xxl) {
+            display: none;
+        }
+
+        .help {
+            text-decoration: none;
+            color: $MidnightGreen;
+        }
+    }
+
+    .singin-bottom {
+        position: relative;
+        text-align: center;
+
+        .img-bg {
+            width: 100%;
+
+            @include max-screen($xxl) {
+                display: none;
+            }
+        }
+
+        .f-singin {
+            box-shadow: 0px 2px 32px -8px black;
+            border-radius: 8px;
+            width: 35%;
+            position: absolute;
+            top: 6%;
+            /* bottom: 8%; */
+            right: 10%;
+            background-color: white;
+            padding: 45px 35px;
+
+            .new-to-account {
+                margin: 1.1rem auto;
+            }
+
+            h1,
+            p {
+                text-align: start;
+
+                .text-login {
+                    color: $MidnightGreen;
+                    font-weight: bold;
+                    text-decoration: none;
+                    margin: 4px;
+                }
+            }
+
+            .btn-f {
+                border: 1px solid $MidnightGreen;
+                border-radius: 40px;
+                margin-bottom: 14px;
+                font-size: 16px;
+                background-color: white;
+                width: 100%;
+                padding: 14px 20px;
+                outline: none;
+                cursor: pointer;
+            }
+
+            .input-flex {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .bg-submit {
+                text-transform: uppercase;
+                font-size: 16px;
+                color: $Cultured;
+                background-color: $MidnightGreen;
+
+                &:hover {
+                    color: $MidnightGreen;
+                    background-color: $Cultured;
+                }
+            }
+
+            .or {
+                text-align: center;
+            }
+
+            .btn-flex {
+                margin-bottom: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                @include max-screen($lg) {
+                    flex-direction: row;
+                }
+
+                @include max-screen($s) {
+                    flex-direction: column;
+                }
+            }
+
+            .bg-with {
+                margin: 10px;
+                outline: none;
+                @include Flex(flex, center, center);
+
+                @include max-screen($lg) {
+                    width: 50%;
+                }
+
+                @include max-screen($s) {
+                    width: 95%;
+                }
+
+                .google {
+                    color: black;
+                    margin-left: 8px;
+                    text-decoration: none;
+                }
+            }
+
+            .rule {
+                margin-top: 40px;
+                text-align: center;
+
+                .rule-click {
+                    padding: 4px;
+                    text-decoration: none;
+                    color: $MidnightGreen;
+                }
+            }
+
+            @include max-screen($xxl) {
+                width: 100%;
+                text-align: start;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                box-shadow: none;
+            }
+        }
+
+        .forgot-phone {
+            display: flex;
+            justify-content: space-between;
+
+            .text-login {
+                color: $MidnightGreen;
+                text-decoration: none;
+                margin: 4px;
+                font-size: 14px;
+            }
+        }
+    }
+
+    @include max-screen($lg) {
+        max-width: 768px;
+    }
+
+    @include max-screen($sm) {
+        max-width: 600px;
+    }
+
+    @include max-screen($s) {
+        max-width: 400px;
+    }
+}
