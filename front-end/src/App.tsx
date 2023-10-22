@@ -8,13 +8,16 @@ import Pay from "./components/account_info/pay";
 import Historyfollow from "./components/account_info/history_follow";
 import History from "./components/account_info/history";
 import Follow from "./components/account_info/follow";
+import SignUp from "./page/base/signup";
+import LayoutBase from "./layoutBase";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />}>
+        <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
+          <Route path="signUp" element={<SignUp />} />
         </Route>
         <Route path="/account" element={<AccountPage/>}>
           <Route index element={< Account/>} />

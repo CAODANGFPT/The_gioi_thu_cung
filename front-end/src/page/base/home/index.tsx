@@ -1,14 +1,7 @@
-import Breadcrumb from "../../../components/breadcrumb";
-import FooterBase from "../../../layoutBase/footer";
-import HeaderBase from "../../../layoutBase/header";
-
-
 const Home = () => {
   return (
-    <div>
-      <HeaderBase />
+    <div style={{flex: '1'}}>
       <p>home</p>
-      <FooterBase />
     </div>
   );
 };
