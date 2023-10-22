@@ -18,8 +18,7 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="signUp" element={<SignUp />} />
-        </Route>
-        <Route path="/account" element={<AccountPage/>}>
+          <Route path="/account" element={<AccountPage/>}>
           <Route index element={< Account/>} />
           <Route path="address" element={< Address/>} />
           <Route path="payment" element={< Pay/>} />
@@ -27,6 +26,8 @@ function App() {
           <Route path="history" element={< History/>} />
           <Route path="follow" element={< Follow/>} />
         </Route>
+        </Route>
+        
 
       </Routes>
     </BrowserRouter>

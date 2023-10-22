@@ -1,5 +1,5 @@
 import React from "react";
-import "../../assets/scss/layout/account.scss";
+import "../../assets/scss/page/account.scss";
 
 const Pay = () => {
   return (

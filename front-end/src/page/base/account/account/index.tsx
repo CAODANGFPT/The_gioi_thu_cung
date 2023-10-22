@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../../../assets/scss/layout/account.scss";
+import "../../../../assets/scss/page/account.scss"
 import AddressCard from "../../../../assets/svg/account/AddressCard";
 import Order from "../../../../assets/svg/account/Order";
 import Payment from "../../../../assets/svg/account/Payment";
@@ -22,9 +22,10 @@ const AccountPage = () => {
     setActiveTab(index);
   };
   return (
-    <div className="container">
       <div className="account_info">
-        <Breadcrumb name="Tài khoản" />
+        <div className="account_info-row">
+          <Breadcrumb name="Tài khoản" />
+        </div>
         <div className="account_info-row">
           <h4 className="account_info-heading">
             Tài Khoản {data.name}
@@ -147,7 +148,6 @@ const AccountPage = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

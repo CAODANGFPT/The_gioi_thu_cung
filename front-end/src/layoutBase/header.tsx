@@ -83,7 +83,9 @@ const HeaderBase = () => {
         </form>
         <div className="frame51">
           <div className="frame5">
+            <Link to={"/account"}>
             <UserIcon />
+            </Link>
           </div>
           <div className="frame5">
             <HeartIcon />

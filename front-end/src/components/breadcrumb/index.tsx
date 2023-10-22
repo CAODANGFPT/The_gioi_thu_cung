@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../../../src/assets/scss/layout/account.scss";
+import "../../../src/assets/scss/page/account.scss";
 
 interface IBreadcrumb {
   link?: string;
