@@ -7,6 +7,7 @@ import Puchase from "../../../../assets/svg/account/Puchase";
 import UserIcons from "../../../../assets/svg/account/User";
 import Breadcrumb from "../../../../components/breadcrumb";
 import { Link, Outlet } from "react-router-dom";
+import { TAccount } from "../../../../schema/accountSchema";
 
 const AccountPage = () => {
   const [data, setData] = useState({
@@ -16,11 +17,13 @@ const AccountPage = () => {
     password: "12345",
   });
 
-  const [activeTab, setActiveTab] = useState<number>(0);
 
+  const [activeTab, setActiveTab] = useState<number>(0);
   const handleTabClick = (index: number) => {
     setActiveTab(index);
   };
+
+
   return (
       <div className="account_info">
         <div className="account_info-row">

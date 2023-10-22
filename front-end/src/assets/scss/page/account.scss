@@ -9,13 +9,12 @@
 }
 
 .account_info {
-  padding: 10px 0px;
+  padding: 10px 0px 50px 0px;
   background-color: $Cultured;
-  height: 100vh;
   width: 100%;
   box-sizing: border-box;
   @include max-screen($sm) {
-    padding: 0px ;
+    padding: 0px;
   }
   .account_info-row {
     display: flex;
@@ -29,7 +28,6 @@
       margin: 10px 30px;
       flex-direction: column;
       margin: 0px;
-
     }
     .account_info-heading {
       font-size: 24px;
@@ -287,17 +285,32 @@
   border-collapse: collapse;
   text-align: center;
   margin: 30px 0px;
+  // border-radius: 10px;
   th {
     color: $EagleGreen;
+    background-color: #fafafa;
+    border: none;
+    outline: none;
   }
+  th:first-child {
+    border-left: none;
+  }
+  th:last-child {
+    border-right: none;
+  }
+  
   td,
   th {
-    border: 2px solid $EagleGreen;
     line-height: 50px;
   }
   tbody {
     tr {
       td {
+        border-left: none; /* Bỏ border bên trái của các ô */
+        border-right: none; /* Bỏ border bên phải của các ô */
+        border-top: none; /* Bỏ border phía trên của các ô */
+        border-bottom: 1px solid #f0f0f0; /* Đặt border dưới thành một đường border trong suốt */
+        box-shadow: 0 0px 1px rgba(0, 0, 0, 0.2);
         button {
           padding: 6px 12px;
           cursor: pointer;
@@ -327,6 +340,9 @@
         }
       }
     }
+    tr:nth-child(even) {
+      background-color: #fcfcfc;
+    }
   }
   @include max-screen($sm) {
     width: 100%;
@@ -340,12 +356,45 @@
   }
 }
 
+.datlich {
+  thead {
+    tr {
+      th {
+        font-size: 12px;
+      }
+    }
+  }
+}
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: red;
+  background-color: white;
   width: 80%;
-  height: 80vh;
+  height: 90vh;
+  z-index: 10;
+  .modal-content {
+    table {
+      width: 100%;
+      tbody {
+        .done_pay {
+          color: $EagleGreen;
+          font-weight: bold;
+        }
+      }
+    }
+    text-align: center;
+    line-height: 30px;
+  }
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: grayscale(50%) blur(5px);
+  z-index: 0;
 }
