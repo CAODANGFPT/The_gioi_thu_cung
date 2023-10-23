@@ -1,10 +1,10 @@
-import "../assets/scss/layout/footerBase.scss";
-import logo from "../assets/image/logo2.png";
-import appStore from "../assets/image/appStore.png";
-import FacebookIcon from "../assets/svg/facebookIcon";
-import InstagramIcon from "../assets/svg/instagramIcon";
-import TwitterIcon from "../assets/svg/twitterIcon";
-import YoutubeIcon from "../assets/svg/youtubeIcon";
+import "../../assets/scss/layout/footerBase.scss";
+import logo from "../../assets/image/logo2.png";
+import appStore from "../../assets/image/appStore.png";
+import FacebookIcon from "../../assets/svg/facebookIcon";
+import InstagramIcon from "../../assets/svg/instagramIcon";
+import TwitterIcon from "../../assets/svg/twitterIcon";
+import YoutubeIcon from "../../assets/svg/youtubeIcon";
 
 const FooterBase = () => {
   return (
