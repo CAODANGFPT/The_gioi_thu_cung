@@ -1,5 +1,5 @@
-@import "../../utils/functions.scss";
-@import "../../utils/variables.scss";
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
 
 * {
   margin: 0;
@@ -10,6 +10,7 @@
 .bg {
   background-color: $Cultured;
   font-family: $Roboto;
+  padding: 20px 0 50px 0;
 
   .home {
     max-width: $xl;
@@ -57,7 +58,7 @@
 
           button {
             @include Size(24px, null, normal);
-            @include Flex(flex,null,center);
+            @include Flex(flex, null, center);
             @include Gap(5px, 5px);
             background-color: $EagleGreen;
             color: white;
@@ -178,7 +179,7 @@
 
       &-title {
         position: absolute;
-        background: var(--nn, #F7F7F7);
+        background: var(--nn, #f7f7f7);
         padding: 0 20px;
         top: -19px;
         left: 50%;
@@ -201,7 +202,6 @@
         top: 50%;
         left: -25px;
         transform: translateY(-50%);
-
       }
 
       &-next {
@@ -231,7 +231,7 @@
 
         .card {
           border-radius: 10px;
-          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.10);
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
           max-width: 400px;
           margin: auto 0.5rem;
           display: flex;
@@ -241,14 +241,14 @@
 
           .product--image {
             position: relative;
-            img{
+            img {
               border-top-left-radius: 10px;
               border-top-right-radius: 10px;
               width: 100%;
               height: 16em;
               object-fit: cover;
             }
-            .svg{
+            .svg {
               position: absolute;
               width: 30px;
               height: 30px;
@@ -278,7 +278,6 @@
               @include Size(14px, 400, normal);
               color: var(--NEU-3, $SonicSilver);
               text-align: right;
-
             }
           }
 
@@ -343,7 +342,7 @@
         .blog {
           @include Flex(flex, null, null);
           border-radius: 10px;
-          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.10);
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
           max-width: 400px;
           margin: auto 0.5rem;
           flex-direction: column;
