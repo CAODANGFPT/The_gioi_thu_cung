@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./page/base/home";
+import BreedAdmin from "./page/base/breedAdmin";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route index element={<Home />} />
         </Route>
+        <Route path="breedadmin" element={<BreedAdmin />} />
       </Routes>
     </BrowserRouter>
   );
