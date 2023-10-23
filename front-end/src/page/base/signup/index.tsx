@@ -1,42 +1,35 @@
 import { useFormik } from "formik";
-import * as yup from "yup";
-import "../../../assets/scss/layout/signUp.scss";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
-import banner from "../../../assets/image/banner.png";
-import GoogleIcon from "../../../assets/svg/googleIcon";
-import FacebookIcon from "../../../assets/svg/facebookIcon";
-import { Link } from "react-router-dom";
+import "../../../assets/scss/page/signUp.scss";
 import AppleIcon from "../../../assets/svg/appleIcon";
+import FacebookIcon2 from "../../../assets/svg/facebookIcon2";
+import GoogleIcon from "../../../assets/svg/googleIcon";
+import { SignUpRequestSchema, TSignUp } from "../../../schema/signUp";
 
-const Signup = () => {
-  const validationSchema = yup.object().shape({
-    username: yup
-      .string()
-      .min(6, "tên phải có ít nhất 6 ký tự")
-      .required("Vui lòng nhập tên tài khoản"),
-  });
-
-  const formik = useFormik({
+const SignUp = () => {
+  const navigate = useNavigate();
+  const formik = useFormik<TSignUp>({
     initialValues: {
-      username: "",
+      email: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: SignUpRequestSchema,
     onSubmit: (values) => {
       console.log("Submitted form:", values);
+      navigate("/RegisterAccount", { state: values });
     },
   });
 
   return (
-    <div className="container">
-      <div className="singup-top">
+    <div className="signUp">
+      <div className="singUp-top">
         <img src={logo} alt="logo" />
         <Link to="" className="help">
           Trợ giúp?
         </Link>
       </div>
-      <div className="singup-bottom">
-        <img className="img-bg" src={banner} alt="" />
-        <form className="f-singup" onSubmit={formik.handleSubmit}>
+      <div className="singUp-bottom">
+        <form className="f-singUp" onSubmit={formik.handleSubmit}>
           <h1>Đăng ký</h1>
           <br />
           <p>
@@ -50,21 +43,26 @@ const Signup = () => {
               className="btn-f"
               type="text"
               placeholder="Số điện thoại/Tên tài khoản/Email"
-              id="username"
-              name="username"
-              value={formik.values.username}
+              id="email"
+              name="email"
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.username && formik.errors.username && (
-              <div className="error">{formik.errors.username}</div>
+            {formik.touched.email && formik.errors.email && (
+              <div className="error">{formik.errors.email}</div>
             )}
           </div>
           <button className="btn-f bg-submit" type="submit">
             tiếp theo
           </button>
           <br />
-          <div className="or">Hoặc</div>
+          <div className="or">
+            <div className="or-border" />
+            <div className="or-title">Hoặc</div>
+            <div className="or-border" />
+          </div>
+
           <div className="btn-flex">
             <button className="btn-f bg-with">
               <GoogleIcon />
@@ -73,7 +71,7 @@ const Signup = () => {
               </Link>
             </button>
             <button className="btn-f bg-with">
-              <FacebookIcon />
+              <FacebookIcon2 />
               <Link to="" className="google">
                 Đăng nhập bằng facebook
               </Link>
@@ -102,4 +100,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
