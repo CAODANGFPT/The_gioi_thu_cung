@@ -1,13 +1,13 @@
-import "../assets/scss/layout/headerBase.scss";
-import logo from "../assets/image/logo.png";
-import SearchIcon from "../assets/svg/searchIcon";
-import UserIcon from "../assets/svg/userIcon";
-import HeartIcon from "../assets/svg/heartIcon";
-import ShoppingCartIcon from "../assets/svg/shoppingCartIcon";
+import "../../assets/scss/layout/headerBase.scss";
+import logo from "../../assets/image/logo.png";
+import SearchIcon from "../../assets/svg/searchIcon";
+import UserIcon from "../../assets/svg/userIcon";
+import HeartIcon from "../../assets/svg/heartIcon";
+import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
 import { Link, useLocation } from "react-router-dom";
-import MenuIcon from "../assets/svg/menuIcon";
+import MenuIcon from "../../assets/svg/menuIcon";
 import { useEffect, useState } from "react";
-import RightIcon from "../assets/svg/rightIcon";
+import RightIcon from "../../assets/svg/rightIcon";
 
 const HeaderBase = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -35,7 +35,7 @@ const HeaderBase = () => {
     };
   }, [isWideScreen]);
   return (
-    <div className="container">
+    <div className="headerBase">
       <div className="frame29">
         <p className="frame29-title1">
           Miễn phí vận chuyển<span> khi mua $20</span>
@@ -126,7 +126,7 @@ const HeaderBase = () => {
       </div>
       <div
         className="menu-2"
-        style={{ marginLeft: openMenu ? "0px" : "-270px" }}
+        style={{ marginLeft: openMenu ? "0px" : "-300px" }}
       >
         <div className="box">
           <div className="menu" onClick={() => setOpenMenu(!openMenu)}>
