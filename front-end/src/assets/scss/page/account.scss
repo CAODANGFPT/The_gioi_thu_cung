@@ -219,7 +219,8 @@
               top: 50%;
               right: 0;
               transform: translateY(-50%);
-              font-weight: bold;
+              font-weight: 550;
+
               a {
                 text-decoration: none;
                 color: $EagleGreen;
@@ -242,13 +243,23 @@
               padding: 10px 0px;
               border: none;
               outline: none;
+              
+            }
+            .eyes{
+              position: absolute;
+              top: 50%;
+              right: 0;
+              transform: translateY(-50%);
+              font-weight: 550;
+              margin-right: 40px;
             }
             .col_2-input-edit {
               position: absolute;
               top: 50%;
               right: 0;
               transform: translateY(-50%);
-              font-weight: bold;
+              font-weight: 550;
+
               a {
                 text-decoration: none;
                 color: $EagleGreen;
@@ -285,7 +296,8 @@
   border-collapse: collapse;
   text-align: center;
   margin: 30px 0px;
-  // border-radius: 10px;
+  overflow: hidden;
+
   th {
     color: $EagleGreen;
     background-color: #fafafa;
@@ -293,12 +305,14 @@
     outline: none;
   }
   th:first-child {
+    border-top-left-radius: 10px;
     border-left: none;
   }
   th:last-child {
+    border-top-right-radius: 10px;
     border-right: none;
   }
-  
+
   td,
   th {
     line-height: 50px;
@@ -306,11 +320,10 @@
   tbody {
     tr {
       td {
-        border-left: none; /* Bỏ border bên trái của các ô */
-        border-right: none; /* Bỏ border bên phải của các ô */
-        border-top: none; /* Bỏ border phía trên của các ô */
-        border-bottom: 1px solid #f0f0f0; /* Đặt border dưới thành một đường border trong suốt */
-        box-shadow: 0 0px 1px rgba(0, 0, 0, 0.2);
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid #f0f0f0;
         button {
           padding: 6px 12px;
           cursor: pointer;
@@ -320,7 +333,7 @@
           outline: none;
         }
         button:hover {
-          font-weight: bold;
+          background-color: #e75656;
         }
         a {
           font-size: 15px;
@@ -362,31 +375,124 @@
       th {
         font-size: 12px;
       }
+      th:first-child {
+        padding-left: 10px;
+      }
     }
   }
 }
 .modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  margin-top: 70px;
+  margin-left: 200px;
   background-color: white;
   width: 80%;
-  height: 90vh;
+  min-height: 20vh;
+  max-height: 85vh;
   z-index: 10;
+  padding-bottom: 10px;
+  overflow-y: auto;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  @include max-screen($xl) {
+    margin-left: 100px;
+  }
+  @include max-screen($sm) {
+    margin-left: 50px;
+  }
   .modal-content {
+    min-height: 100px;
+    .close {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 30px;
+      margin: -5px 30px 15px 0px;
+    }
+    .close:hover {
+      color: red;
+    }
+    margin-top: 20px;
+    line-height: 30px;
     table {
       width: 100%;
+      line-height: 45px;
+      border-collapse: collapse;
+      th {
+        color: $EagleGreen;
+        background-color: #fafafa;
+        border: none;
+        outline: none;
+      }
+      th:first-child {
+        border-top-left-radius: 10px;
+        border-left: none;
+      }
+      th:last-child {
+        border-top-right-radius: 10px;
+        border-right: none;
+      }
+
+      td,
+      th {
+        line-height: 60px;
+      }
       tbody {
+        tr {
+          td {
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            border-bottom: 1px solid #f0f0f0;
+            button {
+              padding: 6px 12px;
+              cursor: pointer;
+              border-radius: 5px;
+              background-color: #e87878;
+              border: none;
+              outline: none;
+            }
+            button:hover {
+              background-color: #e75656;
+            }
+            a {
+              font-size: 15px;
+            }
+            a:hover {
+              cursor: pointer;
+              text-decoration: underline;
+              color: $EagleGreen;
+            }
+            @include max-screen($sm) {
+              button {
+                padding: 5px 7px;
+              }
+              button:hover {
+                font-weight: 500;
+              }
+            }
+          }
+        }
+        tr:nth-child(even) {
+          background-color: #fcfcfc;
+        }
         .done_pay {
           color: $EagleGreen;
           font-weight: bold;
         }
       }
     }
+
     text-align: center;
-    line-height: 30px;
   }
+}
+.modal::-webkit-scrollbar {
+  display: none;
+}
+
+.modal {
+  scrollbar-width: none;
 }
 
 .background {

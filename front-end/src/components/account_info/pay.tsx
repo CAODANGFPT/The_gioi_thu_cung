@@ -10,9 +10,7 @@ const Pay = () => {
       <form action="" className="col_2-form">
         <div className="account_email">
           <label>Chọn hình thức thanh toán</label>
-          <div className="col_2-input">
-            <input type="text" id="email" className="col_2-input-email" />
-          </div>
+          
         </div>
       </form>
     </div>

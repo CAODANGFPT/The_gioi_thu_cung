@@ -33,7 +33,7 @@ const AccountPage = () => {
           <h4 className="account_info-heading">
             Tài Khoản {data.name}
             <a href="#" className="logout">
-              (Logout)
+              (Đăng xuất)
             </a>
           </h4>
         </div>

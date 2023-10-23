@@ -33,10 +33,21 @@ const Historyfollow: FC = () => {
     useState<BookingItem[]>(bookingHistoryDB);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PurchaseItem>();
+  const [bookingItem, setBookingItem] = useState<BookingItem>();
 
   const handleChiTietClick = (item: PurchaseItem) => {
     setSelectedItem(item);
     setShowModal(true);
+  };
+
+  const handleChiTietClickBook = (item: BookingItem) => {
+    setBookingItem(item);
+    setShowModal(true);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedItem(undefined);
+    setBookingItem(undefined);
   };
 
   let totalSum = 0;
@@ -92,7 +103,7 @@ const Historyfollow: FC = () => {
                 <div className="modal-content">
                   <span
                     className="close"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => handleModalClose()}
                     style={{ cursor: "pointer" }}
                   >
                     &times;
@@ -140,43 +151,89 @@ const Historyfollow: FC = () => {
                   <th>STT</th>
                   <th>Thông tin người đặt</th>
                   <th>Loại thú cưng</th>
-                  <th>Loại dịch vụ</th>
                   <th>Nhân viên thực hiện</th>
                   <th>Phòng</th>
-                  <th>Ca</th>
-                  <th>Thời gian đặt</th>
                   <th>Trạng thái</th>
                   <th>Thao tác</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {bookingHistory.map((item, index) => (
-                  <tr key={index}>
+                {bookingHistory.map((item) => (
+                  <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>{item.customerInfo}</td>
                     <td>{item.petType}</td>
-                    <td>{item.serviceType}</td>
                     <td>{item.staff}</td>
                     <td>{item.room}</td>
-                    <td>{item.shift}</td>
-                    <td>{item.time}</td>
                     <td>{item.status}</td>
                     <td>
                       <button onClick={() => confirmDelete(item.id)}>
                         Hủy
                       </button>
                     </td>
+                    <td>
+                      <Link
+                        to={""}
+                        className="chitiet"
+                        onClick={() => handleChiTietClickBook(item)}
+                      >
+                        Chi tiết
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {showModal && bookingItem && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span
+                    className="close"
+                    onClick={() => handleModalClose()}
+                    style={{ cursor: "pointer" }}
+                  >
+                    &times;
+                  </span>
+
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Thông tin người đặt</th>
+                        <th>Loại thú cưng</th>
+                        <th>Loại dịch vụ</th>
+                        <th>Nhân viên thực hiện</th>
+                        <th>Phòng</th>
+                        <th>Ca</th>
+                        <th>Thời gian đặt</th>
+                        <th>Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr key={bookingItem.id}>
+                        <td>{bookingItem.id}</td>
+                        <td>{bookingItem.customerInfo}</td>
+                        <td>{bookingItem.petType}</td>
+                        <td>{bookingItem.serviceType}</td>
+                        <td>{bookingItem.staff}</td>
+                        <td>{bookingItem.room}</td>
+                        <td>{bookingItem.shift}</td>
+                        <td>{bookingItem.time}</td>
+                        <td>{bookingItem.status}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </form>
       </div>
       {showModal && (
         <div
           onClick={() => {
-            setShowModal(false);
+            handleModalClose();
           }}
           className="background"
         />
@@ -212,6 +269,61 @@ const purchaseHistory = [
         price: 1500,
         soluong: 1,
       },
+      {
+        id: 1,
+        name: "Cát mèo",
+        price: 1000,
+        soluong: 1,
+      },
+      {
+        id: 2,
+        name: "Thức ăn",
+        price: 2000,
+        soluong: 1,
+      },
+      {
+        id: 3,
+        name: "Chổi chơi ",
+        price: 1500,
+        soluong: 1,
+      },
+      {
+        id: 1,
+        name: "Cát mèo",
+        price: 1000,
+        soluong: 1,
+      },
+      {
+        id: 2,
+        name: "Thức ăn",
+        price: 2000,
+        soluong: 1,
+      },
+      {
+        id: 3,
+        name: "Chổi chơi ",
+        price: 1500,
+        soluong: 1,
+      },
+      {
+        id: 1,
+        name: "Cát mèo",
+        price: 1000,
+        soluong: 1,
+      },
+      {
+        id: 2,
+        name: "Thức ăn",
+        price: 2000,
+        soluong: 1,
+      },
+      {
+        id: 3,
+        name: "Chổi chơi ",
+        price: 1500,
+        soluong: 1,
+      },
+      
     ],
   },
   {

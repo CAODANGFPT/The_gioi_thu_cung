@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import React from 'react'
 import "../../assets/scss/page/account.scss";
 
@@ -18,6 +18,7 @@ const Address = () => {
     }
   };
 
+  
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
@@ -42,10 +43,9 @@ const Address = () => {
             className="col_2-input-email"
             value={data.address}
             onChange={(e) => handleInputChange(e, "address")}
-
           />
           <div className="col_2-input-edit">
-          <a href="#!" onClick={() => handleEditClick("address")}>Edit</a>
+          <a href="#!" onClick={() => handleEditClick("address")}>Sửa</a>
           </div>
             <hr />
         </div>

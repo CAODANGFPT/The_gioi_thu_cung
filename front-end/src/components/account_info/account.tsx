@@ -1,7 +1,8 @@
 import { useState } from "react";
 import React from "react";
 import "../../assets/scss/page/account.scss";
-
+import Eye from "../../assets/svg/account/Eye";
+import Eyeslash from "../../assets/svg/account/Eyeslash";
 
 export const Account = () => {
   const [data, setData] = useState({
@@ -17,6 +18,21 @@ export const Account = () => {
       inputElement.disabled = false;
       inputElement.focus();
     }
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
+    if (passwordInput) {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+      } else {
+        passwordInput.type = "password";
+      }
+    }
+    setShowPassword(!showPassword);
+    
   };
 
   const handleInputChange = (
@@ -41,11 +57,13 @@ export const Account = () => {
               type="text"
               id="email"
               className="col_2-input-email"
-                value={data.email}
-                onChange={(e) => handleInputChange(e, "email")}
+              value={data.email}
+              onChange={(e) => handleInputChange(e, "email")}
             />
             <div className="col_2-input-edit">
-              <a href="#!" onClick={() => handleEditClick("email")}>Edit</a>
+              <a href="#!" onClick={() => handleEditClick("email")}>
+                Sửa
+              </a>
             </div>
             <hr />
           </div>
@@ -57,14 +75,17 @@ export const Account = () => {
               type="password"
               id="password"
               className="col_2-input-password"
-                value={data.password}
+              value={data.password}
               onChange={(e) => handleInputChange(e, "password")}
             />
+            <span onClick={handleShowPassword} className="eyes">
+                {showPassword ? <Eyeslash /> : <Eye />}{" "}
+              </span>
             <div className="col_2-input-edit">
+              
               <a href="#!" onClick={() => handleEditClick("password")}>
-                  Edit
-                </a>
-              {/* <a href="#!">Edit</a> */}
+                Sửa
+              </a>
             </div>
             <hr />
           </div>
