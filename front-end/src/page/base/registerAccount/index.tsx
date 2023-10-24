@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/registerAccount.scss";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
+import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 
 const validationSchema = Yup.object().shape({
@@ -12,7 +13,13 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập tên  "),
   password: Yup.string()
     .min(8, "mật khẩu tối đa 8 kí tự")
-    .required("Vui lòng nhập mật khẩu"),
+    .required("Vui lòng nhập mật khẩu")
+    .matches(/^(?=.*\d)/, "Mật khẩu phải có ít nhất một ký tự số.")
+    .matches(
+      /^(?=.*[!@#\$%\^&\*])/,
+      "Mật khẩu phải có ít nhất một ký tự đặc biệt."
+    )
+    .matches(/^(?=.*[A-Z])/, "Mật khẩu phải có ít nhất một ký tự viết hoa."),
   phone: Yup.string()
     .matches(/^\d+$/, "Số điện thoại chỉ được kí tự số")
     .min(10, "số điện thoại tối thiểu phải 10 kí tự")
@@ -49,12 +56,12 @@ const RegisterAccount = () => {
         </Link>
       </div>
       <div className="singUp-bottom">
+        <img className="img-bg" src={banner} alt="" />
         <form className="f-singUp" onSubmit={formik.handleSubmit}>
           <h1>Điền thông tin tài khoản</h1>
-          <br />
-          <p>
-            bạn đã có tài khoản?
-            <Link to="" className="text-login">
+          <p className="new-to-account">
+            Bạn đã có tài khoản?
+            <Link to="/signin" className="text-login">
               Đăng nhập
             </Link>
           </p>
@@ -104,7 +111,7 @@ const RegisterAccount = () => {
             <input
               className="btn-f-input"
               type="text"
-              placeholder="số điện thoại"
+              placeholder="Số điện thoại"
               id="phone"
               name="phone"
               value={formik.values.phone}
