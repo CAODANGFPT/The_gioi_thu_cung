@@ -6,6 +6,7 @@ import AppleIcon from "../../../assets/svg/appleIcon";
 import FacebookIcon2 from "../../../assets/svg/facebookIcon2";
 import GoogleIcon from "../../../assets/svg/googleIcon";
 import { SignUpRequestSchema, TSignUp } from "../../../schema/signUp";
+import banner from "../../../assets/image/background.png";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -29,12 +30,13 @@ const SignUp = () => {
         </Link>
       </div>
       <div className="singUp-bottom">
+        <img className="img-bg" src={banner} alt="" />
         <form className="f-singUp" onSubmit={formik.handleSubmit}>
           <h1>Đăng ký</h1>
           <br />
           <p>
-            bạn đã có tài khoản?
-            <Link to="" className="text-login">
+            Bạn đã có tài khoản?
+            <Link to="/signin" className="text-login">
               Đăng nhập
             </Link>
           </p>

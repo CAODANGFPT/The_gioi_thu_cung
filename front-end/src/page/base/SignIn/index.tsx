@@ -73,10 +73,10 @@ const SignIn = () => {
                 {showPassword ? <EyesOpenIcon /> : <EyesCloseIcon />}
               </div>
             </div>
-          </div>
           {formik.touched.password && formik.errors.password && (
             <div className="error">{formik.errors.password}</div>
           )}
+          </div>
 
           <button className="btn-f bg-submit" type="submit">
             đăng nhập

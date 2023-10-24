@@ -8,7 +8,7 @@
 }
 
 .signUp {
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   font-family: $fontFamily;
 
@@ -29,10 +29,18 @@
 
   .singUp-bottom {
     position: relative;
-    background-image: url(../../image/background.png);
+    text-align: center;
     background-size: 100% 100%;
     width: 100%;
-    height: 100vh;
+    height: auto;
+
+    .img-bg {
+      width: 100%;
+
+      @include max-screen($xxl) {
+        display: none;
+      }
+    }
 
     .f-singUp {
       box-shadow: 0 10px 30px -12px black;
@@ -40,10 +48,10 @@
       width: 35%;
       position: absolute;
       top: 50px;
-      bottom: 50px;
+      bottom: 70px;
       right: 10%;
       background-color: white;
-      padding: 25px;
+      padding: 45px 35px;
 
       h1,
       p {
@@ -62,14 +70,16 @@
       }
 
       .btn-f {
-        border: 0.5px solid $SonicSilver;
-        border-radius: 40px;
-        margin: 10px 0;
+        border: 1px solid $EagleGreen;
+        border-radius: 45px;
+        margin-bottom: 14px;
+        font-size: 13px;
         background-color: white;
         width: 100%;
-        padding: 14px;
+        padding: 15px 20px;
         outline: none;
-        color: $SonicSilver;
+        cursor: pointer;
+        color: black;
       }
 
       .input-flex {
@@ -88,12 +98,12 @@
       .bg-submit {
         text-transform: uppercase;
         font-size: 16px;
-        color: white;
+        color: $Cultured;
         background-color: $EagleGreen;
 
         &:hover {
-          color: white;
-          background-color: $SeaSerpent;
+          color: $EagleGreen;
+          background-color: $Cultured;
         }
       }
 
@@ -148,6 +158,10 @@
           color: black;
           margin-left: 8px;
           text-decoration: none;
+        }
+
+        &:hover {
+          background: rgb(216, 215, 215);
         }
       }
 

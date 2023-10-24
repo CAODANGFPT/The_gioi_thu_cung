@@ -8,14 +8,13 @@
 }
 
 .registerAccount {
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   font-family: $fontFamily;
 
   .singUp-top {
-    padding: 20px 10px;
+    padding: 20px;
     margin: 0 100px;
-    font-weight: 600;
     @include Flex(flex, space-between, center);
 
     @include max-screen($xl) {
@@ -30,10 +29,17 @@
 
   .singUp-bottom {
     position: relative;
-    background-image: url(../../image/banner.png);
     background-size: 100% 100%;
     width: 100%;
-    height: 100vh;
+    height: auto;
+
+    .img-bg {
+      width: 100%;
+
+      @include max-screen($xxl) {
+        display: none;
+      }
+    }
 
     .f-singUp {
       box-shadow: 0px 2px 32px -8px black;
@@ -45,6 +51,10 @@
       right: 10%;
       background-color: white;
       padding: 45px 35px;
+
+      .new-to-account {
+        margin: 1.1rem auto;
+      }
 
       h1,
       p {
@@ -58,69 +68,75 @@
         }
 
         @include max-screen($lg) {
-          color: white;
+          color: black;
         }
+      }
+
+      .btn-f-input {
+        border: 1px solid $EagleGreen;
+        border-radius: 45px;
+        margin-bottom: 14px;
+        font-size: 13px;
+        background-color: white;
+        width: 100%;
+        padding: 15px 20px;
+        outline: none;
+        cursor: pointer;
+        color: black;
       }
 
       .input-flex {
         display: flex;
         flex-direction: column;
 
-        .btn-f-input {
-          border: 0.5px solid $SonicSilver;
-          border-radius: 40px;
-          background-color: white;
-          margin: 10px 0px;
-          width: 100%;
-          padding: 14px;
-          outline: none;
-          color: $SonicSilver;
-        }
-
         .btn-f-input-password {
           @include Flex(flex, space-between, center);
-          border: 0.5px solid $SonicSilver;
-          border-radius: 40px;
+          border: 1px solid $EagleGreen;
+          border-radius: 45px;
           background-color: white;
           height: auto;
-          align-items: center;
+          margin-bottom: 14px;
 
           &-1 {
             flex: 1;
             border: 0;
             border-radius: 40px;
-            padding: 14px;
+            padding: 14px 20px;
             outline: none;
             color: $SonicSilver;
           }
 
           svg {
             cursor: pointer;
-            margin-right: 10px;
+            margin: 6px 1rem 0 0;
           }
         }
 
         .error {
+          font-size: 14px;
           color: red;
           text-align: center;
+          display: block;
+          margin-bottom: 0.8rem;
         }
       }
 
       .btn-submit {
-        text-transform: uppercase;
-        font-size: 16px;
-        color: white;
-        background-color: $EagleGreen;
-        border: 0.5px solid $SonicSilver;
-        border-radius: 40px;
+        border: 1px solid $EagleGreen;
+        border-radius: 45px;
         margin-bottom: 14px;
+        font-size: 16px;
+        text-transform: uppercase;
         width: 100%;
-        padding: 14px;
+        padding: 15px 20px;
         outline: none;
         cursor: pointer;
+        color: $Cultured;
+        background-color: $EagleGreen;
 
         &:hover {
-          background-color: $SeaSerpent;
+          color: $EagleGreen;
+          background-color: $Cultured;
         }
       }
 
