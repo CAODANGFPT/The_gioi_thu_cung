@@ -1,4 +1,4 @@
-const FacebookIcon = () => (
+const FacebookIcon2 = () => (
   <svg
     width="25"
     height="24"
@@ -25,3 +25,4 @@ const FacebookIcon = () => (
     </defs>
   </svg>
 );
+export default FacebookIcon2
