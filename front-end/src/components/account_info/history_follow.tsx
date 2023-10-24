@@ -145,7 +145,7 @@ const Historyfollow: FC = () => {
             )}
             <br />
             <label>Lịch sử đặt lịch</label>
-            <table className="table datlich">
+            <table className="table">
               <thead>
                 <tr>
                   <th>STT</th>
@@ -186,8 +186,8 @@ const Historyfollow: FC = () => {
               </tbody>
             </table>
             {showModal && bookingItem && (
-              <div className="modal">
-                <div className="modal-content">
+              <div className="modal_history">
+                <div className="modal-content-history">
                   <span
                     className="close"
                     onClick={() => handleModalClose()}
@@ -195,7 +195,6 @@ const Historyfollow: FC = () => {
                   >
                     &times;
                   </span>
-
                   <table>
                     <thead>
                       <tr>
