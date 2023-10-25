@@ -1,35 +1,23 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import * as Yup from "yup";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/registerAccount.scss";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
+import { RegisterAccountSchema, TRegisterAccount } from "../../../schema/registerAccount";
+import { useRegisterUserMutation } from "../../../services/auth";
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string(),
-  name: Yup.string().required("Vui lòng nhập tên  "),
-  password: Yup.string()
-    .min(8, "mật khẩu tối đa 8 kí tự")
-    .required("Vui lòng nhập mật khẩu")
-    .matches(/^(?=.*\d)/, "Mật khẩu phải có ít nhất một ký tự số.")
-    .matches(
-      /^(?=.*[!@#\$%\^&\*])/,
-      "Mật khẩu phải có ít nhất một ký tự đặc biệt."
-    )
-    .matches(/^(?=.*[A-Z])/, "Mật khẩu phải có ít nhất một ký tự viết hoa."),
-  phone: Yup.string()
-    .matches(/^\d+$/, "Số điện thoại chỉ được kí tự số")
-    .min(10, "số điện thoại tối thiểu phải 10 kí tự")
-    .required("Vui lòng điền số điện thoại"),
-});
 
 const RegisterAccount = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const formik = useFormik({
+
+  const [registerForm] = useRegisterUserMutation();
+
+  const formik = useFormik<TRegisterAccount>({
     initialValues: {
       email: location.state.email,
       name: "",
@@ -37,13 +25,19 @@ const RegisterAccount = () => {
       phone: "",
       address: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      const userData = {
-        ...location.state,
-        ...values,
-      };
-      console.log(userData);
+    validationSchema: RegisterAccountSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await registerForm(values);
+        if ("error" in response) {
+          formik.setFieldError("email", "Email đã tồn tại");
+        } else {
+          alert("Đăng ký thành công!");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Lỗi", error);
+      }
     },
   });
 
