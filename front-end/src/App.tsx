@@ -4,7 +4,7 @@ import Home from "./page/base/home";
 import SignIn from "./page/base/SignIn";
 import LayoutBase from "./layout/base";
 import RegisterAccount from "./page/base/registerAccount";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 function App() {
   return (
