@@ -1,13 +1,13 @@
-import "../assets/scss/layout/headerBase.scss";
-import logo from "../assets/image/logo.png";
-import SearchIcon from "../assets/svg/searchIcon";
-import UserIcon from "../assets/svg/userIcon";
-import HeartIcon from "../assets/svg/heartIcon";
-import ShoppingCartIcon from "../assets/svg/shoppingCartIcon";
+import "../../assets/scss/layout/base/headerBase.scss";
+import logo from "../../assets/image/logo.png";
+import SearchIcon from "../../assets/svg/searchIcon";
+import UserIcon from "../../assets/svg/userIcon";
+import HeartIcon from "../../assets/svg/heartIcon";
+import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
 import { Link, useLocation } from "react-router-dom";
-import MenuIcon from "../assets/svg/menuIcon";
+import MenuIcon from "../../assets/svg/menuIcon";
 import { useEffect, useState } from "react";
-import RightIcon from "../assets/svg/rightIcon";
+import RightIcon from "../../assets/svg/rightIcon";
 
 const HeaderBase = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
