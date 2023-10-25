@@ -145,46 +145,49 @@ const Historyfollow: FC = () => {
             )}
             <br />
             <label>Lịch sử đặt lịch</label>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Thông tin người đặt</th>
-                  <th>Loại thú cưng</th>
-                  <th>Nhân viên thực hiện</th>
-                  <th>Phòng</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookingHistory.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.customerInfo}</td>
-                    <td>{item.petType}</td>
-                    <td>{item.staff}</td>
-                    <td>{item.room}</td>
-                    <td>{item.status}</td>
-                    <td>
-                      <button onClick={() => confirmDelete(item.id)}>
-                        Hủy
-                      </button>
-                    </td>
-                    <td>
-                      <Link
-                        to={""}
-                        className="chitiet"
-                        onClick={() => handleChiTietClickBook(item)}
-                      >
-                        Chi tiết
-                      </Link>
-                    </td>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Thông tin người đặt</th>
+                    <th>Loại thú cưng</th>
+                    <th>Nhân viên thực hiện</th>
+                    <th>Phòng</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                    <th></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {bookingHistoryDB.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>{item.customerInfo}</td>
+                      <td>{item.petType}</td>
+                      <td>{item.staff}</td>
+                      <td>{item.room}</td>
+                      <td>{item.status}</td>
+                      <td>
+                        <button onClick={() => confirmDelete(item.id)}>
+                          Hủy
+                        </button>
+                      </td>
+                      <td>
+                        <Link
+                          to={""}
+                          className="chitiet"
+                          onClick={() => handleChiTietClickBook(item)}
+                        >
+                          Chi tiết
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
             {showModal && bookingItem && (
               <div className="modal_history">
                 <div className="modal-content-history">
@@ -195,31 +198,35 @@ const Historyfollow: FC = () => {
                   >
                     &times;
                   </span>
-                  <table>
+                  <table className="modal-table">
                     <thead>
                       <tr>
-                        <th>STT</th>
-                        <th>Thông tin người đặt</th>
-                        <th>Loại thú cưng</th>
-                        <th>Loại dịch vụ</th>
-                        <th>Nhân viên thực hiện</th>
-                        <th>Phòng</th>
-                        <th>Ca</th>
-                        <th>Thời gian đặt</th>
-                        <th>Trạng thái</th>
+                        <th className="table-cell">STT</th>
+                        <th className="table-cell">Thông tin người đặt</th>
+                        <th className="table-cell">Loại thú cưng</th>
+                        <th className="table-cell">Loại dịch vụ</th>
+                        <th className="table-cell">Nhân viên thực hiện</th>
+                        <th className="table-cell">Phòng</th>
+                        <th className="table-cell">Ca</th>
+                        <th className="table-cell">Thời gian đặt</th>
+                        <th className="table-cell">Trạng thái</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr key={bookingItem.id}>
-                        <td>{bookingItem.id}</td>
-                        <td>{bookingItem.customerInfo}</td>
-                        <td>{bookingItem.petType}</td>
-                        <td>{bookingItem.serviceType}</td>
-                        <td>{bookingItem.staff}</td>
-                        <td>{bookingItem.room}</td>
-                        <td>{bookingItem.shift}</td>
-                        <td>{bookingItem.time}</td>
-                        <td>{bookingItem.status}</td>
+                        <td className="table-cell">{bookingItem.id}</td>
+                        <td className="table-cell">
+                          {bookingItem.customerInfo}
+                        </td>
+                        <td className="table-cell">{bookingItem.petType}</td>
+                        <td className="table-cell">
+                          {bookingItem.serviceType}
+                        </td>
+                        <td className="table-cell">{bookingItem.staff}</td>
+                        <td className="table-cell">{bookingItem.room}</td>
+                        <td className="table-cell">{bookingItem.shift}</td>
+                        <td className="table-cell">{bookingItem.time}</td>
+                        <td className="table-cell">{bookingItem.status}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -322,7 +329,6 @@ const purchaseHistory = [
         price: 1500,
         soluong: 1,
       },
-      
     ],
   },
   {

@@ -145,50 +145,49 @@ const History: FC = () => {
             )}
             <br />
             <label>Lịch sử đặt lịch</label>
-            <div className="container-table">
-              <div className="datlich">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>STT</th>
-                      <th>Thông tin người đặt</th>
-                      <th>Loại thú cưng</th>
-                      <th>Nhân viên thực hiện</th>
-                      <th>Phòng</th>
-                      <th>Trạng thái</th>
-                      <th>Thao tác</th>
-                      <th></th>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Thông tin người đặt</th>
+                    <th>Loại thú cưng</th>
+                    <th>Nhân viên thực hiện</th>
+                    <th>Phòng</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookingHistoryDB.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>{item.customerInfo}</td>
+                      <td>{item.petType}</td>
+                      <td>{item.staff}</td>
+                      <td>{item.room}</td>
+                      <td>{item.status}</td>
+                      <td>
+                        <button onClick={() => confirmDelete(item.id)}>
+                          Hủy
+                        </button>
+                      </td>
+                      <td>
+                        <Link
+                          to={""}
+                          className="chitiet"
+                          onClick={() => handleChiTietClickBook(item)}
+                        >
+                          Chi tiết
+                        </Link>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {bookingHistory.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.customerInfo}</td>
-                        <td>{item.petType}</td>
-                        <td>{item.staff}</td>
-                        <td>{item.room}</td>
-                        <td>{item.status}</td>
-                        <td>
-                          <button onClick={() => confirmDelete(item.id)}>
-                            Hủy
-                          </button>
-                        </td>
-                        <td>
-                          <Link
-                            to={""}
-                            className="chitiet"
-                            onClick={() => handleChiTietClickBook(item)}
-                          >
-                            Chi tiết
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
+
             {showModal && bookingItem && (
               <div className="modal_history">
                 <div className="modal-content-history">
@@ -199,40 +198,38 @@ const History: FC = () => {
                   >
                     &times;
                   </span>
-                  <ul>
-                      <li>
-                        <p className="title">Stt</p>
-                        <p className="value">{bookingItem.id}</p>
-                      </li>
-                      <li>
-                        <p className="title">Thông tin người đặt</p>
-                        <p className="value">{bookingItem.customerInfo}</p>
-                      </li>
-                      <li>
-                        <p className="title">Loại dịch vụ</p>
-                        <p className="value">{bookingItem.serviceType}</p>
-                      </li>
-                      <li>
-                        <p className="title">Nhân viên thực hiện</p>
-                        <p className="value">{bookingItem.staff}</p>
-                      </li>
-                      <li>
-                        <p className="title">Phòng</p>
-                        <p className="value">{bookingItem.room}</p>
-                      </li>
-                      <li>
-                        <p className="title">Ca</p>
-                        <p className="value">{bookingItem.shift}</p>
-                      </li>
-                      <li>
-                        <p className="title">Thời gian đặt</p>
-                        <p className="value">{bookingItem.time}</p>
-                      </li>
-                      <li>
-                        <p className="title">Trạng thái</p>
-                        <p className="value">{bookingItem.status}</p>
-                      </li>
-                  </ul>
+                  <table className="modal-table">
+                    <thead>
+                      <tr>
+                        <th className="table-cell">STT</th>
+                        <th className="table-cell">Thông tin người đặt</th>
+                        <th className="table-cell">Loại thú cưng</th>
+                        <th className="table-cell">Loại dịch vụ</th>
+                        <th className="table-cell">Nhân viên thực hiện</th>
+                        <th className="table-cell">Phòng</th>
+                        <th className="table-cell">Ca</th>
+                        <th className="table-cell">Thời gian đặt</th>
+                        <th className="table-cell">Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr key={bookingItem.id}>
+                        <td className="table-cell">{bookingItem.id}</td>
+                        <td className="table-cell">
+                          {bookingItem.customerInfo}
+                        </td>
+                        <td className="table-cell">{bookingItem.petType}</td>
+                        <td className="table-cell">
+                          {bookingItem.serviceType}
+                        </td>
+                        <td className="table-cell">{bookingItem.staff}</td>
+                        <td className="table-cell">{bookingItem.room}</td>
+                        <td className="table-cell">{bookingItem.shift}</td>
+                        <td className="table-cell">{bookingItem.time}</td>
+                        <td className="table-cell">{bookingItem.status}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}

@@ -145,7 +145,6 @@ const AccountPage = () => {
               </li>
             </ul>
           </div>
-
           <div className="account_info-col col_2">
             <Outlet />
           </div>
