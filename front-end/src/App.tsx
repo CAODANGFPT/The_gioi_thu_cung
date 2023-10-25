@@ -5,6 +5,7 @@ import SignIn from "./page/base/SignIn";
 import LayoutBase from "./layout/base";
 import RegisterAccount from "./page/base/registerAccount";
 import SignUp from "./page/base/signup";
+import ListProduct from "./page/base/listProduct";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
+          <Route path="listproduct" element={<ListProduct />} />
         </Route>
         <Route path="SignIn" element={<SignIn />} />
         <Route path="SignUp" element={<SignUp />} />
