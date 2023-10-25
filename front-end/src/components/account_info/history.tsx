@@ -199,34 +199,40 @@ const History: FC = () => {
                   >
                     &times;
                   </span>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>STT</th>
-                        <th>TT người đặt</th>
-                        <th>Loại thú cưng</th>
-                        <th>Loại dịch vụ</th>
-                        <th>Nhân viên thực hiện</th>
-                        <th>Phòng</th>
-                        <th>Ca</th>
-                        <th>Thời gian đặt</th>
-                        <th>Trạng thái</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr key={bookingItem.id}>
-                        <td>{bookingItem.id}</td>
-                        <td>{bookingItem.customerInfo}</td>
-                        <td>{bookingItem.petType}</td>
-                        <td>{bookingItem.serviceType}</td>
-                        <td>{bookingItem.staff}</td>
-                        <td>{bookingItem.room}</td>
-                        <td>{bookingItem.shift}</td>
-                        <td>{bookingItem.time}</td>
-                        <td>{bookingItem.status}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <ul>
+                      <li>
+                        <p className="title">Stt</p>
+                        <p className="value">{bookingItem.id}</p>
+                      </li>
+                      <li>
+                        <p className="title">Thông tin người đặt</p>
+                        <p className="value">{bookingItem.customerInfo}</p>
+                      </li>
+                      <li>
+                        <p className="title">Loại dịch vụ</p>
+                        <p className="value">{bookingItem.serviceType}</p>
+                      </li>
+                      <li>
+                        <p className="title">Nhân viên thực hiện</p>
+                        <p className="value">{bookingItem.staff}</p>
+                      </li>
+                      <li>
+                        <p className="title">Phòng</p>
+                        <p className="value">{bookingItem.room}</p>
+                      </li>
+                      <li>
+                        <p className="title">Ca</p>
+                        <p className="value">{bookingItem.shift}</p>
+                      </li>
+                      <li>
+                        <p className="title">Thời gian đặt</p>
+                        <p className="value">{bookingItem.time}</p>
+                      </li>
+                      <li>
+                        <p className="title">Trạng thái</p>
+                        <p className="value">{bookingItem.status}</p>
+                      </li>
+                  </ul>
                 </div>
               </div>
             )}
