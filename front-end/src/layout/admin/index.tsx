@@ -2,8 +2,7 @@ import "../../assets/scss/layout/admin/sidebar.scss";
 import "../../assets/scss/layout/admin/index.scss";
 import React, { FC } from "react";
 import Sidebar from "./Sidebar";
-import Content from "../Content/Content";
-import "./index.scss";
+import Content from "./content";
 type Props = {};
 
 const LayoutAdmin: FC<Props> = (props) => {

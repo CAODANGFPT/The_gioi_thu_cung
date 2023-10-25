@@ -6,7 +6,6 @@ import BillsIcon from "./../svg/billsIcon";
 import ReportIcon from "./../svg/reportIcon";
 import WealthIcon from "./../svg/wealthIcon";
 import GearsIcon from "./../svg/gearsIcon";
-import UserIcon from "./../svg/userIcon";
 import { personsImgs } from "../utils/images";
 
 export const navigationLinks = [
@@ -18,8 +17,7 @@ export const navigationLinks = [
     { id: 6, title: 'Reports', image: ReportIcon },
     { id: 7, title: 'Savings', image: WalletIcon },
     { id: 8, title: 'Financial Advice', image: WealthIcon },
-    { id: 9, title: 'Account', image: GearsIcon },
-    { id: 10, title: 'Settings', image: UserIcon }
+    { id: 9, title: 'Account', image: GearsIcon }
   ];
 
 export const transactions = [

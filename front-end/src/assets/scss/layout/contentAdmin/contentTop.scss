@@ -41,6 +41,7 @@
   }
 
   &-btn {
+    @include Flex(flex, flex-end, center);
     margin-left: 18px;
 
     button {

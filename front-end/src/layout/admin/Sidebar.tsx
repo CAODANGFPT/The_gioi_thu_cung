@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
 import { Link } from "react-router-dom";
 const Sidebar = () => {
-  const [activeLinkIdx] = useState(1);
+  const [activeLinkIdx, setActiveLinkIdx] = useState(1);
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
@@ -25,6 +25,10 @@ const Sidebar = () => {
     }
   }, [isSidebarOpen]);
 
+  const handleLinkClick = (id: number) => {
+    setActiveLinkIdx(id);
+  };
+
   return (
     <div className={`sidebar ${sidebarClass}`}>
       <div className="user-info">
@@ -39,6 +43,7 @@ const Sidebar = () => {
                 className={`${borderRadius} nav-list-item-link  ${
                   navigationLink.id === activeLinkIdx ? "active" : null
                 }`}
+                onClick={() => handleLinkClick(navigationLink.id)}
                 to={""}
               >
                 <div className="nav-list-item-link-icon">
