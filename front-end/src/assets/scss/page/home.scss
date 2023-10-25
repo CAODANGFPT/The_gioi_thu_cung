@@ -87,12 +87,15 @@
         .top {
           &-title {
             @include Size(50px, 700, normal);
+
             @include max-screen($sm) {
               @include Size(35px, 700, normal);
             }
+
             @include max-screen($sm) {
               @include Size(16px, 700, normal);
             }
+
             color: black;
             line-height: 1;
           }
@@ -241,6 +244,7 @@
 
           .product--image {
             position: relative;
+
             img {
               border-top-left-radius: 10px;
               border-top-right-radius: 10px;
@@ -248,6 +252,7 @@
               height: 16em;
               object-fit: cover;
             }
+
             .svg {
               position: absolute;
               width: 30px;
@@ -366,8 +371,10 @@
             .date {
               position: absolute;
               top: 20px;
+
               &-title {
                 position: relative;
+
                 p {
                   position: absolute;
                   top: 20%;
