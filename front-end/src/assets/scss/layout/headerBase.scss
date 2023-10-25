@@ -222,14 +222,14 @@
     }
   }
   .menu-2 {
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 227px;
-    height: 100vh;
+    min-height: 100vh;
     background-color: white;
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     transition: margin 0.7s ease-in-out;
-    z-index: 10;
+    z-index: 20;
     .box {
       @include Flex(flex, center, center);
       margin: 0 20px;
@@ -242,7 +242,7 @@
           @include max-screen($md) {
             width: 100px;
             height: auto;
-            z-index: 10;
+            z-index: 20;
           }
         }
       }
@@ -276,6 +276,6 @@
     width: 100vw;
     height: 100vh;
     backdrop-filter: grayscale(50%) blur(5px);
-    z-index: 0;
+    z-index: 10;
   }
 }

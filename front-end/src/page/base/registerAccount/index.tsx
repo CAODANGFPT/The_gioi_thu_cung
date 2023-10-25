@@ -1,16 +1,22 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import * as Yup from "yup";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/registerAccount.scss";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
+import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 import { RegisterAccountSchema, TRegisterAccount } from "../../../schema/registerAccount";
+import { useRegisterUserMutation } from "../../../services/auth";
+
 
 const RegisterAccount = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [registerForm] = useRegisterUserMutation();
+
   const formik = useFormik<TRegisterAccount>({
     initialValues: {
       email: location.state.email,
@@ -20,12 +26,18 @@ const RegisterAccount = () => {
       address: "",
     },
     validationSchema: RegisterAccountSchema,
-    onSubmit: (values) => {
-      const userData = {
-        ...location.state,
-        ...values,
-      };
-      console.log(userData);
+    onSubmit: async (values) => {
+      try {
+        const response = await registerForm(values);
+        if ("error" in response) {
+          formik.setFieldError("email", "Email đã tồn tại");
+        } else {
+          alert("Đăng ký thành công!");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Lỗi", error);
+      }
     },
   });
 
@@ -38,12 +50,12 @@ const RegisterAccount = () => {
         </Link>
       </div>
       <div className="singUp-bottom">
+        <img className="img-bg" src={banner} alt="" />
         <form className="f-singUp" onSubmit={formik.handleSubmit}>
           <h1>Điền thông tin tài khoản</h1>
-          <br />
-          <p>
-            bạn đã có tài khoản?
-            <Link to="" className="text-login">
+          <p className="new-to-account">
+            Bạn đã có tài khoản?
+            <Link to="/signin" className="text-login">
               Đăng nhập
             </Link>
           </p>
@@ -93,7 +105,7 @@ const RegisterAccount = () => {
             <input
               className="btn-f-input"
               type="text"
-              placeholder="số điện thoại"
+              placeholder="Số điện thoại"
               id="phone"
               name="phone"
               value={formik.values.phone}
