@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TRegisterAccount } from "../schema/registerAccount";
+import { SignInResponse, TSignIn } from "../schema/signIn";
 
 const authApi = createApi({
   reducerPath: "auth",
@@ -18,12 +19,22 @@ const authApi = createApi({
           };
         },
       }),
+      loginUser: builder.mutation<SignInResponse, Partial<TSignIn>>({
+        query: (user) => {
+          return {
+            url: "/login",
+            method: "POST",
+            body: user,
+          };
+        },
+      }),
     };
   },
 });
 
 export const {
   useRegisterUserMutation,
+  useLoginUserMutation
 } = authApi;
 export const authReducer = authApi.reducer;
 export default authApi;
