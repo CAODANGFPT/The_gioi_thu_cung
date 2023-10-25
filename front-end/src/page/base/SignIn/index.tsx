@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
 import "../../../assets/scss/page/SignIn.scss";
@@ -12,18 +12,39 @@ import FacebookIcon from "../../../assets/svg/facebookIcon";
 import AppleIcon from "../../../assets/svg/appleIcon";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
+import { useLoginUserMutation } from "../../../services/auth";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const [loginForm] = useLoginUserMutation();
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: SignInRequestSchema,
-    onSubmit: (values: any) => {
-      console.log("Submitted form:", values);
-    },
+    onSubmit: async (values: any) => {
+      try {
+        const response = await loginForm(values);
+        console.log(response);
+        
+        if ("error" in response) {
+          alert("Tài khoản mật khẩu không chính xác");
+
+        } else {
+          if(response.data && response.data.user.role_id === 3 ){
+            alert("Tải khoản bị khóa");
+          } else{
+            localStorage.setItem("user", JSON.stringify(response.data));
+            alert("Đăng nhập thành công");
+            response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
+          }
+        }
+      } catch (error) {
+        console.error("Lỗi", error);
+      }
+      },
   });
   return (
     <div className="singIn">
