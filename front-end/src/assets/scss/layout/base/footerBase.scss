@@ -1,5 +1,5 @@
-@import "../utils/functions.scss";
-@import "../utils/variables.scss";
+@import "../../utils/functions.scss";
+@import "../../utils/variables.scss";
 
 * {
   margin: 0;
@@ -12,7 +12,7 @@
   @include Flex(flex, space-between, stretch);
   @include Gap(150px, 0);
   max-width: $xl;
-  margin: 0 auto;
+  margin: 50px auto 0 auto;
   font-family: $Roboto;
   @include max-screen($xl) {
     flex-direction: column;
@@ -141,11 +141,11 @@
     }
   }
 }
-.copyright{
+.copyright {
   border-top: 1px solid $SonicSilver;
   margin: 10px 20px;
   font-family: $Roboto;
-  p{
+  p {
     @include Size(14px, 400, normal);
     color: $SonicSilver;
     text-align: center;
