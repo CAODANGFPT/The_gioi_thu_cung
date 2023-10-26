@@ -55,7 +55,7 @@ export default class User {
 
   static getAllUsers() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM user", (err, results) => {
+      connection.query("SELECT * FROM users", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
@@ -65,7 +65,7 @@ export default class User {
   static getAllUsersRole() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT user.id, user.email,user.phone,user.name,user.img, user.role_id, role.name as nameRole FROM user JOIN  role on user.role_id = role.id",
+        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, role.name as nameRole FROM users JOIN  role on users.role_id = role.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);

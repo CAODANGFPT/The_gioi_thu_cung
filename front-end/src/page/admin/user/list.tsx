@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
 import { useStatusQuery } from "../../../services/status";
+import { useUserQuery } from "../../../services/user";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -16,15 +17,45 @@ const cancel = () => {
 
 const columns: ColumnsType<TStatus> = [
   {
-    title: "ID",
+    title: "TT",
     dataIndex: "id",
     key: "id",
     width: 150,
   },
   {
-    title: "Trạng thái",
+    title: "Tên",
     dataIndex: "name",
     key: "name",
+    width: 150,
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+    width: 150,
+  },
+  {
+    title: "Ảnh",
+    dataIndex: "img",
+    key: "img",
+    width: 150,
+  },
+  {
+    title: "SĐT",
+    dataIndex: "phone",
+    key: "phone",
+    width: 150,
+  },
+  {
+    title: "Địa chỉ",
+    dataIndex: "address",
+    key: "address",
+    width: 150,
+  },
+  {
+    title: "Vai trò",
+    dataIndex: "nameRole",
+    key: "nameRole",
     width: 150,
   },
   {
@@ -33,11 +64,6 @@ const columns: ColumnsType<TStatus> = [
     width: 100,
     render: (id) => (
       <div>
-        <Link to="URL">
-          <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-            Sửa
-          </Button>
-        </Link>
         <Popconfirm
           title="Xóa trạng thái."
           description="Bạn có muốn xóa không?"
@@ -47,7 +73,7 @@ const columns: ColumnsType<TStatus> = [
           cancelText="Không"
         >
           <Button danger className="btn-delete">
-            Xóa
+            Khóa
           </Button>
         </Popconfirm>
       </div>
@@ -55,9 +81,9 @@ const columns: ColumnsType<TStatus> = [
   },
 ];
 
-const StatusAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStatusQuery();
+const UserAdmin: React.FC = () => {
+  const { data, isLoading, refetch } = useUserQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default StatusAdmin;
+export default UserAdmin;
