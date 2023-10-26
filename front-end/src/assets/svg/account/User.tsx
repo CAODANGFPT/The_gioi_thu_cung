@@ -1,6 +1,6 @@
-import React from "react";
+import React, { FC } from "react";
 
-const UserIcons = () => {
+const UserIcons: FC = () => {
   return (
     <div>
       <svg
