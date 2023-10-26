@@ -18,7 +18,7 @@ import ListProduct from "./page/base/listProduct";
 import RegisterAccount from "./page/base/registerAccount";
 import StatusAdmin from "./page/admin/status/list";
 import DashBoard from "./page/admin/dashboard";
-
+import ServicesAdmin from "./page/admin/services/list";
 function App() {
   return (
     <BrowserRouter>
@@ -43,6 +43,7 @@ function App() {
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />
           <Route path="status" element={<StatusAdmin />} />
+          <Route path="services" element={<ServicesAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
