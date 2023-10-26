@@ -1,4 +1,6 @@
-const UserIcon = () => (
+import { FC } from "react";
+
+const UserIcon:FC = () => (
   <svg
     width="20"
     height="20"

@@ -1,4 +1,4 @@
-import "../../assets/scss/layout/footerBase.scss";
+import "../../assets/scss/layout/base/footerBase.scss";
 import logo from "../../assets/image/logo2.png";
 import appStore from "../../assets/image/appStore.png";
 import FacebookIcon from "../../assets/svg/facebookIcon";

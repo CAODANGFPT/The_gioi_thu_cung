@@ -1,4 +1,4 @@
-import "../../assets/scss/layout/headerBase.scss";
+import "../../assets/scss/layout/base/headerBase.scss";
 import logo from "../../assets/image/logo.png";
 import SearchIcon from "../../assets/svg/searchIcon";
 import UserIcon from "../../assets/svg/userIcon";
