@@ -73,8 +73,8 @@ export const sendResetLinkEmail = async (req, res) => {
     },
   });
   const hashedEmail = await bcrypt.hash(
-    // email,
-    // parseInt(process.env.BCRYPT_SALT_ROUND)
+    email,
+    parseInt(process.env.BCRYPT_SALT_ROUND)
   );
 
   try {
@@ -89,13 +89,13 @@ export const sendResetLinkEmail = async (req, res) => {
       html: `<div style="font-family: sans-serif; margin: 0 40px;">
         <img
           style="width: 200px"
-          src="https://iweb.tatthanh.com.vn/pic/3/blog/images/image(1244).png"
+          src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
           alt=""
         />
         <p>Chào <span style="font-weight: 600">${checkEmail.name},</span></p>
         <p>
           Bạn đã yêu cầu đổi mật khẩu tại
-          <span style="font-weight: 600">ShopGiay.</span>
+          <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
         </p>
         <p>Bạn vui lòng truy cập vào liên kết dưới đây để thay đổi mật khẩu</p>
         <div style="padding: 20px 0 20px 40px">
@@ -105,7 +105,7 @@ export const sendResetLinkEmail = async (req, res) => {
             )}&token=${encodeURIComponent(hashedEmail)}""
             target="_blank"
             style="
-              background-color: #ea2f38;
+              background-color: #00575C;
               border: none;
               color: white;
               padding: 10px 15px;
@@ -117,12 +117,12 @@ export const sendResetLinkEmail = async (req, res) => {
             Nhấn vào đây
           </a>
         </div>
-        <p style="width: 100%;height: 1px; background-color: #ea2f38;"></p>
+        <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
         <div style="text-align: right;">
     
           <p>Nếu Bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
           <p>Trân trọng,</p>
-          <p style="font-weight: 600;">Ban quản trị cửa hàng ShopGiay</p>
+          <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
         </div>
       </div>`,
     };

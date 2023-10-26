@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TRegisterAccount } from "../schema/registerAccount";
 import { SignInResponse, TSignIn } from "../schema/signIn";
+import { TResetPass } from "../schema/resetPassword";
 
 const authApi = createApi({
   reducerPath: "auth",
@@ -28,13 +29,23 @@ const authApi = createApi({
           };
         },
       }),
+      emailPasswordUser: builder.mutation<TResetPass, Partial<TResetPass>>({
+        query: (user) => {
+          return {
+            url: "/forgotPassword",
+            method: "POST",
+            body: user,
+          };
+        },
+      }),
     };
   },
 });
 
 export const {
   useRegisterUserMutation,
-  useLoginUserMutation
+  useLoginUserMutation,
+  useEmailPasswordUserMutation
 } = authApi;
 export const authReducer = authApi.reducer;
 export default authApi;
