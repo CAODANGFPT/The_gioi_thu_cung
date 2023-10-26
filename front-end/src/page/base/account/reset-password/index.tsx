@@ -9,15 +9,32 @@ import {
   ResetPassRequestSchema,
   TResetPass,
 } from "../../../../schema/resetPassword";
+import { useEmailPasswordUserMutation } from "../../../../services/auth";
 
 const ResetPassWord = () => {
   const navigate = useNavigate();
+  const [resetPassword] = useEmailPasswordUserMutation();
   const formik = useFormik<TResetPass>({
     initialValues: {
       email: "",
     },
     validationSchema: ResetPassRequestSchema,
-    onSubmit: (values) => {},
+    onSubmit: async (values) => {
+      try {
+        const response = await resetPassword(values);
+        console.log(response);
+        
+        if ("error" in response) {
+          alert("Tài khoản mật khẩu không chính xác");
+
+        } else {
+            localStorage.setItem("user", JSON.stringify(response.data));
+            alert("Vui lòng check mail");
+        }
+      } catch (error) {
+        console.error("Lỗi", error);
+      }
+    },
   });
 
   return (
