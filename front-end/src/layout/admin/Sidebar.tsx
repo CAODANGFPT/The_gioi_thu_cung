@@ -44,7 +44,7 @@ const Sidebar = () => {
                   navigationLink.id === activeLinkIdx ? "active" : null
                 }`}
                 onClick={() => handleLinkClick(navigationLink.id)}
-                to={""}
+                to={navigationLink.link}
               >
                 <div className="nav-list-item-link-icon">
                   {navigationLink.image &&

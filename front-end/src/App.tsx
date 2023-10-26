@@ -16,6 +16,8 @@ import AccountPage from "./page/base/account/account";
 import ResetPassword from "./page/base/account/reset-password";
 import ListProduct from "./page/base/listProduct";
 import RegisterAccount from "./page/base/registerAccount";
+import StatusAdmin from "./page/admin/status/list";
+import DashBoard from "./page/admin/dashboard";
 
 function App() {
   return (
@@ -24,7 +26,7 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="signUp" element={<SignUp />} />
-          <Route path="listproduct" element={<ListProduct />} />
+          <Route path="product" element={<ListProduct />} />
         </Route>
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="SignIn" element={<SignIn />} />
@@ -39,7 +41,8 @@ function App() {
           <Route path="follow" element={<Follow />} />
         </Route>
         <Route path="/admin" element={<LayoutAdmin />}>
-          <Route index element={<Home />} />
+          <Route index element={<DashBoard />} />
+          <Route path="status" element={<StatusAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
