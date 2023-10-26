@@ -6,9 +6,8 @@ import GearsIcon from "./../svg/gearsIcon";
 import HomeIcon from "./../svg/homeIcon";
 import PlaneIcon from "./../svg/planeIcon";
 import ReportIcon from "./../svg/reportIcon";
-import WalletIcon from "./../svg/walletIcon";
 import WealthIcon from "./../svg/wealthIcon";
-
+import ServicesIcon from "../svg/services";
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
@@ -16,7 +15,7 @@ export const navigationLinks = [
   { id: 4, title: "User", image: UserIcons, link: "user" },
   { id: 5, title: "Loans", image: BillsIcon, link: "/admin" },
   { id: 6, title: "Reports", image: ReportIcon, link: "/admin" },
-  { id: 7, title: "Savings", image: WalletIcon, link: "/admin" },
+  { id: 7, title: "Services", image: ServicesIcon, link: "services" },
   { id: 8, title: "Financial Advice", image: WealthIcon, link: "/admin" },
   { id: 9, title: "Account", image: GearsIcon, link: "/admin" },
 ];
