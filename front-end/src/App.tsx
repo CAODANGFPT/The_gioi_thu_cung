@@ -3,7 +3,7 @@ import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
@@ -19,6 +19,7 @@ import RegisterAccount from "./page/base/registerAccount";
 import StatusAdmin from "./page/admin/status/list";
 import DashBoard from "./page/admin/dashboard";
 import UserAdmin from "./page/admin/user/list";
+import Appointments from "./page/base/appointments";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="signUp" element={<SignUp />} />
           <Route path="product" element={<ListProduct />} />
+          <Route path="appointment" element={<Appointments />} />
         </Route>
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="SignIn" element={<SignIn />} />
@@ -45,6 +47,7 @@ function App() {
           <Route index element={<DashBoard />} />
           <Route path="status" element={<StatusAdmin />} />
           <Route path="user" element={<UserAdmin />} />
+          <Route path="role" element={<UserAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

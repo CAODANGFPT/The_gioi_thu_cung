@@ -18,6 +18,7 @@ import storage from "redux-persist/lib/storage";
 import authApi, { authReducer } from "../services/auth";
 import statusApi, { statusReducer } from "../services/status";
 import userApi, { userReducer } from "../services/user";
+import roleApi, { roleReducer } from "../services/role";
 
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   [authApi.reducerPath]: authReducer,
   [statusApi.reducerPath]: statusReducer,
   [userApi.reducerPath]: userReducer,
+  [roleApi.reducerPath]: roleReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -44,6 +46,7 @@ export const store = configureStore({
       authApi.middleware,
       statusApi.middleware,
       userApi.middleware,
+      roleApi.middleware
     ),
 });
 
