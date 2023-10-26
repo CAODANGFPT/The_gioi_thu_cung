@@ -31,7 +31,7 @@ const ResetPassWord = () => {
       <div className="resetPassword-bottom">
         <div className="f-resetPassword">
           <form className="" onSubmit={formik.handleSubmit}>
-            <h1>Quên Mật Khẩu</h1>
+            <h1>Quên mật Khẩu</h1>
             <br />
 
             <div className="input-flex">
@@ -50,7 +50,7 @@ const ResetPassWord = () => {
               )}
             </div>
             <button className="btn-f bg-submit" type="submit">
-              tiếp theo
+              Gửi
             </button>
           </form>
           <br />
