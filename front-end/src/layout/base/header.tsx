@@ -35,7 +35,7 @@ const HeaderBase = () => {
     };
   }, [isWideScreen]);
   return (
-    <div className="container">
+    <div className="headerBase">
       <div className="frame29">
         <p className="frame29-title1">
           Miễn phí vận chuyển<span> khi mua $20</span>
@@ -126,7 +126,7 @@ const HeaderBase = () => {
       </div>
       <div
         className="menu-2"
-        style={{ marginLeft: openMenu ? "0px" : "-270px" }}
+        style={{ marginLeft: openMenu ? "0px" : "-300px" }}
       >
         <div className="box">
           <div className="menu" onClick={() => setOpenMenu(!openMenu)}>

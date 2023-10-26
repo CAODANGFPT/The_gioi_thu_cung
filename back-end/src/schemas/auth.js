@@ -22,11 +22,6 @@ export const signupSchema = joi.object({
         "any.required": "Trường mật khẩu là bắt buộc",
         "string.min": "Mật khẩu phải có ít nhất {#limit} ký tự",
     }),
-    confirmPassword: joi.string().required().valid(joi.ref("password")).messages({
-        "string.empty": "Xác nhận mật khẩu không được để trống",
-        "any.required": "Trường xác nhận mật khẩu là bắt buộc",
-        "any.only": "Xác nhận mật khẩu không khớp",
-    }),
 });
 
 export const signinSchema = joi.object({
