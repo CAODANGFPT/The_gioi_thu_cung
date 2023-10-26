@@ -20,6 +20,7 @@ import StatusAdmin from "./page/admin/status/list";
 import DashBoard from "./page/admin/dashboard";
 import ServicesAdmin from "./page/admin/services/list";
 import UserAdmin from "./page/admin/user/list";
+import Appointments from "./page/base/appointments";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="signUp" element={<SignUp />} />
           <Route path="product" element={<ListProduct />} />
+          <Route path="appointment" element={<Appointments />} />
         </Route>
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="SignIn" element={<SignIn />} />
@@ -47,6 +49,7 @@ function App() {
           <Route path="status" element={<StatusAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="user" element={<UserAdmin />} />
+          <Route path="role" element={<UserAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

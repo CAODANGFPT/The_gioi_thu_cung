@@ -15,7 +15,7 @@
     padding: 3rem 0;
 
     .form-container {
-        background: $White;
+        background: white;
         width: 40%;
         box-shadow: 0px 0px 15px -4px black;
         border-radius: 0.4rem;
@@ -30,7 +30,7 @@
             width: 90%;
         }
 
-        @include max-screen($s) {
+        @include max-screen($sx) {
             width: 100%;
         }
 
@@ -51,17 +51,17 @@
 
                 .btn-prev {
                     padding: 0.8rem 2rem;
-                    border: 2px solid $MidnightGreen;
+                    border: 2px solid $EagleGreen;
                     padding: 0.8rem 1.8rem;
                     text-transform: uppercase;
                     font-weight: 600;
                     border-radius: 5px;
                     letter-spacing: 1.5px;
                     background: $Cultured;
-                    color: $MidnightGreen;
+                    color: $EagleGreen;
 
                     &:hover {
-                        background: $MidnightGreen;
+                        background: $EagleGreen;
                         color: $Cultured;
                     }
                 }
@@ -69,8 +69,8 @@
                 .btn-next {
                     padding: 0.8rem 1.8rem;
                     border-radius: 5px;
-                    border: 1.5px solid $MidnightGreen;
-                    background: $MidnightGreen;
+                    border: 1.5px solid $EagleGreen;
+                    background: $EagleGreen;
                     color: $Cultured;
                     text-transform: uppercase;
                     font-weight: 600;
@@ -78,7 +78,7 @@
 
                     &:hover {
                         background: $Cultured;
-                        color: $MidnightGreen;
+                        color: $EagleGreen;
                     }
                 }
             }
@@ -87,7 +87,7 @@
 
     .form-step {
         h2 {
-            color: $MidnightGreen;
+            color: $EagleGreen;
             margin: 1rem 0;
         }
 
@@ -107,7 +107,7 @@
                 border-radius: 5px;
                 font-size: 16px;
                 padding: 0 1rem;
-                border: 1px solid $MidnightGreen;
+                border: 1px solid $EagleGreen;
             }
         }
     }
@@ -121,7 +121,7 @@
         max-width: 600px;
     }
 
-    @include max-screen($s) {
+    @include max-screen($sx) {
         max-width: 400px;
     }
 }
