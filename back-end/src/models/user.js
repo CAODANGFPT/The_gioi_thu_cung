@@ -52,4 +52,51 @@ export default class User {
       });
     });
   }
+
+  static getAllUsers() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM user", (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
+
+  static getAllUsersRole() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT user.id, user.email,user.phone,user.name,user.img, user.role_id, role.name as nameRole FROM user JOIN  role on user.role_id = role.id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static resetPassword(email, password) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE user SET password = ? WHERE email = ?",
+        [password, email],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static updateUserRole(id, role_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE user SET role_id = ? WHERE id = ?",
+        [role_id, id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
 }
