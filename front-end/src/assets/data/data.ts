@@ -7,17 +7,18 @@ import ReportIcon from "./../svg/reportIcon";
 import WealthIcon from "./../svg/wealthIcon";
 import GearsIcon from "./../svg/gearsIcon";
 import { personsImgs } from "../utils/images";
+import StatusIcon from "../svg/status";
 
 export const navigationLinks = [
-    { id: 1, title: 'Home', image: HomeIcon },
-    { id: 2, title: 'Budget', image: BudgetIcon },
-    { id: 3, title: 'Transactions', image: PlaneIcon },
-    { id: 4, title: 'Subscriptions', image: WalletIcon },
-    { id: 5, title: 'Loans', image: BillsIcon },
-    { id: 6, title: 'Reports', image: ReportIcon },
-    { id: 7, title: 'Savings', image: WalletIcon },
-    { id: 8, title: 'Financial Advice', image: WealthIcon },
-    { id: 9, title: 'Account', image: GearsIcon }
+    { id: 1, title: 'Home', image: HomeIcon, link: 'dashboard'},
+    { id: 2, title: 'Status', image: StatusIcon, link: 'status' },
+    { id: 3, title: 'Transactions', image: PlaneIcon, link: '/admin' },
+    { id: 4, title: 'Subscriptions', image: WalletIcon, link: '/admin' },
+    { id: 5, title: 'Loans', image: BillsIcon, link: '/admin' },
+    { id: 6, title: 'Reports', image: ReportIcon, link: '/admin' },
+    { id: 7, title: 'Savings', image: WalletIcon, link: '/admin' },
+    { id: 8, title: 'Financial Advice', image: WealthIcon, link: '/admin' },
+    { id: 9, title: 'Account', image: GearsIcon, link: '/admin' }
   ];
 
 export const transactions = [
