@@ -1,4 +1,6 @@
-const StatusIcon = () => (
+import { FC } from "react";
+
+const StatusIcon: FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     x="0px"

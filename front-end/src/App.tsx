@@ -19,6 +19,8 @@ import RegisterAccount from "./page/base/registerAccount";
 import StatusAdmin from "./page/admin/status/list";
 import DashBoard from "./page/admin/dashboard";
 import ServicesAdmin from "./page/admin/services/list";
+import UserAdmin from "./page/admin/user/list";
+
 function App() {
   return (
     <BrowserRouter>
@@ -44,6 +46,7 @@ function App() {
           <Route index element={<DashBoard />} />
           <Route path="status" element={<StatusAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
+          <Route path="user" element={<UserAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
