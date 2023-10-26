@@ -17,6 +17,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import authApi, { authReducer } from "../services/auth";
 import statusApi, { statusReducer } from "../services/status";
+import servicesApi, { servicesReducer } from "../services/services";
 import userApi, { userReducer } from "../services/user";
 
 const persistConfig = {
@@ -28,6 +29,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authReducer,
   [statusApi.reducerPath]: statusReducer,
+  [servicesApi.reducerPath]: servicesReducer,
   [userApi.reducerPath]: userReducer,
 });
 
@@ -43,7 +45,8 @@ export const store = configureStore({
     }).concat(
       authApi.middleware,
       statusApi.middleware,
-      userApi.middleware,
+      servicesApi.middleware,
+      userApi.middleware
     ),
 });
 
