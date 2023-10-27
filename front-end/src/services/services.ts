@@ -9,7 +9,7 @@ const servicesApi = createApi({
   }),
   endpoints(builder) {
     return {
-      status: builder.query<TServices[], void>({
+      services: builder.query<TServices[], void>({
         query: () => {
           return {
             url: "/services",
@@ -21,6 +21,6 @@ const servicesApi = createApi({
   },
 });
 
-export const { useStatusQuery } = servicesApi;
+export const { useServicesQuery } = servicesApi;
 export const servicesReducer = servicesApi.reducer;
 export default servicesApi;

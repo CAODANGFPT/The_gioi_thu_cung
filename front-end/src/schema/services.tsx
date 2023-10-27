@@ -2,21 +2,21 @@ import * as yup from "yup";
 
 export const ServicesSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  name_service: yup.string(),
   description: yup.string(),
   price: yup.number(),
 });
 
 export const ServicesRequestSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  name_service: yup.string(),
   description: yup.string(),
   price: yup.number(),
 });
 
 export const ServicesResponseSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  name_service: yup.string(),
   description: yup.string(),
   price: yup.number(),
 });

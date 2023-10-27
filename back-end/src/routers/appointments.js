@@ -1,11 +1,17 @@
 import { Router } from "express";
-import { list, show, create, update, destroy } from "../controllers/appointments";
-import { checkPermission } from "../middlewares/checkPermission";
+import {
+  list,
+  show,
+  create,
+  update,
+  destroy,
+} from "../controllers/appointments";
+
 const router = Router();
 
 router.get("/appointments", list);
 router.get("/appointment/:id", show);
-router.post("/appointment", checkPermission, create);
-router.patch("/appointment/:id", checkPermission, update);
-router.delete("/appointment/:id", checkPermission, destroy);
+router.post("/appointment", create);
+router.patch("/appointment/:id", update);
+router.delete("/appointment/:id", destroy);
 export default router;

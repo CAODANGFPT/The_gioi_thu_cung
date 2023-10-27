@@ -3,7 +3,7 @@ import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
@@ -57,8 +57,8 @@ function App() {
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
           <Route path="staff" element={<StaffAdmin />} />
-          <Route path="pethouse" element={<PethouseAdmin/>} />
-          <Route path="species" element={<SpeciesAdmin/>} />
+          <Route path="pethouse" element={<PethouseAdmin />} />
+          <Route path="species" element={<SpeciesAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
