@@ -16,6 +16,7 @@ import reviewRouter from "./routers/reviews";
 import appointmentRouter from "./routers/appointments";
 import userRouter from "./routers/User";
 import setTimeRouter from "./routers/setTime";
+import staffRouter from "./routers/staff";
 
 const app = express();
 app.use(express.json());
@@ -37,5 +38,6 @@ app.use("/api", reviewRouter);
 app.use("/api", appointmentRouter);
 app.use("/api", userRouter);
 app.use("/api", setTimeRouter);
+app.use("/api", staffRouter);
 
 export const viteNodeApp = app;
