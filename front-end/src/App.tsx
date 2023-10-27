@@ -26,7 +26,7 @@ import SetTimeAdmin from "./page/admin/setTime/list";
 import StaffAdmin from "./page/admin/staff/list";
 import PethouseAdmin from "./page/admin/pethouse/list";
 import SpeciesAdmin from "./page/admin/species/list";
-
+import BreedAdmin from "./page/admin/breed/list";
 function App() {
   return (
     <BrowserRouter>
@@ -57,8 +57,9 @@ function App() {
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
           <Route path="staff" element={<StaffAdmin />} />
-          <Route path="pethouse" element={<PethouseAdmin/>} />
-          <Route path="species" element={<SpeciesAdmin/>} />
+          <Route path="pethouse" element={<PethouseAdmin />} />
+          <Route path="species" element={<SpeciesAdmin />} />
+          <Route path="breed" element={<BreedAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

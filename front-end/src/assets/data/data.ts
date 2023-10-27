@@ -20,7 +20,7 @@ export const navigationLinks = [
   { id: 7, title: "Services", image: ServicesIcon, link: "services" },
   { id: 8, title: "Pethouse", image: PethouseIcon, link: "pethouse" },
   { id: 9, title: "Species", image: SpeciesIcon, link: "species" },
-  { id: 11, title: "Account", image: GearsIcon, link: "/admin" },
+  { id: 11, title: "Breed", image: SpeciesIcon, link: "breed" },
 ];
 
 export const transactions = [
