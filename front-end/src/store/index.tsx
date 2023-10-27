@@ -20,6 +20,7 @@ import statusApi, { statusReducer } from "../services/status";
 import servicesApi, { servicesReducer } from "../services/services";
 import userApi, { userReducer } from "../services/user";
 import roleApi, { roleReducer } from "../services/role";
+import setTimeApi, { setTimeReducer } from "../services/setTime";
 
 const persistConfig = {
   key: "root",
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   [servicesApi.reducerPath]: servicesReducer,
   [userApi.reducerPath]: userReducer,
   [roleApi.reducerPath]: roleReducer,
+  [setTimeApi.reducerPath]: setTimeReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -50,7 +52,8 @@ export const store = configureStore({
       userApi.middleware,
       roleApi.middleware,
       servicesApi.middleware,
-      userApi.middleware
+      userApi.middleware,
+      setTimeApi.middleware
     ),
 });
 
