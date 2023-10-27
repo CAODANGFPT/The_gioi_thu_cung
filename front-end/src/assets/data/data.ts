@@ -23,6 +23,7 @@ export const navigationLinks = [
   { id: 11, title: "Breed", image: SpeciesIcon, link: "breed" },
   { id: 12, title: "Contact", image: SpeciesIcon, link: "contact" },
   { id: 13, title: "Profile", image: SpeciesIcon, link: "profile" },
+  { id: 14, title: "News", image: SpeciesIcon, link: "news" },
 ];
 
 export const transactions = [

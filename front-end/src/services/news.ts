@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TContact } from "../schema/contact";
+import { TNews} from "../schema/news";
 
 const newsApi = createApi({
   reducerPath: "news",
@@ -9,7 +9,7 @@ const newsApi = createApi({
   }),
   endpoints(builder) {
     return {
-      news: builder.query<TContact[], void>({
+      news: builder.query<TNews[], void>({
         query: () => {
           return {
             url: "/getNewsUsers",

@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
-import { useContactQuery } from "../../../services/contact";
+import { useNewsQuery } from "../../../services/news";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -23,10 +23,10 @@ const columns: ColumnsType<TContact> = [
   },
   {
     title: "Ảnh",
-    dataIndex: "logo",
-    key: "logo",
+    dataIndex: "img",
+    key: "img",
     width: 130,
-    render: (logo) => <Image width={100} src={logo} />,
+    render: (img) => <Image width={100} src={img} />,
   },
   {
     title: "Title",
@@ -55,7 +55,7 @@ const columns: ColumnsType<TContact> = [
   {
     title: "Thao tác",
     key: "action",
-    width: 100,
+    width: 150,
     render: (id) => (
       <div>
         <Link to="URL">
@@ -81,7 +81,7 @@ const columns: ColumnsType<TContact> = [
 ];
 
 const NewsAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useContactQuery();
+  const { data, isLoading, refetch } = useNewsQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
