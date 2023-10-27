@@ -1,12 +1,13 @@
-import { Router } from "express";
-import { create, list, show, update, remote } from "../controllers/setTime";
-import {checkPermission} from "../middlewares/checkPermission";
+import express from "express";
+import { getAll, getById, add, update, remote } from "../controllers/setTime";
 
-const router = Router();
+import { checkPermission } from "./../middlewares/checkPermission";
+const router = express.Router();
 
-router.get("/listSetTime", list);
-router.get("/setTime/:id", show);
-router.post("/setTime",checkPermission, create);
-router.patch("/setTime/:id",checkPermission, update);
-router.delete("/setTime/:id",checkPermission, remote);
+router.get("/settime", getAll);
+router.get("/settime/:id", getById);
+router.post("/settime/", checkPermission, add);
+router.put("/settime/:id", checkPermission, update);
+router.delete("/settime/:id", checkPermission, remote);
+
 export default router;

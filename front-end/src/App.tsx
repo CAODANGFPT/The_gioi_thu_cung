@@ -21,6 +21,8 @@ import DashBoard from "./page/admin/dashboard";
 import ServicesAdmin from "./page/admin/services/list";
 import UserAdmin from "./page/admin/user/list";
 import Appointments from "./page/base/appointments";
+import RoleAdmin from "./page/admin/role/list";
+import SetTimeAdmin from "./page/admin/setTime/list";
 
 function App() {
   return (
@@ -49,7 +51,8 @@ function App() {
           <Route path="status" element={<StatusAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
           <Route path="user" element={<UserAdmin />} />
-          <Route path="role" element={<UserAdmin />} />
+          <Route path="role" element={<RoleAdmin />} />
+          <Route path="settime" element={<SetTimeAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

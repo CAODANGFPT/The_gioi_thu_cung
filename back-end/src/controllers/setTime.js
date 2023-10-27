@@ -1,7 +1,8 @@
 import SetTime from "../models/setTime";
+
 import { setTimeSchema } from "../schemas/setTime";
 
-export const list = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
     const listSetTime = await SetTime.getListSetTime();
     res.json(listSetTime);
@@ -9,19 +10,21 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-export const show = async (req, res) => {
+
+export const getById = async (req, res) => {
   try {
-    const setTime = await SetTime.getSetTime(req.params.id);
-    if (!setTime) {
-      res.status(404).json({ error: "không tìm thấy set time" });
+    const setSetTime = await SetTime.getIdSetTime(req.params.id);
+    if (!setSetTime) {
+      res.status(404).json({ error: "không tìm thấy" });
     } else {
-      res.json(setTime);
+      res.json(setSetTime);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-export const create = async (req, res) => {
+
+export const add = async (req, res) => {
   try {
     const { name } = req.body;
     const { error } = setTimeSchema.validate(req.body);
@@ -31,12 +34,13 @@ export const create = async (req, res) => {
         message: errors,
       });
     }
-    const setTimeId = await SetTime.createSetTime(name);
-    res.json({ id: setTimeId });
+    const setSetTime = await SetTime.addSetTime(name);
+    res.json({ id: setSetTime });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const update = async (req, res) => {
   try {
     const { name } = req.body;
@@ -48,7 +52,7 @@ export const update = async (req, res) => {
       });
     }
     await SetTime.updateSetTime(req.params.id, name);
-    res.json({ message: "sửa thành công" });
+    res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -56,8 +60,8 @@ export const update = async (req, res) => {
 
 export const remote = async (req, res) => {
   try {
-    await SetTime.deleteSetTime(req.params.id);
-    res.json({ message: "xóa thành công" });
+    await SetTime.removeSetTime(req.params.id);
+    res.json({ message: "Xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
