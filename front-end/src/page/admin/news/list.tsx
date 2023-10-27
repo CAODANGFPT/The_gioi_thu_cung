@@ -1,9 +1,10 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
+import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TStatus } from "../../../schema/status";
-import { useUserQuery } from "../../../services/user";
+import { TContact } from "../../../schema/contact";
+import { useNewsQuery } from "../../../services/news";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -13,55 +14,55 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<TStatus> = [
+const columns: ColumnsType<TContact> = [
   {
-    title: "TT",
+    title: "ID",
     dataIndex: "id",
     key: "id",
-    width: 150,
-  },
-  {
-    title: "Tên",
-    dataIndex: "name",
-    key: "name",
-    width: 150,
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-    width: 150,
+    width: 50,
   },
   {
     title: "Ảnh",
     dataIndex: "img",
     key: "img",
+    width: 130,
+    render: (img) => <Image width={100} src={img} />,
+  },
+  {
+    title: "Title",
+    dataIndex: "title",
+    key: "title",
     width: 150,
   },
   {
-    title: "SĐT",
-    dataIndex: "phone",
-    key: "phone",
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
     width: 150,
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    key: "address",
+    title: "Created_At",
+    dataIndex: "created_at",
+    key: "created_at",
     width: 150,
   },
   {
-    title: "Vai trò",
-    dataIndex: "nameRole",
-    key: "nameRole",
+    title: "User_ID",
+    dataIndex: "nameUser",
+    key: "nameUser",
     width: 150,
   },
   {
     title: "Thao tác",
     key: "action",
-    width: 100,
+    width: 150,
     render: (id) => (
       <div>
+        <Link to="URL">
+          <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+            Sửa
+          </Button>
+        </Link>
         <Popconfirm
           title="Xóa trạng thái."
           description="Bạn có muốn xóa không?"
@@ -71,7 +72,7 @@ const columns: ColumnsType<TStatus> = [
           cancelText="Không"
         >
           <Button danger className="btn-delete">
-            Khóa
+            Xóa
           </Button>
         </Popconfirm>
       </div>
@@ -79,9 +80,9 @@ const columns: ColumnsType<TStatus> = [
   },
 ];
 
-const UserAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useUserQuery();
+const NewsAdmin: React.FC = () => {
+  const { data, isLoading, refetch } = useNewsQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default UserAdmin;
+export default NewsAdmin;

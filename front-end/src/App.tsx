@@ -3,7 +3,7 @@ import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
@@ -28,6 +28,10 @@ import PethouseAdmin from "./page/admin/pethouse/list";
 import SpeciesAdmin from "./page/admin/species/list";
 import BreedAdmin from "./page/admin/breed/list";
 import ResetPassword from "./page/base/account/resetPassword";
+import ContactAdmin from "./page/admin/contact/list";
+import ProfileAdmin from "./page/admin/profile/list";
+import NewsAdmin from "./page/admin/news/list";
+import ReviewAdmin from "./page/admin/review/list";
 
 function App() {
   return (
@@ -35,7 +39,6 @@ function App() {
       <Routes>
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
-          <Route path="signUp" element={<SignUp />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
         </Route>
@@ -63,6 +66,10 @@ function App() {
           <Route path="pethouse" element={<PethouseAdmin />} />
           <Route path="species" element={<SpeciesAdmin />} />
           <Route path="breed" element={<BreedAdmin />} />
+          <Route path="contact" element={<ContactAdmin />} />
+          <Route path="profile" element={<ProfileAdmin />} />
+          <Route path="news" element={<NewsAdmin />} />
+          <Route path="review" element={<ReviewAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

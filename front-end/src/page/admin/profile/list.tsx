@@ -1,9 +1,10 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
+import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TStatus } from "../../../schema/status";
-import { useUserQuery } from "../../../services/user";
+import { TProfile } from "../../../schema/profile";
+import { useProfileQuery } from "../../../services/profile";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -13,18 +14,19 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<TStatus> = [
+const columns: ColumnsType<TProfile> = [
   {
-    title: "TT",
+    title: "ID",
     dataIndex: "id",
     key: "id",
-    width: 150,
+    width: 50,
   },
   {
-    title: "Tên",
-    dataIndex: "name",
-    key: "name",
+    title: "Avata",
+    dataIndex: "logo",
+    key: "logo",
     width: 150,
+    render: (logo) => <Image width={100} src={logo} />,
   },
   {
     title: "Email",
@@ -33,27 +35,15 @@ const columns: ColumnsType<TStatus> = [
     width: 150,
   },
   {
-    title: "Ảnh",
-    dataIndex: "img",
-    key: "img",
-    width: 150,
-  },
-  {
-    title: "SĐT",
+    title: "Phone",
     dataIndex: "phone",
     key: "phone",
     width: 150,
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    key: "address",
-    width: 150,
-  },
-  {
-    title: "Vai trò",
-    dataIndex: "nameRole",
-    key: "nameRole",
+    title: "Facebook",
+    dataIndex: "fb",
+    key: "fb",
     width: 150,
   },
   {
@@ -62,6 +52,11 @@ const columns: ColumnsType<TStatus> = [
     width: 100,
     render: (id) => (
       <div>
+        <Link to="URL">
+          <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+            Sửa
+          </Button>
+        </Link>
         <Popconfirm
           title="Xóa trạng thái."
           description="Bạn có muốn xóa không?"
@@ -71,7 +66,7 @@ const columns: ColumnsType<TStatus> = [
           cancelText="Không"
         >
           <Button danger className="btn-delete">
-            Khóa
+            Xóa
           </Button>
         </Popconfirm>
       </div>
@@ -79,9 +74,9 @@ const columns: ColumnsType<TStatus> = [
   },
 ];
 
-const UserAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useUserQuery();
+const ProfileAdmin: React.FC = () => {
+  const { data, isLoading, refetch } = useProfileQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default UserAdmin;
+export default ProfileAdmin;

@@ -8,6 +8,18 @@ export default class Contact {
             });
         });
     }
+
+    static getContactUser() {
+        return new Promise((resolve, reject) => {
+            connection.query(
+                "SELECT contact.id, contact.title, contact.subject, contact.user_id, users.name as nameUser FROM contact JOIN  users on contact.user_id = users.id",
+                (err, results) => {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
     static getContactById(id) {
         return new Promise((resolve, reject) => {
             connection.query(
