@@ -26,6 +26,7 @@ import pethouseApi, { pethouseReducer } from "../services/pethouse";
 import speciesApi, { speciesReducer } from "../services/species";
 import breedApi, { breedReducer } from "../services/breed";
 import contactApi, { contactReducer } from "../services/contact";
+import profileApi, { profileReducer } from "../services/profile";
 
 const persistConfig = {
   key: "root",
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   [speciesApi.reducerPath]: speciesReducer,
   [breedApi.reducerPath]: breedReducer,
   [contactApi.reducerPath]: contactReducer,
+  [profileApi.reducerPath]: profileReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -68,7 +70,8 @@ export const store = configureStore({
       pethouseApi.middleware,
       speciesApi.middleware,
       breedApi.middleware,
-      contactApi.middleware
+      contactApi.middleware,
+      profileApi.middleware
     ),
 });
 
