@@ -28,6 +28,7 @@ import PethouseAdmin from "./page/admin/pethouse/list";
 import SpeciesAdmin from "./page/admin/species/list";
 import BreedAdmin from "./page/admin/breed/list";
 import ContactAdmin from "./page/admin/contact/list";
+import ProfileAdmin from "./page/admin/profile/list";
 function App() {
   return (
     <BrowserRouter>
@@ -61,6 +62,7 @@ function App() {
           <Route path="species" element={<SpeciesAdmin />} />
           <Route path="breed" element={<BreedAdmin />} />
           <Route path="contact" element={<ContactAdmin />} />
+          <Route path="profile" element={<ProfileAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
