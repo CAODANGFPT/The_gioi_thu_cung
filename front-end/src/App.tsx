@@ -23,6 +23,7 @@ import UserAdmin from "./page/admin/user/list";
 import Appointments from "./page/base/appointments";
 import RoleAdmin from "./page/admin/role/list";
 import SetTimeAdmin from "./page/admin/setTime/list";
+import StaffAdmin from "./page/admin/staff/list";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path="user" element={<UserAdmin />} />
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
+          <Route path="staff" element={<StaffAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
