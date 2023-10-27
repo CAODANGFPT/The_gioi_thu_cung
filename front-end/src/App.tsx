@@ -27,13 +27,13 @@ import StaffAdmin from "./page/admin/staff/list";
 import PethouseAdmin from "./page/admin/pethouse/list";
 import SpeciesAdmin from "./page/admin/species/list";
 import BreedAdmin from "./page/admin/breed/list";
+import ContactAdmin from "./page/admin/contact/list";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
-          <Route path="signUp" element={<SignUp />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
         </Route>
@@ -60,6 +60,7 @@ function App() {
           <Route path="pethouse" element={<PethouseAdmin />} />
           <Route path="species" element={<SpeciesAdmin />} />
           <Route path="breed" element={<BreedAdmin />} />
+          <Route path="contact" element={<ContactAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

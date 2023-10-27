@@ -21,6 +21,7 @@ export const navigationLinks = [
   { id: 8, title: "Pethouse", image: PethouseIcon, link: "pethouse" },
   { id: 9, title: "Species", image: SpeciesIcon, link: "species" },
   { id: 11, title: "Breed", image: SpeciesIcon, link: "breed" },
+  { id: 12, title: "Contact", image: SpeciesIcon, link: "contact" },
 ];
 
 export const transactions = [
