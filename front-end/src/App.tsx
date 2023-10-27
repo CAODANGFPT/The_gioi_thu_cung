@@ -24,6 +24,7 @@ import Appointments from "./page/base/appointments";
 import RoleAdmin from "./page/admin/role/list";
 import SetTimeAdmin from "./page/admin/setTime/list";
 import StaffAdmin from "./page/admin/staff/list";
+import PethouseAdmin from "./page/admin/pethouse/list";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
           <Route path="staff" element={<StaffAdmin />} />
+          <Route path="pethouse" element={<PethouseAdmin/>} />
         </Route>
       </Routes>
     </BrowserRouter>

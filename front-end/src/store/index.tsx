@@ -22,6 +22,7 @@ import userApi, { userReducer } from "../services/user";
 import roleApi, { roleReducer } from "../services/role";
 import setTimeApi, { setTimeReducer } from "../services/setTime";
 import staffApi, { staffReducer } from "../services/staff";
+import pethouseApi, { pethouseReducer } from "../services/pethouse";
 
 const persistConfig = {
   key: "root",
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   [roleApi.reducerPath]: roleReducer,
   [setTimeApi.reducerPath]: setTimeReducer,
   [staffApi.reducerPath]: staffReducer,
+  [pethouseApi.reducerPath]: pethouseReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -56,7 +58,8 @@ export const store = configureStore({
       servicesApi.middleware,
       userApi.middleware,
       setTimeApi.middleware,
-      staffApi.middleware
+      staffApi.middleware,
+      pethouseApi.middleware
     ),
 });
 
