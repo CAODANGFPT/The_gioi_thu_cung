@@ -1,18 +1,18 @@
 import UserIcons from "../svg/account/User";
+import PethouseIcon from "../svg/pethouseIcon";
+import ServicesIcon from "../svg/services";
+import SpeciesIcon from "../svg/species";
+import ReviewIcon from "../svg/review";
 import StatusIcon from "../svg/status";
 import { personsImgs } from "../utils/images";
 import BillsIcon from "./../svg/billsIcon";
-import GearsIcon from "./../svg/gearsIcon";
 import HomeIcon from "./../svg/homeIcon";
-import PlaneIcon from "./../svg/planeIcon";
 import ReportIcon from "./../svg/reportIcon";
-import ServicesIcon from "../svg/services";
-import PethouseIcon from "../svg/pethouseIcon";
-import SpeciesIcon from "../svg/species";
+
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
-  { id: 3, title: "Transactions", image: PlaneIcon, link: "/admin" },
+  { id: 3, title: "Đánh giá", image: ReviewIcon, link: "review" },
   { id: 4, title: "User", image: UserIcons, link: "user" },
   { id: 5, title: "Role", image: BillsIcon, link: "role" },
   { id: 6, title: "SetTime", image: ReportIcon, link: "settime" },
