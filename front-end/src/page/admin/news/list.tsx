@@ -1,4 +1,4 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -19,7 +19,14 @@ const columns: ColumnsType<TContact> = [
     title: "ID",
     dataIndex: "id",
     key: "id",
-    width: 150,
+    width: 50,
+  },
+  {
+    title: "Ảnh",
+    dataIndex: "logo",
+    key: "logo",
+    width: 130,
+    render: (logo) => <Image width={100} src={logo} />,
   },
   {
     title: "Title",
@@ -28,9 +35,15 @@ const columns: ColumnsType<TContact> = [
     width: 150,
   },
   {
-    title: "Subject",
-    dataIndex: "subject",
-    key: "subject",
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+    width: 150,
+  },
+  {
+    title: "Created_At",
+    dataIndex: "created_at",
+    key: "created_at",
     width: 150,
   },
   {
@@ -67,9 +80,9 @@ const columns: ColumnsType<TContact> = [
   },
 ];
 
-const ContactAdmin: React.FC = () => {
+const NewsAdmin: React.FC = () => {
   const { data, isLoading, refetch } = useContactQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default ContactAdmin;
+export default NewsAdmin;

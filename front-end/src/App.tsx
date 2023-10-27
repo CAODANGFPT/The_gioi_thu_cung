@@ -29,6 +29,7 @@ import SpeciesAdmin from "./page/admin/species/list";
 import BreedAdmin from "./page/admin/breed/list";
 import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
+import NewsAdmin from "./page/admin/news/list";
 function App() {
   return (
     <BrowserRouter>
@@ -63,6 +64,7 @@ function App() {
           <Route path="breed" element={<BreedAdmin />} />
           <Route path="contact" element={<ContactAdmin />} />
           <Route path="profile" element={<ProfileAdmin />} />
+          <Route path="news" element={<NewsAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
