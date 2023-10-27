@@ -24,6 +24,7 @@ export const navigationLinks = [
   { id: 12, title: "Contact", image: SpeciesIcon, link: "contact" },
   { id: 13, title: "Profile", image: SpeciesIcon, link: "profile" },
   { id: 14, title: "News", image: SpeciesIcon, link: "news" },
+  { id: 15, title: "Pets", image: SpeciesIcon, link: "pets" },
 ];
 
 export const transactions = [

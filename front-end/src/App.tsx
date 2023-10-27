@@ -3,7 +3,7 @@ import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
@@ -32,7 +32,7 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
-
+import PetsAdmin from "./page/admin/pets/list";
 function App() {
   return (
     <BrowserRouter>
@@ -70,6 +70,7 @@ function App() {
           <Route path="profile" element={<ProfileAdmin />} />
           <Route path="news" element={<NewsAdmin />} />
           <Route path="review" element={<ReviewAdmin />} />
+          <Route path="pets" element={<PetsAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
