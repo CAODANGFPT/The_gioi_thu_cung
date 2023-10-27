@@ -3,8 +3,8 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TRole } from "../../../schema/role";
-import { useRoleQuery } from "../../../services/role";
+import { TStatus } from "../../../schema/status";
+import { useStatusQuery } from "../../../services/status";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -14,7 +14,7 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<TRole> = [
+const columns: ColumnsType<TStatus> = [
   {
     title: "ID",
     dataIndex: "id",
@@ -55,9 +55,9 @@ const columns: ColumnsType<TRole> = [
   },
 ];
 
-const RoleAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useRoleQuery();
+const StatusAdmin: React.FC = () => {
+  const { data, isLoading, refetch } = useStatusQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default RoleAdmin;
+export default StatusAdmin;
