@@ -6,9 +6,9 @@ import GearsIcon from "./../svg/gearsIcon";
 import HomeIcon from "./../svg/homeIcon";
 import PlaneIcon from "./../svg/planeIcon";
 import ReportIcon from "./../svg/reportIcon";
-import WealthIcon from "./../svg/wealthIcon";
 import ServicesIcon from "../svg/services";
 import PethouseIcon from "../svg/pethouseIcon";
+import SpeciesIcon from "../svg/species";
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
@@ -19,7 +19,7 @@ export const navigationLinks = [
   { id: 10, title: "Staff", image: ReportIcon, link: "staff" },
   { id: 7, title: "Services", image: ServicesIcon, link: "services" },
   { id: 8, title: "Pethouse", image: PethouseIcon, link: "pethouse" },
-  { id: 9, title: "Financial Advice", image: WealthIcon, link: "/admin" },
+  { id: 9, title: "Species", image: SpeciesIcon, link: "species" },
   { id: 11, title: "Account", image: GearsIcon, link: "/admin" },
 ];
 
