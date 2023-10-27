@@ -11,13 +11,13 @@ import Follow from "./components/account_info/follow";
 import History from "./components/account_info/history";
 import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
+import DashBoard from "./page/admin/dashboard";
+import StatusAdmin from "./page/admin/status/list";
 import SignIn from "./page/base/SignIn";
 import AccountPage from "./page/base/account/account";
-import ResetPassword from "./page/base/account/reset-password";
+import ForgotPassword from "./page/base/account/forgotPassword";
 import ListProduct from "./page/base/listProduct";
 import RegisterAccount from "./page/base/registerAccount";
-import StatusAdmin from "./page/admin/status/list";
-import DashBoard from "./page/admin/dashboard";
 import ServicesAdmin from "./page/admin/services/list";
 import UserAdmin from "./page/admin/user/list";
 import Appointments from "./page/base/appointments";
@@ -27,6 +27,8 @@ import StaffAdmin from "./page/admin/staff/list";
 import PethouseAdmin from "./page/admin/pethouse/list";
 import SpeciesAdmin from "./page/admin/species/list";
 import BreedAdmin from "./page/admin/breed/list";
+import ResetPassword from "./page/base/account/resetPassword";
+
 function App() {
   return (
     <BrowserRouter>
@@ -37,6 +39,7 @@ function App() {
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
         </Route>
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="SignIn" element={<SignIn />} />
         <Route path="SignUp" element={<SignUp />} />

@@ -43,6 +43,8 @@ const rootReducer = combineReducers({
   [pethouseApi.reducerPath]: pethouseReducer,
   [speciesApi.reducerPath]: speciesReducer,
   [breedApi.reducerPath]: breedReducer,
+  [userApi.reducerPath]: userReducer,
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
