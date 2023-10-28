@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 
 import { TpetHouse } from "../../../schema/pethouse";
-import { usePethouseQuery } from "../../../services/pethouse";
+import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -32,9 +32,9 @@ const columns: ColumnsType<TpetHouse> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (room:TpetHouse) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${room.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
@@ -56,9 +56,9 @@ const columns: ColumnsType<TpetHouse> = [
   },
 ];
 
-const PethouseAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = usePethouseQuery();
+const PetHouseAdmin: React.FC = () => {
+  const { data} = useGetAllpetHouseQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default PethouseAdmin;
+export default PetHouseAdmin;
