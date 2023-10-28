@@ -5,7 +5,7 @@ import { ServiceForm } from "./service";
 import { StaffForm } from "./staff";
 import { PetHouseForm } from "./petHouse";
 import { TimeForm } from "./time";
-import "../../../assets/scss/layout/appointmentUI.scss";
+import "../../../assets/scss/page/appointmentUI.scss";
 
 type FormData = {
   pet_type: string;

@@ -9,6 +9,19 @@ export default class News {
       });
     });
   }
+
+  static getNewsUsers() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT news.id,news.img, news.title, news.description, news.created_at, news.user_id, users.name as nameUser FROM news JOIN  users on news.user_id = users.id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
   static getNews(id) {
     return new Promise((resolve, reject) => {
       connection.query(

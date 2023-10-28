@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../../../assets/image/logo.png";
 import "../../../../assets/scss/page/resetPassword.scss";
 import AppleIcon from "../../../../assets/svg/appleIcon";
@@ -11,8 +11,7 @@ import {
 } from "../../../../schema/resetPassword";
 import { useEmailPasswordUserMutation } from "../../../../services/auth";
 
-const ResetPassWord = () => {
-  const navigate = useNavigate();
+const ForgotPassword = () => {
   const [resetPassword] = useEmailPasswordUserMutation();
   const formik = useFormik<TResetPass>({
     initialValues: {
@@ -103,4 +102,4 @@ const ResetPassWord = () => {
   );
 };
 
-export default ResetPassWord;
+export default ForgotPassword;

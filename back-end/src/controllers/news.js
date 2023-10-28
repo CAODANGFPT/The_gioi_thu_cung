@@ -9,6 +9,14 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const listNewsUsers = async (req, res) => {
+  try {
+    const news = await News.getNewsUsers();
+    res.json(news);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const show = async (req, res) => {
   try {
     const news = await News.getNews(req.params.id);

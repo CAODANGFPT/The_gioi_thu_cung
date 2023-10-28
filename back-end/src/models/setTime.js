@@ -9,7 +9,7 @@ export default class SetTime {
       });
     });
   }
-  static getSetTime(id) {
+  static getIdSetTime(id) {
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT * FROM settime WHERE id = ?",
@@ -22,11 +22,11 @@ export default class SetTime {
     });
   }
 
-  static createSetTime(name) {
+  static addSetTime(name, time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO settime (name) VALUES (?)",
-        [name],
+        "INSERT INTO settime (name, time) VALUES (?, ?)",
+        [name, time],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
@@ -35,11 +35,11 @@ export default class SetTime {
     });
   }
 
-  static updateSetTime(id, name) {
+  static updateSetTime(id, name, time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE settime SET name = ? WHERE id = ?",
-        [name, id],
+        "UPDATE settime SET name = ?, time = ? WHERE id = ?",
+        [name, time, id],
         (err) => {
           if (err) reject(err);
           resolve();
@@ -47,7 +47,8 @@ export default class SetTime {
       );
     });
   }
-  static deleteSetTime(id) {
+
+  static removeSetTime(id) {
     return new Promise((resolve, reject) => {
       connection.query(
         "DELETE FROM settime WHERE id = ?",

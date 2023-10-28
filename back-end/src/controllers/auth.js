@@ -100,7 +100,7 @@ export const sendResetLinkEmail = async (req, res) => {
         <p>Bạn vui lòng truy cập vào liên kết dưới đây để thay đổi mật khẩu</p>
         <div style="padding: 20px 0 20px 40px">
           <a
-            href="http://localhost:5173/resetPassword?email=${encodeURIComponent(
+            href="http://localhost:3000/reset-password?email=${encodeURIComponent(
               email
             )}&token=${encodeURIComponent(hashedEmail)}""
             target="_blank"

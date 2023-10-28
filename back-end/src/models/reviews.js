@@ -3,7 +3,7 @@ import connection from "../db";
 export default class Reviews {
   static getListReviews() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM reviews", (err, results) => {
+      connection.query("SELECT reviews.id, reviews.rating, reviews.comment, reviews.created_at, reviews.services_id, users.name as user_name FROM reviews JOIN  users on reviews.user_id = users.id", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });

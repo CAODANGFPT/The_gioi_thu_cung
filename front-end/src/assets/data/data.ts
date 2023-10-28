@@ -1,23 +1,29 @@
 import UserIcons from "../svg/account/User";
+import PethouseIcon from "../svg/pethouseIcon";
+import ReviewIcon from "../svg/review";
+import ServicesIcon from "../svg/services";
+import SpeciesIcon from "../svg/species";
 import StatusIcon from "../svg/status";
 import { personsImgs } from "../utils/images";
 import BillsIcon from "./../svg/billsIcon";
-import GearsIcon from "./../svg/gearsIcon";
 import HomeIcon from "./../svg/homeIcon";
-import PlaneIcon from "./../svg/planeIcon";
 import ReportIcon from "./../svg/reportIcon";
-import WealthIcon from "./../svg/wealthIcon";
-import ServicesIcon from "../svg/services";
+
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
-  { id: 3, title: "Transactions", image: PlaneIcon, link: "/admin" },
+  { id: 3, title: "Đánh giá", image: ReviewIcon, link: "review" },
   { id: 4, title: "User", image: UserIcons, link: "user" },
-  { id: 5, title: "Loans", image: BillsIcon, link: "/admin" },
-  { id: 6, title: "Reports", image: ReportIcon, link: "/admin" },
+  { id: 5, title: "Role", image: BillsIcon, link: "role" },
+  { id: 6, title: "SetTime", image: ReportIcon, link: "settime" },
+  { id: 10, title: "Staff", image: ReportIcon, link: "staff" },
   { id: 7, title: "Services", image: ServicesIcon, link: "services" },
-  { id: 8, title: "Financial Advice", image: WealthIcon, link: "/admin" },
-  { id: 9, title: "Account", image: GearsIcon, link: "/admin" },
+  { id: 8, title: "Pethouse", image: PethouseIcon, link: "pethouse" },
+  { id: 9, title: "Species", image: SpeciesIcon, link: "species" },
+  { id: 11, title: "Breed", image: SpeciesIcon, link: "breed" },
+  { id: 12, title: "Contact", image: SpeciesIcon, link: "contact" },
+  { id: 13, title: "Profile", image: SpeciesIcon, link: "profile" },
+  { id: 14, title: "News", image: SpeciesIcon, link: "news" },
 ];
 
 export const transactions = [

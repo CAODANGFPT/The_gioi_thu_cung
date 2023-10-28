@@ -77,7 +77,7 @@ export default class User {
   static resetPassword(email, password) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE user SET password = ? WHERE email = ?",
+        "UPDATE users SET password = ? WHERE email = ?",
         [password, email],
         (err, results) => {
           if (err) reject(err);
@@ -90,7 +90,7 @@ export default class User {
   static updateUserRole(id, role_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE user SET role_id = ? WHERE id = ?",
+        "UPDATE users SET role_id = ? WHERE id = ?",
         [role_id, id],
         (err, results) => {
           if (err) reject(err);

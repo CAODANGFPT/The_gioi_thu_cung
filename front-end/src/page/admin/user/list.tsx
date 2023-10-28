@@ -1,10 +1,8 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
-import { useStatusQuery } from "../../../services/status";
 import { useUserQuery } from "../../../services/user";
 
 const confirm = () => {
@@ -82,7 +80,7 @@ const columns: ColumnsType<TStatus> = [
 ];
 
 const UserAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useUserQuery();
+  const { data } = useUserQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
