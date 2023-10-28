@@ -32,6 +32,7 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
+import AddService from "./page/admin/services/add";
 
 function App() {
   return (
@@ -58,7 +59,10 @@ function App() {
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />
           <Route path="status" element={<StatusAdmin />} />
-          <Route path="services" element={<ServicesAdmin />} />
+          <Route path="services"> 
+              <Route index element={<ServicesAdmin />} /> 
+              <Route path="add" element={<AddService />} /> 
+          </Route>
           <Route path="user" element={<UserAdmin />} />
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
