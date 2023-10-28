@@ -60,9 +60,9 @@ const AddStatusAdmin: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      <Form.Item name="id" label="ID">
+      {/* <Form.Item name="id" label="ID">
         <Input disabled />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item name="name" label="Trạng thái" rules={[{ required: true }]}>
         <Input />
