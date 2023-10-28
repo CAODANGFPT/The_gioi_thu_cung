@@ -32,7 +32,7 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
-import AddStaffAdmin from "./page/admin/staff/add";
+import Add from "./page/admin/staff/add";
 
 function App() {
   return (
@@ -64,8 +64,10 @@ function App() {
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
 
-          <Route path="staff" element={<StaffAdmin />} />
-          <Route path="addstaff" element={<AddStaffAdmin />} />
+          <Route path="staff">
+            <Route index element={<StaffAdmin />} />
+            <Route path="add" element={<Add />} />
+          </Route>
 
           <Route path="pethouse" element={<PethouseAdmin />} />
           <Route path="species" element={<SpeciesAdmin />} />

@@ -57,16 +57,16 @@ const columns: ColumnsType<TStaff> = [
 ];
 
 const StaffAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStaffQuery();
+  const { data } = useStaffQuery();
   return (
     <div>
-      <Link to="/admin/addstaff">
+      <Link to="/admin/staff/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}
           style={{ marginBottom: "1rem" }}
         >
-          THÊM
+          THÊM NHÂN VIÊN
         </Button>
       </Link>
       <TableAdmin columns={columns} data={data} />
