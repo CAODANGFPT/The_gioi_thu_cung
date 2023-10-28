@@ -62,7 +62,7 @@ const columns: ColumnsType<TSetTime> = [
 ];
 
 const SetTimeAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useSetTimeQuery();
+  const { data } = useSetTimeQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

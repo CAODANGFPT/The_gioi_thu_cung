@@ -72,7 +72,7 @@ const columns: ColumnsType<TStatus> = [
 ];
 
 const ReviewAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useReviewQuery();
+  const { data } = useReviewQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
