@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
 import { useStatusQuery } from "../../../services/status";
+import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -57,7 +58,20 @@ const columns: ColumnsType<TStatus> = [
 
 const StatusAdmin: React.FC = () => {
   const { data } = useStatusQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <div>
+      <Link to="/admin/status/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM TRẠNG THÁI
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default StatusAdmin;

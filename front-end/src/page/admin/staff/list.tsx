@@ -40,7 +40,7 @@ const columns: ColumnsType<TStaff> = [
           </Button>
         </Link>
         <Popconfirm
-          title="Xóa trạng thái."
+          title="Xóa nhân viên."
           description="Bạn có muốn xóa không?"
           onConfirm={confirm}
           onCancel={cancel}
@@ -72,7 +72,6 @@ const StaffAdmin: React.FC = () => {
       <TableAdmin columns={columns} data={data} />
     </div>
   );
-  // return <TableAdmin columns={columns} data={data} />;
 };
 
 export default StaffAdmin;
