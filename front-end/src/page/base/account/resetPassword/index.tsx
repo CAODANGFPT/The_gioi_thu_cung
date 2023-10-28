@@ -44,7 +44,7 @@ const ResetPassword = () => {
           alert("Đổi mật khẩu Thành công");
         }
       } catch (error) {
-        console.error("Lỗi", error);
+        navigate("/signin")
       }
       },
   });

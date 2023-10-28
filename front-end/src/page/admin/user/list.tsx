@@ -80,7 +80,7 @@ const columns: ColumnsType<TStatus> = [
 ];
 
 const UserAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useUserQuery();
+  const { data } = useUserQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
