@@ -4,8 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
-import { useStatusQuery } from "../../../services/services";
-
+import { useServicesQuery } from "../../../services/services";
 const confirm = () => {
   message.success("Xóa thành công.");
 };
@@ -69,7 +68,7 @@ const columns: ColumnsType<TServices> = [
 ];
 
 const ServicesAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStatusQuery();
+  const { data } = useServicesQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

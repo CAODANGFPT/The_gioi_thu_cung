@@ -57,7 +57,7 @@ const columns: ColumnsType<TpetHouse> = [
 ];
 
 const PethouseAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = usePethouseQuery();
+  const { data } = usePethouseQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

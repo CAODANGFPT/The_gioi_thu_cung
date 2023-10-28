@@ -75,7 +75,7 @@ const columns: ColumnsType<TProfile> = [
 ];
 
 const ProfileAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useProfileQuery();
+  const { data} = useProfileQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

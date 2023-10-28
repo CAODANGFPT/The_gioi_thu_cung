@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user";
 
-
 export const list = async (req, res) => {
   try {
     const users = await User.getAllUsers();
@@ -46,9 +45,19 @@ export const resetPassword = async (req, res) => {
 };
 export const updateRole = async (req, res) => {
   try {
-    const { role_id } = req.body;
-    await User.updateUserRole(req.params.id, role_id);
+    const { id, role_id } = req.body;
+    await User.updateUserRole(id, role_id);
     res.json({ message: "User updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateIsDelete = async (req, res) => {
+  try {
+    const { id, is_delete } = req.body;
+    await User.updateBlockUser(id, is_delete);
+    res.json({ message: "Khóa tài khoản thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -63,7 +63,7 @@ const columns: ColumnsType<Tbreed> = [
 ];
 
 const BreedAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useBreedQuery();
+  const { data } = useBreedQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

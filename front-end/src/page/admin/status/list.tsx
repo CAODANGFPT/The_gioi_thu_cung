@@ -56,7 +56,7 @@ const columns: ColumnsType<TStatus> = [
 ];
 
 const StatusAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStatusQuery();
+  const { data } = useStatusQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

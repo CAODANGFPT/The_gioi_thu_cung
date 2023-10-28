@@ -1,16 +1,15 @@
 import { useState } from "react";
-import "../../../../assets/scss/page/account.scss"
+import { Link, Outlet } from "react-router-dom";
+import "../../../../assets/scss/page/account.scss";
 import AddressCard from "../../../../assets/svg/account/AddressCard";
 import Order from "../../../../assets/svg/account/Order";
 import Payment from "../../../../assets/svg/account/Payment";
 import Puchase from "../../../../assets/svg/account/Puchase";
 import UserIcons from "../../../../assets/svg/account/User";
 import Breadcrumb from "../../../../components/breadcrumb";
-import { Link, Outlet } from "react-router-dom";
-import { TAccount } from "../../../../schema/accountSchema";
 
 const AccountPage = () => {
-  const [data, setData] = useState({
+  const [data] = useState({
     name: "Duy",
     email: "duytvph19916@fpt.edu.vn",
     address: "Nam Định",
@@ -32,9 +31,9 @@ const AccountPage = () => {
         <div className="account_info-row">
           <h4 className="account_info-heading">
             Tài Khoản {data.name}
-            <a href="#" className="logout">
+            <Link to={""} className="logout">
               (Đăng xuất)
-            </a>
+            </Link>
           </h4>
         </div>
         <div className="account_info-row">

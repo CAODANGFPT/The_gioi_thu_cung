@@ -32,6 +32,8 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
+import EditUser from "./page/admin/user/edit";
+import AddService from "./page/admin/services/add";
 
 function App() {
   return (
@@ -59,6 +61,14 @@ function App() {
           <Route index element={<DashBoard />} />
           <Route path="status" element={<StatusAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
+          <Route path="user" >
+            <Route index element={<UserAdmin />} />
+            <Route path="edit/:id" element={<EditUser />} />
+          </Route>
+          <Route path="services"> 
+              <Route index element={<ServicesAdmin />} /> 
+              <Route path="add" element={<AddService />} /> 
+          </Route>
           <Route path="user" element={<UserAdmin />} />
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />

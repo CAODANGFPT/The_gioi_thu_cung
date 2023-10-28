@@ -57,7 +57,7 @@ const columns: ColumnsType<TpetHouse> = [
 ];
 
 const SpeciesAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useSpeciesQuery();
+  const { data } = useSpeciesQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
