@@ -69,7 +69,7 @@ const columns: ColumnsType<TServices> = [
 ];
 
 const ServicesAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useServicesQuery();
+  const { data } = useServicesQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

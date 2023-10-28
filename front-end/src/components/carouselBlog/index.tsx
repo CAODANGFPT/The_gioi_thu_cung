@@ -21,13 +21,14 @@ const CarouseBlog: FC<Props> = ({ blogData }) => {
       >
         {blogData.map(
           (blogData: {
+            id: number;
             name: string;
             imageUrl: string;
             description: string;
             date: string;
 
           }) => (
-            <Blog date={blogData.date} name={blogData.name} description={blogData.description} url={blogData.imageUrl}/>
+            <Blog key={blogData.id} date={blogData.date} name={blogData.name} description={blogData.description} url={blogData.imageUrl}/>
           )
         )}
       </Carousel>

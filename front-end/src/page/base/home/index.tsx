@@ -29,9 +29,10 @@ const Home: React.FC = () => (
         </div>
       </div>
       <div className="home-listCate">
-        {ServiceCardData.map((ServiceCardData) => {
+        {ServiceCardData.map((ServiceCardData, i) => {
           return (
             <ServiceCard
+              key={i}
               image={ServiceCardData.imageUrl}
               name={ServiceCard.name}
             />

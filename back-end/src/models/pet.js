@@ -3,10 +3,13 @@ import connection from "../db";
 export default class Pet {
   static getAllPet() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM pets", (err, results) => {
-        if (err) reject(err);
-        resolve(results);
-      });
+      connection.query(
+        "SELECT pets.id, pets.img, pets.name, pets.age, pets.gender, pets.user_id, users.name AS nameUser, pets.species_id, species.name AS nameSpecies, pets.breed_id, breed.name AS nameBreed FROM pets JOIN users ON pets.user_id = users.id JOIN species ON pets.species_id = species.id JOIN breed ON pets.breed_id = breed.id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
     });
   }
   static getPetById(id) {
