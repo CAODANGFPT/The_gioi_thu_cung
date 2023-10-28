@@ -3,7 +3,7 @@ import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
@@ -32,6 +32,7 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
+import AddStaffAdmin from "./page/admin/staff/add";
 
 function App() {
   return (
@@ -62,7 +63,10 @@ function App() {
           <Route path="user" element={<UserAdmin />} />
           <Route path="role" element={<RoleAdmin />} />
           <Route path="settime" element={<SetTimeAdmin />} />
+
           <Route path="staff" element={<StaffAdmin />} />
+          <Route path="addstaff" element={<AddStaffAdmin />} />
+
           <Route path="pethouse" element={<PethouseAdmin />} />
           <Route path="species" element={<SpeciesAdmin />} />
           <Route path="breed" element={<BreedAdmin />} />

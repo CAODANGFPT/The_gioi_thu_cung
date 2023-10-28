@@ -17,10 +17,18 @@ const staffApi = createApi({
           };
         },
       }),
+
+      createStaff: builder.mutation<void, Partial<TStaff>>({
+        query: (staffData) => ({
+          url: "/staff",
+          method: "POST",
+          body: staffData, // Dữ liệu nhân viên mới cần được gửi
+        }),
+      }),
     };
   },
 });
 
-export const { useStaffQuery } = staffApi;
+export const { useStaffQuery, useCreateStaffMutation } = staffApi;
 export const staffReducer = staffApi.reducer;
 export default staffApi;
