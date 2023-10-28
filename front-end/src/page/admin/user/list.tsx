@@ -80,7 +80,7 @@ const UserAdmin: React.FC = () => {
           {user.is_delete ? (
             <Popconfirm
               title="Xóa trạng thái."
-              description="Bạn có muốn xóa không?"
+              description="Bạn có muốn mở khóa không?"
               onConfirm={() => confirm(user.id)}
               onCancel={cancel}
               okText="Đồng ý"
@@ -93,7 +93,7 @@ const UserAdmin: React.FC = () => {
           ) : (
             <Popconfirm
               title="Xóa trạng thái."
-              description="Bạn có muốn xóa không?"
+              description="Bạn có muốn khóa không?"
               onConfirm={() => confirmBlock(user.id)}
               onCancel={cancel}
               okText="Đồng ý"
