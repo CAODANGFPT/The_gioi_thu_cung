@@ -60,7 +60,7 @@ const StaffAdmin: React.FC = () => {
   const { data } = useStaffQuery();
   return (
     <div>
-      <Link to="/admin/addstaff">
+      <Link to="/admin/staff/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}

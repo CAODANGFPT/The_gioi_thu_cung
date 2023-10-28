@@ -6,6 +6,16 @@ const statusApi = createApi({
   tagTypes: ["Status"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -18,7 +28,7 @@ const statusApi = createApi({
         },
       }),
       
-      createStatus: builder.mutation<void, Partial<TStatus>>({
+      createStatus: builder.mutation<TStatus[], Partial<TStatus>>({
         query: (statusData) => ({
           url: "/status",
           method: "POST",

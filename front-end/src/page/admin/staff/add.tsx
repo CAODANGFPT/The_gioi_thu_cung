@@ -27,7 +27,7 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
   );
 };
 
-const AddStaffAdmin: React.FC = () => {
+const Add: React.FC = () => {
   const [form] = Form.useForm();
 
   const [createStaff] = useCreateStaffMutation();
@@ -57,9 +57,9 @@ const AddStaffAdmin: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      <Form.Item name="id" label="ID">
+      {/* <Form.Item name="id" label="ID">
         <Input disabled />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item name="name" label="Tên nhân viên" rules={[{ required: true }]}>
         <Input />
@@ -75,4 +75,4 @@ const AddStaffAdmin: React.FC = () => {
   );
 };
 
-export default AddStaffAdmin;
+export default Add;

@@ -60,7 +60,7 @@ const StatusAdmin: React.FC = () => {
   const { data } = useStatusQuery();
   return (
     <div>
-      <Link to="/admin/addstatus">
+      <Link to="/admin/status/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}

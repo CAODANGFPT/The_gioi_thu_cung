@@ -6,6 +6,16 @@ const staffApi = createApi({
   tagTypes: ["Staff"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -18,7 +28,7 @@ const staffApi = createApi({
         },
       }),
 
-      createStaff: builder.mutation<void, Partial<TStaff>>({
+      createStaff: builder.mutation<TStaff[], Partial<TStaff>>({
         query: (staffData) => ({
           url: "/staff",
           method: "POST",
