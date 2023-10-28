@@ -4,8 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 
-import { TpetHouse } from "../../../schema/pethouse";
-import { useSpeciesQuery } from "../../../services/species";
+import { useGetAllspeciesQuery } from "../../../services/species";
+import { Tspecies } from "../../../schema/species";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -15,7 +15,7 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<TpetHouse> = [
+const columns: ColumnsType<Tspecies> = [
   {
     title: "ID",
     dataIndex: "id",
@@ -32,9 +32,9 @@ const columns: ColumnsType<TpetHouse> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (species:Tspecies) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${species.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
@@ -57,7 +57,7 @@ const columns: ColumnsType<TpetHouse> = [
 ];
 
 const SpeciesAdmin: React.FC = () => {
-  const { data } = useSpeciesQuery();
+  const { data } = useGetAllspeciesQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

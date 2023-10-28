@@ -13,7 +13,7 @@ import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status/list";
@@ -42,6 +42,7 @@ import Add from "./page/admin/staff/add";
 import PetsAdmin from "./page/admin/pets/list";
 import EditUser from "./page/admin/user/edit";
 import AddService from "./page/admin/services/add";
+import EditSpecies from "./page/admin/species/edit";
 
 function App() {
   return (
@@ -96,6 +97,10 @@ function App() {
 
           <Route path="pethouse" element={<PethouseAdmin />} />
           <Route path="species" element={<SpeciesAdmin />} />
+          <Route path="species">
+            <Route index element={<SpeciesAdmin />} />
+            <Route path="edit/:id" element={<EditSpecies />} />
+          </Route>
           <Route path="breed" element={<BreedAdmin />} />
           <Route path="contact" element={<ContactAdmin />} />
           <Route path="profile" element={<ProfileAdmin />} />

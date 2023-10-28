@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/staff", getAll);
 router.get("/staff/:id", getById);
 router.post("/staff/", checkPermission, add);
-// router.post("/staff/", add);
 router.put("/staff/:id", checkPermission, update);
 router.delete("/staff/:id", checkPermission, remote);
 
