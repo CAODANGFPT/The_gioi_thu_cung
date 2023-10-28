@@ -25,6 +25,11 @@ import staffApi, { staffReducer } from "../services/staff";
 import pethouseApi, { pethouseReducer } from "../services/pethouse";
 import speciesApi, { speciesReducer } from "../services/species";
 import appointmentApi, { appointmentReducer } from "../services/appointments";
+import breedApi, { breedReducer } from "../services/breed";
+import contactApi, { contactReducer } from "../services/contact";
+import profileApi, { profileReducer } from "../services/profile";
+import newsApi, { newsReducer } from "../services/news";
+import reviewApi, { reviewReducer } from "../services/review";
 
 const persistConfig = {
   key: "root",
@@ -43,6 +48,11 @@ const rootReducer = combineReducers({
   [pethouseApi.reducerPath]: pethouseReducer,
   [speciesApi.reducerPath]: speciesReducer,
   [appointmentApi.reducerPath]: appointmentReducer,
+  [breedApi.reducerPath]: breedReducer,
+  [contactApi.reducerPath]: contactReducer,
+  [profileApi.reducerPath]: profileReducer,
+  [newsApi.reducerPath]: newsReducer,
+  [reviewApi.reducerPath]: reviewReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -65,7 +75,12 @@ export const store = configureStore({
       staffApi.middleware,
       pethouseApi.middleware,
       speciesApi.middleware,
-      appointmentApi.middleware
+      appointmentApi.middleware,
+      breedApi.middleware,
+      contactApi.middleware,
+      profileApi.middleware,
+      newsApi.middleware,
+      reviewApi.middleware
     ),
 });
 

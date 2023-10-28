@@ -9,6 +9,18 @@ export default class Breed {
       });
     });
   }
+
+  static getBreedsSpecies() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT breed.id, breed.name, breed.species_id, species.name as nameSpecies FROM breed JOIN  species on breed.species_id = species.id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getBreedById(id) {
     return new Promise((resolve, reject) => {
       connection.query(

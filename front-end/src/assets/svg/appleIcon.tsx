@@ -6,7 +6,7 @@ const AppleIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="bi:apple" clip-path="url(#clip0_1657_23754)">
+    <g id="bi:apple" clipPath="url(#clip0_1657_23754)">
       <g id="Group">
         <path
           id="Vector"

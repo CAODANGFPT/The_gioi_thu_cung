@@ -3,7 +3,8 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
-import { useUserQuery } from "../../../services/user";
+import { useReviewQuery } from "../../../services/review";
+import dayjs from "dayjs";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -21,39 +22,30 @@ const columns: ColumnsType<TStatus> = [
     width: 150,
   },
   {
-    title: "Tên",
-    dataIndex: "name",
-    key: "name",
+    title: "Tên tài khoản",
+    dataIndex: "user_name",
+    key: "user_name",
     width: 150,
   },
   {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
+    title: "Xếp hạng",
+    dataIndex: "rating",
+    key: "rating",
     width: 150,
   },
   {
-    title: "Ảnh",
-    dataIndex: "img",
-    key: "img",
+    title: "Bình luận",
+    dataIndex: "comment",
+    key: "comment",
     width: 150,
   },
   {
-    title: "SĐT",
-    dataIndex: "phone",
-    key: "phone",
-    width: 150,
-  },
-  {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    key: "address",
-    width: 150,
-  },
-  {
-    title: "Vai trò",
-    dataIndex: "nameRole",
-    key: "nameRole",
+    title: "Thời gian",
+    dataIndex: "created_at",
+    key: "created_at",
+    render: (text) => (
+      <div>{dayjs(text).format("DD-MM-YYYY (HH:mm)")}</div>
+    ),
     width: 150,
   },
   {
@@ -79,9 +71,9 @@ const columns: ColumnsType<TStatus> = [
   },
 ];
 
-const UserAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useUserQuery();
+const ReviewAdmin: React.FC = () => {
+  const { data, isLoading, refetch } = useReviewQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default UserAdmin;
+export default ReviewAdmin;

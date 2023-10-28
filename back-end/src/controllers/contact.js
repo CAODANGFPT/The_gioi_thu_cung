@@ -9,6 +9,14 @@ export const list = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+export const listContactUser = async (req, res) => {
+    try {
+        const contact = await Contact.getContactUser();
+        res.json(contact);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 export const show = async (req, res) => {
     try {
         const contactsItem = await Contact.getContactById(req.params.id);

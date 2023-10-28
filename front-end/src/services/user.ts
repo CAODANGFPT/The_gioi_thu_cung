@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TUser } from "../schema/user";
+import { TResetPasswordUserSchema } from "../schema/resetPassword";
 
 const userApi = createApi({
   reducerPath: "user",
@@ -17,10 +18,19 @@ const userApi = createApi({
           };
         },
       }),
+      resetPasswordUser: builder.mutation<TResetPasswordUserSchema, Partial<TResetPasswordUserSchema>>({
+        query: (user) => {
+          return {
+            url: "/password/reset",
+            method: "POST",
+            body: user,
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useUserQuery } = userApi;
+export const { useUserQuery , useResetPasswordUserMutation } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi;
