@@ -37,14 +37,16 @@ const CarouselProduct: FC<Props> = ({ productData, name }) => {
       >
         {productData.map(
           (item: {
+            id: number,
             name: string;
             imageUrl: string;
             price: string;
             description?: string;
             sold: string;
 
-          }) => (
+          },) => (
             <Product
+              key={item.id}
               name={item.name}
               url={item.imageUrl}
               price={item.price}

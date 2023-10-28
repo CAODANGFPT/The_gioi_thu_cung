@@ -1,8 +1,6 @@
-import React from "react";
 import "../../assets/scss/layout/admin/modal.scss";
-import UserIcon from "../../assets/svg/userIcon";
-import GearsIcon from "../../assets/svg/gearsIcon";
 import LogoutIcon from "../../assets/svg/logOut";
+import UserIcon from "../../assets/svg/userIcon";
 
 type Props = {};
 

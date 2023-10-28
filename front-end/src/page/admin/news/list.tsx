@@ -81,7 +81,7 @@ const columns: ColumnsType<TContact> = [
 ];
 
 const NewsAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useNewsQuery();
+  const { data } = useNewsQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
