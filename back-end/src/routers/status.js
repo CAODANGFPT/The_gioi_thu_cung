@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/status", getAll);
 router.get("/status/:id", getById);
 router.post("/status/", checkPermission, add);
+// router.post("/status/", add);
 router.put("/status/:id", checkPermission, update);
 router.delete("/status/:id", checkPermission, remote);
 

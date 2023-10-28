@@ -22,7 +22,7 @@ const staffApi = createApi({
         query: (staffData) => ({
           url: "/staff",
           method: "POST",
-          body: staffData, // Dữ liệu nhân viên mới cần được gửi
+          body: staffData,
         }),
       }),
     };

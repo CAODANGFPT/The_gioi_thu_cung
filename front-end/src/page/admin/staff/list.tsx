@@ -40,7 +40,7 @@ const columns: ColumnsType<TStaff> = [
           </Button>
         </Link>
         <Popconfirm
-          title="Xóa trạng thái."
+          title="Xóa nhân viên."
           description="Bạn có muốn xóa không?"
           onConfirm={confirm}
           onCancel={cancel}
@@ -57,7 +57,7 @@ const columns: ColumnsType<TStaff> = [
 ];
 
 const StaffAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStaffQuery();
+  const { data } = useStaffQuery();
   return (
     <div>
       <Link to="/admin/addstaff">
@@ -66,13 +66,12 @@ const StaffAdmin: React.FC = () => {
           icon={<PlusOutlined />}
           style={{ marginBottom: "1rem" }}
         >
-          THÊM
+          THÊM NHÂN VIÊN
         </Button>
       </Link>
       <TableAdmin columns={columns} data={data} />
     </div>
   );
-  // return <TableAdmin columns={columns} data={data} />;
 };
 
 export default StaffAdmin;

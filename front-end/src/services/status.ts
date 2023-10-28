@@ -17,10 +17,18 @@ const statusApi = createApi({
           };
         },
       }),
+      
+      createStatus: builder.mutation<void, Partial<TStatus>>({
+        query: (statusData) => ({
+          url: "/status",
+          method: "POST",
+          body: statusData, 
+        }),
+      }),
     };
   },
 });
 
-export const { useStatusQuery } = statusApi;
+export const { useStatusQuery, useCreateStatusMutation } = statusApi;
 export const statusReducer = statusApi.reducer;
 export default statusApi;
