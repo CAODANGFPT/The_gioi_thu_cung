@@ -6,6 +6,16 @@ const staffApi = createApi({
   tagTypes: ["Staff"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -17,10 +27,18 @@ const staffApi = createApi({
           };
         },
       }),
+
+      createStaff: builder.mutation<TStaff[], Partial<TStaff>>({
+        query: (staffData) => ({
+          url: "/staff",
+          method: "POST",
+          body: staffData, // Dữ liệu nhân viên mới cần được gửi
+        }),
+      }),
     };
   },
 });
 
-export const { useStaffQuery } = staffApi;
+export const { useStaffQuery, useCreateStaffMutation } = staffApi;
 export const staffReducer = staffApi.reducer;
 export default staffApi;
