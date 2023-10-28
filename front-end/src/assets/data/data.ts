@@ -1,8 +1,8 @@
 import UserIcons from "../svg/account/User";
 import PethouseIcon from "../svg/pethouseIcon";
+import ReviewIcon from "../svg/review";
 import ServicesIcon from "../svg/services";
 import SpeciesIcon from "../svg/species";
-import ReviewIcon from "../svg/review";
 import StatusIcon from "../svg/status";
 import { personsImgs } from "../utils/images";
 import BillsIcon from "./../svg/billsIcon";

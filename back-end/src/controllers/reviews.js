@@ -48,3 +48,13 @@ export const remote = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const blockReview = async (req, res) => {
+  try {
+    const { id, is_delete } = req.body;
+    await Reviews.updateBlockReview(id, is_delete);
+    res.json({ message: "Khóa thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

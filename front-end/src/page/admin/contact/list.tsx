@@ -68,7 +68,7 @@ const columns: ColumnsType<TContact> = [
 ];
 
 const ContactAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useContactQuery();
+  const { data } = useContactQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

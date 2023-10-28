@@ -56,7 +56,7 @@ const columns: ColumnsType<TStaff> = [
 ];
 
 const StaffAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStaffQuery();
+  const { data } = useStaffQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

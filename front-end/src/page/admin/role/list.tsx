@@ -56,7 +56,7 @@ const columns: ColumnsType<TRole> = [
 ];
 
 const RoleAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useRoleQuery();
+  const { data } = useRoleQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
