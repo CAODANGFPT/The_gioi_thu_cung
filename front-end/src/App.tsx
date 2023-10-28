@@ -44,6 +44,7 @@ import EditUser from "./page/admin/user/edit";
 import AddService from "./page/admin/services/add";
 import AddRoleAdmin from "./page/admin/role/add";
 import EditSpecies from "./page/admin/species/edit";
+import AddSpecies from "./page/admin/species/add";
 
 function App() {
   return (
@@ -108,6 +109,7 @@ function App() {
           
           <Route path="species">
             <Route index element={<SpeciesAdmin />} />
+            <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
           <Route path="breed" element={<BreedAdmin />} />
