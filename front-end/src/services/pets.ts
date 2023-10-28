@@ -9,18 +9,19 @@ const petsApi = createApi({
   }),
   endpoints(builder) {
     return {
-      pets: builder.query<TPets[], void>({
+      getAllPets: builder.query<TPets[], void>({
         query: () => {
           return {
             url: "/pets",
             method: "GET",
           };
         },
+        providesTags: ["Pets"],
       }),
     };
   },
 });
 
-export const { usePetsQuery } = petsApi;
+export const { useGetAllPetsQuery } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;

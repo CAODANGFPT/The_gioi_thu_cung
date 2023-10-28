@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TPets } from "../../../schema/pets";
-import { usePetsQuery } from "../../../services/pets";
+import { useGetAllPetsQuery } from "../../../services/pets";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -93,7 +93,7 @@ const columns: ColumnsType<TPets> = [
 ];
 
 const PetsAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = usePetsQuery();
+  const { data } = useGetAllPetsQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
