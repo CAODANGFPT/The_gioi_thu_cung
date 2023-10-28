@@ -1,27 +1,27 @@
 import * as yup from "yup";
 
-export const breedSchema = yup.object().shape({
+export const BreedSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   nameSpecies: yup.number(),
 });
 
-export const breedRequestSchema = yup.object().shape({
+export const BreedRequestSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   nameSpecies: yup.number(),
 });
 
-export const breedResponseSchema = yup.object().shape({
+export const BreedResponseSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   nameSpecies: yup.number(),
 });
 
-export const breedErrorSchema = yup.object({});
+export const BreedErrorSchema = yup.object({});
 
-export type Tbreed = yup.InferType<typeof breedSchema>;
+export type TBreed = yup.InferType<typeof BreedSchema>;
 
-export type breedResponse = yup.InferType<typeof breedResponseSchema>;
+export type BreedResponse = yup.InferType<typeof BreedResponseSchema>;
 
-export type breedError = yup.InferType<typeof breedErrorSchema>;
+export type BreedError = yup.InferType<typeof BreedErrorSchema>;

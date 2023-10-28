@@ -16,6 +16,7 @@ const appointmentApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Appointment"],
       }),
       addAppointment: builder.mutation<TAppointment, Partial<TAppointment>>({
         query: (appointments) => {
@@ -25,6 +26,7 @@ const appointmentApi = createApi({
             body: appointments,
           };
         },
+        invalidatesTags: ["Appointment"],
       }),
     };
   },

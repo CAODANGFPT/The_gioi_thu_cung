@@ -1,6 +1,8 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAddAppointmentMutation } from "../../../services/appointments";
 import { useMultistepForm } from "./useMultistepForm";
-import { PetTypeForm } from "./petType";
+import { PetAndBreedTypeForm } from "./petType";
 import { ServiceForm } from "./service";
 import { StaffForm } from "./staff";
 import { PetHouseForm } from "./petHouse";
@@ -11,10 +13,11 @@ import { TServices } from "../../../schema/services";
 import { TStaff } from "../../../schema/staff";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TSetTime } from "../../../schema/setTime";
-import { useAddAppointmentMutation } from "../../../services/appointments";
+import { TBreed } from "../../../schema/breed";
 
 type FormData = {
   pet_type: Tspecies;
+  breed_type: TBreed;
   service: TServices;
   staff: TStaff;
   petHouse: TpetHouse;
@@ -22,33 +25,35 @@ type FormData = {
 };
 
 const INITIAL_DATA: FormData = {
-  pet_type: { name: "", id: undefined },
-  service: {
-    id: undefined,
-    name_service: "",
-  },
-  staff: { name: "", id: undefined },
-  petHouse: { name: "", id: 1 },
-  time: { name: "", id: undefined, time: "" },
+  pet_type: { id: 0, name: "" },
+  breed_type: { id: 0, name: "" },
+  service: { id: 0, name_service: "" },
+  staff: { id: 0, name: "" },
+  petHouse: { id: 0, name: "" },
+  time: { id: 0, name: "", time: "" },
 };
 
 function Appointments() {
   const [data, setData] = useState(INITIAL_DATA);
   const addAppointment = useAddAppointmentMutation();
   const user = JSON.parse(localStorage.getItem("user") as string);
-  console.log("id cua user", user);
+  const navigate = useNavigate();
+
   function updateFields(fields: Partial<FormData>) {
-    setData((prev) => {
-      return { ...prev, ...fields };
-    });
+    setData((prev) => ({ ...prev, ...fields }));
   }
+
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm([
-      <PetTypeForm {...data} updateFields={updateFields} />,
-      <ServiceForm {...data} updateFields={updateFields} />,
-      <StaffForm {...data} updateFields={updateFields} />,
-      <PetHouseForm {...data} updateFields={updateFields} />,
-      <TimeForm {...data} updateFields={updateFields} />,
+      <PetAndBreedTypeForm
+        pet_type={data.pet_type}
+        breed_type={data.breed_type}
+        updateFields={updateFields}
+      />,
+      <ServiceForm service={data.service} updateFields={updateFields} />,
+      <StaffForm staff={data.staff} updateFields={updateFields} />,
+      <PetHouseForm petHouse={data.petHouse} updateFields={updateFields} />,
+      <TimeForm time={data.time} updateFields={updateFields} />,
     ]);
 
   async function onSubmit(e: FormEvent) {
@@ -62,15 +67,18 @@ function Appointments() {
       pethouse_id: data.petHouse.id,
       time_id: data.time.id,
     };
+
     try {
       const [mutateAsync] = addAppointment;
       await mutateAsync(appointmentData);
       console.log(appointmentData);
       alert("Bạn đã đặt lịch thành công!");
+      navigate("/");
     } catch (error) {
       console.error("Error when adding appointment:", error);
     }
   }
+
   return (
     <div className="container">
       <div className="form-container">
