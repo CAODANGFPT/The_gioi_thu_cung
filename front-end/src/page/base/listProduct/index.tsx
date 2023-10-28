@@ -1,23 +1,20 @@
-import "../../../assets/scss/page/listproduct.scss";
-import * as React from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import * as React from "react";
+import "../../../assets/scss/page/listproduct.scss";
 // import Link from "@mui/material/Link";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import FilterIcon from "../../../assets/svg/filterIcon";
+import ListProductCard from "../../../components/listProduct";
 import {
   ListFilterBrandData,
   ListFilterColorData,
   ListFilterPriceData,
   productData,
 } from "./data";
-import ListProductCard from "../../../components/listProduct";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import FilterIcon from "../../../assets/svg/filterIcon";
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();

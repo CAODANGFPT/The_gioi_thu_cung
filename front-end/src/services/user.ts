@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TUser } from "../schema/user";
+import { TBlockUser, TRoleUser, TUser } from "../schema/user";
 import { TResetPasswordUserSchema } from "../schema/resetPassword";
 
 const userApi = createApi({
@@ -7,6 +7,16 @@ const userApi = createApi({
   tagTypes: ["User"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -17,8 +27,21 @@ const userApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["User"],
       }),
-      resetPasswordUser: builder.mutation<TResetPasswordUserSchema, Partial<TResetPasswordUserSchema>>({
+      userById: builder.query<TUser, number>({
+        query: (id) => {
+          return {
+            url: `/getById/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["User"],
+      }),
+      resetPasswordUser: builder.mutation<
+        TResetPasswordUserSchema,
+        Partial<TResetPasswordUserSchema>
+      >({
         query: (user) => {
           return {
             url: "/password/reset",
@@ -26,11 +49,38 @@ const userApi = createApi({
             body: user,
           };
         },
+        invalidatesTags: ["User"],
+      }),
+      updateBlockUser: builder.mutation<TBlockUser, Partial<TBlockUser>>({
+        query: (user) => {
+          return {
+            url: "/user/block",
+            method: "PATCH",
+            body: user,
+          };
+        },
+        invalidatesTags: ["User"],
+      }),
+      updateRoleUser: builder.mutation<TRoleUser, Partial<TRoleUser>>({
+        query: (user) => {
+          return {
+            url: `/updateRole`,
+            method: "PUT",
+            body: user,
+          };
+        },
+        invalidatesTags: ["User"],
       }),
     };
   },
 });
 
-export const { useUserQuery , useResetPasswordUserMutation } = userApi;
+export const {
+  useUserQuery,
+  useUserByIdQuery,
+  useResetPasswordUserMutation,
+  useUpdateBlockUserMutation,
+  useUpdateRoleUserMutation
+} = userApi;
 export const userReducer = userApi.reducer;
 export default userApi;
