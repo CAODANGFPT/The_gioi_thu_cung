@@ -65,7 +65,7 @@ export default class User {
   static getAllUsersRole() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, role.name as nameRole FROM users JOIN  role on users.role_id = role.id",
+        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -92,6 +92,19 @@ export default class User {
       connection.query(
         "UPDATE users SET role_id = ? WHERE id = ?",
         [role_id, id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static updateBlockUser(id, is_delete) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE users SET is_delete = ? WHERE id = ?",
+        [is_delete, id],
         (err, results) => {
           if (err) reject(err);
           resolve(results);

@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 
-import { Tbreed } from "../../../schema/breed";
+import { TBreed } from "../../../schema/breed";
 import { useBreedQuery } from "../../../services/breed";
 
 const confirm = () => {
@@ -15,7 +15,7 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<Tbreed> = [
+const columns: ColumnsType<TBreed> = [
   {
     title: "ID",
     dataIndex: "id",
@@ -63,7 +63,7 @@ const columns: ColumnsType<Tbreed> = [
 ];
 
 const BreedAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useBreedQuery();
+  const { data } = useBreedQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

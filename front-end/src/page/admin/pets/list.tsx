@@ -1,10 +1,10 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TRole } from "../../../schema/role";
-import { useRoleQuery } from "../../../services/role";
+import { TPets } from "../../../schema/pets";
+import { useGetAllPetsQuery } from "../../../services/pets";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -14,17 +14,54 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<TRole> = [
+const columns: ColumnsType<TPets> = [
   {
     title: "ID",
     dataIndex: "id",
     key: "id",
+    width: 50,
+  },
+  {
+    title: "IMG",
+    dataIndex: "img",
+    key: "img",
+    width: 150,
+    render: (logo) => <Image width={100} src={logo} />,
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
     width: 150,
   },
   {
-    title: "Trạng thái",
-    dataIndex: "name",
-    key: "name",
+    title: "Age",
+    dataIndex: "age",
+    key: "age",
+    width: 150,
+  },
+  {
+    title: "Gender",
+    dataIndex: "gender",
+    key: "gender",
+    width: 150,
+  },
+  {
+    title: "User_id",
+    dataIndex: "nameUser",
+    key: "nameUser",
+    width: 150,
+  },
+  {
+    title: "Species_id",
+    dataIndex: "nameSpecies",
+    key: "nameSpecies",
+    width: 150,
+  },
+  {
+    title: "Breed_id",
+    dataIndex: "nameBreed",
+    key: "nameBreed",
     width: 150,
   },
   {
@@ -55,9 +92,9 @@ const columns: ColumnsType<TRole> = [
   },
 ];
 
-const RoleAdmin: React.FC = () => {
-  const { data } = useRoleQuery();
+const PetsAdmin: React.FC = () => {
+  const { data } = useGetAllPetsQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 
-export default RoleAdmin;
+export default PetsAdmin;

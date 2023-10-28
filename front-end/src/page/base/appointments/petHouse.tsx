@@ -1,30 +1,41 @@
+import { TpetHouse } from "../../../schema/pethouse";
+import { usePethouseQuery } from "../../../services/pethouse";
 import { FormWrapperAppoinment } from "./FormWapperAppointment";
 
-type PetHouseData = {
-  pethouse: string;
+type PetHouseFormProps = {
+  petHouse: TpetHouse;
+  updateFields: (fields: Partial<PetHouseFormProps>) => void;
 };
 
-type PetHouseFormProps = PetHouseData & {
-  updateFields: (fields: Partial<PetHouseData>) => void;
-};
-
-export function PetHouseForm({ pethouse, updateFields }: PetHouseFormProps) {
-  const handleSelectChange = (e: any) => {
+export function PetHouseForm({ petHouse, updateFields }: PetHouseFormProps) {
+  const { data: petHouseData } = usePethouseQuery();
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = e.target.value;
     if (selectedOption === "") {
-      // Nếu người dùng chưa chọn tùy chọn, hiển thị một thông báo lỗi
       alert("Vui lòng chọn một loại thú cưng");
     } else {
-      updateFields({ pethouse: selectedOption });
+      const selectedPetHouse = petHouseData?.find(
+        (s) => s.id === Number(selectedOption)
+      );
+      if (selectedPetHouse) {
+        updateFields({
+          petHouse: {
+            id: selectedPetHouse.id,
+            name: selectedPetHouse.name,
+          },
+        });
+      }
     }
   };
   return (
     <FormWrapperAppoinment title="Bạn muốn chọn loại phòng nào?">
       <label>Loại phòng: </label>
-      <select required onChange={handleSelectChange} value={pethouse}>
-        <option value="">Lựa chọn</option>
-        <option value="vip">VIP</option>
-        <option value="normal">Thường</option>
+      <select required onChange={handleSelectChange} value={petHouse.id}>
+        {petHouseData?.map((petHouse) => (
+          <option key={petHouse.id} value={petHouse.id}>
+            {petHouse.name}
+          </option>
+        ))}
       </select>
     </FormWrapperAppoinment>
   );

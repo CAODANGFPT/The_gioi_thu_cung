@@ -25,7 +25,7 @@ export const showById = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { name_service, description, price } = req.body;
+    const { name,image, description, price } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -34,8 +34,9 @@ export const create = async (req, res) => {
       });
     }
     const servicesId = await Services.createServices(
-      name_service,
+      name,
       description,
+      image,
       price
     );
     res.json({ id: servicesId });
