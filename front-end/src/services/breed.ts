@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Tbreed } from "../schema/breed";
+import { TBreed } from "../schema/breed";
 
 const breedApi = createApi({
   reducerPath: "breed",
@@ -9,7 +9,7 @@ const breedApi = createApi({
   }),
   endpoints(builder) {
     return {
-      breed: builder.query<Tbreed[], void>({
+      breed: builder.query<TBreed[], void>({
         query: () => {
           return {
             url: "/getAllBreedsSpecies",

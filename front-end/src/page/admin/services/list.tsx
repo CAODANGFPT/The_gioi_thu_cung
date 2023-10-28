@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
 import { useServicesQuery } from "../../../services/services";
+
 const confirm = () => {
   message.success("Xóa thành công.");
 };

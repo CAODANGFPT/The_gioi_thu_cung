@@ -24,6 +24,7 @@ import setTimeApi, { setTimeReducer } from "../services/setTime";
 import staffApi, { staffReducer } from "../services/staff";
 import pethouseApi, { pethouseReducer } from "../services/pethouse";
 import speciesApi, { speciesReducer } from "../services/species";
+import appointmentApi, { appointmentReducer } from "../services/appointments";
 import breedApi, { breedReducer } from "../services/breed";
 import contactApi, { contactReducer } from "../services/contact";
 import profileApi, { profileReducer } from "../services/profile";
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
   [staffApi.reducerPath]: staffReducer,
   [pethouseApi.reducerPath]: pethouseReducer,
   [speciesApi.reducerPath]: speciesReducer,
+  [appointmentApi.reducerPath]: appointmentReducer,
   [breedApi.reducerPath]: breedReducer,
   [contactApi.reducerPath]: contactReducer,
   [profileApi.reducerPath]: profileReducer,
@@ -74,6 +76,7 @@ export const store = configureStore({
       staffApi.middleware,
       pethouseApi.middleware,
       speciesApi.middleware,
+      appointmentApi.middleware,
       breedApi.middleware,
       contactApi.middleware,
       profileApi.middleware,

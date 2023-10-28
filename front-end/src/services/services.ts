@@ -16,7 +16,6 @@ const servicesApi = createApi({
       }
       return headers;
     },
-
   }),
   endpoints(builder) {
     return {
@@ -29,7 +28,10 @@ const servicesApi = createApi({
         },
         providesTags: ["Services"],
       }),
-      addServices: builder.mutation<TServicesRequest, Partial<TServicesRequest>>({
+      addServices: builder.mutation<
+        TServicesRequest,
+        Partial<TServicesRequest>
+      >({
         query: (services) => {
           return {
             url: "/services",
@@ -43,6 +45,6 @@ const servicesApi = createApi({
   },
 });
 
-export const { useServicesQuery, useAddServicesMutation} = servicesApi;
+export const { useServicesQuery, useAddServicesMutation } = servicesApi;
 export const servicesReducer = servicesApi.reducer;
 export default servicesApi;

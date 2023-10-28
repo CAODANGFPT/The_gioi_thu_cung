@@ -1,30 +1,42 @@
+import { TStaff } from "../../../schema/staff";
+import { useStaffQuery } from "../../../services/staff";
 import { FormWrapperAppoinment } from "./FormWapperAppointment";
 
-type StaffData = {
-  staff: string;
-};
-
-type AccountFormProps = StaffData & {
-  updateFields: (fields: Partial<StaffData>) => void;
+type AccountFormProps = {
+  staff: TStaff;
+  updateFields: (fields: Partial<AccountFormProps>) => void;
 };
 
 export function StaffForm({ staff, updateFields }: AccountFormProps) {
-  const handleSelectChange = (e: any) => {
+  const { data: staffData } = useStaffQuery();
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = e.target.value;
     if (selectedOption === "") {
-      // Nếu người dùng chưa chọn tùy chọn, hiển thị một thông báo lỗi
       alert("Vui lòng chọn một loại thú cưng");
     } else {
-      updateFields({ staff: selectedOption });
+      const selectedStaff = staffData?.find(
+        (s) => s.id === Number(selectedOption)
+      );
+      if (selectedStaff) {
+        updateFields({
+          staff: {
+            id: selectedStaff.id,
+            name: selectedStaff.name,
+          },
+        });
+      }
     }
   };
   return (
     <FormWrapperAppoinment title="Bạn muốn lựa chọn nhân viên nào?">
       <label>Nhân viên: </label>
-      <select required onChange={handleSelectChange} value={staff}>
+      <select required onChange={handleSelectChange} value={staff.id}>
         <option value="">Lựa chọn</option>
-        <option value="staff_1">NT Thanh</option>
-        <option value="staff_1">LV Phúc</option>
+        {staffData?.map((staff) => (
+          <option key={staff.id} value={staff.id}>
+            {staff.name}
+          </option>
+        ))}
       </select>
     </FormWrapperAppoinment>
   );
