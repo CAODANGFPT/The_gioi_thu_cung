@@ -20,13 +20,14 @@ const servicesApi = createApi({
   }),
   endpoints(builder) {
     return {
-      status: builder.query<TServices[], void>({
+      services: builder.query<TServices[], void>({
         query: () => {
           return {
             url: "/services",
             method: "GET",
           };
         },
+        providesTags: ["Services"],
       }),
       addServices: builder.mutation<TServicesRequest, Partial<TServicesRequest>>({
         query: (services) => {
@@ -42,6 +43,6 @@ const servicesApi = createApi({
   },
 });
 
-export const { useStatusQuery, useAddServicesMutation} = servicesApi;
+export const { useServicesQuery, useAddServicesMutation} = servicesApi;
 export const servicesReducer = servicesApi.reducer;
 export default servicesApi;
