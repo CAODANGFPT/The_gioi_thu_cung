@@ -1,7 +1,7 @@
 import React from "react";
 import type { FormInstance } from "antd";
 import { Button, Form, Input, Space, message } from "antd";
-import { useCreateStaffMutation } from "../../../services/staff";
+import { useCreateStaffMutation, useStaffQuery } from "../../../services/staff";
 import { useNavigate } from "react-router-dom";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
@@ -30,17 +30,18 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
 const AddStaffAdmin: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [createStaff, { reset }] = useCreateStaffMutation();
+  const [createStaff] = useCreateStaffMutation();
 
   const navigate = useNavigate();
+
+  const { refetch } = useStaffQuery();
 
   const handleFormSubmit = async (values: any) => {
     try {
       await createStaff(values);
       message.success("Nhân viên đã được thêm thành công.");
-      form.resetFields();
 
-      reset();
+      refetch();
 
       navigate("/admin/staff");
     } catch (error: any) {
