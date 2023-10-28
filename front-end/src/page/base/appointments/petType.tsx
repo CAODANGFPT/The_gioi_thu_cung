@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FormWrapperAppoinment } from "./FormWapperAppointment";
 import { Tspecies } from "../../../schema/species";
 import { TBreed } from "../../../schema/breed";
-import { useSpeciesQuery } from "../../../services/species";
+import { useGetAllspeciesQuery } from "../../../services/species";
 import { useBreedQuery } from "../../../services/breed";
 
 type PetAndBreedTypeFormProps = {
@@ -17,7 +17,7 @@ export function PetAndBreedTypeForm({
   breed_type,
   updateFields,
 }: PetAndBreedTypeFormProps) {
-  const species = useSpeciesQuery();
+  const species = useGetAllspeciesQuery();
   const breed = useBreedQuery();
 
   const [filteredBreeds, setFilteredBreeds] = useState<TBreed[]>([]);
