@@ -3,8 +3,8 @@ import { speciesSchema } from "../schemas/species";
 
 export const getAll = async (req, res) => {
   try {
-    const listSetTime = await Species.getListSpecies();
-    res.json(listSetTime);
+    const listSpecies = await Species.getListSpecies();
+    res.json(listSpecies);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -12,11 +12,11 @@ export const getAll = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
-    const setTime = await Species.getIdSpecies(req.params.id);
-    if (!setTime) {
+    const species = await Species.getIdSpecies(req.params.id);
+    if (!species) {
       res.status(404).json({ error: "không tìm thấy" });
     } else {
-      res.json(setTime);
+      res.json(species);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -33,8 +33,8 @@ export const add = async (req, res) => {
         message: errors,
       });
     }
-    const setTimeId = await Species.addSpecies(name);
-    res.json({ id: setTimeId });
+    const species = await Species.addSpecies(name);
+    res.json({ id: species });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

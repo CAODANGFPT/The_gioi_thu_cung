@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from "react";
-import React from 'react'
+import React, { useState } from 'react';
 import "../../assets/scss/page/account.scss";
 
 const Address = () => {

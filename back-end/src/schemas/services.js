@@ -2,7 +2,11 @@ import joi from 'joi';
 
 export const servicesSchema = joi.object({
   id: joi.number(),
-  name_service: joi.string().required().messages({
+  name: joi.string().required().messages({
+    "String.empty": "Tên không được để trống",
+    "any.required": "Trường tên là bắt buộc",
+  }),
+  image: joi.string().required().messages({
     "String.empty": "Tên không được để trống",
     "any.required": "Trường tên là bắt buộc",
   }),

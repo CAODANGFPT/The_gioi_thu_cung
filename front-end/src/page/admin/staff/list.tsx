@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStaff } from "../../../schema/staff";
 import { useStaffQuery } from "../../../services/staff";
+import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -22,7 +23,7 @@ const columns: ColumnsType<TStaff> = [
     width: 150,
   },
   {
-    title: "Trạng thái",
+    title: "Tên nhân viên",
     dataIndex: "name",
     key: "name",
     width: 150,
@@ -39,7 +40,7 @@ const columns: ColumnsType<TStaff> = [
           </Button>
         </Link>
         <Popconfirm
-          title="Xóa trạng thái."
+          title="Xóa nhân viên."
           description="Bạn có muốn xóa không?"
           onConfirm={confirm}
           onCancel={cancel}
@@ -56,8 +57,21 @@ const columns: ColumnsType<TStaff> = [
 ];
 
 const StaffAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useStaffQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  const { data } = useStaffQuery();
+  return (
+    <div>
+      <Link to="/admin/staff/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM NHÂN VIÊN
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default StaffAdmin;

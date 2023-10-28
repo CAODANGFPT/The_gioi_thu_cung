@@ -14,7 +14,7 @@ const TableAdmin: React.FC<TableAdminProps> = ({ columns, data }) => {
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
+      <div className="btn-table">
         <Search
           placeholder="tìm kiếm"
           onSearch={onSearch}

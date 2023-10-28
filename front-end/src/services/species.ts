@@ -6,10 +6,20 @@ const speciesApi = createApi({
   tagTypes: ["Species"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
-        species: builder.query<Tspecies[], void>({
+        getAllspecies: builder.query<Tspecies[], void>({
         query: () => {
           return {
             url: "/species",
@@ -17,10 +27,25 @@ const speciesApi = createApi({
           };
         },
       }),
+      getSpeciesById: builder.query<Tspecies, number>({
+        query: (species) => {
+          return {
+            url: `/species/${species}`,
+            method: "GET",
+          };
+        },
+      }),
+      updateSpecies: builder.mutation<Tspecies, Tspecies>({
+        query: (species) => ({
+            url: `/species/${species.id}`,
+            method: "PUT",
+            body: species
+        }),
+    })
     };
   },
 });
 
-export const { useSpeciesQuery } = speciesApi;
+export const { useGetAllspeciesQuery , useGetSpeciesByIdQuery , useUpdateSpeciesMutation} = speciesApi;
 export const speciesReducer = speciesApi.reducer;
 export default speciesApi;

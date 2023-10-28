@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TRole } from "../../../schema/role";
 import { useRoleQuery } from "../../../services/role";
+import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -56,8 +57,21 @@ const columns: ColumnsType<TRole> = [
 ];
 
 const RoleAdmin: React.FC = () => {
-  const { data, isLoading, refetch } = useRoleQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  const { data } = useRoleQuery();
+  return (
+    <div>
+      <Link to="/admin/role/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM VAI TRÒ
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default RoleAdmin;

@@ -80,7 +80,7 @@
           border: 1px solid transparent;
           // transition: all 300ms ease-in-out;
           border-radius: 8px;
-          @include Flex(flex, flex, center);
+          @include Flex(flex, flex-start, center);
           @include Gap(12px, 0);
           fill: white;
           fill-opacity: 0.4;
