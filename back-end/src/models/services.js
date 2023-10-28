@@ -23,11 +23,11 @@ export default class Services {
     });
   }
 
-  static createServices(name_service, description, price) {
+  static createServices(name_service, description, price, image) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO services (name_service, description,price) VALUES (?, ?,?)",
-        [name_service, description, price],
+        "INSERT INTO services (name_service, description,image,price) VALUES (?, ?,?,?)",
+        [name_service, description, price, image],
         (err, results) => {
           if (err) {
             reject(err);
