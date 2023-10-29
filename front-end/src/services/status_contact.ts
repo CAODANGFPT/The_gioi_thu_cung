@@ -17,21 +17,32 @@ const statusContactApi = createApi({
       return headers;
     },
   }),
+
   endpoints(builder) {
     return {
-      getAlllstatusContact: builder.query<TStatusContact[], void>({
+      getAllstatusContact: builder.query<TStatusContact[], void>({
         query: () => {
           return {
             url: "/status_contact",
             method: "GET",
           };
         },
+        providesTags: ["Status_contact"],
+
       }),
-      
+
+      createStatusContact: builder.mutation<TStatusContact[], Partial<TStatusContact>>({
+        query: (statusData) => ({
+          url: "/status_contact",
+          method: "POST",
+          body: statusData, 
+        }),
+        invalidatesTags: ["Status_contact"],
+      }),
     };
   },
 });
 
-export const { useGetAlllstatusContactQuery } = statusContactApi;
+export const { useGetAllstatusContactQuery , useCreateStatusContactMutation} = statusContactApi;
 export const statusContactReducer = statusContactApi.reducer;
 export default statusContactApi;

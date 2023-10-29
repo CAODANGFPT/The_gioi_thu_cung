@@ -4,7 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatusContact } from "../../../schema/status_contact";
-import { useGetAlllstatusContactQuery } from "../../../services/status_contact";
+import { useGetAllstatusContactQuery } from "../../../services/status_contact";
+import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -56,9 +57,18 @@ const columns: ColumnsType<TStatusContact> = [
 ];
 
 const StatusContactAdmin: React.FC = () => {
-  const { data } = useGetAlllstatusContactQuery();
+  const { data } = useGetAllstatusContactQuery();
   return (
     <div>
+      <Link to="/admin/status_contact/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM TRẠNG THÁI LIÊN HỆ
+        </Button>
+      </Link>
       <TableAdmin columns={columns} data={data} />
     </div>
   );
