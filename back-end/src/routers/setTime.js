@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/settime", getAll);
 router.get("/settime/:id", getById);
-router.post("/settime/", checkPermission, add);
+router.post("/settime", checkPermission, add);
 router.put("/settime/:id", checkPermission, update);
 router.delete("/settime/:id", checkPermission, remote);
 

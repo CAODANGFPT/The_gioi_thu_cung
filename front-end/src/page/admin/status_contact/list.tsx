@@ -3,9 +3,8 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-
-import { useGetAllspeciesQuery } from "../../../services/species";
-import { Tspecies } from "../../../schema/species";
+import { TStatusContact } from "../../../schema/status_contact";
+import { useGetAllstatusContactQuery } from "../../../services/status_contact";
 import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
@@ -16,7 +15,7 @@ const cancel = () => {
   message.error("Xóa không thành công.");
 };
 
-const columns: ColumnsType<Tspecies> = [
+const columns: ColumnsType<TStatusContact> = [
   {
     title: "ID",
     dataIndex: "id",
@@ -24,7 +23,7 @@ const columns: ColumnsType<Tspecies> = [
     width: 150,
   },
   {
-    title: "Name",
+    title: "Tên",
     dataIndex: "name",
     key: "name",
     width: 150,
@@ -33,9 +32,9 @@ const columns: ColumnsType<Tspecies> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (species:Tspecies) => (
+    render: (status_id) => (
       <div>
-        <Link to={`edit/${species.id}`}>
+        <Link to={`edit/${status_id.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
@@ -57,22 +56,22 @@ const columns: ColumnsType<Tspecies> = [
   },
 ];
 
-const SpeciesAdmin: React.FC = () => {
-  const { data } = useGetAllspeciesQuery();
+const StatusContactAdmin: React.FC = () => {
+  const { data } = useGetAllstatusContactQuery();
   return (
     <div>
-      <Link to="/admin/species/add">
+      <Link to="/admin/status_contact/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}
           style={{ marginBottom: "1rem" }}
         >
-          THÊM LOẠI
+          THÊM TRẠNG THÁI LIÊN HỆ
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </div>
-  )
+  );
 };
 
-export default SpeciesAdmin;
+export default StatusContactAdmin;

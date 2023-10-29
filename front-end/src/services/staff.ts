@@ -26,6 +26,7 @@ const staffApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Staff"],
       }),
 
       createStaff: builder.mutation<TStaff[], Partial<TStaff>>({
@@ -34,11 +35,31 @@ const staffApi = createApi({
           method: "POST",
           body: staffData,
         }),
+        invalidatesTags: ["Staff"],
       }),
+
+      getStaffById: builder.query<TStaff, number>({
+        query: (staff) => {
+          return {
+            url: `/staff/${staff}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Staff"],
+      }),
+
+      updateStaff: builder.mutation<TStaff, TStaff>({
+        query: (staff) => ({
+            url: `/staff/${staff.id}`,
+            method: "PUT",
+            body: staff,
+        }),
+        invalidatesTags: ["Staff"],
+    }),
     };
   },
 });
 
-export const { useStaffQuery, useCreateStaffMutation } = staffApi;
+export const { useStaffQuery, useCreateStaffMutation, useUpdateStaffMutation, useGetStaffByIdQuery } = staffApi;
 export const staffReducer = staffApi.reducer;
 export default staffApi;

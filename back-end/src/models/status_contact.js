@@ -1,18 +1,18 @@
 import connection from "../db";
 
-export default class SetTime {
-  static getListSetTime() {
+export default class StatusContact {
+  static getListStatusContact() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM settime", (err, results) => {
+      connection.query("SELECT * FROM status_contact", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
     });
   }
-  static getIdSetTime(id) {
+  static getIdStatusContact(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM settime WHERE id = ?",
+        "SELECT * FROM status_contact WHERE id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);
@@ -22,11 +22,11 @@ export default class SetTime {
     });
   }
 
-  static addSetTime(name, start_time, end_time) {
+  static addStatusContact(name) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO settime (name, start_time, end_time) VALUES (?, ?, ?)",
-        [name, start_time, end_time],
+        "INSERT INTO status_contact (name) VALUES (?)",
+        [name],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
@@ -35,11 +35,11 @@ export default class SetTime {
     });
   }
 
-  static updateSetTime(id, name, start_time, end_time) {
+  static updateStatusContact(id, name) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE settime SET name = ?, start_time = ?, end_time = ? WHERE id = ?",
-        [name, start_time, end_time, id],
+        "UPDATE status_contact SET name = ? WHERE id = ?",
+        [name, id],
         (err) => {
           if (err) reject(err);
           resolve();
@@ -48,10 +48,10 @@ export default class SetTime {
     });
   }
 
-  static removeSetTime(id) {
+  static removeStatusContact(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM settime WHERE id = ?",
+        "DELETE FROM status_contact WHERE id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);

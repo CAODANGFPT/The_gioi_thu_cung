@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import {
-  useUpdatePetHouseMutation,
-  usePetHouseByIdQuery,
-} from "../../../services/pethouse";
-import { TpetHouse } from "../../../schema/pethouse";
+  useUpdateStatusMutation,
+  useGetStatusByIdQuery,
+} from "../../../services/status";
+import { TStatus } from "../../../schema/status";
 import { useEffect } from "react";
 
 const confirm = () => {
@@ -15,34 +15,34 @@ const cancel = () => {
   message.error("Cập nhật trạng thái không thành công.");
 };
 
-const EditPetHouse = () => {
+const EditStatus = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const pethouse = usePetHouseByIdQuery(Number(id));
+  const status = useGetStatusByIdQuery(Number(id));
   const [form] = Form.useForm();
 
-  const [updatePetHouseMutation, { reset }] = useUpdatePetHouseMutation();
+  const [updateStatusMutation, { reset }] = useUpdateStatusMutation();
 
   useEffect(() => {
-    if (pethouse.data) {
+    if (status.data) {
       form.setFieldsValue({
-        name: pethouse.data.name,
+        name: status.data.name,
       });
     }
-  }, [pethouse.data, form]);
+  }, [status.data, form]);
 
   const onFinish = async (values: { name: string }) => {
     try {
-      const updatedPetHouse: TpetHouse = {
+      const updatedStatus: TStatus = {
         id: Number(id),
         name: values.name,
       };
-      await updatePetHouseMutation(updatedPetHouse).unwrap();
+      await updateStatusMutation(updatedStatus).unwrap();
       confirm();
 
       reset();
 
-      navigate("/admin/pethouse");
+      navigate("/admin/status");
     } catch (error) {
       console.log(error);
       cancel();
@@ -58,7 +58,7 @@ const EditPetHouse = () => {
   return (
     <>
       <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật phòng _ {id}
+        Cập nhật trạng thái _ {id}
       </h1>
       <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
         <Form
@@ -70,8 +70,8 @@ const EditPetHouse = () => {
           <Form.Item
             label="Trạng thái"
             name="name"
-            rules={[{ required: true, message: "Vui lòng nhập phòng" }]}
-            initialValue={pethouse.data ? pethouse.data.name : ""}
+            rules={[{ required: true, message: "Vui lòng nhập trạng thái" }]}
+            initialValue={status.data ? status.data.name : ""}
           >
             <Input />
           </Form.Item>
@@ -86,4 +86,4 @@ const EditPetHouse = () => {
   );
 };
 
-export default EditPetHouse;
+export default EditStatus;

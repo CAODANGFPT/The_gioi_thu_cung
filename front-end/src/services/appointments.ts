@@ -9,10 +9,10 @@ const appointmentApi = createApi({
   }),
   endpoints(builder) {
     return {
-      appointment: builder.query<TAppointment[], void>({
+      getAllappointmentData: builder.query<TAppointment[], void>({
         query: () => {
           return {
-            url: "/appointment",
+            url: "/getAllAppointmentData",
             method: "GET",
           };
         },
@@ -32,7 +32,7 @@ const appointmentApi = createApi({
   },
 });
 
-export const { useAppointmentQuery, useAddAppointmentMutation } =
+export const { useGetAllappointmentDataQuery, useAddAppointmentMutation } =
   appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;

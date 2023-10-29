@@ -26,6 +26,8 @@ const speciesApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Species"],
+
       }),
       getSpeciesById: builder.query<Tspecies, number>({
         query: (species) => {
@@ -34,6 +36,7 @@ const speciesApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Species"],
       }),
       createSpecies: builder.mutation<Tspecies[], Partial<Tspecies>>({
         query: (species) => ({
@@ -41,6 +44,8 @@ const speciesApi = createApi({
           method: "POST",
           body: species, 
         }),
+        invalidatesTags: ["Species"],
+
       }),
       updateSpecies: builder.mutation<Tspecies, Tspecies>({
         query: (species) => ({
@@ -48,6 +53,8 @@ const speciesApi = createApi({
             method: "PUT",
             body: species
         }),
+        invalidatesTags: ["Species"],
+
     })
     };
   },

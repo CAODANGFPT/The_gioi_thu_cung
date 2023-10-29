@@ -46,6 +46,16 @@ import AddRoleAdmin from "./page/admin/role/add";
 import EditSpecies from "./page/admin/species/edit";
 import AddSpecies from "./page/admin/species/add";
 import EditBreed from "./page/admin/breed/edit";
+import StatusContactAdmin from "./page/admin/status_contact/list";
+import EditStatus from "./page/admin/status/edit";
+import AddPetHouse from "./page/admin/pethouse/add";
+import EditStaff from "./page/admin/staff/edit";
+import AddStatusContactAdmin from "./page/admin/status_contact/add";
+import EditStatusContact from "./page/admin/status_contact/edit";
+import AppointmentsAdmin from "./page/admin/appointments/list";
+import EditRole from "./page/admin/role/edit";
+import AddSetTime from "./page/admin/setTime/add";
+import EditSetTime from "./page/admin/setTime/edit";
 
 function App() {
   return (
@@ -78,7 +88,9 @@ function App() {
           <Route path="status">
             <Route index element={<StatusAdmin />} />
             <Route path="add" element={<Add />} />
+            <Route path="edit/:id" element={<EditStatus />} />
           </Route>
+          <Route path="appointment" element={<AppointmentsAdmin />} />
 
           <Route path="services" element={<ServicesAdmin />} />
 
@@ -97,9 +109,14 @@ function App() {
           <Route path="role">
             <Route index element={<RoleAdmin />} />
             <Route path="add" element={<AddRoleAdmin />} />
+            <Route path="edit/:id" element={<EditRole />} />
           </Route>
 
-          <Route path="settime" element={<SetTimeAdmin />} />
+          <Route path="settime">
+            <Route index element={<SetTimeAdmin />} />
+            <Route path="add" element={<AddSetTime />} />
+            <Route path="edit/:id" element={<EditSetTime />} />
+          </Route>
           <Route path="staff" element={<StaffAdmin />} />
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
@@ -110,9 +127,13 @@ function App() {
           <Route path="staff">
             <Route index element={<StaffAdmin />} />
             <Route path="add" element={<Add />} />
+            <Route path="edit/:id" element={<EditStaff />} />
           </Route>
 
-          <Route path="pethouse" element={<PethouseAdmin />} />
+          <Route path="pethouse">
+            <Route index element={<PethouseAdmin />} />
+            <Route path="add" element={<AddPetHouse />} />
+          </Route>
 
           <Route path="species">
             <Route index element={<SpeciesAdmin />} />
@@ -124,6 +145,13 @@ function App() {
             <Route path="edit/:id" element={<EditBreed />} />
           </Route>
           <Route path="contact" element={<ContactAdmin />} />
+
+          <Route path="status_contact">
+            <Route index element={<StatusContactAdmin />} />
+            <Route path="add" element={<AddStatusContactAdmin />} />
+            <Route path="edit/:id" element={<EditStatusContact />} />
+          </Route>
+
           <Route path="profile" element={<ProfileAdmin />} />
           <Route path="news" element={<NewsAdmin />} />
           <Route path="review" element={<ReviewAdmin />} />

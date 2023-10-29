@@ -18,6 +18,7 @@ import userRouter from "./routers/User";
 import setTimeRouter from "./routers/setTime";
 import staffRouter from "./routers/staff";
 import imageRouter from "./routers/uploadImage";
+import statusContactRouter from "./routers/status_contact";
 
 const app = express();
 app.use(express.json());
@@ -41,5 +42,6 @@ app.use("/api", userRouter);
 app.use("/api", setTimeRouter);
 app.use("/api", staffRouter);
 app.use("/api", imageRouter);
+app.use("/api", statusContactRouter);
 
 export const viteNodeApp = app;

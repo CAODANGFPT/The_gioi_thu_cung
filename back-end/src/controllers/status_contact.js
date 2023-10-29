@@ -1,11 +1,11 @@
-import SetTime from "../models/setTime";
+import StatusContact from "../models/status_contact";
 
-import { setTimeSchema } from "../schemas/setTime";
+import { statusContactSchema } from "../schemas/status_contact";
 
 export const getAll = async (req, res) => {
   try {
-    const listSetTime = await SetTime.getListSetTime();
-    res.json(listSetTime);
+    const listStatus = await StatusContact.getListStatusContact();
+    res.json(listStatus);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -13,11 +13,11 @@ export const getAll = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
-    const setSetTime = await SetTime.getIdSetTime(req.params.id);
-    if (!setSetTime) {
+    const setStatus = await StatusContact.getIdStatusContact(req.params.id);
+    if (!setStatus) {
       res.status(404).json({ error: "không tìm thấy" });
     } else {
-      res.json(setSetTime);
+      res.json(setStatus);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -26,16 +26,16 @@ export const getById = async (req, res) => {
 
 export const add = async (req, res) => {
   try {
-    const { name, start_time, end_time } = req.body;
-    const { error } = setTimeSchema.validate(req.body);
+    const { name } = req.body;
+    const { error } = statusContactSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
       return res.status(400).json({
         message: errors,
       });
     }
-    const setSetTime = await SetTime.addSetTime(name, start_time, end_time);
-    res.json({ id: setSetTime });
+    const setStatus = await StatusContact.addStatusContact(name);
+    res.json({ id: setStatus });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -43,15 +43,15 @@ export const add = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name, start_time, end_time } = req.body;
-    const { error } = setTimeSchema.validate(req.body);
+    const { name } = req.body;
+    const { error } = statusContactSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
       return res.status(400).json({
         message: errors,
       });
     }
-    await SetTime.updateSetTime(req.params.id, name, start_time, end_time);
+    await StatusContact.updateStatusContact(req.params.id, name);
     res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -60,7 +60,7 @@ export const update = async (req, res) => {
 
 export const remote = async (req, res) => {
   try {
-    await SetTime.removeSetTime(req.params.id);
+    await StatusContact.removeStatusContact(req.params.id);
     res.json({ message: "Xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
