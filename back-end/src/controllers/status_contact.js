@@ -1,11 +1,11 @@
-import Staff from "../models/staff";
+import StatusContact from "../models/status_contact";
 
-import { staffSchema } from "../schemas/staff";
+import { statusContactSchema } from "../schemas/status_contact";
 
 export const getAll = async (req, res) => {
   try {
-    const listStaff = await Staff.getListStaff();
-    res.json(listStaff);
+    const listStatus = await StatusContact.getListStatusContact();
+    res.json(listStatus);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -13,11 +13,11 @@ export const getAll = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
-    const setStaff = await Staff.getIdStaff(req.params.id);
-    if (!setStaff) {
+    const setStatus = await StatusContact.getIdStatusContact(req.params.id);
+    if (!setStatus) {
       res.status(404).json({ error: "không tìm thấy" });
     } else {
-      res.json(setStaff);
+      res.json(setStatus);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -27,15 +27,15 @@ export const getById = async (req, res) => {
 export const add = async (req, res) => {
   try {
     const { name } = req.body;
-    const { error } = staffSchema.validate(req.body);
+    const { error } = statusContactSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
       return res.status(400).json({
         message: errors,
       });
     }
-    const setStaff = await Staff.addStaff(name);
-    res.json({ id: setStaff });
+    const setStatus = await StatusContact.addStatusContact(name);
+    res.json({ id: setStatus });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -44,14 +44,14 @@ export const add = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { name } = req.body;
-    const { error } = staffSchema.validate(req.body);
+    const { error } = statusContactSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
       return res.status(400).json({
         message: errors,
       });
     }
-    await Staff.updateStaff(req.params.id, name);
+    await StatusContact.updateStatusContact(req.params.id, name);
     res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -60,7 +60,7 @@ export const update = async (req, res) => {
 
 export const remote = async (req, res) => {
   try {
-    await Staff.removeStatus(req.params.id);
+    await StatusContact.removeStatusContact(req.params.id);
     res.json({ message: "Xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
