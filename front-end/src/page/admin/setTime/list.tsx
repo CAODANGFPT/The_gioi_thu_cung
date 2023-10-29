@@ -63,11 +63,13 @@ const SetTimeAdmin: React.FC = () => {
       width: 100,
       render: (id) => (
         <div>
-          <Link to="URL">
-            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-              Sửa
-            </Button>
-          </Link>
+          <Button
+            onClick={() => navigate(`edit/${id}`)}
+            className="btn-edit"
+            style={{ marginRight: "1rem" }}
+          >
+            Sửa
+          </Button>
           <Popconfirm
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"

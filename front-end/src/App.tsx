@@ -53,6 +53,7 @@ import AddStatusContactAdmin from "./page/admin/status_contact/add";
 import EditStatusContact from "./page/admin/status_contact/edit";
 import EditRole from "./page/admin/role/edit";
 import AddSetTime from "./page/admin/setTime/add";
+import EditSetTime from "./page/admin/setTime/edit";
 
 function App() {
   return (
@@ -111,6 +112,7 @@ function App() {
           <Route path="settime">
             <Route index element={<SetTimeAdmin />} />
             <Route path="add" element={<AddSetTime />} />
+            <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
 
           <Route path="pethouse">

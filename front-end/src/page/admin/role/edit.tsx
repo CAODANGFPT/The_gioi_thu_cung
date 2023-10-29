@@ -33,8 +33,6 @@ const EditRole = () => {
 
   const onFinish = async (values: TRole) => {
     try {
-      console.log(values);
-
       await updateRoleMutation(values).unwrap();
       confirm();
       reset();
