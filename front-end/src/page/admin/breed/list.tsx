@@ -38,9 +38,9 @@ const columns: ColumnsType<TBreed> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (data: TBreed) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${data.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
