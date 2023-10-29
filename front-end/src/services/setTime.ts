@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TSetTime } from "../schema/setTime";
+import { TSetTime, TSetTimeAdd } from "../schema/setTime";
 
 const setTimeApi = createApi({
   reducerPath: "setTime",
@@ -36,10 +36,19 @@ const setTimeApi = createApi({
         }),
         invalidatesTags: ["SetTime"],
       }),
+      removeSetTime: builder.mutation<TSetTimeAdd, number>({
+        query: (id) => {
+          return {
+            url: `/settime/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["SetTime"],
+      }),
     };
   },
 });
 
-export const { useSetTimeQuery, useCreateSetTimeMutation } = setTimeApi;
+export const { useSetTimeQuery, useCreateSetTimeMutation, useRemoveSetTimeMutation } = setTimeApi;
 export const setTimeReducer = setTimeApi.reducer;
 export default setTimeApi;
