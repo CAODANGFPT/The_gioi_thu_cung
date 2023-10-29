@@ -1,22 +1,32 @@
 import About from "../models/about";
+
 import { aboutSchema } from "../schemas/about";
 
-export const show = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
-    const about = await About.getAbout(req.params.id);
-    if (!about) {
-      res.status(404).json({ error: "không tìm thấy about" });
+    const listAbout = await About.getListAbout();
+    res.json(listAbout);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getById = async (req, res) => {
+  try {
+    const setAbout = await About.getIdAbout(req.params.id);
+    if (!setAbout) {
+      res.status(404).json({ error: "không tìm thấy" });
     } else {
-      res.json(about);
+      res.json(setAbout);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-export const update = async (req, res) => {
+export const add = async (req, res) => {
   try {
-    const { image, description } = req.body;
+    const { name } = req.body;
     const { error } = aboutSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -24,8 +34,34 @@ export const update = async (req, res) => {
         message: errors,
       });
     }
-    await About.updateAbout(req.params.id, image, description);
-    res.json({ message: "sửa thành công" });
+    const setAbout = await About.addStatus(name);
+    res.json({ id: setAbout });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const update = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const { error } = aboutSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    await About.updateAbout(req.params.id, name);
+    res.json({ message: "Sửa thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const remote = async (req, res) => {
+  try {
+    await About.removeAbout(req.params.id);
+    res.json({ message: "Xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

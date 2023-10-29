@@ -31,7 +31,10 @@ import profileApi, { profileReducer } from "../services/profile";
 import newsApi, { newsReducer } from "../services/news";
 import reviewApi, { reviewReducer } from "../services/review";
 import petsApi, { petsReducer } from "../services/pets";
-import statusContactApi , {statusContactReducer} from "../services/status_contact";
+import statusContactApi, {
+  statusContactReducer,
+} from "../services/status_contact";
+import aboutApi, { aboutReducer } from "../services/about";
 const persistConfig = {
   key: "root",
   storage,
@@ -56,6 +59,7 @@ const rootReducer = combineReducers({
   [reviewApi.reducerPath]: reviewReducer,
   [petsApi.reducerPath]: petsReducer,
   [statusContactApi.reducerPath]: statusContactReducer,
+  [aboutApi.reducerPath]: aboutReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -85,7 +89,8 @@ export const store = configureStore({
       newsApi.middleware,
       reviewApi.middleware,
       petsApi.middleware,
-      statusContactApi.middleware
+      statusContactApi.middleware,
+      aboutApi.middleware
     ),
 });
 

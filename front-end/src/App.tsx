@@ -40,6 +40,7 @@ import ReviewAdmin from "./page/admin/review/list";
 import EditPetHouse from "./page/admin/pethouse/edit";
 import Add from "./page/admin/staff/add";
 import PetsAdmin from "./page/admin/pets/list";
+import AboutAdmin from "./page/admin/about/list";
 import EditUser from "./page/admin/user/edit";
 import AddService from "./page/admin/services/add";
 import AddRoleAdmin from "./page/admin/role/add";
@@ -82,6 +83,14 @@ function App() {
             <Route index element={<StatusAdmin />} />
             <Route path="add" element={<Add />} />
             <Route path="edit/:id" element={<EditStatus />} />
+          </Route>
+
+          <Route path="about" element={<AboutAdmin />} />
+
+          <Route path="about">
+            <Route index element={<AboutAdmin />} />
+            {/* <Route path="add" element={<Add />} />
+            <Route path="edit/:id" element={<EditStatus />} /> */}
           </Route>
 
           <Route path="services" element={<ServicesAdmin />} />
