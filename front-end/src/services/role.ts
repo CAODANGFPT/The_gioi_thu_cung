@@ -26,19 +26,44 @@ const roleApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Role"],
+      }),
+      roleById: builder.query<TRole, number>({
+        query: (id) => {
+          return {
+            url: `/role/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Role"],
       }),
 
       createRole: builder.mutation<TRole[], Partial<TRole>>({
         query: (roleData) => ({
           url: "/role",
           method: "POST",
-          body: roleData, 
+          body: roleData,
         }),
+      }),
+      updateRole: builder.mutation<TRole, Partial<TRole>>({
+        query: (role) => {
+          return {
+            url: `/editRole`,
+            method: "PATCH",
+            body: role,
+          };
+        },
+        invalidatesTags: ["Role"],
       }),
     };
   },
 });
 
-export const { useRoleQuery, useCreateRoleMutation } = roleApi;
+export const {
+  useRoleQuery,
+  useRoleByIdQuery,
+  useCreateRoleMutation,
+  useUpdateRoleMutation,
+} = roleApi;
 export const roleReducer = roleApi.reducer;
 export default roleApi;

@@ -32,9 +32,9 @@ const columns: ColumnsType<TRole> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (role) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${role.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
