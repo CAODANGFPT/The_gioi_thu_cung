@@ -67,7 +67,7 @@ const SpeciesAdmin: React.FC = () => {
           icon={<PlusOutlined />}
           style={{ marginBottom: "1rem" }}
         >
-          Thêm Loại
+          THÊM LOẠI
         </Button>
       </Link>
       <TableAdmin columns={columns} data={data} />;

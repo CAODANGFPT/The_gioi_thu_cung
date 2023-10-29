@@ -3,9 +3,10 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-
 import { TpetHouse } from "../../../schema/pethouse";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { PlusOutlined } from "@ant-design/icons";
+
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -32,7 +33,7 @@ const columns: ColumnsType<TpetHouse> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (room:TpetHouse) => (
+    render: (room: TpetHouse) => (
       <div>
         <Link to={`edit/${room.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
@@ -58,7 +59,20 @@ const columns: ColumnsType<TpetHouse> = [
 
 const PetHouseAdmin: React.FC = () => {
   const { data } = useGetAllpetHouseQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <div>
+      <Link to="/admin/pethouse/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM PHÒNG
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default PetHouseAdmin;
