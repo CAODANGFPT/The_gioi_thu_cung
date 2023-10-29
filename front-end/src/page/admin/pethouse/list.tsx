@@ -4,11 +4,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TpetHouse } from "../../../schema/pethouse";
-import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import {
+  useGetAllpetHouseQuery,
+  useRemovePetHouseMutation,
+} from "../../../services/pethouse";
 import { PlusOutlined } from "@ant-design/icons";
 
 const PetHouseAdmin: React.FC = () => {
-  const confirm = () => {
+  const [removePetHouse] = useRemovePetHouseMutation();
+  const confirm = (id: number) => {
+    removePetHouse(id);
     message.success("Xóa thành công.");
   };
 
@@ -43,7 +48,9 @@ const PetHouseAdmin: React.FC = () => {
           <Popconfirm
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"
-            onConfirm={confirm}
+            onConfirm={() =>
+              room.id !== undefined ? confirm(room.id) : undefined
+            }
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"

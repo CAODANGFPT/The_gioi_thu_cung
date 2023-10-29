@@ -54,12 +54,20 @@ const pethouseApi = createApi({
             body: updatedPethouse
         }),
         invalidatesTags: ["PetHouse"],
-
-    })
+    }),
+     removePetHouse: builder.mutation<TpetHouse, number>({
+        query: (id) => {
+          return {
+            url: `/pethouse/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["PetHouse"],
+      }),
     };
   },
 });
 
-export const { useGetAllpetHouseQuery , usePetHouseByIdQuery , useUpdatePetHouseMutation , useCreatePetHouseMutation}  = pethouseApi;
+export const { useGetAllpetHouseQuery , usePetHouseByIdQuery , useUpdatePetHouseMutation , useCreatePetHouseMutation, useRemovePetHouseMutation}  = pethouseApi;
 export const pethouseReducer = pethouseApi.reducer;
 export default pethouseApi;
