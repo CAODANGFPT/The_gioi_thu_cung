@@ -51,7 +51,7 @@ export const update = async (req, res) => {
         message: errors,
       });
     }
-    await Staff.updateStatus(req.params.id, name);
+    await Staff.updateStaff(req.params.id, name);
     res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
