@@ -27,6 +27,7 @@ export const navigationLinks = [
   { id: 13, title: "Profile", image: ProfileIcon, link: "profile" },
   { id: 14, title: "News", image: NewIcon, link: "news" },
   { id: 15, title: "Pets", image: PetIcon, link: "pets" },
+  { id: 16, title: "StatusContact", image: StatusIcon, link: "status_contact" },
 ];
 
 export const transactions = [
