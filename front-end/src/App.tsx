@@ -51,6 +51,7 @@ import AddPetHouse from "./page/admin/pethouse/add";
 import EditStaff from "./page/admin/staff/edit";
 import AddStatusContactAdmin from "./page/admin/status_contact/add";
 import EditStatusContact from "./page/admin/status_contact/edit";
+import AppointmentsAdmin from "./page/admin/appointments/list";
 import EditRole from "./page/admin/role/edit";
 import AddSetTime from "./page/admin/setTime/add";
 import EditSetTime from "./page/admin/setTime/edit";
@@ -88,6 +89,7 @@ function App() {
             <Route path="add" element={<Add />} />
             <Route path="edit/:id" element={<EditStatus />} />
           </Route>
+          <Route path="appointment" element={<AppointmentsAdmin />} />
 
           <Route path="services" element={<ServicesAdmin />} />
 
