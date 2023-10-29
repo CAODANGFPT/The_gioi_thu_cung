@@ -22,11 +22,11 @@ export default class SetTime {
     });
   }
 
-  static addSetTime(name, time) {
+  static addSetTime(name, start_time, end_time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO settime (name, time) VALUES (?, ?)",
-        [name, time],
+        "INSERT INTO settime (name, start_time, end_time) VALUES (?, ?, ?)",
+        [name, start_time, end_time],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
