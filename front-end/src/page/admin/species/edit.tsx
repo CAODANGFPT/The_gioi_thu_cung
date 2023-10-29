@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import {
-  useGetAllspeciesQuery,
   useUpdateSpeciesMutation,
   useGetSpeciesByIdQuery,
 } from "../../../services/species";
 import { Tspecies } from "../../../schema/species";
+import { useEffect } from "react";
+
 
 const confirm = () => {
   message.success("Cập nhật Species thành công.");
@@ -20,9 +21,16 @@ const EditSpecies = () => {
   const { id } = useParams<{ id: string }>();
   const species = useGetSpeciesByIdQuery(Number(id));
   const [form] = Form.useForm();
-  const { refetch } = useGetAllspeciesQuery();
 
   const [updatePethouseMutation, { reset }] = useUpdateSpeciesMutation();
+
+  useEffect(() => {
+    if (species.data) {
+      form.setFieldsValue({
+        name: species.data.name,
+      });
+    }
+  }, [species.data, form]);
 
   const onFinish = async (values: { name: string;}) => {
     try {
@@ -40,7 +48,6 @@ const EditSpecies = () => {
       console.error("Error updating species:", error);
       reset();
     }
-    refetch();
   };
 
   const onFinishFailed = (errorInfo: any) => {
