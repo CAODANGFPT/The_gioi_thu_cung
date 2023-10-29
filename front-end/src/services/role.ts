@@ -55,6 +55,15 @@ const roleApi = createApi({
         },
         invalidatesTags: ["Role"],
       }),
+      removeRole: builder.mutation<TRole, number>({
+        query: (id) => {
+          return {
+            url: `/role/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Role"],
+      }),
     };
   },
 });
@@ -64,6 +73,7 @@ export const {
   useRoleByIdQuery,
   useCreateRoleMutation,
   useUpdateRoleMutation,
+  useRemoveRoleMutation
 } = roleApi;
 export const roleReducer = roleApi.reducer;
 export default roleApi;
