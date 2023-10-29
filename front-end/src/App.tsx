@@ -50,6 +50,7 @@ import EditStatus from "./page/admin/status/edit";
 import AddPetHouse from "./page/admin/pethouse/add";
 import EditStaff from "./page/admin/staff/edit";
 import AddStatusContactAdmin from "./page/admin/status_contact/add";
+import EditStatusContact from "./page/admin/status_contact/edit";
 
 function App() {
   return (
@@ -134,8 +135,9 @@ function App() {
           <Route path="status_contact">
             <Route index element={<StatusContactAdmin />} />
             <Route path="add" element={<AddStatusContactAdmin />} />
+            <Route path="edit/:id" element={<EditStatusContact />} />
           </Route>
-          
+
           <Route path="profile" element={<ProfileAdmin />} />
           <Route path="news" element={<NewsAdmin />} />
           <Route path="review" element={<ReviewAdmin />} />

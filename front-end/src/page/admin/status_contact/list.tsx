@@ -32,9 +32,9 @@ const columns: ColumnsType<TStatusContact> = [
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (status_id) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${status_id.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
