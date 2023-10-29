@@ -12,7 +12,7 @@ import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status/list";
@@ -45,6 +45,7 @@ import AddService from "./page/admin/services/add";
 import AddRoleAdmin from "./page/admin/role/add";
 import EditSpecies from "./page/admin/species/edit";
 import AddSpecies from "./page/admin/species/add";
+import EditBreed from "./page/admin/breed/edit";
 import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditStatus from "./page/admin/status/edit";
 import AddPetHouse from "./page/admin/pethouse/add";
@@ -116,7 +117,7 @@ function App() {
             <Route path="add" element={<AddSetTime />} />
             <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
-
+          <Route path="staff" element={<StaffAdmin />} />
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
@@ -139,7 +140,10 @@ function App() {
             <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
-          <Route path="breed" element={<BreedAdmin />} />
+          <Route path="breed">
+            <Route index element={<BreedAdmin />} />
+            <Route path="edit/:id" element={<EditBreed />} />
+          </Route>
           <Route path="contact" element={<ContactAdmin />} />
 
           <Route path="status_contact">
