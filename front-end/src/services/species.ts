@@ -54,12 +54,20 @@ const speciesApi = createApi({
             body: species
         }),
         invalidatesTags: ["Species"],
-
-    })
+    }),
+      removeSpecies: builder.mutation<Tspecies, number>({
+        query: (id) => {
+          return {
+            url: `/species/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Species"],
+      }),
     };
   },
 });
 
-export const { useGetAllspeciesQuery , useGetSpeciesByIdQuery , useUpdateSpeciesMutation , useCreateSpeciesMutation} = speciesApi;
+export const { useGetAllspeciesQuery , useGetSpeciesByIdQuery , useUpdateSpeciesMutation , useCreateSpeciesMutation, useRemoveSpeciesMutation} = speciesApi;
 export const speciesReducer = speciesApi.reducer;
 export default speciesApi;
