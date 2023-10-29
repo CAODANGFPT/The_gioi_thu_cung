@@ -6,6 +6,16 @@ const setTimeApi = createApi({
   tagTypes: ["SetTime"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -16,11 +26,20 @@ const setTimeApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["SetTime"],
+      }),
+      createSetTime: builder.mutation<TSetTime, TSetTime>({
+        query: (setTime) => ({
+          url: `/settime`,
+          method: "POST",
+          body: setTime,
+        }),
+        invalidatesTags: ["SetTime"],
       }),
     };
   },
 });
 
-export const { useSetTimeQuery } = setTimeApi;
+export const { useSetTimeQuery, useCreateSetTimeMutation } = setTimeApi;
 export const setTimeReducer = setTimeApi.reducer;
 export default setTimeApi;

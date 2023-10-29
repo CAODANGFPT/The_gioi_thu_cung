@@ -25,3 +25,12 @@ export type TSetTime = yup.InferType<typeof SetTimeSchema>;
 export type SetTimeResponse = yup.InferType<typeof SetTimeResponseSchema>;
 
 export type SetTimeError = yup.InferType<typeof SetTimeErrorSchema>;
+
+export const SetTimeAddSchema = yup.object().shape({
+  id: yup.number(),
+  name: yup.string().required(),
+  start_time: yup.string().required(),
+  end_time: yup.string().required(),
+});
+
+export type TSetTimeAdd = yup.InferType<typeof SetTimeAddSchema>;

@@ -1,10 +1,12 @@
 import { Button, Popconfirm, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TSetTime } from "../../../schema/setTime";
+import { TSetTime, TSetTimeAdd } from "../../../schema/setTime";
 import { useSetTimeQuery } from "../../../services/setTime";
+import dayjs from "dayjs";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -29,9 +31,20 @@ const columns: ColumnsType<TSetTime> = [
   },
   {
     title: "Thời gian",
-    dataIndex: "time",
     key: "time",
     width: 150,
+    render: (setTime) => (
+      <>
+        {setTime.start_time && setTime.end_time ? (
+          <div>
+            ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -{" "}
+            {dayjs(setTime.end_time, "HH:mm:ss").format("HH:mm")})
+          </div>
+        ) : (
+          <div>null</div>
+        )}
+      </>
+    ),
   },
   {
     title: "Thao tác",
@@ -62,8 +75,21 @@ const columns: ColumnsType<TSetTime> = [
 ];
 
 const SetTimeAdmin: React.FC = () => {
+  const navigate = useNavigate();
   const { data } = useSetTimeQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <>
+      <Button
+        type="primary"
+        onClick={() => navigate("add")}
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM THỜI GIAN
+      </Button>
+      <TableAdmin columns={columns} data={data} />
+    </>
+  );
 };
 
 export default SetTimeAdmin;
