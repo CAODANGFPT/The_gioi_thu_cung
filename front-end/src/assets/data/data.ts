@@ -9,6 +9,8 @@ import BillsIcon from "./../svg/billsIcon";
 import HomeIcon from "./../svg/homeIcon";
 import ReportIcon from "./../svg/reportIcon";
 import PetIcon from "../svg/PetsIcon";
+import NewIcon from "../svg/newIcon";
+import ProfileIcon from "../svg/profileIcon";
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
@@ -16,14 +18,14 @@ export const navigationLinks = [
   { id: 4, title: "User", image: UserIcons, link: "user" },
   { id: 5, title: "Role", image: BillsIcon, link: "role" },
   { id: 6, title: "SetTime", image: ReportIcon, link: "settime" },
-  { id: 10, title: "Staff", image: ReportIcon, link: "staff" },
   { id: 7, title: "Services", image: ServicesIcon, link: "services" },
-  { id: 8, title: "Pethouse", image: PethouseIcon, link: "pethouse" },
+  { id: 8, title: "PetHouse", image: PethouseIcon, link: "pethouse" },
   { id: 9, title: "Species", image: SpeciesIcon, link: "species" },
+  { id: 10, title: "Staff", image: ReportIcon, link: "staff" },
   { id: 11, title: "Breed", image: SpeciesIcon, link: "breed" },
   { id: 12, title: "Contact", image: SpeciesIcon, link: "contact" },
-  { id: 13, title: "Profile", image: SpeciesIcon, link: "profile" },
-  { id: 14, title: "News", image: SpeciesIcon, link: "news" },
+  { id: 13, title: "Profile", image: ProfileIcon, link: "profile" },
+  { id: 14, title: "News", image: NewIcon, link: "news" },
   { id: 15, title: "Pets", image: PetIcon, link: "pets" },
 ];
 

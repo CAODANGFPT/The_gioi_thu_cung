@@ -1,5 +1,5 @@
 import { TpetHouse } from "../../../schema/pethouse";
-import { usePethouseQuery } from "../../../services/pethouse";
+import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { FormWrapperAppoinment } from "./FormWapperAppointment";
 
 type PetHouseFormProps = {
@@ -8,7 +8,7 @@ type PetHouseFormProps = {
 };
 
 export function PetHouseForm({ petHouse, updateFields }: PetHouseFormProps) {
-  const { data: petHouseData } = usePethouseQuery();
+  const { data: petHouseData } = useGetAllpetHouseQuery();
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = e.target.value;
     if (selectedOption === "") {

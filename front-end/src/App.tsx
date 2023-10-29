@@ -4,7 +4,6 @@ import "./App.css";
 
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
-
 import Account from "./components/account_info/account";
 import Address from "./components/account_info/address";
 import Follow from "./components/account_info/follow";
@@ -38,6 +37,7 @@ import ContactAdmin from "./page/admin/contact/list";
 import ProfileAdmin from "./page/admin/profile/list";
 import NewsAdmin from "./page/admin/news/list";
 import ReviewAdmin from "./page/admin/review/list";
+import EditPetHouse from "./page/admin/pethouse/edit";
 import Add from "./page/admin/staff/add";
 import PetsAdmin from "./page/admin/pets/list";
 import EditUser from "./page/admin/user/edit";
@@ -99,6 +99,12 @@ function App() {
           </Route>
 
           <Route path="settime" element={<SetTimeAdmin />} />
+          <Route path="staff" element={<StaffAdmin />} />
+          <Route path="pethouse" >
+            <Route index element={<PethouseAdmin />} />
+            <Route path="edit/:id" element={<EditPetHouse />} />
+          </Route>
+          <Route path="species" element={<SpeciesAdmin />} />
 
           <Route path="staff">
             <Route index element={<StaffAdmin />} />
