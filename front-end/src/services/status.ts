@@ -26,6 +26,17 @@ const statusApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["Status"],
+      }),
+
+      getStatusById: builder.query<TStatus, number>({
+        query: (status) => {
+          return {
+            url: `/status/${status}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Status"],
       }),
       
       createStatus: builder.mutation<TStatus[], Partial<TStatus>>({
@@ -34,11 +45,22 @@ const statusApi = createApi({
           method: "POST",
           body: statusData, 
         }),
+        invalidatesTags: ["Status"],
       }),
+
+      updateStatus: builder.mutation<TStatus, TStatus>({
+        query: (status) => ({
+            url: `/status/${status.id}`,
+            method: "PUT",
+            body: status,
+        }),
+        invalidatesTags: ["Status"],
+    }),
+
     };
   },
 });
 
-export const { useStatusQuery, useCreateStatusMutation } = statusApi;
+export const { useStatusQuery, useCreateStatusMutation, useUpdateStatusMutation, useGetStatusByIdQuery } = statusApi;
 export const statusReducer = statusApi.reducer;
 export default statusApi;

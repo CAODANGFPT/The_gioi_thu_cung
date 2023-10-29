@@ -35,7 +35,7 @@ const pethouseApi = createApi({
           };
         },
       }),
-      addPetHouse: builder.mutation<TpetHouse, TpetHouse>({
+      createPetHouse: builder.mutation<TpetHouse, TpetHouse>({
         query: (pethouse) => ({
             url: `/pethouse`,
             method: "POST",
@@ -53,6 +53,6 @@ const pethouseApi = createApi({
   },
 });
 
-export const { useGetAllpetHouseQuery , usePetHouseByIdQuery , useUpdatePetHouseMutation} = pethouseApi;
+export const { useGetAllpetHouseQuery , usePetHouseByIdQuery , useUpdatePetHouseMutation , useCreatePetHouseMutation}  = pethouseApi;
 export const pethouseReducer = pethouseApi.reducer;
 export default pethouseApi;
