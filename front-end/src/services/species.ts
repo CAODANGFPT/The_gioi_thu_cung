@@ -35,6 +35,13 @@ const speciesApi = createApi({
           };
         },
       }),
+      createSpecies: builder.mutation<Tspecies[], Partial<Tspecies>>({
+        query: (species) => ({
+          url: "/species",
+          method: "POST",
+          body: species, 
+        }),
+      }),
       updateSpecies: builder.mutation<Tspecies, Tspecies>({
         query: (species) => ({
             url: `/species/${species.id}`,
@@ -46,6 +53,6 @@ const speciesApi = createApi({
   },
 });
 
-export const { useGetAllspeciesQuery , useGetSpeciesByIdQuery , useUpdateSpeciesMutation} = speciesApi;
+export const { useGetAllspeciesQuery , useGetSpeciesByIdQuery , useUpdateSpeciesMutation , useCreateSpeciesMutation} = speciesApi;
 export const speciesReducer = speciesApi.reducer;
 export default speciesApi;

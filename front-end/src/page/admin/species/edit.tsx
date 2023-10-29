@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import {
-    useUpdateSpeciesMutation,
+  useGetAllspeciesQuery,
+  useUpdateSpeciesMutation,
   useGetSpeciesByIdQuery,
 } from "../../../services/species";
 import { Tspecies } from "../../../schema/species";
@@ -19,6 +20,7 @@ const EditSpecies = () => {
   const { id } = useParams<{ id: string }>();
   const species = useGetSpeciesByIdQuery(Number(id));
   const [form] = Form.useForm();
+  const { refetch } = useGetAllspeciesQuery();
 
   const [updatePethouseMutation, { reset }] = useUpdateSpeciesMutation();
 
@@ -38,6 +40,7 @@ const EditSpecies = () => {
       console.error("Error updating species:", error);
       reset();
     }
+    refetch();
   };
 
   const onFinishFailed = (errorInfo: any) => {

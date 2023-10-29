@@ -6,6 +6,7 @@ import TableAdmin from "../../../components/table";
 
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { Tspecies } from "../../../schema/species";
+import { PlusOutlined } from "@ant-design/icons";
 
 const confirm = () => {
   message.success("Xóa thành công.");
@@ -58,7 +59,20 @@ const columns: ColumnsType<Tspecies> = [
 
 const SpeciesAdmin: React.FC = () => {
   const { data } = useGetAllspeciesQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <div>
+      <Link to="/admin/species/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          Thêm Loại
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />;
+    </div>
+  )
 };
 
 export default SpeciesAdmin;
