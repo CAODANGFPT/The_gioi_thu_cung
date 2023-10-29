@@ -45,6 +45,7 @@ import AddService from "./page/admin/services/add";
 import AddRoleAdmin from "./page/admin/role/add";
 import EditSpecies from "./page/admin/species/edit";
 import AddSpecies from "./page/admin/species/add";
+import EditStatus from "./page/admin/status/edit";
 
 function App() {
   return (
@@ -77,6 +78,7 @@ function App() {
           <Route path="status">
             <Route index element={<StatusAdmin />} />
             <Route path="add" element={<Add />} />
+            <Route path="edit/:id" element={<EditStatus />} />
           </Route>
 
           <Route path="services" element={<ServicesAdmin />} />
@@ -100,7 +102,7 @@ function App() {
 
           <Route path="settime" element={<SetTimeAdmin />} />
           <Route path="staff" element={<StaffAdmin />} />
-          <Route path="pethouse" >
+          <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
           </Route>
@@ -112,7 +114,7 @@ function App() {
           </Route>
 
           <Route path="pethouse" element={<PethouseAdmin />} />
-          
+
           <Route path="species">
             <Route index element={<SpeciesAdmin />} />
             <Route path="add" element={<AddSpecies />} />
