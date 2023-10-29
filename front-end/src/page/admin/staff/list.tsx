@@ -4,11 +4,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStaff } from "../../../schema/staff";
-import { useStaffQuery } from "../../../services/staff";
+import { useStaffQuery, useRemoveStaffMutation } from "../../../services/staff";
 import { PlusOutlined } from "@ant-design/icons";
 
 const StaffAdmin: React.FC = () => {
-  const confirm = () => {
+  const [removeStaff] = useRemoveStaffMutation();
+  const confirm = (id: number) => {
+    removeStaff(id);
     message.success("Xóa thành công.");
   };
 
@@ -43,7 +45,9 @@ const StaffAdmin: React.FC = () => {
           <Popconfirm
             title="Xóa nhân viên."
             description="Bạn có muốn xóa không?"
-            onConfirm={confirm}
+            onConfirm={() =>
+              staff.id !== undefined ? confirm(staff.id) : undefined
+            }
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"
