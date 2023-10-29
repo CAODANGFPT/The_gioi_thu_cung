@@ -28,12 +28,31 @@ const setTimeApi = createApi({
         },
         providesTags: ["SetTime"],
       }),
+      setTimeById: builder.query<TSetTimeAdd, number>({
+        query: (id) => {
+          return {
+            url: `/setTime/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["SetTime"],
+      }),
       createSetTime: builder.mutation<TSetTime, TSetTime>({
         query: (setTime) => ({
           url: `/settime`,
           method: "POST",
           body: setTime,
         }),
+        invalidatesTags: ["SetTime"],
+      }),
+      updateSetTime: builder.mutation<TSetTimeAdd, Partial<TSetTimeAdd>>({
+        query: (setTime) => {
+          return {
+            url: `/settime/${setTime.id}`,
+            method: "PUT",
+            body: setTime,
+          };
+        },
         invalidatesTags: ["SetTime"],
       }),
       removeSetTime: builder.mutation<TSetTimeAdd, number>({
@@ -49,6 +68,12 @@ const setTimeApi = createApi({
   },
 });
 
-export const { useSetTimeQuery, useCreateSetTimeMutation, useRemoveSetTimeMutation } = setTimeApi;
+export const {
+  useSetTimeQuery,
+  useSetTimeByIdQuery,
+  useCreateSetTimeMutation,
+  useUpdateSetTimeMutation,
+  useRemoveSetTimeMutation,
+} = setTimeApi;
 export const setTimeReducer = setTimeApi.reducer;
 export default setTimeApi;
