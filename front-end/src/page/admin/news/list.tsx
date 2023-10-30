@@ -6,6 +6,7 @@ import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
 import { useNewsQuery, useRemoveNewsMutation } from "../../../services/news";
 import { TNews } from "../../../schema/news";
+import { PlusOutlined } from "@ant-design/icons";
 const NewsAdmin: React.FC = () => {
   const [removeNews] = useRemoveNewsMutation();
   const confirm = (id: number) => {
@@ -85,7 +86,21 @@ const NewsAdmin: React.FC = () => {
   ];
 
   const { data } = useNewsQuery();
-  return <TableAdmin columns={columns} data={data} />;
+
+  return (
+    <div>
+      <Link to="/admin/news/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM BÀI ĐĂNG
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default NewsAdmin;
