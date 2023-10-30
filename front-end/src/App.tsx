@@ -65,6 +65,14 @@ function App() {
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
+          <Route path="account" element={<AccountPage />}>
+            <Route index element={<Account />} />
+            <Route path="address" element={<Address />} />
+            <Route path="payment" element={<Pay />} />
+            <Route path="his_follow" element={<Historyfollow />} />
+            <Route path="history" element={<History />} />
+            <Route path="follow" element={<Follow />} />
+          </Route>
         </Route>
 
         <Route path="/forgotPassword" element={<ForgotPassword />} />
@@ -72,15 +80,6 @@ function App() {
         <Route path="SignIn" element={<SignIn />} />
         <Route path="SignUp" element={<SignUp />} />
         <Route path="RegisterAccount" element={<RegisterAccount />} />
-
-        <Route path="/account" element={<AccountPage />}>
-          <Route index element={<Account />} />
-          <Route path="address" element={<Address />} />
-          <Route path="payment" element={<Pay />} />
-          <Route path="his_follow" element={<Historyfollow />} />
-          <Route path="history" element={<History />} />
-          <Route path="follow" element={<Follow />} />
-        </Route>
 
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />

@@ -1,22 +1,26 @@
+import User from "../../assets/image/user.png";
 import "../../assets/scss/layout/admin/modal.scss";
 import LogoutIcon from "../../assets/svg/logOut";
 import UserIcon from "../../assets/svg/userIcon";
+import { useGetUserQuery } from "../../services/user";
 
 type Props = {};
 
 const ModalUser = (props: Props) => {
+  const { data: user } = useGetUserQuery();
   return (
     <div className="model-user">
       <div className="model-user-title">
         <div className="model-user-title-image">
-          <img
-            src="https://sneat-vuetify-admin-template.vercel.app/assets/avatar-1-19a9226d.png"
-            alt=""
-          />
+          {user?.img ? (
+            <img src={user?.img} alt="user" />
+          ) : (
+            <img src={User} alt="user" />
+          )}
         </div>
         <div className="model-user-title-text">
-          <div className="name">John Doe</div>
-          <div className="role">Quản trị viên</div>
+          <div className="name">{user?.name}</div>
+          <div className="role">{user?.nameRole}</div>
         </div>
       </div>
       <hr />

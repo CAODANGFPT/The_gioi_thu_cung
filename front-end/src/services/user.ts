@@ -38,6 +38,15 @@ const userApi = createApi({
         },
         providesTags: ["User"],
       }),
+      getUser: builder.query<TUser, void>({
+        query: (id) => {
+          return {
+            url: `/getUser`,
+            method: "GET",
+          };
+        },
+        providesTags: ["User"],
+      }),
       resetPasswordUser: builder.mutation<
         TResetPasswordUserSchema,
         Partial<TResetPasswordUserSchema>
@@ -78,6 +87,7 @@ const userApi = createApi({
 export const {
   useUserQuery,
   useUserByIdQuery,
+  useGetUserQuery,
   useResetPasswordUserMutation,
   useUpdateBlockUserMutation,
   useUpdateRoleUserMutation

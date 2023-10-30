@@ -27,6 +27,19 @@ export default class User {
     });
   }
 
+  static getUser(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id WHERE users.id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results[0]);
+        }
+      );
+    });
+  }
+
   static checkEmailExists(email) {
     return new Promise((resolve, reject) => {
       const query = "SELECT * FROM users WHERE email = ?";

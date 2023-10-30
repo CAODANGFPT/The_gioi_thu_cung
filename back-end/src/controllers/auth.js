@@ -55,7 +55,6 @@ export const Login = async (req, res) => {
       expiresIn: "1d",
     });
     res.json({
-      user,
       accessToken,
     });
   } catch (err) {
