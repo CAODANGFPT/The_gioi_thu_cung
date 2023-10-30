@@ -4,11 +4,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
-import { useStatusQuery } from "../../../services/status";
+import {
+  useStatusQuery,
+  useRemoveStatusMutation,
+} from "../../../services/status";
 import { PlusOutlined } from "@ant-design/icons";
 
 const StatusAdmin: React.FC = () => {
-  const confirm = () => {
+  const [removeStatus] = useRemoveStatusMutation();
+  const confirm = (id: number) => {
+    removeStatus(id);
     message.success("Xóa thành công.");
   };
 
@@ -43,7 +48,9 @@ const StatusAdmin: React.FC = () => {
           <Popconfirm
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"
-            onConfirm={confirm}
+            onConfirm={() =>
+              status.id !== undefined ? confirm(status.id) : undefined
+            }
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"
