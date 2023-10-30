@@ -4,16 +4,19 @@ import SearchIcon from "../../assets/svg/searchIcon";
 import UserIcon from "../../assets/svg/userIcon";
 import HeartIcon from "../../assets/svg/heartIcon";
 import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MenuIcon from "../../assets/svg/menuIcon";
 import { useEffect, useState } from "react";
 import RightIcon from "../../assets/svg/rightIcon";
+import { useGetUserQuery } from "../../services/user";
+import User from "../../assets/image/user.png";
 
 const HeaderBase = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [isWideScreen, setIsWideScreen] = useState(false);
-
-  const location = useLocation();
 
   useEffect(() => {
     setOpenMenu(false);
@@ -47,7 +50,7 @@ const HeaderBase = () => {
         <p className="frame32-title">Theo dõi đơn hàng</p>
         <p className="frame32-title">Về chúng tôi</p>
         <p className="frame32-title">Bản tin</p>
-        <p className="frame32-title">Đăng ký</p>
+        <p className="frame32-title">Đăng nhập</p>
       </div>
       <div className="nav">
         <div className="menu" onClick={() => setOpenMenu(!openMenu)}>
@@ -83,13 +86,13 @@ const HeaderBase = () => {
         </form>
         <div className="frame51">
           <div className="frame5">
-            <UserIcon />
+            {user?.img ? <img src={user?.img} alt="user" /> : <UserIcon />}
           </div>
           <div className="frame5">
             <HeartIcon />
             <div className="group13">0</div>
           </div>
-          <div className="frame5">
+          <div onClick={() => navigate("account")} className="frame5">
             <ShoppingCartIcon />
             <div className="group13">0</div>
           </div>
@@ -139,31 +142,31 @@ const HeaderBase = () => {
         <ul className="menu">
           <li className="menu-title">
             <Link className="title1" to={""}>
-            PHỤ KIỆN MÈO
+              PHỤ KIỆN MÈO
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
             <Link className="title1" to={""}>
-             THỨC ĂN CHO MÈO
+              THỨC ĂN CHO MÈO
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
             <Link className="title1" to={""}>
-             NỘI THẤT MÈO
+              NỘI THẤT MÈO
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
             <Link className="title1" to={""}>
-             NHÀ CHO MÈO
+              NHÀ CHO MÈO
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
             <Link className="title1" to={""}>
-            MÁY ĂN CHO MÈO
+              MÁY ĂN CHO MÈO
             </Link>
             <RightIcon />
           </li>

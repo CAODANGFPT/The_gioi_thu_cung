@@ -4,8 +4,9 @@ import { navigationLinks } from "../../assets/data/data";
 import "../../assets/scss/layout/admin/sidebar.scss";
 import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Sidebar = () => {
+  const navigate = useNavigate()
   const [activeLinkIdx, setActiveLinkIdx] = useState(1);
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
@@ -32,7 +33,7 @@ const Sidebar = () => {
   return (
     <div className={`sidebar ${sidebarClass}`}>
       <div className="user-info">
-        <img src={logo} alt="profileimage" />
+        <img onClick={() => navigate('/')} style={{cursor: 'pointer'}} src={logo} alt="profileImage" />
       </div>
 
       <nav className="nav">
