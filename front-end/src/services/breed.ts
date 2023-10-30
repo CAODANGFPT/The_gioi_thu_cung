@@ -47,12 +47,20 @@ const breedApi = createApi({
         },
         invalidatesTags: ["Breed"],
       }),
-    
+    removeBreed: builder.mutation<TBreed, number>({
+        query: (id) => {
+          return {
+            url: `/breed/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Breed"],
+      }),
     };
     
   },
 });
 
-export const { useBreedQuery, useGetBreedByIdQuery, useUpdateBreedMutation } = breedApi;
+export const { useBreedQuery, useGetBreedByIdQuery, useUpdateBreedMutation, useRemoveBreedMutation } = breedApi;
 export const breedReducer = breedApi.reducer;
 export default breedApi;
