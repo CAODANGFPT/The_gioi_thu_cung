@@ -12,7 +12,7 @@ import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status/list";

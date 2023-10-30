@@ -1,17 +1,11 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import TableAdmin from "../../../components/table";
 import { TAppointment } from "../../../schema/appointments";
 import dayjs from "dayjs";
 import { useGetAllappointmentDataQuery } from "../../../services/appointments";
-const confirm = () => {
-  message.success("Xóa thành công.");
-};
-
-const cancel = () => {
-  message.error("Xóa không thành công.");
-};
+import { Navigate } from "react-router-dom";
 
 const columns: ColumnsType<TAppointment> = [
   {
@@ -52,35 +46,37 @@ const columns: ColumnsType<TAppointment> = [
     width: 150,
   },
   {
-    title: "Thời gian bắt đầu",
-    dataIndex: "start_time",
-    key: "settime_start",
+    title: "Ca trực",
+    dataIndex: "settime_name",
+    key: "settime_name",
     width: 150,
   },
   {
-    title: "Thời gian kết thúc",
-    dataIndex: "end_time",
-    key: "settime_end",
+    title: "Thời gian Ca",
+    key: "settime",
     width: 150,
+    render: (setTime) => (
+      <>
+        {setTime.start_time && setTime.end_time ? (
+          <div>
+            ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -{" "}
+            {dayjs(setTime.end_time, "HH:mm:ss").format("HH:mm")})
+          </div>
+        ) : (
+          <div>null</div>
+        )}
+      </>
+    ),
   },
   {
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (Appointment: TAppointment) => (
+    render: (id) => (
       <div>
-        <Popconfirm
-          title="Xóa trạng thái."
-          description="Bạn có muốn xóa không?"
-          onConfirm={confirm}
-          onCancel={cancel}
-          okText="Đồng ý"
-          cancelText="Không"
-        >
-          <Button danger className="btn-delete">
-            Xóa
-          </Button>
-        </Popconfirm>
+        <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+          Sửa
+        </Button>
       </div>
     ),
   },
