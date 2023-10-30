@@ -28,3 +28,11 @@ export type TBreed = yup.InferType<typeof BreedSchema>;
 export type BreedResponse = yup.InferType<typeof BreedResponseSchema>;
 
 export type BreedError = yup.InferType<typeof BreedErrorSchema>;
+
+export const BreedAddSchema = yup.object().shape({
+  id: yup.number(),
+  name: yup.string(),
+  species_id: yup.string(),
+});
+
+export type TBreedAdd = yup.InferType<typeof BreedAddSchema>;
