@@ -5,8 +5,8 @@ export const NewsSchema = yup.object().shape({
   img: yup.string(),
   title: yup.string(),
   description: yup.string(),
-  created_at: yup.date(),
-  nameUser: yup.number(),
+  created_at: yup.string(),
+  user_id: yup.number(),
 });
 
 export const NewsRequestSchema = yup.object().shape({
@@ -14,8 +14,8 @@ export const NewsRequestSchema = yup.object().shape({
   img: yup.string(),
   title: yup.string(),
   description: yup.string(),
-  created_at: yup.date(),
-  nameUser: yup.number(),
+  created_at: yup.string(),
+  user_id: yup.number(),
 });
 
 export const NewsResponseSchema = yup.object().shape({
@@ -23,8 +23,8 @@ export const NewsResponseSchema = yup.object().shape({
   img: yup.string(),
   title: yup.string(),
   description: yup.string(),
-  created_at: yup.date(),
-  nameUser: yup.number(),
+  created_at: yup.string(),
+  user_id: yup.number(),
 });
 
 export const NewsErrorSchema = yup.object({});
