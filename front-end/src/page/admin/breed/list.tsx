@@ -1,11 +1,13 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { PlusOutlined } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TBreed } from "../../../schema/breed";
 import { useBreedQuery, useRemoveBreedMutation } from "../../../services/breed";
 const BreedAdmin: React.FC = () => {
+  const navigate = useNavigate();
   const [removeBreed] = useRemoveBreedMutation();
   const confirm = (id: number) => {
     removeBreed(id);
@@ -66,7 +68,19 @@ const BreedAdmin: React.FC = () => {
   ];
 
   const { data } = useBreedQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <>
+      <Button
+        type="primary"
+        onClick={() => navigate("add")}
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM GIỐNG
+      </Button>
+      <TableAdmin columns={columns} data={data} />;
+    </>
+  );
 };
 
 export default BreedAdmin;
