@@ -25,7 +25,8 @@ export default class Appointments {
       connection.query(
         "SELECT appointments.id, appointments.day, pets.name AS pet_name, " +
           "services.name_service AS service_name, users.email AS user_email, " +
-          "pethouse.name AS pethouse_name, settime.name AS settime_name, settime.time " +
+          "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
+          "settime.start_time, settime.end_time " +
           "FROM appointments " +
           "JOIN pets ON appointments.pet_id = pets.id " +
           "JOIN services ON appointments.services_id = services.id " +

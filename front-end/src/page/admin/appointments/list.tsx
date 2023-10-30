@@ -52,15 +52,15 @@ const columns: ColumnsType<TAppointment> = [
     width: 150,
   },
   {
-    title: "Ca Trực",
-    dataIndex: "settime_name",
-    key: "settime_name",
+    title: "Thời gian bắt đầu",
+    dataIndex: "start_time",
+    key: "settime_start",
     width: 150,
   },
   {
-    title: "Thời gian ca",
-    dataIndex: "time",
-    key: "settime_time",
+    title: "Thời gian kết thúc",
+    dataIndex: "end_time",
+    key: "settime_end",
     width: 150,
   },
   {
