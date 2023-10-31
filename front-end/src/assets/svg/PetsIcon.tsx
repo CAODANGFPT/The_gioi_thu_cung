@@ -12,11 +12,11 @@ const PetIcon = () => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 128 128"
       >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g
           id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         ></g>
         <g id="SVGRepo_iconCarrier">
           <polygon points="74.1,51.5 4.3,18.4 4.3,11.8 76.4,46.3 "></polygon>
