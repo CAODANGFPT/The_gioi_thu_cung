@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import User from "../models/user";
 import { signinSchema, signupSchema } from "../schemas/auth";
 import bcrypt from "bcryptjs";
@@ -55,7 +56,8 @@ export const Login = async (req, res) => {
       expiresIn: "1d",
     });
     res.json({
-      accessToken,
+      user,
+      accessToken
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
