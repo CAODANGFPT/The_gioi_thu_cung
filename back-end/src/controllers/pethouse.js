@@ -25,7 +25,7 @@ export const showById = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { name, status_id } = req.body;
+    const { name, quantity_pethouse, still_empty } = req.body;
     const { error } = pethouseSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -33,7 +33,7 @@ export const create = async (req, res) => {
         message: errors,
       });
     }
-    const pethouseId = await Pethouse.createPethouse(name, status_id);
+    const pethouseId = await Pethouse.createPethouse(name, quantity_pethouse, still_empty);
     res.json({ id: pethouseId });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -42,7 +42,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name, status_id } = req.body;
+    const { name, quantity_pethouse, still_empty } = req.body;
     const { error } = pethouseSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -54,7 +54,7 @@ export const update = async (req, res) => {
     if (!existingPethouse) {
       return res.status(404).json({ error: "Pethouse không tồn tại" });
     }
-    await Pethouse.updatePethouse(req.params.id, name, status_id);
+    await Pethouse.updatePethouse(req.params.id, name, quantity_pethouse, still_empty);
     res.json({ message: "Cập nhập thông tin pethouse thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
