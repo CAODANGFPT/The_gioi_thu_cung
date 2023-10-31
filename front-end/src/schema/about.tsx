@@ -2,17 +2,20 @@ import * as yup from "yup";
 
 export const AboutSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  image: yup.string(),
+  description: yup.string(),
 });
 
 export const AboutRequestSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  image: yup.string(),
+  description: yup.string(),
 });
 
 export const AboutResponseSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  image: yup.string(),
+  description: yup.string(),
 });
 
 export const AboutErrorSchema = yup.object({});

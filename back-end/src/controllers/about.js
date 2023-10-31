@@ -43,7 +43,7 @@ export const add = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { image, description } = req.body;
     const { error } = aboutSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -51,7 +51,7 @@ export const update = async (req, res) => {
         message: errors,
       });
     }
-    await About.updateAbout(req.params.id, name);
+    await About.updateAbout(req.params.id, image, description);
     res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

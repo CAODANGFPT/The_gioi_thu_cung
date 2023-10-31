@@ -59,6 +59,7 @@ import AddSetTime from "./page/admin/setTime/add";
 import EditSetTime from "./page/admin/setTime/edit";
 import AddNews from "./page/admin/news/add";
 import AddAbout from "./page/admin/about/add";
+import EditAbout from "./page/admin/about/edit";
 
 function App() {
   return (
@@ -99,7 +100,7 @@ function App() {
           <Route path="about">
             <Route index element={<AboutAdmin />} />
             <Route path="add" element={<AddAbout />} />
-            {/* <Route path="edit/:id" element={<EditStatus />} /> */}
+            <Route path="edit/:id" element={<EditAbout />} />
           </Route>
 
           <Route path="services" element={<ServicesAdmin />} />
