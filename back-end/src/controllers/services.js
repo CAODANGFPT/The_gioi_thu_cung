@@ -47,7 +47,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name_service, description, price } = req.body;
+    const { name, description, price } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -63,7 +63,7 @@ export const update = async (req, res) => {
       return res.status(404).json({ error: "Service không tồn tại" });
     }
 
-    await Services.updateServices(serviceId, name_service, description, price);
+    await Services.updateServices(serviceId, name, description, price);
     res.json({ message: "Dịch vụ đã được cập nhật thành công" });
   } catch (err) {
     // Log the error for debugging purposes

@@ -61,6 +61,7 @@ import AddNews from "./page/admin/news/add";
 import AddAbout from "./page/admin/about/add";
 import EditAbout from "./page/admin/about/edit";
 import AddBreed from "./page/admin/breed/add";
+import EditService from "./page/admin/services/edit";
 
 function App() {
   return (
@@ -104,8 +105,6 @@ function App() {
             <Route path="edit/:id" element={<EditAbout />} />
           </Route>
 
-          <Route path="services" element={<ServicesAdmin />} />
-
           <Route path="user">
             <Route index element={<UserAdmin />} />
             <Route path="edit/:id" element={<EditUser />} />
@@ -114,6 +113,8 @@ function App() {
           <Route path="services">
             <Route index element={<ServicesAdmin />} />
             <Route path="add" element={<AddService />} />
+            <Route path="edit/:id" element={<EditService />} />
+
           </Route>
 
           <Route path="user" element={<UserAdmin />} />

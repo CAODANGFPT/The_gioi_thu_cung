@@ -28,10 +28,16 @@ const servicesApi = createApi({
         },
         providesTags: ["Services"],
       }),
-      addServices: builder.mutation<
-        TServicesRequest,
-        Partial<TServicesRequest>
-      >({
+      servicesById: builder.query<TServicesRequest, number>({
+        query: (id) => {
+          return {
+            url: `/services/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Services"],
+      }),
+      addServices: builder.mutation<TServicesRequest, Partial<TServicesRequest>>({
         query: (services) => {
           return {
             url: "/services",
@@ -41,10 +47,20 @@ const servicesApi = createApi({
         },
         invalidatesTags: ["Services"],
       }),
+      updateServices: builder.mutation<TServicesRequest, Partial<TServicesRequest>>({
+        query: (services) => {
+          return {
+            url: `/services/${services.id}`,
+            method: "PUT",
+            body: services,
+          };
+        },
+        invalidatesTags: ["Services"],
+      }),
     };
   },
 });
 
-export const { useServicesQuery, useAddServicesMutation } = servicesApi;
+export const { useServicesQuery, useAddServicesMutation, useServicesByIdQuery, useUpdateServicesMutation } = servicesApi;
 export const servicesReducer = servicesApi.reducer;
 export default servicesApi;

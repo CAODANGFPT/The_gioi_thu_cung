@@ -18,7 +18,7 @@ import { TBreed } from "../../../schema/breed";
 type FormData = {
   pet_type: Tspecies;
   breed_type: TBreed;
-  service: TServices;
+  service: any;
   staff: TStaff;
   petHouse: TpetHouse;
   time: TSetTime;
@@ -27,7 +27,7 @@ type FormData = {
 const INITIAL_DATA: FormData = {
   pet_type: { id: 0, name: "" },
   breed_type: { id: 0, name: "" },
-  service: { id: 0, name_service: "" },
+  service: { id: 0, name: "" },
   staff: { id: 0, name: "" },
   petHouse: { id: 0, name: "" },
   time: { id: 0, name: "", time: "" },
