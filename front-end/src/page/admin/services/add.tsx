@@ -6,7 +6,8 @@ import { useAddServicesMutation } from "../../../services/services";
 import { TServicesRequest } from "../../../schema/services";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import "../../../assets/scss/page/servicesAdmin.scss"
+import "../../../assets/scss/page/servicesAdmin.scss";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 const AddService = () => {
   const [image, setImage] = useState<any | null>(null);
   const [value, setValue] = useState("");
@@ -31,7 +32,7 @@ const AddService = () => {
     };
     try {
       console.log(servicesData);
-      
+
       await addServices(servicesData).unwrap();
       message.success("Product added successfully");
       reset();
@@ -44,6 +45,12 @@ const AddService = () => {
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
   };
+  const uploadButton = (
+    <div>
+      {isAddLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
   return (
     <>
       <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
@@ -59,18 +66,14 @@ const AddService = () => {
           layout="vertical"
         >
           <Form.Item
-            label={
-              <span className="">Tên dịch vụ</span>  
-            }
+            label={<span className="">Tên dịch vụ</span>}
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
           </Form.Item>
           <Form.Item
-            label={
-              <span className="">Ảnh danh mục</span>
-            }
+            label={<span className="">Ảnh danh mục</span>}
             name="picture-card"
             rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
           >
@@ -81,35 +84,17 @@ const AddService = () => {
                 upload_preset: "wh3rdke8",
                 cloud_name: "dksgvucji",
               }}
+              listType="picture-card"
+              maxCount={1}
               showUploadList={false}
               className="ant-upload-wrapper ant-upload-select"
               onChange={handleImageChange}
             >
-              <label
-                htmlFor="images"
-                className="w-full drop-container"
-                id="dropcontainer"
-              >
-                <div
-                  className={
-                    !image
-                      ? "imgeBlog"
-                      : "imgeHidden"
-                  }
-                >
-                  <span className="drop-title">Thả tập tin ở đây</span>
-                  <p>hoặc</p>
-                  <Button>Tải lên</Button>
-                </div>
-                {image && (
-                  <label
-                    htmlFor="images"
-                    className="flex items-center justify-center w-full h-full cursor-pointer"
-                  >
-                    <img className="w-auto h-full" src={image} alt="Selected" />
-                  </label>
-                )}
-              </label>
+              {image ? (
+                <img src={image} alt="avatar" style={{ width: "100%" }} />
+              ) : (
+                uploadButton
+              )}
             </Upload>
           </Form.Item>
           <Form.Item
