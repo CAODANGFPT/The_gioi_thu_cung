@@ -7,7 +7,7 @@ import breedRouter from "./routers/breed";
 import petRouter from "./routers/pet";
 import pethouseRouter from "./routers/pethouse";
 import roleRouter from "./routers/role";
-import statusRouter from "./routers/status";
+import statusRouter from "./routers/status_appointment";
 import contactRouter from "./routers/contact";
 import profileRouter from "./routers/profile";
 import aboutRouter from "./routers/about";

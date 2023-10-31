@@ -1,20 +1,26 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
 import {
+  useRemoveStatusAppointmentMutation,
   useStatusQuery,
-  useRemoveStatusMutation,
-} from "../../../services/status";
-import { PlusOutlined } from "@ant-design/icons";
+} from "../../../services/status_appointment";
 
 const StatusAdmin: React.FC = () => {
-  const [removeStatus] = useRemoveStatusMutation();
-  const confirm = (id: number) => {
-    removeStatus(id);
-    message.success("Xóa thành công.");
+  const navigator = useNavigate();
+  const { data } = useStatusQuery();
+  const [removeStatusAppointment] = useRemoveStatusAppointmentMutation();
+  const confirm = async(id: number) => {
+    try {
+      await removeStatusAppointment(id);
+      message.success("Xóa thành công.");
+    } catch (error) {
+      message.success("Xóa không thành công.");
+    }
   };
 
   const cancel = () => {
@@ -36,11 +42,12 @@ const StatusAdmin: React.FC = () => {
     },
     {
       title: "Thao tác",
+      dataIndex: "id",
       key: "action",
       width: 100,
-      render: (status: TStatus) => (
+      render: (id: number) => (
         <div>
-          <Link to={`edit/${status.id}`}>
+          <Link to={`edit/${id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
@@ -48,9 +55,7 @@ const StatusAdmin: React.FC = () => {
           <Popconfirm
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"
-            onConfirm={() =>
-              status.id !== undefined ? confirm(status.id) : undefined
-            }
+            onConfirm={() => confirm(id)}
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"
@@ -64,18 +69,16 @@ const StatusAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useStatusQuery();
   return (
     <div>
-      <Link to="/admin/status/add">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
-        >
-          THÊM TRẠNG THÁI
-        </Button>
-      </Link>
+      <Button
+        onClick={() => navigator("add")}
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM TRẠNG THÁI
+      </Button>
       <TableAdmin columns={columns} data={data} />
     </div>
   );

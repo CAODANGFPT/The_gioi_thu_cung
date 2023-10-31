@@ -37,11 +37,14 @@ const statusContactApi = createApi({
         providesTags: ["Status_contact"],
       }),
 
-      createStatusContact: builder.mutation<TStatusContact[], Partial<TStatusContact>>({
+      createStatusContact: builder.mutation<
+        TStatusContact[],
+        Partial<TStatusContact>
+      >({
         query: (status) => ({
           url: "/status_contact",
           method: "POST",
-          body: status, 
+          body: status,
         }),
         invalidatesTags: ["Status_contact"],
       }),
@@ -54,10 +57,23 @@ const statusContactApi = createApi({
         }),
         invalidatesTags: ["Status_contact"],
       }),
+      removeStatusContact: builder.mutation<TStatusContact, number>({
+        query: (id) => ({
+          url: `/status_contact/${id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["Status_contact"],
+      }),
     };
   },
 });
 
-export const { useGetAllstatusContactQuery , useCreateStatusContactMutation , useUpdateStatusContactMutation, useGetStatusContactByIdQuery} = statusContactApi;
+export const {
+  useGetAllstatusContactQuery,
+  useCreateStatusContactMutation,
+  useUpdateStatusContactMutation,
+  useGetStatusContactByIdQuery,
+  useRemoveStatusContactMutation,
+} = statusContactApi;
 export const statusContactReducer = statusContactApi.reducer;
 export default statusContactApi;
