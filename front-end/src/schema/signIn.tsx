@@ -17,7 +17,7 @@ export const SignInRequestSchema = yup.object().shape({
 });
 
 export const SignInResponseSchema = yup.object().shape({
-    access: yup.string().required(),
+  accessToken: yup.string().required(),
     user: yup.object().shape({
       address: yup.string().required(),
       email: yup.string().required(),
