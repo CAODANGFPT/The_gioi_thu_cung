@@ -4,85 +4,103 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
-import { useNewsQuery } from "../../../services/news";
-
-const confirm = () => {
-  message.success("Xóa thành công.");
-};
-
-const cancel = () => {
-  message.error("Xóa không thành công.");
-};
-
-const columns: ColumnsType<TContact> = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-    width: 50,
-  },
-  {
-    title: "Ảnh",
-    dataIndex: "img",
-    key: "img",
-    width: 130,
-    render: (img) => <Image width={100} src={img} />,
-  },
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-    width: 150,
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-    width: 150,
-  },
-  {
-    title: "Created_At",
-    dataIndex: "created_at",
-    key: "created_at",
-    width: 150,
-  },
-  {
-    title: "User_ID",
-    dataIndex: "nameUser",
-    key: "nameUser",
-    width: 150,
-  },
-  {
-    title: "Thao tác",
-    key: "action",
-    width: 150,
-    render: (id) => (
-      <div>
-        <Link to="URL">
-          <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-            Sửa
-          </Button>
-        </Link>
-        <Popconfirm
-          title="Xóa trạng thái."
-          description="Bạn có muốn xóa không?"
-          onConfirm={confirm}
-          onCancel={cancel}
-          okText="Đồng ý"
-          cancelText="Không"
-        >
-          <Button danger className="btn-delete">
-            Xóa
-          </Button>
-        </Popconfirm>
-      </div>
-    ),
-  },
-];
-
+import { useNewsQuery, useRemoveNewsMutation } from "../../../services/news";
+import { TNews } from "../../../schema/news";
+import { PlusOutlined } from "@ant-design/icons";
 const NewsAdmin: React.FC = () => {
+  const [removeNews] = useRemoveNewsMutation();
+  const confirm = (id: number) => {
+    removeNews(id);
+    message.success("Xóa thành công.");
+  };
+  const cancel = () => {
+    message.error("Xóa không thành công.");
+  };
+
+  const columns: ColumnsType<TContact> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      width: 50,
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "img",
+      key: "img",
+      width: 130,
+      render: (img) => <Image width={100} src={img} />,
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      width: 150,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      width: 150,
+    },
+    {
+      title: "Created_At",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 150,
+    },
+    {
+      title: "User_ID",
+      dataIndex: "nameUser",
+      key: "nameUser",
+      width: 150,
+    },
+    {
+      title: "Thao tác",
+      key: "action",
+      width: 150,
+      render: (data: TNews) => (
+        <div>
+          <Link to="URL">
+            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+              Sửa
+            </Button>
+          </Link>
+          <Popconfirm
+            title="Xóa trạng thái."
+            description="Bạn có muốn xóa không?"
+            onConfirm={() =>
+              data.id !== undefined ? confirm(data.id) : undefined
+            }
+            onCancel={cancel}
+            okText="Đồng ý"
+            cancelText="Không"
+          >
+            <Button danger className="btn-delete">
+              Xóa
+            </Button>
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ];
+
   const { data } = useNewsQuery();
-  return <TableAdmin columns={columns} data={data} />;
+
+  return (
+    <div>
+      <Link to="/admin/news/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM BÀI ĐĂNG
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default NewsAdmin;

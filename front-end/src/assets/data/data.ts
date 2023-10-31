@@ -11,6 +11,7 @@ import ReportIcon from "./../svg/reportIcon";
 import PetIcon from "../svg/PetsIcon";
 import NewIcon from "../svg/newIcon";
 import ProfileIcon from "../svg/profileIcon";
+import AppoinmentIcon from "../svg/appoinmentIcon";
 export const navigationLinks = [
   { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "Status", image: StatusIcon, link: "status" },
@@ -29,6 +30,8 @@ export const navigationLinks = [
   { id: 15, title: "Pets", image: PetIcon, link: "pets" },
   { id: 16, title: "StatusContact", image: StatusIcon, link: "status_contact" },
   { id: 17, title: "About", image: StatusIcon, link: "about" },
+  { id: 18, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
+
 ];
 
 export const transactions = [

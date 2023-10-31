@@ -56,10 +56,19 @@ const staffApi = createApi({
         }),
         invalidatesTags: ["Staff"],
     }),
+      removeStaff: builder.mutation<TStaff, number>({
+        query: (id) => {
+          return {
+            url: `/staff/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Staff"],
+      }),
     };
   },
 });
 
-export const { useStaffQuery, useCreateStaffMutation, useUpdateStaffMutation, useGetStaffByIdQuery } = staffApi;
+export const { useStaffQuery, useCreateStaffMutation, useUpdateStaffMutation, useGetStaffByIdQuery, useRemoveStaffMutation } = staffApi;
 export const staffReducer = staffApi.reducer;
 export default staffApi;

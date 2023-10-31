@@ -39,7 +39,7 @@ const aboutApi = createApi({
         providesTags: ["About"],
       }),
       
-      createAbout: builder.mutation<TAbout[], Partial<TAbout>>({
+      addAbout: builder.mutation<TAbout[], Partial<TAbout>>({
         query: (aboutData) => ({
           url: "/about",
           method: "POST",
@@ -61,6 +61,6 @@ const aboutApi = createApi({
   },
 });
 
-export const { useAboutQuery, useCreateAboutMutation, useUpdateAboutMutation, useGetAboutByIdQuery } = aboutApi;
+export const { useAboutQuery, useAddAboutMutation, useUpdateAboutMutation, useGetAboutByIdQuery } = aboutApi;
 export const aboutReducer = aboutApi.reducer;
 export default aboutApi;

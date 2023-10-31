@@ -56,11 +56,19 @@ const statusApi = createApi({
         }),
         invalidatesTags: ["Status"],
     }),
-
+     removeStatus: builder.mutation<TStatus, number>({
+        query: (id) => {
+          return {
+            url: `/status/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Status"],
+      }),
     };
   },
 });
 
-export const { useStatusQuery, useCreateStatusMutation, useUpdateStatusMutation, useGetStatusByIdQuery } = statusApi;
+export const { useStatusQuery, useCreateStatusMutation, useUpdateStatusMutation, useGetStatusByIdQuery, useRemoveStatusMutation } = statusApi;
 export const statusReducer = statusApi.reducer;
 export default statusApi;

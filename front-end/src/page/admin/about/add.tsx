@@ -1,54 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import type { FormInstance } from "antd";
 import { Button, Form, Input, Space, message } from "antd";
-import {
-  useCreateStatusMutation,
-  useStatusQuery,
-} from "../../../services/status";
+import { useAddAboutMutation, useAboutQuery } from "../../../services/about";
+import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 
-const SubmitButton = ({ form }: { form: FormInstance }) => {
-  const [submittable, setSubmittable] = React.useState(false);
+const AddAbout: React.FC = () => {
+  const SubmitButton = ({ form }: { form: FormInstance }) => {
+    const [submittable, setSubmittable] = React.useState(false);
 
-  const values = Form.useWatch([], form);
+    const values = Form.useWatch([], form);
 
-  React.useEffect(() => {
-    form.validateFields({ validateOnly: true }).then(
-      () => {
-        setSubmittable(true);
-      },
-      () => {
-        setSubmittable(false);
-      }
+    React.useEffect(() => {
+      form.validateFields({ validateOnly: true }).then(
+        () => {
+          setSubmittable(true);
+        },
+        () => {
+          setSubmittable(false);
+        }
+      );
+    }, [form, values]);
+
+    return (
+      <Button type="primary" htmlType="submit" disabled={!submittable}>
+        Submit
+      </Button>
     );
-  }, [form, values]);
+  };
+  const [value, setValue] = useState("");
 
-  return (
-    <Button type="primary" htmlType="submit" disabled={!submittable}>
-      Submit
-    </Button>
-  );
-};
-
-const AddStatusAdmin: React.FC = () => {
   const [form] = Form.useForm();
 
-  const [createStatus] = useCreateStatusMutation();
+  const [createAbout] = useAddAboutMutation();
 
   const navigate = useNavigate();
 
-  const { refetch } = useStatusQuery();
+  const { refetch } = useAboutQuery();
 
   const handleFormSubmit = async (values: any) => {
     try {
-      await createStatus(values);
-      message.success("Trạng thái đã được thêm thành công.");
+      await createAbout(values);
+      message.success("About đã được thêm thành công.");
 
       refetch();
 
-      navigate("/admin/status");
+      navigate("/admin/about");
     } catch (error: any) {
-      message.error("Lỗi khi thêm trạng thái: " + error.message);
+      message.error("Lỗi khi thêm About: " + error.message);
     }
   };
 
@@ -60,12 +59,25 @@ const AddStatusAdmin: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      {/* <Form.Item name="id" label="ID">
-        <Input disabled />
-      </Form.Item> */}
-
-      <Form.Item name="name" label="Trạng thái" rules={[{ required: true }]}>
+      <Form.Item
+        name="image"
+        label="Ảnh"
+        rules={[{ required: true, message: "Vui lòng nhập image!" }]}
+      >
         <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="description"
+        label="Mô tả"
+        rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+      >
+        <ReactQuill
+          style={{ height: 500 }}
+          theme="snow"
+          value={value}
+          onChange={setValue}
+        />
       </Form.Item>
 
       <Form.Item>
@@ -78,4 +90,4 @@ const AddStatusAdmin: React.FC = () => {
   );
 };
 
-export default AddStatusAdmin;
+export default AddAbout;

@@ -60,7 +60,7 @@ export const update = async (req, res) => {
 
 export const remote = async (req, res) => {
   try {
-    await Staff.removeStatus(req.params.id);
+    await Staff.removeStaff(req.params.id);
     res.json({ message: "Xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

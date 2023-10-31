@@ -26,7 +26,7 @@ export const getById = async (req, res) => {
 
 export const add = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, start_time, end_time } = req.body;
     const { error } = setTimeSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -34,7 +34,7 @@ export const add = async (req, res) => {
         message: errors,
       });
     }
-    const setSetTime = await SetTime.addSetTime(name);
+    const setSetTime = await SetTime.addSetTime(name, start_time, end_time);
     res.json({ id: setSetTime });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -43,7 +43,7 @@ export const add = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, start_time, end_time } = req.body;
     const { error } = setTimeSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -51,7 +51,7 @@ export const update = async (req, res) => {
         message: errors,
       });
     }
-    await SetTime.updateSetTime(req.params.id, name);
+    await SetTime.updateSetTime(req.params.id, name, start_time, end_time);
     res.json({ message: "Sửa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

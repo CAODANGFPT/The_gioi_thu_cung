@@ -23,7 +23,7 @@ const AboutAdmin: React.FC = () => {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      width: 150,
+      width: 50,
     },
     {
       title: "Ảnh",
@@ -41,7 +41,7 @@ const AboutAdmin: React.FC = () => {
     {
       title: "Thao tác",
       key: "action",
-      width: 100,
+      width: 150,
       render: (about: TAbout) => (
         <div>
           <Link to={`edit/${about.id}`}>

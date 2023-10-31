@@ -6,6 +6,16 @@ const profileApi = createApi({
   tagTypes: ["Profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+      prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -16,11 +26,21 @@ const profileApi = createApi({
             method: "GET",
           };
         },
+             providesTags: ["Profile"],
+      }),
+       removeProfile: builder.mutation<TProfile, number>({
+        query: (id) => {
+          return {
+            url: `/profile/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Profile"],
       }),
     };
   },
 });
 
-export const { useProfileQuery } = profileApi;
+export const { useProfileQuery, useRemoveProfileMutation } = profileApi;
 export const profileReducer = profileApi.reducer;
 export default profileApi;

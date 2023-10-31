@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user";
+import jwt from "jsonwebtoken";
 
 export const list = async (req, res) => {
   try {
@@ -73,5 +74,25 @@ export const getById = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      res.json(user);
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
   }
 };

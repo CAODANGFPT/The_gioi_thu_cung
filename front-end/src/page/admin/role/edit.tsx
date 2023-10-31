@@ -1,52 +1,45 @@
 import { useNavigate, useParams } from "react-router-dom";
+
 import { Button, Form, Input, message } from "antd";
+import { TRole } from "../../../schema/role";
 import {
-  useUpdatePetHouseMutation,
-  usePetHouseByIdQuery,
-} from "../../../services/pethouse";
-import { TpetHouse } from "../../../schema/pethouse";
+  useRoleByIdQuery,
+  useUpdateRoleMutation,
+} from "../../../services/role";
 import { useEffect } from "react";
 
 const confirm = () => {
-  message.success("Cập nhật trạng thái thành công.");
+  message.success("Cập nhật thành công.");
 };
 
 const cancel = () => {
-  message.error("Cập nhật trạng thái không thành công.");
+  message.error("Cập nhật không công.");
 };
 
-const EditPetHouse = () => {
+const EditRole = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const pethouse = usePetHouseByIdQuery(Number(id));
+  const role = useRoleByIdQuery(Number(id));
   const [form] = Form.useForm();
 
-  const [updatePetHouseMutation, { reset }] = useUpdatePetHouseMutation();
+  const [updateRoleMutation, { reset }] = useUpdateRoleMutation();
 
   useEffect(() => {
-    if (pethouse.data) {
-      form.setFieldsValue({
-        name: pethouse.data.name,
-      });
-    }
-  }, [pethouse.data, form]);
+    form.setFieldsValue({
+      id: role.data?.id,
+      name: role.data?.name,
+    });
+  }, [form, role.data?.id, role.data?.name]);
 
-  const onFinish = async (values: { name: string }) => {
+  const onFinish = async (values: TRole) => {
     try {
-      const updatedPetHouse: TpetHouse = {
-        id: Number(id),
-        name: values.name,
-      };
-      await updatePetHouseMutation(updatedPetHouse).unwrap();
+      await updateRoleMutation(values).unwrap();
       confirm();
-
       reset();
-
-      navigate("/admin/pethouse");
+      navigate("/admin/role");
     } catch (error) {
-      console.log(error);
       cancel();
-      console.error("Error updating stauts:", error);
+      console.error("Lỗi cập nhật vai trò:", error);
       reset();
     }
   };
@@ -58,20 +51,23 @@ const EditPetHouse = () => {
   return (
     <>
       <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật phòng _ {id}
+        Cập nhật vai trò
       </h1>
       <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
         <Form
           form={form}
+          name="updateRoleForm"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           layout="vertical"
         >
+          <Form.Item name="id" label="ID">
+            <Input disabled />
+          </Form.Item>
           <Form.Item
-            label="Trạng thái"
             name="name"
-            rules={[{ required: true, message: "Vui lòng nhập phòng" }]}
-            initialValue={pethouse.data ? pethouse.data.name : ""}
+            label="Trạng thái"
+            rules={[{ required: true, message: "Vui lòng nhập tên vài trò!" }]}
           >
             <Input />
           </Form.Item>
@@ -86,4 +82,4 @@ const EditPetHouse = () => {
   );
 };
 
-export default EditPetHouse;
+export default EditRole;

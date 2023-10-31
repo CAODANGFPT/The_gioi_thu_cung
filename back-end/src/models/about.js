@@ -25,11 +25,16 @@ export default class About {
   static addAbout(image, description) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO about (img, description) VALUES (?, ?)",
+        "INSERT INTO about (image, description) VALUES (?, ?)",
         [image, description],
         (err, results) => {
           if (err) reject(err);
-          resolve(results.insertId);
+          if (results && results.insertId) {
+            resolve(results.insertId);
+          } else {
+            reject(new Error('Truy vấn không thành công hoặc không trả về insertId.'));
+          }
+
         }
       );
     });

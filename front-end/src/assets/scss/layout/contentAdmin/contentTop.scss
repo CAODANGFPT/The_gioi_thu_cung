@@ -57,5 +57,40 @@
         }
       }
     }
+    .notification-btn {
+      svg {
+        cursor: pointer;
+        margin-left: 18px;
+        path {
+          fill: $TaupeGray;
+        }
+      }
+      &:hover {
+        svg {
+          margin-left: 18px;
+          path {
+            fill: $EagleGreen;
+          }
+        }
+      }
+    }
+    .notification-user {
+      svg {
+        cursor: pointer;
+        margin-left: 18px;
+        path {
+          fill: $TaupeGray;
+        }
+      }
+      &:hover {
+        svg {
+          margin-left: 18px;
+          path {
+            fill: $EagleGreen;
+          }
+        }
+      }
+    }
   }
+
 }

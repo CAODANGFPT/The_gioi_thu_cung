@@ -26,7 +26,7 @@ export const getById = async (req, res) => {
 
 export const add = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { image, description } = req.body;
     const { error } = aboutSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -34,7 +34,7 @@ export const add = async (req, res) => {
         message: errors,
       });
     }
-    const setAbout = await About.addStatus(name);
+    const setAbout = await About.addAbout(image, description);
     res.json({ id: setAbout });
   } catch (err) {
     res.status(500).json({ error: err.message });

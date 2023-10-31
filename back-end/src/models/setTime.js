@@ -22,11 +22,11 @@ export default class SetTime {
     });
   }
 
-  static addSetTime(name, time) {
+  static addSetTime(name, start_time, end_time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO settime (name, time) VALUES (?, ?)",
-        [name, time],
+        "INSERT INTO settime (name, start_time, end_time) VALUES (?, ?, ?)",
+        [name, start_time, end_time],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
@@ -35,11 +35,11 @@ export default class SetTime {
     });
   }
 
-  static updateSetTime(id, name, time) {
+  static updateSetTime(id, name, start_time, end_time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE settime SET name = ?, time = ? WHERE id = ?",
-        [name, time, id],
+        "UPDATE settime SET name = ?, start_time = ?, end_time = ? WHERE id = ?",
+        [name, start_time, end_time, id],
         (err) => {
           if (err) reject(err);
           resolve();

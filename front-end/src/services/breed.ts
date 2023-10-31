@@ -6,6 +6,16 @@ const breedApi = createApi({
   tagTypes: ["Breed"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+     prepareHeaders: (headers) => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const { accessToken } = JSON.parse(user);
+        if (accessToken) {
+          headers.set("Authorization", "Bearer " + accessToken);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -16,11 +26,41 @@ const breedApi = createApi({
             method: "GET",
           };
         },
+          providesTags: ["Breed"],
+      }),
+       getBreedById: builder.query<TBreed, number>({
+        query: (id) => {
+          return {
+            url: `/breed/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Breed"],
+      }),
+       updateBreed: builder.mutation<TBreed[], TBreed>({
+        query: (breed) => {
+          return {
+             url: `/breed/${breed.id}`,
+            method: "PATCH",
+            body: breed
+          };
+        },
+        invalidatesTags: ["Breed"],
+      }),
+    removeBreed: builder.mutation<TBreed, number>({
+        query: (id) => {
+          return {
+            url: `/breed/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Breed"],
       }),
     };
+    
   },
 });
 
-export const { useBreedQuery } = breedApi;
+export const { useBreedQuery, useGetBreedByIdQuery, useUpdateBreedMutation, useRemoveBreedMutation } = breedApi;
 export const breedReducer = breedApi.reducer;
 export default breedApi;
