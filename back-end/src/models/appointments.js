@@ -26,13 +26,14 @@ export default class Appointments {
         "SELECT appointments.id, appointments.day, pets.name AS pet_name, " +
           "services.name_service AS service_name, users.email AS user_email, " +
           "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
-          "settime.start_time, settime.end_time " +
+          "settime.start_time, settime.end_time, status.name AS status_name " +
           "FROM appointments " +
           "JOIN pets ON appointments.pet_id = pets.id " +
           "JOIN services ON appointments.services_id = services.id " +
           "JOIN users ON appointments.user_id = users.id " +
           "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
-          "JOIN settime ON appointments.time_id = settime.id",
+          "JOIN settime ON appointments.time_id = settime.id " +
+          "JOIN status ON appointments.status_id = status.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);

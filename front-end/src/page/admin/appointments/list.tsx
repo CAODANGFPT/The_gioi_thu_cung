@@ -69,6 +69,12 @@ const columns: ColumnsType<TAppointment> = [
     ),
   },
   {
+    title: "Trạng thái",
+    dataIndex: "status_name",
+    key: "status_name",
+    width: 150,
+  },
+  {
     title: "Thao tác",
     key: "action",
     width: 100,
