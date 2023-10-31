@@ -4,7 +4,7 @@ import { Button, Form, Input, Space, message } from "antd";
 import {
   useCreateStatusMutation,
   useStatusQuery,
-} from "../../../services/status";
+} from "../../../services/status_appointment";
 import { useNavigate } from "react-router-dom";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
@@ -46,7 +46,7 @@ const AddStatusAdmin: React.FC = () => {
 
       refetch();
 
-      navigate("/admin/status");
+      navigate("/admin/status_appointment");
     } catch (error: any) {
       message.error("Lỗi khi thêm trạng thái: " + error.message);
     }
@@ -60,14 +60,9 @@ const AddStatusAdmin: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      {/* <Form.Item name="id" label="ID">
-        <Input disabled />
-      </Form.Item> */}
-
       <Form.Item name="name" label="Trạng thái" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-
       <Form.Item>
         <Space>
           <SubmitButton form={form} />

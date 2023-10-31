@@ -16,7 +16,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authApi, { authReducer } from "../services/auth";
-import statusApi, { statusReducer } from "../services/status";
+import statusApi, { statusReducer } from "../services/status_appointment";
 import servicesApi, { servicesReducer } from "../services/services";
 import userApi, { userReducer } from "../services/user";
 import roleApi, { roleReducer } from "../services/role";
