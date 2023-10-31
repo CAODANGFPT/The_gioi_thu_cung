@@ -40,6 +40,7 @@ import ReviewAdmin from "./page/admin/review/list";
 import EditPetHouse from "./page/admin/pethouse/edit";
 import Add from "./page/admin/staff/add";
 import PetsAdmin from "./page/admin/pets/list";
+import AboutAdmin from "./page/admin/about/list";
 import EditUser from "./page/admin/user/edit";
 import AddService from "./page/admin/services/add";
 import AddRoleAdmin from "./page/admin/role/add";
@@ -57,6 +58,8 @@ import EditRole from "./page/admin/role/edit";
 import AddSetTime from "./page/admin/setTime/add";
 import EditSetTime from "./page/admin/setTime/edit";
 import AddNews from "./page/admin/news/add";
+import AddAbout from "./page/admin/about/add";
+import EditAbout from "./page/admin/about/edit";
 import AddBreed from "./page/admin/breed/add";
 
 function App() {
@@ -92,6 +95,14 @@ function App() {
             <Route path="edit/:id" element={<EditStatus />} />
           </Route>
           <Route path="appointment" element={<AppointmentsAdmin />} />
+
+          <Route path="about" element={<AboutAdmin />} />
+
+          <Route path="about">
+            <Route index element={<AboutAdmin />} />
+            <Route path="add" element={<AddAbout />} />
+            <Route path="edit/:id" element={<EditAbout />} />
+          </Route>
 
           <Route path="services" element={<ServicesAdmin />} />
 

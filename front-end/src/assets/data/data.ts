@@ -29,7 +29,9 @@ export const navigationLinks = [
   { id: 14, title: "News", image: NewIcon, link: "news" },
   { id: 15, title: "Pets", image: PetIcon, link: "pets" },
   { id: 16, title: "StatusContact", image: StatusIcon, link: "status_contact" },
-  { id: 17, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
+  { id: 17, title: "About", image: StatusIcon, link: "about" },
+  { id: 18, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
+
 ];
 
 export const transactions = [
