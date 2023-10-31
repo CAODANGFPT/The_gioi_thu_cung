@@ -24,8 +24,8 @@ const columns: ColumnsType<TServices> = [
   },
   {
     title: "Name",
-    dataIndex: "name_service",
-    key: "name_service",
+    dataIndex: "name",
+    key: "name",
     width: 150,
   },
   {
@@ -43,13 +43,14 @@ const columns: ColumnsType<TServices> = [
   {
     title: "Thao tác",
     key: "action",
+    dataIndex: "id",
     width: 100,
     render: (id) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
-          </Button>
+          </Button> 
         </Link>
         <Popconfirm
           title="Xóa trạng thái."
@@ -70,7 +71,11 @@ const columns: ColumnsType<TServices> = [
 
 const ServicesAdmin: React.FC = () => {
   const { data } = useServicesQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <>
+      <TableAdmin columns={columns} data={data} link={"add"} />;
+    </>
+  );
 };
 
 export default ServicesAdmin;

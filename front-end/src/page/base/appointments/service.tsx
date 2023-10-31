@@ -3,7 +3,7 @@ import { TServices } from "../../../schema/services";
 import { useServicesQuery } from "../../../services/services";
 
 type ServiceFormProps = {
-  service: TServices;
+  service: any;
   updateFields: (fields: Partial<ServiceFormProps>) => void;
 };
 
@@ -22,7 +22,7 @@ export function ServiceForm({ service, updateFields }: ServiceFormProps) {
         updateFields({
           service: {
             id: selectedService.id,
-            name_service: selectedService.name_service,
+            name: selectedService.name,
           },
         });
       }
@@ -36,7 +36,7 @@ export function ServiceForm({ service, updateFields }: ServiceFormProps) {
         <option value="">Lựa chọn</option>
         {servicesData?.map((service) => (
           <option key={service.id} value={service.id}>
-            {service.name_service}
+            {service.name}
           </option>
         ))}
       </select>
