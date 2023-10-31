@@ -46,17 +46,22 @@ export function PetAndBreedTypeForm({
             const selectedSpecies = species.data?.find(
               (s) => s.id === Number(selectedValue)
             );
+            const isNewPetType = selectedValue !== "0";
             updateFields({
               pet_type: {
-                id: Number(selectedValue),
+                id: isNewPetType ? Number(selectedValue) : 0,
                 name: selectedSpecies?.name,
               },
-              breed_type: { id: 0, name: "", nameSpecies: 0 },
+              breed_type: {
+                id: isNewPetType ? 0 : breed_type.id,
+                name: isNewPetType ? "" : breed_type.name,
+                nameSpecies: isNewPetType ? 0 : breed_type.nameSpecies,
+              },
             });
           }}
           value={pet_type?.id}
         >
-          <option value="">Lựa chọn</option>
+          <option value="0">Lựa chọn</option>
           {species.data?.map((s) => (
             <option key={s.id} value={s.id}>
               {s.name}
@@ -84,7 +89,7 @@ export function PetAndBreedTypeForm({
           value={breed_type?.id}
           disabled={!isSpeciesSelected}
         >
-          <option value="">Lựa chọn</option>
+          <option value="0">Lựa chọn</option>
           {filteredBreeds.map((b) => (
             <option key={b.id} value={b.id}>
               {b.name}

@@ -14,6 +14,7 @@ import { TStaff } from "../../../schema/staff";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TSetTime } from "../../../schema/setTime";
 import { TBreed } from "../../../schema/breed";
+import { TStatus } from "../../../schema/status";
 
 type FormData = {
   pet_type: Tspecies;
@@ -22,6 +23,7 @@ type FormData = {
   staff: TStaff;
   petHouse: TpetHouse;
   time: TSetTime;
+  status: TStatus;
 };
 
 const INITIAL_DATA: FormData = {
@@ -31,6 +33,7 @@ const INITIAL_DATA: FormData = {
   staff: { id: 0, name: "" },
   petHouse: { id: 0, name: "" },
   time: { id: 0, name: "", time: "" },
+  status: { id: 0, name: "" },
 };
 
 function Appointments() {
@@ -66,14 +69,16 @@ function Appointments() {
       user_id: user.user.id,
       pethouse_id: data.petHouse.id,
       time_id: data.time.id,
+      status_id: 1,
     };
 
     try {
       const [mutateAsync] = addAppointment;
       await mutateAsync(appointmentData);
       console.log(appointmentData);
+      console.log(data.pet_type.id);
       alert("Bạn đã đặt lịch thành công!");
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       console.error("Error when adding appointment:", error);
     }

@@ -8,6 +8,7 @@ export const AppointmentSchema = yup.object().shape({
   user_id: yup.number(),
   pethouse_id: yup.number(),
   time_id: yup.number(),
+  status_id: yup.number(),
 });
 
 export const AppointmentRequestSchema = yup.object().shape({
@@ -18,6 +19,7 @@ export const AppointmentRequestSchema = yup.object().shape({
   user_id: yup.number(),
   pethouse_id: yup.number(),
   time_id: yup.number(),
+  status_id: yup.number(),
 });
 
 export const AppointmentResponseSchema = yup.object().shape({
@@ -28,6 +30,7 @@ export const AppointmentResponseSchema = yup.object().shape({
   user_id: yup.number(),
   pethouse_id: yup.number(),
   time_id: yup.number(),
+  status_id: yup.number(),
 });
 
 export const AppointmentErrorSchema = yup.object({});
