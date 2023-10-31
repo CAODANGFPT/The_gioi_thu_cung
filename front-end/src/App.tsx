@@ -60,6 +60,7 @@ import EditSetTime from "./page/admin/setTime/edit";
 import AddNews from "./page/admin/news/add";
 import AddAbout from "./page/admin/about/add";
 import EditAbout from "./page/admin/about/edit";
+import AddBreed from "./page/admin/breed/add";
 
 function App() {
   return (
@@ -153,6 +154,7 @@ function App() {
           </Route>
           <Route path="breed">
             <Route index element={<BreedAdmin />} />
+            <Route path="add" element={<AddBreed />} />
             <Route path="edit/:id" element={<EditBreed />} />
           </Route>
           <Route path="contact" element={<ContactAdmin />} />
