@@ -1,11 +1,10 @@
-import { Button, message } from "antd";
+import { Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
 import React from "react";
 import TableAdmin from "../../../components/table";
 import { TAppointment } from "../../../schema/appointments";
-import dayjs from "dayjs";
 import { useGetAllappointmentDataQuery } from "../../../services/appointments";
-import { Navigate } from "react-router-dom";
 
 const columns: ColumnsType<TAppointment> = [
   {
@@ -59,7 +58,7 @@ const columns: ColumnsType<TAppointment> = [
       <>
         {setTime.start_time && setTime.end_time ? (
           <div>
-            ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -{" "}
+            ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -
             {dayjs(setTime.end_time, "HH:mm:ss").format("HH:mm")})
           </div>
         ) : (
@@ -93,7 +92,7 @@ const AppointmentsAdmin: React.FC = () => {
 
   return (
     <div>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </div>
   );
 };

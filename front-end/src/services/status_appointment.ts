@@ -22,7 +22,7 @@ const statusApi = createApi({
       status: builder.query<TStatus[], void>({
         query: () => {
           return {
-            url: "/status",
+            url: "/status_appointment",
             method: "GET",
           };
         },
@@ -32,43 +32,47 @@ const statusApi = createApi({
       getStatusById: builder.query<TStatus, number>({
         query: (status) => {
           return {
-            url: `/status/${status}`,
+            url: `/status_appointment/${status}`,
             method: "GET",
           };
         },
         providesTags: ["Status"],
       }),
-      
+
       createStatus: builder.mutation<TStatus[], Partial<TStatus>>({
         query: (statusData) => ({
-          url: "/status",
+          url: "/status_appointment",
           method: "POST",
-          body: statusData, 
+          body: statusData,
         }),
         invalidatesTags: ["Status"],
       }),
 
       updateStatus: builder.mutation<TStatus, TStatus>({
         query: (status) => ({
-            url: `/status/${status.id}`,
-            method: "PUT",
-            body: status,
+          url: `/status_appointment/${status.id}`,
+          method: "PUT",
+          body: status,
         }),
         invalidatesTags: ["Status"],
-    }),
-     removeStatus: builder.mutation<TStatus, number>({
-        query: (id) => {
-          return {
-            url: `/status/${id}`,
-            method: "DELETE",
-          };
-        },
+      }),
+      removeStatusAppointment: builder.mutation<TStatus, number>({
+        query: (id) => ({
+          url: `/status_appointment/${id}`,
+          method: "DELETE",
+        }),
         invalidatesTags: ["Status"],
       }),
     };
   },
 });
 
-export const { useStatusQuery, useCreateStatusMutation, useUpdateStatusMutation, useGetStatusByIdQuery, useRemoveStatusMutation } = statusApi;
+export const {
+  useStatusQuery,
+  useCreateStatusMutation,
+  useUpdateStatusMutation,
+  useGetStatusByIdQuery,
+  useRemoveStatusAppointmentMutation,
+} = statusApi;
 export const statusReducer = statusApi.reducer;
 export default statusApi;

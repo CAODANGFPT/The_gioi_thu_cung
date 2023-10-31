@@ -15,7 +15,7 @@ import Home from "./page/base/home";
 import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
-import StatusAdmin from "./page/admin/status/list";
+import StatusAdmin from "./page/admin/status_appointment/list";
 
 import SignIn from "./page/base/SignIn";
 import AccountPage from "./page/base/account/account";
@@ -48,7 +48,7 @@ import EditSpecies from "./page/admin/species/edit";
 import AddSpecies from "./page/admin/species/add";
 import EditBreed from "./page/admin/breed/edit";
 import StatusContactAdmin from "./page/admin/status_contact/list";
-import EditStatus from "./page/admin/status/edit";
+import EditStatus from "./page/admin/status_appointment/edit";
 import AddPetHouse from "./page/admin/pethouse/add";
 import EditStaff from "./page/admin/staff/edit";
 import AddStatusContactAdmin from "./page/admin/status_contact/add";
@@ -62,6 +62,7 @@ import AddAbout from "./page/admin/about/add";
 import EditAbout from "./page/admin/about/edit";
 import AddBreed from "./page/admin/breed/add";
 import EditService from "./page/admin/services/edit";
+import AddStatusAdmin from "./page/admin/status_appointment/add";
 
 function App() {
   return (
@@ -90,9 +91,9 @@ function App() {
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />
 
-          <Route path="status">
+          <Route path="status_appointment">
             <Route index element={<StatusAdmin />} />
-            <Route path="add" element={<Add />} />
+            <Route path="add" element={<AddStatusAdmin />} />
             <Route path="edit/:id" element={<EditStatus />} />
           </Route>
           <Route path="appointment" element={<AppointmentsAdmin />} />
