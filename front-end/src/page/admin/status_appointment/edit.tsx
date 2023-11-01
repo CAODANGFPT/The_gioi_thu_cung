@@ -3,7 +3,7 @@ import { Button, Form, Input, message } from "antd";
 import {
   useUpdateStatusMutation,
   useGetStatusByIdQuery,
-} from "../../../services/status";
+} from "../../../services/status_appointment";
 import { TStatus } from "../../../schema/status";
 import { useEffect } from "react";
 
@@ -42,7 +42,7 @@ const EditStatus = () => {
 
       reset();
 
-      navigate("/admin/status");
+      navigate("/admin/status_appointment");
     } catch (error) {
       console.log(error);
       cancel();

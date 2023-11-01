@@ -6,6 +6,13 @@ const contactApi = createApi({
   tagTypes: ["Contact"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", "Bearer " + token);
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -17,7 +24,6 @@ const contactApi = createApi({
           };
         },
         providesTags: ["Contact"],
-
       }),
       contactById: builder.query<TContact, number>({
         query: (id) => {
@@ -40,11 +46,11 @@ const contactApi = createApi({
       }),
 
       updateStatusContact: builder.mutation<TContact, Partial<TContact>>({
-        query: (user) => {
+        query: (status) => {
           return {
             url: `/updateStatus`,
             method: "PUT",
-            body: user,
+            body: status,
           };
         },
         invalidatesTags: ["Contact"],
@@ -53,6 +59,11 @@ const contactApi = createApi({
   },
 });
 
-export const { useContactQuery , useContactByIdQuery , useGetContactQuery , useUpdateStatusContactMutation} = contactApi;
+export const {
+  useContactQuery,
+  useContactByIdQuery,
+  useGetContactQuery,
+  useUpdateStatusContactMutation,
+} = contactApi;
 export const contactReducer = contactApi.reducer;
 export default contactApi;

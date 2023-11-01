@@ -6,13 +6,10 @@ const profileApi = createApi({
   tagTypes: ["Profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
-      prepareHeaders: (headers) => {
-      const user = localStorage.getItem("user");
-      if (user) {
-        const { accessToken } = JSON.parse(user);
-        if (accessToken) {
-          headers.set("Authorization", "Bearer " + accessToken);
-        }
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+          headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },

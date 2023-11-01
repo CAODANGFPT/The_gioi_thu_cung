@@ -40,9 +40,7 @@ const Add: React.FC = () => {
     try {
       await createStaff(values);
       message.success("Nhân viên đã được thêm thành công.");
-
       refetch();
-
       navigate("/admin/staff");
     } catch (error: any) {
       message.error("Lỗi khi thêm nhân viên: " + error.message);

@@ -50,7 +50,7 @@ export const create = async (req, res) => {
             });
         }
         const contactsId = await Contact.createContact(title, subject, user_id);
-        res.json({ id: contactsId, message: "Gửi thành công rồi !" });
+        res.json({ id: contactsId, message: "Tạo liên hệ thành công !" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -67,7 +67,7 @@ export const update = async (req, res) => {
             });
         }
         await Contact.updateContact(req.params.id, title, subject, user_id);
-        res.json({ message: "Contact updated successfully" });
+        res.json({ message: "Contact update thành công" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -77,7 +77,7 @@ export const updateStatus = async (req, res) => {
     try {
       const { id, status_id } = req.body;
       await Contact.updateStatusContact(id, status_id);
-      res.json({ message: "Contact updated successfully" });
+      res.json({ message: "Contact update thành công" });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -87,7 +87,7 @@ export const updateStatus = async (req, res) => {
 export const destroy = async (req, res) => {
     try {
         await Contact.deleteContact(req.params.id);
-        res.json({ message: "Contact deleted successfully" });
+        res.json({ message: "Contact xóa thành công" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

@@ -39,6 +39,7 @@ const EditContact = () => {
     } catch (error) {
       cancel();
       console.error("Update trạng thái contact thất bại", error);
+      console.log(error)
       reset();
     }
   };
@@ -71,10 +72,10 @@ const EditContact = () => {
           </Form.Item>
           <Form.Item
             label="Trạng thái"
-            name="statusName"
+            name="status_id"
             rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
           >
-            {contact.data?.status_id && (
+            {contact.data?.id && (
               <Select defaultValue={contact.data?.status_id}>
                 {status.data?.map((item: TStatusContact) => (
                   <Select.Option key={item.name} value={item.name}>

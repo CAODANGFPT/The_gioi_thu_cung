@@ -1,6 +1,6 @@
-import Status from "../models/status";
+import Status from "../models/status_appointment";
 
-import { statusSchema } from "../schemas/status";
+import { statusSchema } from "../schemas/status_appointment";
 
 export const getAll = async (req, res) => {
   try {
