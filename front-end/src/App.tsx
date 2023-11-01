@@ -62,6 +62,7 @@ import AddAbout from "./page/admin/about/add";
 import EditAbout from "./page/admin/about/edit";
 import AddBreed from "./page/admin/breed/add";
 import EditService from "./page/admin/services/edit";
+import EditContact from "./page/admin/contact/edit";
 
 function App() {
   return (
@@ -97,8 +98,6 @@ function App() {
           </Route>
           <Route path="appointment" element={<AppointmentsAdmin />} />
 
-          <Route path="about" element={<AboutAdmin />} />
-
           <Route path="about">
             <Route index element={<AboutAdmin />} />
             <Route path="add" element={<AddAbout />} />
@@ -114,10 +113,7 @@ function App() {
             <Route index element={<ServicesAdmin />} />
             <Route path="add" element={<AddService />} />
             <Route path="edit/:id" element={<EditService />} />
-
           </Route>
-
-          <Route path="user" element={<UserAdmin />} />
 
           <Route path="role">
             <Route index element={<RoleAdmin />} />
@@ -130,13 +126,11 @@ function App() {
             <Route path="add" element={<AddSetTime />} />
             <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
-          <Route path="staff" element={<StaffAdmin />} />
+
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
           </Route>
-          <Route path="species" element={<SpeciesAdmin />} />
-
           <Route path="staff">
             <Route index element={<StaffAdmin />} />
             <Route path="add" element={<Add />} />
@@ -153,12 +147,17 @@ function App() {
             <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
+
           <Route path="breed">
             <Route index element={<BreedAdmin />} />
             <Route path="add" element={<AddBreed />} />
             <Route path="edit/:id" element={<EditBreed />} />
           </Route>
-          <Route path="contact" element={<ContactAdmin />} />
+
+          <Route path="contact">
+            <Route index element={<ContactAdmin />} />
+            <Route path="edit/:id" element={<EditContact />} />
+          </Route>
 
           <Route path="status_contact">
             <Route index element={<StatusContactAdmin />} />
@@ -167,10 +166,12 @@ function App() {
           </Route>
 
           <Route path="profile" element={<ProfileAdmin />} />
+
           <Route path="news">
             <Route index element={<NewsAdmin />} />
             <Route path="add" element={<AddNews />} />
           </Route>
+
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>

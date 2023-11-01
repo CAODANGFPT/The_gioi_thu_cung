@@ -6,6 +6,10 @@ import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
 import { useContactQuery } from "../../../services/contact";
 
+const ContactAdmin: React.FC = () => {
+  const { data } = useContactQuery();
+
+
 const confirm = () => {
   message.success("Xóa thành công.");
 };
@@ -34,18 +38,24 @@ const columns: ColumnsType<TContact> = [
     width: 150,
   },
   {
-    title: "User_ID",
-    dataIndex: "nameUser",
-    key: "nameUser",
+    title: "User_id",
+    dataIndex: "user_id",
+    key: "user_id",
+    width: 150,
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "statusName",
+    key: "statusName",
     width: 150,
   },
   {
     title: "Thao tác",
     key: "action",
     width: 100,
-    render: (id) => (
+    render: (contact) => (
       <div>
-        <Link to="URL">
+        <Link to={`edit/${contact.id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
           </Button>
@@ -67,8 +77,6 @@ const columns: ColumnsType<TContact> = [
   },
 ];
 
-const ContactAdmin: React.FC = () => {
-  const { data } = useContactQuery();
   return <TableAdmin columns={columns} data={data} />;
 };
 

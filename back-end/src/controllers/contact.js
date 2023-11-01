@@ -17,6 +17,15 @@ export const listContactUser = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const listStatusContact = async (req, res) => {
+    try {
+      const contact = await Contact.getAllUsersRole();
+      res.json(contact);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 export const show = async (req, res) => {
     try {
         const contactsItem = await Contact.getContactById(req.params.id);
@@ -63,6 +72,18 @@ export const update = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const updateStatus = async (req, res) => {
+    try {
+      const { id, status_id } = req.body;
+      await Contact.updateStatusContact(id, status_id);
+      res.json({ message: "Contact updated successfully" });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+
+
 export const destroy = async (req, res) => {
     try {
         await Contact.deleteContact(req.params.id);
