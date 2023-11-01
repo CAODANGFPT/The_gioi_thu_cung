@@ -42,11 +42,30 @@ const newsApi = createApi({
         },
         invalidatesTags: ["News"],
       }),
+
+      newsById: builder.query<TNews, number>({
+        query: (id) => {
+          return {
+            url: `/news/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["News"],
+
+      }),
+
+      updateNews: builder.mutation<TNews, TNews>({
+        query: (updatedNews) => ({
+            url: `/news/${updatedNews.id}`,
+            method: "PUT",
+            body: updatedNews
+        }),
+        invalidatesTags: ["News"],
+    }),
     };
   },
 });
 
-export const { useNewsQuery, useAddNewsMutation, useRemoveNewsMutation } =
-  newsApi;
+export const { useNewsQuery, useAddNewsMutation, useRemoveNewsMutation, useUpdateNewsMutation, useNewsByIdQuery } =  newsApi;
 export const newsReducer = newsApi.reducer;
 export default newsApi;
