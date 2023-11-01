@@ -66,7 +66,11 @@ import EditContact from "./page/admin/contact/edit";
 import AddStatusAdmin from "./page/admin/status_appointment/add";
 import EditNews from "./page/admin/news/edit";
 
+import { useState } from "react";
+import { useGetUserQuery } from "./services/user";
 function App() {
+  const { data: user } = useGetUserQuery();
+  console.log(user);
   return (
     <BrowserRouter>
       <Routes>
@@ -90,6 +94,7 @@ function App() {
         <Route path="SignUp" element={<SignUp />} />
         <Route path="RegisterAccount" element={<RegisterAccount />} />
 
+        {Number(user?.role_id) === 1 && (
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />
 
@@ -178,6 +183,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
+        )}
       </Routes>
     </BrowserRouter>
   );

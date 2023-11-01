@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import User from "../../assets/image/user.png";
 import "../../assets/scss/layout/admin/modal.scss";
 import LogoutIcon from "../../assets/svg/logOut";
@@ -8,6 +9,11 @@ type Props = {};
 
 const ModalUser = (props: Props) => {
   const { data: user } = useGetUserQuery();
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  }
   return (
     <div className="model-user">
       <div className="model-user-title">
@@ -33,7 +39,7 @@ const ModalUser = (props: Props) => {
         </div>
       </div>
       <hr />
-      <div className="model-user-logout">
+      <div className="model-user-logout" onClick={() => {logout()}}>
         <div>
           <LogoutIcon />
         </div>
