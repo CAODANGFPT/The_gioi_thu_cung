@@ -63,6 +63,7 @@ import EditAbout from "./page/admin/about/edit";
 import AddBreed from "./page/admin/breed/add";
 import EditService from "./page/admin/services/edit";
 import AddStatusAdmin from "./page/admin/status_appointment/add";
+import EditNews from "./page/admin/news/edit";
 
 function App() {
   return (
@@ -170,6 +171,7 @@ function App() {
           <Route path="news">
             <Route index element={<NewsAdmin />} />
             <Route path="add" element={<AddNews />} />
+            <Route path="edit/:id" element={<EditNews />} />
           </Route>
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />

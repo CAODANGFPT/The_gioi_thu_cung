@@ -61,7 +61,7 @@ const NewsAdmin: React.FC = () => {
       width: 150,
       render: (data: TNews) => (
         <div>
-          <Link to="URL">
+          <Link to={`edit/${data.id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
