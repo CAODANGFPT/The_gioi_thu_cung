@@ -82,8 +82,8 @@ export const deleteSe = async (req, res) => {
 
     // Nếu có dữ liệu, thực hiện xóa
     await Services.deleteServices(req.params.id);
-    res.json({ message: "Dịch vụ xóa thành công" });
+    res.status(200).json({ message: "Dịch vụ xóa thành công" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(402).json({ error: err.message });
   }
 };

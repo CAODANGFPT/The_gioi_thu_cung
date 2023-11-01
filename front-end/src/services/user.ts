@@ -36,7 +36,7 @@ const userApi = createApi({
         providesTags: ["User"],
       }),
       getUser: builder.query<TUser, void>({
-        query: (id) => {
+        query: () => {
           return {
             url: `/getUser`,
             method: "GET",
