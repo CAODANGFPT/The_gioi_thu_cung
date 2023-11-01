@@ -51,7 +51,7 @@ const EditContact = () => {
   return (
     <>
       <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật vai trò contact #{id}
+        Cập nhật trạng thái liên hệ #{id}
       </h1>
       <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
         <Form
@@ -70,6 +70,9 @@ const EditContact = () => {
           <Form.Item label="subject">
             <Input disabled value={contact.data?.subject} />
           </Form.Item>
+          <Form.Item label="user_id">
+            <Input disabled value={contact.data?.user_id} />
+          </Form.Item>
           <Form.Item
             label="Trạng thái"
             name="status_id"
@@ -78,7 +81,7 @@ const EditContact = () => {
             {contact.data?.id && (
               <Select defaultValue={contact.data?.status_id}>
                 {status.data?.map((item: TStatusContact) => (
-                  <Select.Option key={item.name} value={item.name}>
+                  <Select.Option key={item.id} value={item.id}>
                     {item.name}
                   </Select.Option>
                 ))}
