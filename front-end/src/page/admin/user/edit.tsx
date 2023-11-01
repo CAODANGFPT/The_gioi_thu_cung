@@ -75,7 +75,7 @@ const EditUser = () => {
             {user.data?.role_id && (
               <Select defaultValue={user.data?.role_id}>
                 {roles.data?.map((item: TRole) => (
-                  <Select.Option key={item.id} value={item.id}>
+                  <Select.Option key={item.id} value={item.name}>
                     {item.name}
                   </Select.Option>
                 ))}

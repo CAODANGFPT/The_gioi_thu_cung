@@ -14,5 +14,9 @@ export const contactSchema = joi.object({
     user_id: joi.number().required().messages({
         "String.empty": "User_ID không được để trống",
         "any.required": "Trường User_ID là bắt buộc",
+    }),
+    status_id: joi.number().required().messages({
+        "String.empty": "Status_id không được để trống",
+        "any.required": "Trường Status_id là bắt buộc",
     })
 });
