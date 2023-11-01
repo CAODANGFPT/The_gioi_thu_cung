@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TAppointment } from "../schema/appointments";
+import {
+  TAppointment,
+  TAupdateStatusAppointment,
+} from "../schema/appointments";
 
 const appointmentApi = createApi({
   reducerPath: "appointment",
@@ -28,11 +31,19 @@ const appointmentApi = createApi({
         },
         invalidatesTags: ["Appointment"],
       }),
+      updateStatusAppointment: builder.mutation<TAppointment,Partial<TAupdateStatusAppointment>>({
+        query: (appointments) => ({
+          url: `/appointmentStatus/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
     };
   },
 });
 
-export const { useGetAllappointmentDataQuery, useAddAppointmentMutation } =
+export const { useGetAllappointmentDataQuery, useAddAppointmentMutation, useUpdateStatusAppointmentMutation } =
   appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;

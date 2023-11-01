@@ -27,8 +27,6 @@ const SignIn = () => {
     onSubmit: async (values: any) => {
       try {
         const response = await loginForm(values);
-        console.log(response);
-        
         if ("error" in response) {
           alert("Tài khoản mật khẩu không chính xác");
 

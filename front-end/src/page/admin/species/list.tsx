@@ -76,7 +76,7 @@ const SpeciesAdmin: React.FC = () => {
           THÊM LOẠI
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </div>
   );
 };

@@ -77,7 +77,7 @@ const ServicesAdmin: React.FC = () => {
   ];
   return (
     <>
-      <TableAdmin columns={columns} data={data} link={"add"} />;
+      <TableAdmin columns={columns} data={data} />;
     </>
   );
 };

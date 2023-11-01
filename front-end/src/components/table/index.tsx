@@ -7,10 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 type TableAdminProps = {
   columns: ColumnsType<object>;
   data: object[] | undefined;
-  link?: string
 };
 
-const TableAdmin: React.FC<TableAdminProps> = ({ columns, data, link }) => {
+const TableAdmin: React.FC<TableAdminProps> = ({ columns, data }) => {
   const navigate = useNavigate();
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
@@ -23,7 +22,6 @@ const TableAdmin: React.FC<TableAdminProps> = ({ columns, data, link }) => {
           style={{ width: 200 }}
         />
       </div>
-      <Button onClick={() => navigate(link || "")}>Add</Button>
       <Table columns={columns} dataSource={data} />
     </div>
   );

@@ -35,8 +35,6 @@ const ResetPassword = () => {
           token
         }
         const response = await resetPassword(data);
-        console.log(response);
-        
         if ("error" in response) {
           alert("Đổi mật khẩu thất bại");
 

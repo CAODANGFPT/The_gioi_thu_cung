@@ -39,3 +39,11 @@ export type AppointmentResponse = yup.InferType<
 >;
 
 export type AppointmentError = yup.InferType<typeof AppointmentErrorSchema>;
+
+
+export const updateStatusAppointmentSchema = yup.object().shape({
+  id: yup.number().required(),
+  status_id: yup.number().required(),
+});
+
+export type TAupdateStatusAppointment = yup.InferType<typeof updateStatusAppointmentSchema>;
