@@ -32,4 +32,9 @@ export const appointmentsSchema = joi.object({
     })
 });
 
+export const updateAppointmentStatusSchema = joi.object({
+  id: joi.number().required(),
+  status_id: joi.number().required()
+});
+
 // day, pet_id, services_id, user_id, pethouse_id, time_id

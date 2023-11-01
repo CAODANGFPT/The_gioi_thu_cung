@@ -20,9 +20,7 @@ const ForgotPassword = () => {
     validationSchema: ResetPassRequestSchema,
     onSubmit: async (values) => {
       try {
-        const response = await resetPassword(values);
-        console.log(response);
-        
+        const response = await resetPassword(values);        
         if ("error" in response) {
           alert("Tài khoản mật khẩu không chính xác");
 

@@ -98,14 +98,14 @@ export default class Appointments {
       );
     });
   }
-  static deleteAppointments(id) {
+  static updateAppointmentStatus(id, status_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM appointments WHERE id = ?",
-        [id],
-        (err, results) => {
+        "UPDATE appointments SET status_id = ? WHERE id = ?",
+        [status_id, id],
+        (err) => {
           if (err) reject(err);
-          resolve(results);
+          resolve();
         }
       );
     });

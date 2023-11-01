@@ -1,5 +1,5 @@
 import Appointments from "../models/appointments";
-import { appointmentsSchema } from "../schemas/appointments";
+import { appointmentsSchema, updateAppointmentStatusSchema } from "../schemas/appointments";
 
 export const list = async (req, res) => {
   try {
@@ -82,10 +82,22 @@ export const update = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-export const destroy = async (req, res) => {
+
+export const updateAppointmentStatus = async (req, res) => {
   try {
-    await Appointments.deleteAppointments(req.params.id);
-    res.json({ message: "Appointments deleted successfully" });
+    const { status_id } = req.body;
+    const { error } = updateAppointmentStatusSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    await Appointments.updateAppointmentStatus(
+      req.params.id,
+      status_id
+    );
+    res.json({ message: "Appointments updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

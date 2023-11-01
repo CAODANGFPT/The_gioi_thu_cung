@@ -50,7 +50,7 @@ const columns: ColumnsType<TServices> = [
         <Link to={`edit/${id}`}>
           <Button className="btn-edit" style={{ marginRight: "1rem" }}>
             Sửa
-          </Button> 
+          </Button>
         </Link>
         <Popconfirm
           title="Xóa trạng thái."
@@ -71,11 +71,7 @@ const columns: ColumnsType<TServices> = [
 
 const ServicesAdmin: React.FC = () => {
   const { data } = useServicesQuery();
-  return (
-    <>
-      <TableAdmin columns={columns} data={data} link={"add"} />;
-    </>
-  );
+  return <TableAdmin columns={columns} data={data} />
 };
 
 export default ServicesAdmin;

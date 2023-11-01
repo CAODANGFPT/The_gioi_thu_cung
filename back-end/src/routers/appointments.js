@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
-  list,
-  show,
   create,
-  update,
-  destroy,
+  list,
   listAppointmentData,
+  show,
+  update,
+  updateAppointmentStatus,
 } from "../controllers/appointments";
 
 const router = Router();
@@ -15,5 +15,5 @@ router.get("/appointment/:id", show);
 router.get("/getAllAppointmentData", listAppointmentData);
 router.post("/appointment", create);
 router.patch("/appointment/:id", update);
-router.delete("/appointment/:id", destroy);
+router.patch("/appointmentStatus/:id", updateAppointmentStatus);
 export default router;
