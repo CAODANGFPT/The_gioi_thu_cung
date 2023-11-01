@@ -64,7 +64,12 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
+import { useState } from "react";
+import { useGetUserQuery } from "./services/user";
+import EditNews from "./page/admin/news/edit";
 function App() {
+  const { data: user } = useGetUserQuery();
+  console.log(user);
   return (
     <BrowserRouter>
       <Routes>
@@ -86,8 +91,10 @@ function App() {
         <Route path="SignIn" element={<SignIn />} />
         <Route path="SignUp" element={<SignUp />} />
         <Route path="RegisterAccount" element={<RegisterAccount />} />
-          <Route path="/admin" element={<LayoutAdmin />}>
-            <Route index element={<DashBoard />} />
+
+        {Number(user?.role_id) === 1 && (
+        <Route path="/admin" element={<LayoutAdmin />}>
+          <Route index element={<DashBoard />} />
 
             <Route path="status_appointment">
               <Route index element={<StatusAdmin />} />
@@ -164,14 +171,18 @@ function App() {
               <Route path="edit/:id" element={<EditStatusContact />} />
             </Route>
 
-            <Route path="profile" element={<ProfileAdmin />} />
-            <Route path="news">
-              <Route index element={<NewsAdmin />} />
-              <Route path="add" element={<AddNews />} />
-            </Route>
-            <Route path="review" element={<ReviewAdmin />} />
-            <Route path="pets" element={<PetsAdmin />} />
+          <Route path="profile" element={<ProfileAdmin />} />
+
+          <Route path="news">
+            <Route index element={<NewsAdmin />} />
+            <Route path="add" element={<AddNews />} />
+            <Route path="edit/:id" element={<EditNews />} />
           </Route>
+
+          <Route path="review" element={<ReviewAdmin />} />
+          <Route path="pets" element={<PetsAdmin />} />
+        </Route>
+        )}
       </Routes>
     </BrowserRouter>
   );

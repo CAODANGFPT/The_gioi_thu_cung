@@ -34,8 +34,8 @@ const SignIn = () => {
           if(response.data && response.data.user.role_id === 3 ){
             alert("Tải khoản bị khóa");
           } else{
-            localStorage.setItem("token", response.data?.accessToken);
-            alert("Đăng nhập thành công");
+            await localStorage.setItem("token", response.data?.accessToken);
+            // alert("Đăng nhập thành công");
             response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
           }
         }

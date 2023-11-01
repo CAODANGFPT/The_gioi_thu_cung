@@ -12,6 +12,7 @@ const ContentTop: React.FC = () => {
   const { toggleSidebar } = useContext<any>(SidebarContext);
 
   const { data: user } = useGetUserQuery();
+
   return (
     <div className="content-top">
       <div className="content-top-left">
