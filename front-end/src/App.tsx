@@ -64,9 +64,9 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
-import { useState } from "react";
-import { useGetUserQuery } from "./services/user";
 import EditNews from "./page/admin/news/edit";
+import PageNotFound from "./page/pageNotFound";
+import { useGetUserQuery } from "./services/user";
 function App() {
   const { data: user } = useGetUserQuery();
   console.log(user);
@@ -183,6 +183,7 @@ function App() {
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
         )}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
