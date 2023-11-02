@@ -10,8 +10,17 @@ import { PlusOutlined } from "@ant-design/icons";
 const NewsAdmin: React.FC = () => {
   const [removeNews] = useRemoveNewsMutation();
   const confirm = (id: number) => {
-    removeNews(id);
-    message.success("Xóa thành công.");
+    removeNews(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
   const cancel = () => {
     message.error("Xóa không thành công.");

@@ -10,8 +10,17 @@ import { PlusOutlined } from "@ant-design/icons";
 const StaffAdmin: React.FC = () => {
   const [removeStaff] = useRemoveStaffMutation();
   const confirm = (id: number) => {
-    removeStaff(id);
-    message.success("Xóa thành công.");
+    removeStaff(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {

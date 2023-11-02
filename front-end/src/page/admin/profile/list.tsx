@@ -11,8 +11,17 @@ import {
 const ProfileAdmin: React.FC = () => {
   const [removeProfile] = useRemoveProfileMutation();
   const confirm = (id: number) => {
-    removeProfile(id);
-    message.success("Xóa thành công.");
+    removeProfile(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {
