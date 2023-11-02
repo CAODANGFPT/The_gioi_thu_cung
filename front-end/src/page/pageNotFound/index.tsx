@@ -5,7 +5,6 @@ type Props = {};
 
 const PageNotFound = (props: Props) => {
   const navigate = useNavigate();
-
   setTimeout(() => {
     navigate("/");
   }, 5000);

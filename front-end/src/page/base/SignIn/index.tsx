@@ -13,6 +13,7 @@ import AppleIcon from "../../../assets/svg/appleIcon";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 import { useLoginUserMutation } from "../../../services/auth";
+import { message } from "antd";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const SignIn = () => {
             alert("Tải khoản bị khóa");
           } else{
             await localStorage.setItem("token", response.data?.accessToken);
-            // alert("Đăng nhập thành công");
+            message.info("Đăng nhập thành công");
             response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
           }
         }

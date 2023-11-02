@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import Account from "./components/account_info/account";
-import Address from "./components/account_info/address";
 import Follow from "./components/account_info/follow";
 import History from "./components/account_info/history";
 import Historyfollow from "./components/account_info/history_follow";
@@ -68,8 +67,6 @@ import EditNews from "./page/admin/news/edit";
 import PageNotFound from "./page/pageNotFound";
 import { useGetUserQuery } from "./services/user";
 function App() {
-  const { data: user } = useGetUserQuery();
-  console.log(user);
   return (
     <BrowserRouter>
       <Routes>
@@ -79,7 +76,6 @@ function App() {
           <Route path="appointment" element={<Appointments />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
-            <Route path="address" element={<Address />} />
             <Route path="payment" element={<Pay />} />
             <Route path="his_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
@@ -91,10 +87,8 @@ function App() {
         <Route path="SignIn" element={<SignIn />} />
         <Route path="SignUp" element={<SignUp />} />
         <Route path="RegisterAccount" element={<RegisterAccount />} />
-
-        {Number(user?.role_id) === 1 && (
-          <Route path="/admin" element={<LayoutAdmin />}>
-            <Route index element={<DashBoard />} />
+        <Route path="/admin" element={<LayoutAdmin />}>
+          <Route index element={<DashBoard />} />
 
             <Route path="status_appointment">
               <Route index element={<StatusAdmin />} />
@@ -182,7 +176,6 @@ function App() {
             <Route path="review" element={<ReviewAdmin />} />
             <Route path="pets" element={<PetsAdmin />} />
           </Route>
-        )}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
