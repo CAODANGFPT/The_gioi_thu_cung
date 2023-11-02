@@ -13,8 +13,17 @@ import { PlusOutlined } from "@ant-design/icons";
 const SpeciesAdmin: React.FC = () => {
   const [removeSpecies] = useRemoveSpeciesMutation();
   const confirm = (id: number) => {
-    removeSpecies(id);
-    message.success("Xóa thành công.");
+    removeSpecies(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {

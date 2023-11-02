@@ -14,13 +14,18 @@ const StatusAdmin: React.FC = () => {
   const navigator = useNavigate();
   const { data } = useStatusQuery();
   const [removeStatusAppointment] = useRemoveStatusAppointmentMutation();
-  const confirm = async(id: number) => {
-    try {
-      await removeStatusAppointment(id);
-      message.success("Xóa thành công.");
-    } catch (error) {
-      message.success("Xóa không thành công.");
-    }
+  const confirm = (id: number) => {
+    removeStatusAppointment(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {

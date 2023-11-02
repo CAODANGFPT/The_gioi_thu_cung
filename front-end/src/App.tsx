@@ -12,7 +12,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -93,8 +93,8 @@ function App() {
         <Route path="RegisterAccount" element={<RegisterAccount />} />
 
         {Number(user?.role_id) === 1 && (
-        <Route path="/admin" element={<LayoutAdmin />}>
-          <Route index element={<DashBoard />} />
+          <Route path="/admin" element={<LayoutAdmin />}>
+            <Route index element={<DashBoard />} />
 
             <Route path="status_appointment">
               <Route index element={<StatusAdmin />} />
@@ -171,17 +171,17 @@ function App() {
               <Route path="edit/:id" element={<EditStatusContact />} />
             </Route>
 
-          <Route path="profile" element={<ProfileAdmin />} />
+            <Route path="profile" element={<ProfileAdmin />} />
 
-          <Route path="news">
-            <Route index element={<NewsAdmin />} />
-            <Route path="add" element={<AddNews />} />
-            <Route path="edit/:id" element={<EditNews />} />
+            <Route path="news">
+              <Route index element={<NewsAdmin />} />
+              <Route path="add" element={<AddNews />} />
+              <Route path="edit/:id" element={<EditNews />} />
+            </Route>
+
+            <Route path="review" element={<ReviewAdmin />} />
+            <Route path="pets" element={<PetsAdmin />} />
           </Route>
-
-          <Route path="review" element={<ReviewAdmin />} />
-          <Route path="pets" element={<PetsAdmin />} />
-        </Route>
         )}
         <Route path="*" element={<PageNotFound />} />
       </Routes>

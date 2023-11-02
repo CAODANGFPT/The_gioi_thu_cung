@@ -13,8 +13,17 @@ import { PlusOutlined } from "@ant-design/icons";
 const PetHouseAdmin: React.FC = () => {
   const [removePetHouse] = useRemovePetHouseMutation();
   const confirm = (id: number) => {
-    removePetHouse(id);
-    message.success("Xóa thành công.");
+    removePetHouse(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {
