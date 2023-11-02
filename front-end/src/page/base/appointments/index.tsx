@@ -14,6 +14,7 @@ import { TStaff } from "../../../schema/staff";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TSetTime } from "../../../schema/setTime";
 import { TBreed } from "../../../schema/breed";
+import { useGetUserQuery } from "../../../services/user";
 
 type FormData = {
   pet_type: Tspecies;
@@ -36,7 +37,7 @@ const INITIAL_DATA: FormData = {
 function Appointments() {
   const [data, setData] = useState(INITIAL_DATA);
   const addAppointment = useAddAppointmentMutation();
-  const user = JSON.parse(localStorage.getItem("user") as string);
+  const { data: user } = useGetUserQuery();
   const navigate = useNavigate();
 
   function updateFields(fields: Partial<FormData>) {
@@ -63,7 +64,7 @@ function Appointments() {
       day: new Date(),
       pet_id: data.pet_type.id,
       services_id: data.service.id,
-      user_id: user.user.id,
+      user_id: user?.id,
       pethouse_id: data.petHouse.id,
       time_id: data.time.id,
     };
