@@ -89,14 +89,14 @@ const HeaderBase = () => {
           </button>
         </form>
         <div className="frame51">
-          <div className="frame5">
+          <div className="frame5" onClick={() => navigate("account")}>
             {user?.img ? <img src={user?.img} alt="user" /> : <UserIcon />}
           </div>
           <div className="frame5">
             <HeartIcon />
             <div className="group13">0</div>
           </div>
-          <div onClick={() => navigate("account")} className="frame5">
+          <div className="frame5">
             <ShoppingCartIcon />
             <div className="group13">0</div>
           </div>

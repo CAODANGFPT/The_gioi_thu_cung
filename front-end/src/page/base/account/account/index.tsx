@@ -31,9 +31,6 @@ const AccountPage = () => {
         <div className="account_info-row">
           <h4 className="account_info-heading">
             Tài Khoản {data.name}
-            <Link to={""} className="logout">
-              (Đăng xuất)
-            </Link>
           </h4>
         </div>
         <div className="account_info-row">
