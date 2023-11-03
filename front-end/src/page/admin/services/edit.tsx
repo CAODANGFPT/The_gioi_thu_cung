@@ -1,5 +1,13 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, InputNumber, Upload, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Upload,
+  UploadFile,
+  message,
+} from "antd";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ReactQuill from "react-quill";
@@ -9,20 +17,35 @@ import "../../../assets/scss/page/servicesAdmin.scss";
 import { TServicesRequest } from "../../../schema/services";
 import {
   useServicesByIdQuery,
-  useUpdateServicesMutation
+  useUpdateServicesMutation,
 } from "../../../services/services";
 const EditService = () => {
-  const [image, setImage] = useState<any | null>(null);
+  const [image, setImage] = useState<string | undefined>();
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: "-1",
+      name: "image.png",
+      status: "done",
+      url: image,
+    },
+  ]);
   const [value, setValue] = useState("");
   const { id } = useParams<{ id: string }>();
   const servicesById = useServicesByIdQuery(Number(id));
   const [updateServices, { reset, isLoading: isAddLoading }] =
-  useUpdateServicesMutation();
+    useUpdateServicesMutation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  console.log(servicesById);
-  console.log(image);
+
   useEffect(() => {
+    setFileList([
+      {
+        uid: "-1",
+        name: "image.png",
+        status: "done",
+        url: servicesById.data?.image,
+      },
+    ]);
     setImage(servicesById.data?.image);
     form.setFieldsValue({
       id: servicesById.data?.id,
@@ -31,7 +54,15 @@ const EditService = () => {
       image: servicesById.data?.image,
       description: servicesById.data?.description,
     });
-  }, [form, servicesById.data?.id , servicesById.data?.name, servicesById.data?.price, servicesById.data?.image, servicesById.data?.description]);
+  }, [
+    form,
+    servicesById.data?.id,
+    servicesById.data?.name,
+    servicesById.data?.price,
+    servicesById.data?.image,
+    servicesById.data?.description,
+  ]);
+
   const handleImageChange = (info: any) => {
     if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
@@ -40,12 +71,13 @@ const EditService = () => {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+
   const onFinish = async (values: TServicesRequest) => {
     const { id, name, price, description } = values;
     const servicesData = {
       id,
       name,
-      price,  
+      price,
       image: image,
       description,
     };
@@ -60,19 +92,22 @@ const EditService = () => {
       message.error("Failed to update product");
     }
   };
+
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
   };
+
   const uploadButton = (
     <div>
       {isAddLoading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
   return (
     <>
       <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Thêm sản phẩm
+        Cập nhật sản phẩm
       </h1>
       <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
         <Form
@@ -89,7 +124,10 @@ const EditService = () => {
             name="id"
             rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
           >
-            <Input disabled className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input
+              disabled
+              className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm"
+            />
           </Form.Item>
           <Form.Item
             label={<span className="">Tên dịch vụ</span>}
@@ -112,15 +150,20 @@ const EditService = () => {
               }}
               listType="picture-card"
               maxCount={1}
-              showUploadList={false}
+              fileList={fileList}
+              showUploadList={true}
               className="ant-upload-wrapper ant-upload-select"
               onChange={handleImageChange}
             >
-              {image ? (
-                <img src={image} alt="avatar" style={{ width: "100%" }} />
-              ) : (
-                uploadButton
-              )}
+              {/* {image ? (
+                <img
+                  src={image}
+                  alt="avatar"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              ) : ( */}
+              {uploadButton}
+              {/* )} */}
             </Upload>
           </Form.Item>
           <Form.Item

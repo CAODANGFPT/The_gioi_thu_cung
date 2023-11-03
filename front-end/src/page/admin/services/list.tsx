@@ -1,7 +1,8 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
 import {
@@ -11,6 +12,7 @@ import {
 import { TStatus } from "../../../schema/status";
 
 const ServicesAdmin: React.FC = () => {
+  const navigate = useNavigate();
   const { data } = useServicesQuery();
   const [blockServices] = useUpdateBlockServicesMutation();
 
@@ -25,7 +27,7 @@ const ServicesAdmin: React.FC = () => {
   };
 
   const cancel = () => {
-    message.error("Xóa không thành công.");
+    message.error("khóa không thành công.");
   };
 
   const columns: ColumnsType<TStatus> = [
@@ -98,6 +100,14 @@ const ServicesAdmin: React.FC = () => {
   ];
   return (
     <>
+      <Button
+        onClick={() => navigate("add")}
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM DỊCH VỤ
+      </Button>
       <TableAdmin columns={columns} data={data} />;
     </>
   );
