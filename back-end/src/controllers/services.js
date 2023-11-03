@@ -25,7 +25,7 @@ export const showById = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { name,image, description, price } = req.body;
+    const { name, image, description, price } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -72,18 +72,12 @@ export const update = async (req, res) => {
   }
 };
 
-export const deleteSe = async (req, res) => {
+export const updateIsDelete = async (req, res) => {
   try {
-    const service = await Services.getServicesById(req.params.id);
-
-    if (!service) {
-      return res.status(404).json({ message: "Không có gì để xóa" });
-    }
-
-    // Nếu có dữ liệu, thực hiện xóa
-    await Services.deleteServices(req.params.id);
-    res.status(200).json({ message: "Dịch vụ xóa thành công" });
+    const { id, is_delete } = req.body;
+    await Services.updateBlockService(id, is_delete);
+    res.json({ message: "Khóa tài dịch vụ thành công" });
   } catch (err) {
-    res.status(402).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };

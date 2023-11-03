@@ -50,13 +50,12 @@ export default class Services {
       });
     });
   }
-  
 
-  static deleteServices(id) {
+  static updateBlockService(id, is_delete) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM services WHERE id = ?",
-        [id],
+        "UPDATE services SET is_delete = ? WHERE id = ?",
+        [is_delete, id],
         (err, results) => {
           if (err) reject(err);
           resolve(results);
