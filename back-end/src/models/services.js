@@ -39,10 +39,10 @@ export default class Services {
     });
   }
 
-  static updateServices(id, name, description, price) {
+  static updateServices(id, name,image, description, price) {
     const updateSql =
-      "UPDATE services SET name = ?, description = ?, price = ? WHERE id = ?";
-    const values = [name, description, price, id];
+      "UPDATE services SET name = ?,image = ?, description = ?, price = ? WHERE id = ?";
+    const values = [name,image, description, price, id];
     return new Promise((resolve, reject) => {
       connection.query(updateSql, values, (err) => {
         if (err) reject(err);
@@ -50,7 +50,6 @@ export default class Services {
       });
     });
   }
-  
 
   static deleteServices(id) {
     return new Promise((resolve, reject) => {

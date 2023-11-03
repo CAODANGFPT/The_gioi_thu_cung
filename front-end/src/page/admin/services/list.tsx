@@ -1,18 +1,23 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
-import { useDeleteServicesMutation, useServicesQuery } from "../../../services/services";
+import {
+  useDeleteServicesMutation,
+  useServicesQuery,
+} from "../../../services/services";
 
 const ServicesAdmin: React.FC = () => {
+  const navigate = useNavigate();
   const [removeServices] = useDeleteServicesMutation();
   const confirm = (id: number) => {
-    try{
+    try {
       removeServices(id);
       message.success("Xóa thành công.");
-    }catch(error) {
+    } catch (error) {
       message.error("Xóa không thành công.");
     }
   };
@@ -77,6 +82,14 @@ const ServicesAdmin: React.FC = () => {
   ];
   return (
     <>
+      <Button
+        onClick={() => navigate("add")}
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM DỊCH VỤ
+      </Button>
       <TableAdmin columns={columns} data={data} />;
     </>
   );
