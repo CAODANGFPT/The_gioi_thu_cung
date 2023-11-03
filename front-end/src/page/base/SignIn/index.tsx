@@ -29,15 +29,17 @@ const SignIn = () => {
       try {
         const response = await loginForm(values);
         if ("error" in response) {
-          alert("Tài khoản mật khẩu không chính xác");
-
+          message.error("Tài khoản mật khẩu không chính xác");
         } else {
           if(response.data && response.data.user.role_id === 3 ){
-            alert("Tải khoản bị khóa");
+            message.error("Tải khoản bị khóa");
           } else{
             await localStorage.setItem("token", response.data?.accessToken);
-            message.info("Đăng nhập thành công");
-            response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
+            message.success("Đăng nhập thành công");
+            setTimeout(() => {
+              response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
+            }, 100);
+           
           }
         }
       } catch (error) {
