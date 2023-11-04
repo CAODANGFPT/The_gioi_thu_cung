@@ -1,94 +1,90 @@
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { Upload, UploadFile, message } from "antd";
 import { useState } from "react";
-import React from "react";
 import "../../assets/scss/page/account.scss";
-import Eye from "../../assets/svg/account/Eye";
-import Eyeslash from "../../assets/svg/account/Eyeslash";
-
 export const Account = () => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "Duy",
     email: "duytvph19916@fpt.edu.vn",
     address: "Nam Định",
     password: "12345",
   });
-
-  const handleEditClick = (fieldName: string) => {
-    const inputElement = document.getElementById(fieldName) as HTMLInputElement;
-    if (inputElement) {
-      inputElement.disabled = false;
-      inputElement.focus();
+  const [image, setImage] = useState<string | undefined>();
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: "-1",
+      name: "image.png",
+      status: "done",
+      url: "https://res.cloudinary.com/dksgvucji/image/upload/v1699086188/duantotnghiep/ux6huuf7jf5ot4vqxvlj.jpg",
+    },
+  ]);
+  const handleImageChange = (info: any) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+      setImage(info.file.response.url);
+      setLoading(false);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+      setLoading(false);
     }
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = () => {
-    const passwordInput = document.getElementById("password") as HTMLInputElement;
-    if (passwordInput) {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-      } else {
-        passwordInput.type = "password";
-      }
-    }
-    setShowPassword(!showPassword);
-    
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
-    const newValue = e.target.value;
-    const newData = { ...data, [field]: newValue };
-    setData(newData);
-    console.log(newValue);
-  };
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Tải ảnh</div>
+    </div>
+  );
   return (
     <div>
       <div className="col_2-heading">
-        <h4>Thông tin đăng nhập</h4>
+        <h4>Hồ sơ</h4>
       </div>
       <form action="" className="col_2-form">
-        <div className="account_email">
-          <label>Email</label>
-          <div className="col_2-input">
-            <input
-              type="text"
-              id="email"
-              className="col_2-input-email"
-              value={data.email}
-              onChange={(e) => handleInputChange(e, "email")}
-            />
-            <div className="col_2-input-edit">
-              <a href="#!" onClick={() => handleEditClick("email")}>
-                Sửa
-              </a>
+        <div className="form-edit">
+          <div className="account_name">
+            <label>Name</label>
+            <div className="col_2-input">
+              <input
+                type="text"
+                id="password"
+                className="col_2-input-password"
+                value={data.password}
+              />
             </div>
-            <hr />
           </div>
+          <div className="account_email">
+            <label>Email</label>
+            <div className="col_2-input">
+              <input
+                type="text"
+                id="email"
+                className="col_2-input-email"
+                value={data.email}
+              />
+            </div>
+          </div>
+            
         </div>
-        <div className="account_password">
-          <label>Password</label>
-          <div className="col_2-input">
-            <input
-              type="password"
-              id="password"
-              className="col_2-input-password"
-              value={data.password}
-              onChange={(e) => handleInputChange(e, "password")}
-            />
-            <span onClick={handleShowPassword} className="eyes">
-                {showPassword ? <Eyeslash /> : <Eye />}{" "}
-              </span>
-            <div className="col_2-input-edit">
-              
-              <a href="#!" onClick={() => handleEditClick("password")}>
-                Sửa
-              </a>
-            </div>
-            <hr />
-          </div>
+        <div className="image">
+          <Upload
+            name="file"
+            action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+            data={{
+              upload_preset: "wh3rdke8",
+              cloud_name: "dksgvucji",
+            }}
+            listType="picture-circle"
+            maxCount={1}
+            fileList={fileList}
+            showUploadList={true}
+            className="ant-upload-wrapper ant-upload-select"
+            onChange={handleImageChange}
+          >
+          </Upload>
         </div>
       </form>
     </div>
