@@ -34,7 +34,7 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { day, pet_id, services_id, user_id, pethouse_id, time_id } =
+    const { day, pet_id, services_id, user_id, pethouse_id, time_id, status_id } =
       req.body;
     const { error } = appointmentsSchema.validate(req.body);
     if (error) {
@@ -49,7 +49,8 @@ export const create = async (req, res) => {
       services_id,
       user_id,
       pethouse_id,
-      time_id
+      time_id,
+      status_id
     );
     res.json({ id: appointmentsId, message: "Gửi thành công rồi !" });
   } catch (err) {

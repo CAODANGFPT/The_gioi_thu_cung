@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 router.get("/appointments", list);
-router.get("/appointment/:id", show);
+router.get("/appointments/:id", show);
 router.get("/getAllAppointmentData", listAppointmentData);
 router.post("/appointment", create);
 router.patch("/appointment/:id", update);

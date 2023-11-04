@@ -10,8 +10,8 @@ import { checkPermission } from "../middlewares/checkPermission";
 const router = Router();
 
 router.get("/pets", listPet);
-router.get("/pet/:id", showPet);
-router.post("/pet", checkPermission, createPet);
-router.patch("/pet/:id", checkPermission, updatePet);
-router.delete("/pet/:id", checkPermission, deletePet);
+router.get("/pets/:id", showPet);
+router.post("/pets", createPet);
+router.patch("/pets/:id", checkPermission, updatePet);
+router.delete("/pets/:id", checkPermission, deletePet);
 export default router;

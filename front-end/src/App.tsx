@@ -11,7 +11,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -20,7 +20,6 @@ import SignIn from "./page/base/SignIn";
 import AccountPage from "./page/base/account/account";
 import ForgotPassword from "./page/base/account/forgotPassword";
 import ResetPassword from "./page/base/account/resetPassword";
-import Appointments from "./page/base/appointments";
 import ListProduct from "./page/base/listProduct";
 import RegisterAccount from "./page/base/registerAccount";
 
@@ -66,6 +65,8 @@ import UserAdmin from "./page/admin/user/list";
 import EditNews from "./page/admin/news/edit";
 import PageNotFound from "./page/pageNotFound";
 import { useGetUserQuery } from "./services/user";
+import AddPetsClient from "./page/base/appointments/pets";
+import Appointment from "./page/base/appointments/appointment";
 function App() {
   return (
     <BrowserRouter>
@@ -73,7 +74,8 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
-          <Route path="appointment" element={<Appointments />} />
+          <Route path="appointments" element={<Appointment />} />
+          <Route path="pets" element={<AddPetsClient />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
@@ -90,92 +92,92 @@ function App() {
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />
 
-            <Route path="status_appointment">
-              <Route index element={<StatusAdmin />} />
-              <Route path="add" element={<AddStatusAdmin />} />
-              <Route path="edit/:id" element={<EditStatus />} />
-            </Route>
-            <Route path="appointment" element={<AppointmentsAdmin />} />
-
-            <Route path="about" element={<AboutAdmin />} />
-
-            <Route path="about">
-              <Route index element={<AboutAdmin />} />
-              <Route path="add" element={<AddAbout />} />
-              <Route path="edit/:id" element={<EditAbout />} />
-            </Route>
-
-            <Route path="user">
-              <Route index element={<UserAdmin />} />
-              <Route path="edit/:id" element={<EditUser />} />
-            </Route>
-
-            <Route path="services">
-              <Route index element={<ServicesAdmin />} />
-              <Route path="add" element={<AddService />} />
-              <Route path="edit/:id" element={<EditService />} />
-            </Route>
-
-            <Route path="user" element={<UserAdmin />} />
-
-            <Route path="role">
-              <Route index element={<RoleAdmin />} />
-              <Route path="add" element={<AddRoleAdmin />} />
-              <Route path="edit/:id" element={<EditRole />} />
-            </Route>
-
-            <Route path="settime">
-              <Route index element={<SetTimeAdmin />} />
-              <Route path="add" element={<AddSetTime />} />
-              <Route path="edit/:id" element={<EditSetTime />} />
-            </Route>
-            <Route path="staff" element={<StaffAdmin />} />
-            <Route path="pethouse">
-              <Route index element={<PethouseAdmin />} />
-              <Route path="edit/:id" element={<EditPetHouse />} />
-            </Route>
-            <Route path="species" element={<SpeciesAdmin />} />
-
-            <Route path="staff">
-              <Route index element={<StaffAdmin />} />
-              <Route path="add" element={<Add />} />
-              <Route path="edit/:id" element={<EditStaff />} />
-            </Route>
-
-            <Route path="pethouse">
-              <Route index element={<PethouseAdmin />} />
-              <Route path="add" element={<AddPetHouse />} />
-            </Route>
-
-            <Route path="species">
-              <Route index element={<SpeciesAdmin />} />
-              <Route path="add" element={<AddSpecies />} />
-              <Route path="edit/:id" element={<EditSpecies />} />
-            </Route>
-            <Route path="breed">
-              <Route index element={<BreedAdmin />} />
-              <Route path="add" element={<AddBreed />} />
-              <Route path="edit/:id" element={<EditBreed />} />
-            </Route>
-            <Route path="contact" element={<ContactAdmin />} />
-
-            <Route path="status_contact">
-              <Route index element={<StatusContactAdmin />} />
-              <Route path="add" element={<AddStatusContactAdmin />} />
-              <Route path="edit/:id" element={<EditStatusContact />} />
-            </Route>
-
-            <Route path="profile" element={<ProfileAdmin />} />
-
-            <Route path="news">
-              <Route index element={<NewsAdmin />} />
-              <Route path="add" element={<AddNews />} />
-              <Route path="edit/:id" element={<EditNews />} />
-            </Route>
-
-            <Route path="review" element={<ReviewAdmin />} />
-            <Route path="pets" element={<PetsAdmin />} />
+          <Route path="status_appointment">
+            <Route index element={<StatusAdmin />} />
+            <Route path="add" element={<AddStatusAdmin />} />
+            <Route path="edit/:id" element={<EditStatus />} />
           </Route>
+          <Route path="appointment" element={<AppointmentsAdmin />} />
+
+          <Route path="about" element={<AboutAdmin />} />
+
+          <Route path="about">
+            <Route index element={<AboutAdmin />} />
+            <Route path="add" element={<AddAbout />} />
+            <Route path="edit/:id" element={<EditAbout />} />
+          </Route>
+
+          <Route path="user">
+            <Route index element={<UserAdmin />} />
+            <Route path="edit/:id" element={<EditUser />} />
+          </Route>
+
+          <Route path="services">
+            <Route index element={<ServicesAdmin />} />
+            <Route path="add" element={<AddService />} />
+            <Route path="edit/:id" element={<EditService />} />
+          </Route>
+
+          <Route path="user" element={<UserAdmin />} />
+
+          <Route path="role">
+            <Route index element={<RoleAdmin />} />
+            <Route path="add" element={<AddRoleAdmin />} />
+            <Route path="edit/:id" element={<EditRole />} />
+          </Route>
+
+          <Route path="settime">
+            <Route index element={<SetTimeAdmin />} />
+            <Route path="add" element={<AddSetTime />} />
+            <Route path="edit/:id" element={<EditSetTime />} />
+          </Route>
+          <Route path="staff" element={<StaffAdmin />} />
+          <Route path="pethouse">
+            <Route index element={<PethouseAdmin />} />
+            <Route path="edit/:id" element={<EditPetHouse />} />
+          </Route>
+          <Route path="species" element={<SpeciesAdmin />} />
+
+          <Route path="staff">
+            <Route index element={<StaffAdmin />} />
+            <Route path="add" element={<Add />} />
+            <Route path="edit/:id" element={<EditStaff />} />
+          </Route>
+
+          <Route path="pethouse">
+            <Route index element={<PethouseAdmin />} />
+            <Route path="add" element={<AddPetHouse />} />
+          </Route>
+
+          <Route path="species">
+            <Route index element={<SpeciesAdmin />} />
+            <Route path="add" element={<AddSpecies />} />
+            <Route path="edit/:id" element={<EditSpecies />} />
+          </Route>
+          <Route path="breed">
+            <Route index element={<BreedAdmin />} />
+            <Route path="add" element={<AddBreed />} />
+            <Route path="edit/:id" element={<EditBreed />} />
+          </Route>
+          <Route path="contact" element={<ContactAdmin />} />
+
+          <Route path="status_contact">
+            <Route index element={<StatusContactAdmin />} />
+            <Route path="add" element={<AddStatusContactAdmin />} />
+            <Route path="edit/:id" element={<EditStatusContact />} />
+          </Route>
+
+          <Route path="profile" element={<ProfileAdmin />} />
+
+          <Route path="news">
+            <Route index element={<NewsAdmin />} />
+            <Route path="add" element={<AddNews />} />
+            <Route path="edit/:id" element={<EditNews />} />
+          </Route>
+
+          <Route path="review" element={<ReviewAdmin />} />
+          <Route path="pets" element={<PetsAdmin />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

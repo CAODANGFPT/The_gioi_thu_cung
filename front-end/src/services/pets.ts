@@ -18,10 +18,20 @@ const petsApi = createApi({
         },
         providesTags: ["Pets"],
       }),
+
+      createPets: builder.mutation<TPets[], Partial<TPets>>({
+        query: (pets) => ({
+          url: "/pets",
+          method: "POST",
+          body: pets, 
+        }),
+        invalidatesTags: ["Pets"],
+
+      }),
     };
   },
 });
 
-export const { useGetAllPetsQuery } = petsApi;
+export const { useGetAllPetsQuery, useCreatePetsMutation } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;

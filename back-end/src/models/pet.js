@@ -30,12 +30,13 @@ export default class Pet {
       connection.query(
         "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [img, name, age, gender, user_id, species_id, breed_id],
-        (err) => {
+        (err, result) => {
           if (err) {
             console.error("Error inserting pet:", err);
             reject(err);
           } else {
-            resolve();
+            // Sử dụng result.insertId để lấy ID của bản ghi vừa thêm
+            resolve(result.insertId);
           }
         }
       );
