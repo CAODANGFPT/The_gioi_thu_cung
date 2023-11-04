@@ -9,6 +9,16 @@ export const listPet = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const listUserPet = async (req, res) => {
+  try {
+    const pets = await Pet.getAllUserPet(req.params.id);
+    res.json(pets);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const showPet = async (req, res) => {
   try {
     const pet = await Pet.getPetById(req.params.id);

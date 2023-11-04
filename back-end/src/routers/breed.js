@@ -11,7 +11,7 @@ import { checkPermission } from "../middlewares/checkPermission";
 const router = Router();
 
 router.get("/breeds", listBreed);
-router.get("/getAllBreedsSpecies", listBreedsSpecies);
+router.get("/getAllBreedsSpecies/:id", listBreedsSpecies);
 router.get("/breed/:id", showBreed);
 router.post("/breed", checkPermission, createBreed);
 router.patch("/breed/:id", checkPermission, updateBreed);

@@ -76,7 +76,7 @@ const BreedAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useBreedQuery();
+  const { data } = useBreedQuery(1);
   return (
     <>
       <Button

@@ -9,23 +9,23 @@ const breedApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
   }),
   endpoints(builder) {
     return {
-      breed: builder.query<TBreed[], void>({
-        query: () => {
+      breed: builder.query<TBreed[], number>({
+        query: (id) => {
           return {
-            url: "/getAllBreedsSpecies",
+            url: `/getAllBreedsSpecies/${id}`,
             method: "GET",
           };
         },
-          providesTags: ["Breed"],
+        providesTags: ["Breed"],
       }),
-       getBreedById: builder.query<TBreed, number>({
+      getBreedById: builder.query<TBreed, number>({
         query: (id) => {
           return {
             url: `/breed/${id}`,
@@ -34,17 +34,17 @@ const breedApi = createApi({
         },
         providesTags: ["Breed"],
       }),
-       updateBreed: builder.mutation<TBreed[], TBreed>({
+      updateBreed: builder.mutation<TBreed[], TBreed>({
         query: (breed) => {
           return {
-             url: `/breed/${breed.id}`,
+            url: `/breed/${breed.id}`,
             method: "PATCH",
-            body: breed
+            body: breed,
           };
         },
         invalidatesTags: ["Breed"],
       }),
-    removeBreed: builder.mutation<TBreed, number>({
+      removeBreed: builder.mutation<TBreed, number>({
         query: (id) => {
           return {
             url: `/breed/${id}`,
@@ -53,19 +53,24 @@ const breedApi = createApi({
         },
         invalidatesTags: ["Breed"],
       }),
-       createBreed: builder.mutation<TBreed, TBreed>({
+      createBreed: builder.mutation<TBreed, TBreed>({
         query: (breed) => ({
           url: `/breed`,
           method: "POST",
-          body: breed
+          body: breed,
         }),
         invalidatesTags: ["Breed"],
       }),
     };
-    
   },
 });
 
-export const { useBreedQuery, useGetBreedByIdQuery, useUpdateBreedMutation, useRemoveBreedMutation, useCreateBreedMutation } = breedApi;
+export const {
+  useBreedQuery,
+  useGetBreedByIdQuery,
+  useUpdateBreedMutation,
+  useRemoveBreedMutation,
+  useCreateBreedMutation,
+} = breedApi;
 export const breedReducer = breedApi.reducer;
 export default breedApi;

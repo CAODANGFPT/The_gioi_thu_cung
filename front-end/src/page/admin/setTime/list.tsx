@@ -47,7 +47,7 @@ const SetTimeAdmin: React.FC = () => {
         <>
           {setTime.start_time && setTime.end_time ? (
             <div>
-              ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -{" "}
+              ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -
               {dayjs(setTime.end_time, "HH:mm:ss").format("HH:mm")})
             </div>
           ) : (

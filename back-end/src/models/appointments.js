@@ -48,22 +48,14 @@ export default class Appointments {
     user_id,
     pethouse_id,
     time_id,
-    status_id
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, time_id,status_id) VALUES (?,?, ?,?,?,?,?)",
-        [day, pet_id, services_id, user_id, pethouse_id, time_id, status_id],
+        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, time_id,status_id) VALUES (?,?,?,?,?,?,1)",
+        [day, pet_id, services_id, user_id, pethouse_id, time_id],
         (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            if (results && results.insertId) {
-              resolve(results.insertId);
-            } else {
-              reject(new Error("Insert failed or no insertId returned."));
-            }
-          }
+          if (err) reject(err);
+          resolve(results.insertId);
         }
       );
     });

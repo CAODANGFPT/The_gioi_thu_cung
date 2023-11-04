@@ -11,7 +11,7 @@ export const listBreed = async (req, res) => {
 };
 export const listBreedsSpecies = async (req, res) => {
   try {
-    const breeds = await Breed.getBreedsSpecies();
+    const breeds = await Breed.getBreedsSpecies(req.params.id);
     res.json(breeds);
   } catch (err) {
     res.status(500).json({ error: err.message });
