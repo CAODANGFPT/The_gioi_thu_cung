@@ -3,7 +3,8 @@ import * as yup from "yup";
 export const SetTimeSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
-  time: yup.string(),
+  start_time: yup.string(),
+  end_time: yup.string(),
 });
 
 export const SetTimeRequestSchema = yup.object().shape({

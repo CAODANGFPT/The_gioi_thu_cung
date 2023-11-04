@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  AppointmentResponse,
   TAppointment,
   TAupdateStatusAppointment,
 } from "../schema/appointments";
@@ -21,7 +22,7 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
-      addAppointment: builder.mutation<TAppointment, Partial<TAppointment>>({
+      addAppointment: builder.mutation<AppointmentResponse, Partial<TAppointment>>({
         query: (appointments) => {
           return {
             url: "/appointment",
