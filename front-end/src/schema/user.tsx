@@ -10,6 +10,7 @@ export const UserSchema = yup.object().shape({
   address: yup.string().required(),
   role_id: yup.string().required(),
   nameRole: yup.string().required(),
+  gender: yup.number().required(),
   is_delete: yup.boolean().required(),
 });
 
