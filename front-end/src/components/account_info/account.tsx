@@ -1,17 +1,8 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Upload, UploadFile, message } from "antd";
-import { useState } from "react";
 import "../../assets/scss/page/account.scss";
 import { useGetUserQuery } from "../../services/user";
 export const Account = () => {
-  const [loading, setLoading] = useState(false);
   const { data: user } = useGetUserQuery();
-  if (user) {
-    console.log(user);
-  }
 
-  const image: string =
-    "https://res.cloudinary.com/dksgvucji/image/upload/v1699086188/duantotnghiep/ux6huuf7jf5ot4vqxvlj.jpg";
   return (
     <div>
       <div className="col_2-heading">
@@ -20,7 +11,7 @@ export const Account = () => {
       <div className="profile">
         <div className="profile-tile">
           <div className="avatar-container">
-            <img src={image} className="avatar" alt="user" />
+            <img src={user?.img && user.img} className="avatar" alt="user" />
             <i className="fa fa-2x fa-camera img-upload" aria-hidden="true"></i>
           </div>
 

@@ -326,11 +326,12 @@
           }
           div {
             .btn-edit {
+              cursor: pointer;
               border: 1px solid #00575c;
               background-color: #00575c;
               color: #fff;
               min-width: 100px;
-              padding: 5px 10px;
+              padding: 7px 10px;
               border-radius: 15px;
             }
           }
