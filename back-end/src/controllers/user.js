@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
+import { updatePasswordSchema } from "../schemas/user";
 
 export const list = async (req, res) => {
   try {
@@ -20,30 +21,6 @@ export const listUsersRole = async (req, res) => {
   }
 };
 
-export const resetPassword = async (req, res) => {
-  const { email, token, password } = req.body;
-  try {
-    bcrypt.compare(email, token, (err, result) => {
-      console.log("compare", result);
-      if (result == true) {
-        bcrypt
-          .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
-          .then(async (password) => {
-            await User.resetPassword(email, password);
-            res.status(200).json({
-              message: "Đổi mật khẩu thành công",
-            });
-          });
-      } else {
-        res.status(400).json({
-          message: "Đổi mật khẩu thất bại",
-        });
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 export const updateRole = async (req, res) => {
   try {
     const { id, role_id } = req.body;
@@ -94,5 +71,34 @@ export const getUser = async (req, res) => {
     return res.status(401).json({
       message: "Token không hợp lệ",
     });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { newPassword, oldPassword, idUser } = req.body;
+    const { error } = updatePasswordSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    const user = await User.getUserById(idUser);
+    if (!user) {
+      return res.status(404).json({ message: "Tài khoản không tồn tại" });
+    }
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordMatch) {
+      return res.status(400).json({ message: "Mật khẩu cũ không chính xác" });
+    }
+    const password = await bcrypt.hash(newPassword, 10);
+    const email = user.email;
+    await User.resetPassword(email, password);
+    res.status(200).json({
+      message: "Đổi mật khẩu thành công",
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
