@@ -10,5 +10,13 @@ export const AccountSchema = yup.object().shape({
   price: yup.array().of(yup.number()).required(),
 });
 
-export type TAccount = yup.InferType<typeof AccountSchema>;
+export const AccountEditSchema = yup.object().shape({
+  email: yup.string().required(),
+  name: yup.string().required(),
+  phone: yup.string().required(),
+  gender: yup.number().required(),
+});
 
+export type TAccountEdit = yup.InferType<typeof AccountEditSchema>;
+
+export type TAccount = yup.InferType<typeof AccountSchema>;

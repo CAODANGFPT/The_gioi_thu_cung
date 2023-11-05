@@ -1,7 +1,18 @@
+import { useState } from "react";
 import "../../assets/scss/page/account.scss";
 import { useGetUserQuery } from "../../services/user";
+
+import EditProfile from "./editprofile";
 export const Account = () => {
   const { data: user } = useGetUserQuery();
+
+  const [editedUser, setEditedUser] = useState({
+    // Giá trị mặc định hoặc thay bằng giá trị user.id
+    name: "",
+    email: "",
+    phone: "",
+    gender: 0,
+  });
 
   return (
     <div>
@@ -32,14 +43,14 @@ export const Account = () => {
                 <div>{user?.gender === 1 && "Nam"}</div>
                 <div>{user?.gender === 2 && "Nữ"}</div>
               </div>
-            </div>  
+            </div>
           </div>
         </div>
         <div className="profile-edit">
           <div>
-            <button type="submit" className="btn btn-edit">
-              Cập nhật thông tin
-            </button>
+            <div>
+              <EditProfile user={editedUser} />
+            </div>
           </div>
           <div>
             <button type="submit" className="btn btn-edit">
