@@ -239,16 +239,20 @@
         position: relative;
         display: flex;
         margin-bottom: 20px;
+
         @include max-screen($lg) {
           flex-direction: column;
         }
+
         &-tile {
           flex: 1;
           display: flex;
           align-items: flex-start;
+
           @include max-screen($lg) {
             flex-direction: column;
           }
+
           .avatar-container {
             position: relative;
             cursor: pointer;
@@ -257,9 +261,11 @@
             margin: 0 30px 20px 0;
             margin-right: 30px;
             border-radius: 100%;
+
             @include max-screen($lg) {
-             margin: 0 auto;
+              margin: 0 auto;
             }
+
             .avatar {
               border-radius: 100%;
               width: 100%;
@@ -272,9 +278,11 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+
             @include max-screen($lg) {
               margin-top: 20px;
-             }
+            }
+
             @media screen and (max-width: 991px) {
               width: 100%;
             }
@@ -319,11 +327,13 @@
           gap: 10px;
           flex-direction: column;
           align-items: end;
+
           @include max-screen($lg) {
             flex-direction: row;
             justify-content: end;
             margin-top: 20px;
           }
+
           div {
             .btn-edit {
               cursor: pointer;
@@ -839,4 +849,8 @@
   height: 100vh;
   backdrop-filter: grayscale(50%) blur(5px);
   z-index: 0;
+}
+
+.custom-label-col {
+  width: 200px;
 }

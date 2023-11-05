@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TBlockUser, TRoleUser, TUser } from "../schema/user";
-import { TResetPasswordUserSchema } from "../schema/resetPassword";
+import {
+  TResetPasswordUserSchema,
+  TUpdatePasswordUserSchema,
+} from "../schema/resetPassword";
 
 const userApi = createApi({
   reducerPath: "user",
@@ -10,7 +13,7 @@ const userApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -45,7 +48,7 @@ const userApi = createApi({
         providesTags: ["User"],
       }),
       resetPasswordUser: builder.mutation<
-        TResetPasswordUserSchema,
+        void,
         Partial<TResetPasswordUserSchema>
       >({
         query: (user) => {
@@ -61,6 +64,19 @@ const userApi = createApi({
         query: (user) => {
           return {
             url: "/user/block",
+            method: "PATCH",
+            body: user,
+          };
+        },
+        invalidatesTags: ["User"],
+      }),
+      updatePassword: builder.mutation<
+        void,
+        Partial<TUpdatePasswordUserSchema>
+      >({
+        query: (user) => {
+          return {
+            url: "/user/updatePassword",
             method: "PATCH",
             body: user,
           };
@@ -87,7 +103,8 @@ export const {
   useGetUserQuery,
   useResetPasswordUserMutation,
   useUpdateBlockUserMutation,
-  useUpdateRoleUserMutation
+  useUpdateRoleUserMutation,
+  useUpdatePasswordMutation,
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi;

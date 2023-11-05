@@ -136,3 +136,28 @@ export const sendResetLinkEmail = async (req, res) => {
   }
 };
 
+
+export const resetPassword = async (req, res) => {
+  const { email, token, password } = req.body;
+  try {
+    bcrypt.compare(email, token, (err, result) => {
+      console.log("compare", result);
+      if (result == true) {
+        bcrypt
+          .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
+          .then(async (password) => {
+            await User.resetPassword(email, password);
+            res.status(200).json({
+              message: "Đổi mật khẩu thành công",
+            });
+          });
+      } else {
+        res.status(400).json({
+          message: "Đổi mật khẩu thất bại",
+        });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
