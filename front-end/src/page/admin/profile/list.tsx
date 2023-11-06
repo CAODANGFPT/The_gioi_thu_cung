@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TProfile } from "../../../schema/profile";
+import { PlusOutlined } from "@ant-design/icons";
 import {
   useProfileQuery,
   useRemoveProfileMutation,
@@ -36,7 +37,7 @@ const ProfileAdmin: React.FC = () => {
       width: 50,
     },
     {
-      title: "Avata",
+      title: "Logo",
       dataIndex: "logo",
       key: "logo",
       width: 150,
@@ -91,7 +92,20 @@ const ProfileAdmin: React.FC = () => {
   ];
 
   const { data } = useProfileQuery();
-  return <TableAdmin columns={columns} data={data} />;
+  return (
+    <div>
+      <Link to="/admin/profile/add">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ marginBottom: "1rem" }}
+        >
+          THÊM PROFILE
+        </Button>
+      </Link>
+      <TableAdmin columns={columns} data={data} />
+    </div>
+  );
 };
 
 export default ProfileAdmin;

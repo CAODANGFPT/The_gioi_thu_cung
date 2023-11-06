@@ -25,6 +25,7 @@ const profileApi = createApi({
         },
              providesTags: ["Profile"],
       }),
+
        removeProfile: builder.mutation<TProfile, number>({
         query: (id) => {
           return {
@@ -34,10 +35,20 @@ const profileApi = createApi({
         },
         invalidatesTags: ["Profile"],
       }),
+
+      addProfile: builder.mutation<TProfile[], Partial<TProfile>>({
+        query: (addProfile) => ({
+          url: "/profile",
+          method: "POST",
+          body: addProfile, 
+        }),
+        invalidatesTags: ["Profile"],
+      }),
+
     };
   },
 });
 
-export const { useProfileQuery, useRemoveProfileMutation } = profileApi;
+export const { useProfileQuery, useRemoveProfileMutation, useAddProfileMutation } = profileApi;
 export const profileReducer = profileApi.reducer;
 export default profileApi;

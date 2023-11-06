@@ -2,17 +2,26 @@ import * as yup from "yup";
 
 export const ProfileSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  logo: yup.string(),
+  email: yup.string(),
+  phone: yup.number(),
+  fb: yup.string(),
 });
 
 export const ProfileRequestSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  logo: yup.string(),
+  email: yup.string(),
+  phone: yup.number(),
+  fb: yup.string(),
 });
 
 export const ProfileResponseSchema = yup.object().shape({
   id: yup.number(),
-  name: yup.string(),
+  logo: yup.string(),
+  email: yup.string(),
+  phone: yup.number(),
+  fb: yup.string(),
 });
 
 export const ProfileErrorSchema = yup.object({});
