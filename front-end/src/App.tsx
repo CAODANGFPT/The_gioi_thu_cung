@@ -66,6 +66,7 @@ import UserAdmin from "./page/admin/user/list";
 import EditNews from "./page/admin/news/edit";
 import PageNotFound from "./page/pageNotFound";
 import EditContact from "./page/admin/contact/edit";
+import PaymentPage from "./page/base/Payment";
 function App() {
   return (
     <BrowserRouter>
@@ -176,6 +177,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
+        <Route path="payment" element={<PaymentPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
