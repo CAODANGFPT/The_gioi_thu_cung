@@ -1,5 +1,10 @@
 import Appointments from "../models/appointments";
-import { appointmentsSchema, updateAppointmentStatusSchema } from "../schemas/appointments";
+import User from "../models/user";
+import {
+  appointmentsSchema,
+  updateAppointmentStatusSchema,
+} from "../schemas/appointments";
+import jwt from "jsonwebtoken";
 
 export const list = async (req, res) => {
   try {
@@ -93,12 +98,34 @@ export const updateAppointmentStatus = async (req, res) => {
         message: errors,
       });
     }
-    await Appointments.updateAppointmentStatus(
-      req.params.id,
-      status_id
-    );
+    await Appointments.updateAppointmentStatus(req.params.id, status_id);
     res.json({ message: "Appointments updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAppointmentUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      try {
+        const appointments = await Appointments.getAppointmentUser(user?.id);
+        res.json(appointments);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
   }
 };

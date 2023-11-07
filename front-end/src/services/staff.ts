@@ -9,7 +9,7 @@ const staffApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -47,12 +47,12 @@ const staffApi = createApi({
 
       updateStaff: builder.mutation<TStaff, TStaff>({
         query: (staff) => ({
-            url: `/staff/${staff.id}`,
-            method: "PUT",
-            body: staff,
+          url: `/staff/${staff.id}`,
+          method: "PUT",
+          body: staff,
         }),
         invalidatesTags: ["Staff"],
-    }),
+      }),
       removeStaff: builder.mutation<TStaff, number>({
         query: (id) => {
           return {
@@ -66,6 +66,12 @@ const staffApi = createApi({
   },
 });
 
-export const { useStaffQuery, useCreateStaffMutation, useUpdateStaffMutation, useGetStaffByIdQuery, useRemoveStaffMutation } = staffApi;
+export const {
+  useStaffQuery,
+  useCreateStaffMutation,
+  useUpdateStaffMutation,
+  useGetStaffByIdQuery,
+  useRemoveStaffMutation,
+} = staffApi;
 export const staffReducer = staffApi.reducer;
 export default staffApi;

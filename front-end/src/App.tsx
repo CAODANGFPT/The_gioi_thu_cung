@@ -65,7 +65,8 @@ import UserAdmin from "./page/admin/user/list";
 
 import EditNews from "./page/admin/news/edit";
 import PageNotFound from "./page/pageNotFound";
-import { useGetUserQuery } from "./services/user";
+import CartPage from "./page/base/cart";
+
 function App() {
   return (
     <BrowserRouter>
@@ -77,10 +78,11 @@ function App() {
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="his_follow" element={<Historyfollow />} />
+            <Route path="history_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
           </Route>
+          <Route path="cart" element={<CartPage />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
