@@ -20,7 +20,7 @@ export const ResetPasswordSchema = yup.object().shape({
     .required("Vui lòng nhập mật khẩu."),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref('password'), ''], "Mật khẩu không khớp")
+    .oneOf([yup.ref("password"), ""], "Mật khẩu không khớp")
     .required("Vui lòng xác nhận mật khẩu."),
 });
 
@@ -31,16 +31,32 @@ export const ResetPasswordUserSchema = yup.object().shape({
     .required("Vui lòng nhập mật khẩu."),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref('password'), ''], "Mật khẩu không khớp")
+    .oneOf([yup.ref("password"), ""], "Mật khẩu không khớp")
     .required("Vui lòng xác nhận mật khẩu."),
-    token: yup.string().required("Vui lòng xác nhận mật khẩu."),
-    email: yup
+  token: yup.string().required("Vui lòng xác nhận mật khẩu."),
+  email: yup
     .string()
     .email("Email không đúng định dạng")
     .required("Vui lòng nhập email"),
 });
 
+export const UpdatePasswordUserSchema = yup.object().shape({
+  idUser: yup.number().required(),
+  newPassword: yup
+    .string()
+    .min(8, "Mật khẩu phải tối đa 8 kí tự.")
+    .required("Vui lòng nhập đúng mật khẩu."),
+  oldPassword: yup
+    .string()
+    .min(8, "Mật khẩu phải tối đa 8 kí tự.")
+    .required("Vui lòng nhập đúng mật khẩu."),
+});
 export type TResetPassword = yup.InferType<typeof ResetPasswordSchema>;
 
-export type TResetPasswordUserSchema = yup.InferType<typeof ResetPasswordUserSchema>;
+export type TResetPasswordUserSchema = yup.InferType<
+  typeof ResetPasswordUserSchema
+>;
 
+export type TUpdatePasswordUserSchema = yup.InferType<
+  typeof UpdatePasswordUserSchema
+>;

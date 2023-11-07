@@ -125,4 +125,16 @@ export default class User {
       );
     });
   }
+  static updateUser(id, img, email, name, gender, phone) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE users SET img = ?, email = ?, name = ?, gender = ?, phone = ? WHERE id = ?",
+        [img, email, name, gender, phone, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
 }

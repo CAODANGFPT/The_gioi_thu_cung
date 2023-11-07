@@ -6,10 +6,12 @@ import {
   getUser,
   list,
   listUsersRole,
-  resetPassword,
   updateIsDelete,
+  updatePassword,
   updateRole,
+  updateUser,
 } from "../controllers/user";
+import { resetPassword } from "../controllers/auth";
 const router = express.Router();
 
 router.get("/getAll", list);
@@ -20,5 +22,7 @@ router.post("/password/reset", resetPassword);
 router.patch("/user/block", checkPermission, updateIsDelete);
 router.patch("/user/role", checkPermission, updateRole);
 router.get("/getUser", getUser);
+router.patch("/user/updatePassword", updatePassword);
+router.put("/updateUser/:id", updateUser);
 
 export default router;

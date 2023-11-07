@@ -11,6 +11,8 @@ export const AccountSchema = yup.object().shape({
 });
 
 export const AccountEditSchema = yup.object().shape({
+  id: yup.number(),
+  img: yup.string().required(),
   email: yup.string().required(),
   name: yup.string().required(),
   phone: yup.string().required(),
