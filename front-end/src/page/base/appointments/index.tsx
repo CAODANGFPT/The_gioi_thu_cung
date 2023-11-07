@@ -1,6 +1,7 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -31,10 +32,13 @@ import { useServicesQuery } from "../../../services/services";
 import { useSetTimeQuery } from "../../../services/setTime";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
+import { useStaffQuery } from "../../../services/staff";
+import { RangePickerProps } from "antd/es/date-picker";
 
 type TFinish = {
   petHouse_id: number;
   pet_id: number;
+  staff_id: number;
   services_id: number;
   time_id: number;
   age: number;
@@ -68,7 +72,8 @@ const Appointment: React.FC = () => {
   const { data: services } = useServicesQuery();
   const { data: settime } = useSetTimeQuery();
   const { data: species } = useGetAllspeciesQuery();
-  const { data: listPet } = useGetAllUserPetsQuery(user?.id);
+  const { data: listPet } = useGetAllUserPetsQuery();
+  const { data: listStaff } = useStaffQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
   const [createSPets] = useCreatePetsMutation();
@@ -128,7 +133,7 @@ const Appointment: React.FC = () => {
           status_id: 1,
         });
         if ("data" in resAppointment) {
-          message.success(resAppointment.data.message)
+          message.success(resAppointment.data.message);
           navigate("/");
         }
       }
@@ -142,7 +147,7 @@ const Appointment: React.FC = () => {
         time_id: values.time_id,
       });
       if ("data" in resAppointment) {
-        message.success(resAppointment.data.message)
+        message.success(resAppointment.data.message);
         navigate("/");
       }
     }
@@ -179,6 +184,31 @@ const Appointment: React.FC = () => {
     ]);
   }, [pet?.img]);
 
+  const range = (start: number, end: number) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    if (!current) {
+      return false;
+    }
+    const today = dayjs().startOf("day");
+    const afterFiveDays = today.add(5, "day").endOf("day");
+    return current.isBefore(today) || current.isAfter(afterFiveDays);
+  };
+
+  const disabledDateTime = () => ({
+    disabledHours: () => {
+      return Array.from({ length: 24 }, (_, i) => i).filter(
+        (hour) => hour < 9 || hour > 18
+      );
+    },
+  });
+
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20 }}>Đặt lịch chăm sóc thú cưng</h1>
@@ -201,6 +231,19 @@ const Appointment: React.FC = () => {
                       {item.name}
                     </Select.Option>
                   ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="staff_id"
+              label="Nhân viên"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                {listStaff?.map((item: TServices) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item
@@ -243,6 +286,12 @@ const Appointment: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
+              {/* <DatePicker
+                format="YYYY-MM-DD HH:mm:ss"
+                disabledDate={disabledDate}
+                disabledTime={disabledDateTime}
+                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+              /> */}
             </Form.Item>
             <Form.Item>
               <Space>

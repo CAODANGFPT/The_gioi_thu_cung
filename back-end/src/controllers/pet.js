@@ -1,4 +1,6 @@
+import jwt from "jsonwebtoken";
 import Pet from "../models/pet";
+import User from "../models/user";
 import { petSchema } from "../schemas/pet";
 
 export const listPet = async (req, res) => {
@@ -12,10 +14,26 @@ export const listPet = async (req, res) => {
 
 export const listUserPet = async (req, res) => {
   try {
-    const pets = await Pet.getAllUserPet(req.params.id);
-    res.json(pets);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      try {
+        const pets = await Pet.getAllUserPet(user.id);
+        res.json(pets);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
   }
 };
 
@@ -41,7 +59,7 @@ export const createPet = async (req, res) => {
         message: errors,
       });
     }
-    const petId = await Pet.addPet(
+    const pet = await Pet.addPet(
       img,
       name,
       age,
@@ -50,7 +68,8 @@ export const createPet = async (req, res) => {
       species_id,
       breed_id
     );
-    res.json({ id: petId, message: "thêm thông tin thú cưng thành công" });
+    console.log(pet);
+    res.json({ id: pet.insertId, message: "thêm thông tin thú cưng thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

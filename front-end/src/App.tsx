@@ -11,7 +11,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -63,9 +63,11 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
-import EditNews from "./page/admin/news/edit";
-import PageNotFound from "./page/pageNotFound";
 import EditContact from "./page/admin/contact/edit";
+import EditNews from "./page/admin/news/edit";
+import CartPage from "./page/base/cart";
+import PageNotFound from "./page/pageNotFound";
+
 function App() {
   return (
     <BrowserRouter>
@@ -77,10 +79,11 @@ function App() {
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="his_follow" element={<Historyfollow />} />
+            <Route path="history_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
           </Route>
+          <Route path="cart" element={<CartPage />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

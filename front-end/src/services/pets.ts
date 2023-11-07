@@ -6,6 +6,13 @@ const petsApi = createApi({
   tagTypes: ["Pets"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", "Bearer " + token);
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -18,10 +25,10 @@ const petsApi = createApi({
         },
         providesTags: ["Pets"],
       }),
-      getAllUserPets: builder.query<TPets[], number | undefined>({
-        query: (id) => {
+      getAllUserPets: builder.query<TPets[], void>({
+        query: () => {
           return {
-            url: `/ListUserPets/${id}`,
+            url: `/ListUserPets`,
             method: "GET",
           };
         },

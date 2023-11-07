@@ -96,7 +96,7 @@ const HeaderBase = () => {
             <HeartIcon />
             <div className="group13">0</div>
           </div>
-          <div className="frame5">
+          <div className="frame5" onClick={() => navigate("cart")}>
             <ShoppingCartIcon />
             <div className="group13">0</div>
           </div>
