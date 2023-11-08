@@ -12,6 +12,19 @@ export default class Pet {
       );
     });
   }
+  static getAllUserPet(user_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT pets.id, pets.name, pets.age, pets.img, pets.gender, pets.user_id, users.name AS nameUser, pets.species_id, species.name AS nameSpecies, pets.breed_id, breed.name AS nameBreed FROM pets JOIN users ON pets.user_id = users.id JOIN species ON pets.species_id = species.id JOIN breed ON pets.breed_id = breed.id WHERE user_id = ?",
+        [user_id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
   static getPetById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -30,12 +43,12 @@ export default class Pet {
       connection.query(
         "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [img, name, age, gender, user_id, species_id, breed_id],
-        (err) => {
+        (err, results) => {
           if (err) {
             console.error("Error inserting pet:", err);
             reject(err);
           } else {
-            resolve();
+            resolve(results);
           }
         }
       );

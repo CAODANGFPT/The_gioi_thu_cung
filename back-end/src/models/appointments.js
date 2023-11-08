@@ -41,29 +41,46 @@ export default class Appointments {
       );
     });
   }
+  
+  static getAppointmentUser(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT appointments.id, appointments.day, pets.name AS pet_name, " +
+          "services.name AS service_name, users.email AS user_email, " +
+          "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
+          "settime.start_time, settime.end_time, status_appointment.name AS status_name " +
+          "FROM appointments " +
+          "JOIN pets ON appointments.pet_id = pets.id " +
+          "JOIN services ON appointments.services_id = services.id " +
+          "JOIN users ON appointments.user_id = users.id " +
+          "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
+          "JOIN settime ON appointments.time_id = settime.id " +
+          "JOIN status_appointment ON appointments.status_id = status_appointment.id " +
+          "WHERE appointments.user_id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
   static createAppointments(
     day,
     pet_id,
     services_id,
     user_id,
     pethouse_id,
-    time_id,
-    status_id
+    time_id
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, time_id,status_id) VALUES (?,?, ?,?,?,?,?)",
-        [day, pet_id, services_id, user_id, pethouse_id, time_id, status_id],
+        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, time_id,status_id) VALUES (?,?,?,?,?,?,1)",
+        [day, pet_id, services_id, user_id, pethouse_id, time_id],
         (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            if (results && results.insertId) {
-              resolve(results.insertId);
-            } else {
-              reject(new Error("Insert failed or no insertId returned."));
-            }
-          }
+          if (err) reject(err);
+          resolve(results.insertId);
         }
       );
     });
@@ -80,7 +97,7 @@ export default class Appointments {
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE appointments SET day = ?, pet_id = ?,services_id = ?, user_id=?, pethouse_id = ?, time_id = ?,status_id = ? WHERE id = ?",
+        "UPDATE appointments SET day = ?, pet_id = ?, services_id = ?, user_id=?, pethouse_id = ?, time_id = ?,status_id = ? WHERE id = ?",
         [
           day,
           pet_id,

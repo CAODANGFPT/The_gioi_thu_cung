@@ -1,4 +1,4 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import TableAdmin from "../../../components/table";
@@ -53,6 +53,7 @@ const UserAdmin: React.FC = () => {
       dataIndex: "img",
       key: "img",
       width: 150,
+      render: (img) => <Image width={100} src={img} />,
     },
     {
       title: "SĐT",

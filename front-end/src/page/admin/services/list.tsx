@@ -108,7 +108,7 @@ const ServicesAdmin: React.FC = () => {
       >
         THÊM DỊCH VỤ
       </Button>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </>
   );
 };

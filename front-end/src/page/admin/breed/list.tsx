@@ -76,7 +76,7 @@ const BreedAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useBreedQuery();
+  const { data } = useBreedQuery(1);
   return (
     <>
       <Button
@@ -87,7 +87,7 @@ const BreedAdmin: React.FC = () => {
       >
         THÊM GIỐNG
       </Button>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </>
   );
 };

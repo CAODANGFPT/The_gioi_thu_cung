@@ -1,97 +1,65 @@
-import { useState } from "react";
-import React from "react";
 import "../../assets/scss/page/account.scss";
-import Eye from "../../assets/svg/account/Eye";
-import Eyeslash from "../../assets/svg/account/Eyeslash";
+import { useGetUserQuery } from "../../services/user";
+import { FC, useState } from "react";
+import ModalResetPassword from "../modal/resetPassword";
 
-export const Account = () => {
-  const [data, setData] = useState({
-    name: "Duy",
-    email: "duytvph19916@fpt.edu.vn",
-    address: "Nam Định",
-    password: "12345",
-  });
-
-  const handleEditClick = (fieldName: string) => {
-    const inputElement = document.getElementById(fieldName) as HTMLInputElement;
-    if (inputElement) {
-      inputElement.disabled = false;
-      inputElement.focus();
-    }
-  };
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = () => {
-    const passwordInput = document.getElementById("password") as HTMLInputElement;
-    if (passwordInput) {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-      } else {
-        passwordInput.type = "password";
-      }
-    }
-    setShowPassword(!showPassword);
-    
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
-    const newValue = e.target.value;
-    const newData = { ...data, [field]: newValue };
-    setData(newData);
-    console.log(newValue);
+export const Account: FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: user } = useGetUserQuery();
+  const showModal = () => {
+    setIsModalOpen(true);
   };
   return (
-    <div>
+    <>
       <div className="col_2-heading">
-        <h4>Thông tin đăng nhập</h4>
+        <h4>Hồ sơ</h4>
       </div>
-      <form action="" className="col_2-form">
-        <div className="account_email">
-          <label>Email</label>
-          <div className="col_2-input">
-            <input
-              type="text"
-              id="email"
-              className="col_2-input-email"
-              value={data.email}
-              onChange={(e) => handleInputChange(e, "email")}
-            />
-            <div className="col_2-input-edit">
-              <a href="#!" onClick={() => handleEditClick("email")}>
-                Sửa
-              </a>
+      <div className="profile">
+        <div className="profile-tile">
+          <div className="avatar-container">
+            <img src={user?.img && user.img} className="avatar" alt="user" />
+            <i className="fa fa-2x fa-camera img-upload" aria-hidden="true"></i>
+          </div>
+
+          <div className="profile-detail">
+            <div className="fullname">{user?.name}</div>
+
+            <div className="info">
+              <div className="col-title text-secondary">Số điện thoại:</div>
+              <div className="col-info ml-2">{user?.phone}</div>
             </div>
-            <hr />
+            <div className="info">
+              <div className="col-title text-secondary">Email:</div>
+              <div className="col-info ml-2">{user?.email}</div>
+            </div>
+            <div className="info">
+              <div className="col-title text-secondary">Giới tính:</div>
+              <div className="col-info ml-2">
+                <div>{user?.gender === 1 && "Nam"}</div>
+                <div>{user?.gender === 2 && "Nữ"}</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="account_password">
-          <label>Password</label>
-          <div className="col_2-input">
-            <input
-              type="password"
-              id="password"
-              className="col_2-input-password"
-              value={data.password}
-              onChange={(e) => handleInputChange(e, "password")}
+        <div className="profile-edit">
+          <div>
+            <button type="submit" className="btn btn-edit">
+              Cập nhật thông tin
+            </button>
+          </div>
+          <div>
+            <button type="submit" className="btn btn-edit" onClick={showModal}>
+              Đổi mật khẩu
+            </button>
+            <ModalResetPassword
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              idUser={Number(user?.id)}
             />
-            <span onClick={handleShowPassword} className="eyes">
-                {showPassword ? <Eyeslash /> : <Eye />}{" "}
-              </span>
-            <div className="col_2-input-edit">
-              
-              <a href="#!" onClick={() => handleEditClick("password")}>
-                Sửa
-              </a>
-            </div>
-            <hr />
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

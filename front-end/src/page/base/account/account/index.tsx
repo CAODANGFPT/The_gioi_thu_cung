@@ -9,14 +9,6 @@ import UserIcons from "../../../../assets/svg/account/User";
 import Breadcrumb from "../../../../components/breadcrumb";
 
 const AccountPage = () => {
-  const [data] = useState({
-    name: "Duy",
-    email: "duytvph19916@fpt.edu.vn",
-    address: "Nam Định",
-    password: "12345",
-  });
-
-
   const [activeTab, setActiveTab] = useState<number>(0);
   const handleTabClick = (index: number) => {
     setActiveTab(index);
@@ -30,7 +22,7 @@ const AccountPage = () => {
         </div>
         <div className="account_info-row">
           <h4 className="account_info-heading">
-            Tài Khoản {data.name}
+            Tài Khoản
           </h4>
         </div>
         <div className="account_info-row">
@@ -80,7 +72,7 @@ const AccountPage = () => {
               </li>
               <li className="account_col-item">
                 <Link
-                  to="/account/his_follow"
+                  to="/account/history_follow"
                   className={`account_col-link his_track ${
                     activeTab === 3 ? "active" : ""
                   }`}
@@ -127,7 +119,7 @@ const AccountPage = () => {
               </li>
               <li className="account_col-item">
               <Link
-                  to="/account/follow"
+                  to="/account/history_follow"
                   className={`account_col-link tracking ${
                     activeTab === 5 ? "active" : ""
                   }`}

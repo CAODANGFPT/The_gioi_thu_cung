@@ -4,7 +4,7 @@ export default class User {
   static createUser(name, email, password, phone, address, img) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO users (name, email, password, role_id , phone, address, img) VALUES (?, ?, ?, 2, ?, ?, 5)",
+        "INSERT INTO users (name, email,gender, password, role_id , phone, address, img) VALUES (?, ?, ?, 2, ?, ?, ?, 5)",
         [name, email, password, phone, address, img],
         (err, results) => {
           if (err) reject(err);
@@ -30,7 +30,7 @@ export default class User {
   static getUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id WHERE users.id = ?",
+        "SELECT users.id, users.email, users.gender,users.phone,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id WHERE users.id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);
@@ -78,7 +78,7 @@ export default class User {
   static getAllUsersRole() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT users.id, users.email,users.phone,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id",
+        "SELECT users.id, users.email,users.phone,users.gender,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN  role on users.role_id = role.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
