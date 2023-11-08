@@ -42,6 +42,15 @@ const petsApi = createApi({
         }),
         invalidatesTags: ["Pets"],
       }),
+       removePets: builder.mutation<TPets, number>({
+        query: (id) => {
+          return {
+            url: `/pets/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Pets"],
+      }),
     };
   },
 });
@@ -49,7 +58,7 @@ const petsApi = createApi({
 export const {
   useGetAllPetsQuery,
   useGetAllUserPetsQuery,
-  useCreatePetsMutation,
+  useCreatePetsMutation, useRemovePetsMutation
 } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;
