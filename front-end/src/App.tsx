@@ -11,7 +11,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -70,6 +70,9 @@ import PageNotFound from "./page/pageNotFound";
 import CategoryAdmin from "./page/admin/category/list";
 import EditCategory from "./page/admin/category/edit";
 import AddCategory from "./page/admin/category/add";
+import ProductsAdmin from "./page/admin/products/list";
+import AddProduct from "./page/admin/products/add";
+import EditProduct from "./page/admin/products/edit";
 
 function App() {
   return (
@@ -113,6 +116,12 @@ function App() {
             <Route index element={<CategoryAdmin />} />
             <Route path="add" element={<AddCategory />} />
             <Route path="edit/:id" element={<EditCategory />} />
+          </Route>
+
+          <Route path="products">
+            <Route index element={<ProductsAdmin />} />
+            <Route path="add" element={<AddProduct />} />
+            <Route path="edit/:id" element={<EditProduct />} />
           </Route>
 
           <Route path="user">
