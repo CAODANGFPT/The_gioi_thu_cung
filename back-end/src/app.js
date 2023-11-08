@@ -21,6 +21,7 @@ import imageRouter from "./routers/uploadImage";
 import statusContactRouter from "./routers/status_contact";
 import shiftWorkRouter from "./routers/shift_work";
 import menuRouter from "./routers/menu";
+import statusOrderRouter from "./routers/stauts_order";
 
 const app = express();
 app.use(express.json());
@@ -47,5 +48,6 @@ app.use("/api", imageRouter);
 app.use("/api", statusContactRouter);
 app.use("/api", shiftWorkRouter);
 app.use("/api", menuRouter);
+app.use("/api", statusOrderRouter);
 
 export const viteNodeApp = app;
