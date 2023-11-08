@@ -21,6 +21,7 @@ import StaffDo from "../svg/staffDo";
 import TimeLine from "../svg/timeLine";
 import RoleIcon from "../svg/roleIcon";
 import AboutMeIcon from "../svg/aboutMe";
+import Category from "../svg/category";
 export const navigationLinks = [
   { id: 1, title: "Dasboard", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "History", image: HistoryIcon, link: "history" },
@@ -35,12 +36,13 @@ export const navigationLinks = [
   { id: 11, title: "Species", image: SpeciesIcon, link: "species" },
   { id: 12, title: "Staff Do", image: StaffDo, link: "staff" },
   { id: 13, title: "Set Time", image: TimeLine, link: "settime" },
-  { id: 14, title: "User", image: UserIcons, link: "user" },
-  { id: 15, title: "Role", image: RoleIcon, link: "role" },
-  { id: 16, title: "Profile", image: ProfileIcon, link: "profile" },
-  { id: 17, title: "Đánh giá", image: ReviewIcon, link: "review" },
-  { id: 18, title: "News", image: NewIcon, link: "news" },
-  { id: 19, title: "About", image: AboutMeIcon, link: "about" },
+  { id: 14, title: "Category", image: Category, link: "category" },
+  { id: 15, title: "User", image: UserIcons, link: "user" },
+  { id: 16, title: "Role", image: RoleIcon, link: "role" },
+  { id: 17, title: "Profile", image: ProfileIcon, link: "profile" },
+  { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
+  { id: 19, title: "News", image: NewIcon, link: "news" },
+  { id: 20, title: "About", image: AboutMeIcon, link: "about" },
 
 ];
 
