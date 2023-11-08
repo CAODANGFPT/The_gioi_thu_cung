@@ -45,7 +45,7 @@ export default class Appointments {
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, pets.name AS pet_name, " +
+        "SELECT appointments.id, appointments.day, appointments.is_delete, pets.name AS pet_name, " +
           "services.name AS service_name, users.email AS user_email, " +
           "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
           "settime.start_time, settime.end_time, status_appointment.name AS status_name " +
@@ -123,6 +123,19 @@ export default class Appointments {
         (err) => {
           if (err) reject(err);
           resolve();
+        }
+      );
+    });
+  }
+
+  static cancelHistoryAppointment(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE appointments SET is_delete = 1 WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
         }
       );
     });

@@ -129,3 +129,13 @@ export const getAppointmentUser = async (req, res) => {
     });
   }
 };
+
+export const cancelHistoryAppointment = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await Appointments.cancelHistoryAppointment(id);
+    res.json({ message: "Hủy đặt hàng thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -11,7 +11,7 @@ export const AppointmentSchema = yup.object().shape({
   status_name: yup.string(),
   start_time: yup.string(),
   end_time: yup.string(),
-  
+  is_delete: yup.boolean(),
 });
 
 export const AppointmentRequestSchema = yup.object().shape({
@@ -61,4 +61,12 @@ export const createAppointmentSchema = yup.object().shape({
 
 export type TCreateAppointment = yup.InferType<
   typeof createAppointmentSchema
+>;
+
+export const cancelHistoryAppointmentSchema = yup.object().shape({
+  id: yup.number().required(),
+});
+
+export type TCancelHistoryAppointment = yup.InferType<
+  typeof cancelHistoryAppointmentSchema
 >;

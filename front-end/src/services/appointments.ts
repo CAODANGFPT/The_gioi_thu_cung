@@ -3,6 +3,7 @@ import {
   AppointmentResponse,
   TAppointment,
   TAupdateStatusAppointment,
+  TCancelHistoryAppointment,
   TCreateAppointment,
 } from "../schema/appointments";
 
@@ -63,6 +64,17 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+      cancelHistoryAppointment: builder.mutation<
+        void,
+        Partial<TCancelHistoryAppointment>
+      >({
+        query: (appointments) => ({
+          url: `/cancelHistoryAppointment`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
     };
   },
 });
@@ -72,6 +84,7 @@ export const {
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useCancelHistoryAppointmentMutation,
 } = appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;

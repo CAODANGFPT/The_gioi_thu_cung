@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  cancelHistoryAppointment,
   create,
   getAppointmentUser,
   list,
@@ -19,4 +20,5 @@ router.get("/getAppointmentUser", checkPermission, getAppointmentUser);
 router.post("/appointment", create);
 router.patch("/appointment/:id", update);
 router.patch("/appointmentStatus/:id", updateAppointmentStatus);
+router.patch("/cancelHistoryAppointment", cancelHistoryAppointment);
 export default router;
