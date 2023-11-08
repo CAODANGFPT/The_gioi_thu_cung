@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import RightIcon from "../../assets/svg/rightIcon";
 import { useGetUserQuery } from "../../services/user";
 import User from "../../assets/image/user.png";
+import { Dropdown } from "antd";
+import ModalUser from "./modal";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
@@ -89,9 +91,31 @@ const HeaderBase = () => {
           </button>
         </form>
         <div className="frame51">
-          <div className="frame5" onClick={() => navigate("account")}>
-            {user?.img ? <img src={user?.img} alt="user" /> : <UserIcon />}
-          </div>
+          <Dropdown
+            overlay={<ModalUser />}
+            placement="bottomLeft"
+            arrow={{ pointAtCenter: true }}
+          >
+            <div>
+              {user?.img ? (
+                <img
+                  src={user?.img}
+                  width="25px"
+                  height="25px"
+                  style={{ borderRadius: "50%", marginLeft: "18px" }}
+                  alt="avatar"
+                />
+              ) : (
+                <img
+                  src={User}
+                  width="25px"
+                  height="25px"
+                  style={{ borderRadius: "50%", marginLeft: "18px" }}
+                  alt="user"
+                />
+              )}
+            </div>
+          </Dropdown>
           <div className="frame5">
             <HeartIcon />
             <div className="group13">0</div>

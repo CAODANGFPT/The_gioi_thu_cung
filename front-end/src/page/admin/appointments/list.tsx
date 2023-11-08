@@ -92,7 +92,6 @@ const AppointmentsAdmin: React.FC = () => {
       width: 100,
       render: (appointment) => (
         <>
-          {console.log(appointment)}
           <Select
             defaultValue={appointment.status_name}
             style={{ width: "100%" }}
