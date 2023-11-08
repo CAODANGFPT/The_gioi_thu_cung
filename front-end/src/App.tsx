@@ -69,6 +69,7 @@ import CartPage from "./page/base/cart";
 import PageNotFound from "./page/pageNotFound";
 import CategoryAdmin from "./page/admin/category/list";
 import EditCategory from "./page/admin/category/edit";
+import AddCategory from "./page/admin/category/add";
 
 function App() {
   return (
@@ -110,6 +111,7 @@ function App() {
 
           <Route path="category">
             <Route index element={<CategoryAdmin />} />
+            <Route path="add" element={<AddCategory />} />
             <Route path="edit/:id" element={<EditCategory />} />
           </Route>
 

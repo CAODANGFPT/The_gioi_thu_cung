@@ -76,7 +76,7 @@ const CategoryAdmin: React.FC = () => {
   const { data } = useGetAllcategoryQuery();
   return (
     <div>
-      <Link to="/admin/pethouse/add">
+      <Link to="/admin/category/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}
