@@ -4,7 +4,7 @@ export default class Products {
   static getAllProducts() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT products.id, products.name,products.description,products.price, products.img ,products.category_id AS nameProducts FROM products JOIN category ON products.category_id = category.id ",
+        "SELECT products.id, products.name,products.description,products.price, products.img ,category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
