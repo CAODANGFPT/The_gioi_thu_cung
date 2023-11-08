@@ -17,6 +17,9 @@
     margin: 0 100px;
     @include Flex(flex, space-between, center);
 
+    @include max-screen($xxl) {
+      display: none;
+    }
     @include max-screen($xl) {
       margin: 0 50px;
     }
@@ -230,14 +233,13 @@
         }
       }
 
-      @include max-screen($lg) {
-        background-color: transparent;
-        width: 90%;
+      @include max-screen($xxl) {
+        width: 100%;
         text-align: start;
         top: 0;
         right: 0;
         bottom: 0;
-        left: 5%;
+        left: 0;
         box-shadow: none;
       }
     }

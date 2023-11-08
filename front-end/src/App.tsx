@@ -137,7 +137,6 @@ function App() {
             <Route path="add" element={<AddSetTime />} />
             <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
-
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
@@ -159,7 +158,6 @@ function App() {
             <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
-
           <Route path="breed">
             <Route index element={<BreedAdmin />} />
             <Route path="add" element={<AddBreed />} />
