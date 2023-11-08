@@ -68,6 +68,7 @@ import EditNews from "./page/admin/news/edit";
 import CartPage from "./page/base/cart";
 import PageNotFound from "./page/pageNotFound";
 import CategoryAdmin from "./page/admin/category/list";
+import EditCategory from "./page/admin/category/edit";
 
 function App() {
   return (
@@ -109,6 +110,7 @@ function App() {
 
           <Route path="category">
             <Route index element={<CategoryAdmin />} />
+            <Route path="edit/:id" element={<EditCategory />} />
           </Route>
 
           <Route path="user">

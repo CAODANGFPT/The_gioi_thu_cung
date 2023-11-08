@@ -13,8 +13,17 @@ import { PlusOutlined } from "@ant-design/icons";
 const CategoryAdmin: React.FC = () => {
   const [removePetHouse] = useRemoveCategoryMutation();
   const confirm = (id: number) => {
-   console.log(id);
-   
+    removePetHouse(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {
@@ -40,7 +49,7 @@ const CategoryAdmin: React.FC = () => {
       width: 100,
       render: (cate: Tcategory) => (
         <div>
-          <Link to="URL">
+          <Link to={`edit/${cate.id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
