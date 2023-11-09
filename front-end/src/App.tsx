@@ -70,6 +70,9 @@ import PageNotFound from "./page/pageNotFound";
 import CategoryAdmin from "./page/admin/category/list";
 import EditCategory from "./page/admin/category/edit";
 import AddCategory from "./page/admin/category/add";
+import ProductsAdmin from "./page/admin/products/list";
+import AddProduct from "./page/admin/products/add";
+import EditProduct from "./page/admin/products/edit";
 
 function App() {
   return (
@@ -115,6 +118,12 @@ function App() {
             <Route path="edit/:id" element={<EditCategory />} />
           </Route>
 
+          <Route path="products">
+            <Route index element={<ProductsAdmin />} />
+            <Route path="add" element={<AddProduct />} />
+            <Route path="edit/:id" element={<EditProduct />} />
+          </Route>
+
           <Route path="user">
             <Route index element={<UserAdmin />} />
             <Route path="edit/:id" element={<EditUser />} />
@@ -137,7 +146,6 @@ function App() {
             <Route path="add" element={<AddSetTime />} />
             <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
-
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
@@ -159,7 +167,6 @@ function App() {
             <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
-
           <Route path="breed">
             <Route index element={<BreedAdmin />} />
             <Route path="add" element={<AddBreed />} />

@@ -22,6 +22,7 @@ import TimeLine from "../svg/timeLine";
 import RoleIcon from "../svg/roleIcon";
 import AboutMeIcon from "../svg/aboutMe";
 import Category from "../svg/category";
+import ProductIcon from "../svg/products";
 export const navigationLinks = [
   { id: 1, title: "Dasboard", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "History", image: HistoryIcon, link: "history" },
@@ -43,6 +44,7 @@ export const navigationLinks = [
   { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
   { id: 19, title: "News", image: NewIcon, link: "news" },
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
+  { id: 21, title: "Product", image: ProductIcon, link: "products" },
 
 ];
 

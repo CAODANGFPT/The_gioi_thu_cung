@@ -1,11 +1,12 @@
 import * as yup from "yup";
 
 export const ServicesSchema = yup.object().shape({
-  id: yup.number(),
-  name: yup.string(),
-  image: yup.string(),
-  description: yup.string(),
-  price: yup.number(),
+  id: yup.number().required(),
+  name: yup.string().required(),
+  image: yup.string().required(),
+  description: yup.string().required(),
+  price: yup.number().required(),
+  is_delete: yup.boolean().required(),
 });
 
 export const ServicesRequestSchema = yup.object().shape({
@@ -22,6 +23,13 @@ export const ServicesResponseSchema = yup.object().shape({
   description: yup.string(),
   price: yup.number(),
 });
+
+export const BlockServiceSchema = yup.object().shape({
+  id: yup.number().required(),
+  is_delete: yup.number().required(),
+});
+
+export type TBlockService = yup.InferType<typeof BlockServiceSchema>;
 
 export const ServicesErrorSchema = yup.object({});
 
