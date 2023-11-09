@@ -6,6 +6,7 @@ import {
   getUser,
   list,
   listUsersRole,
+  searchUser,
   updateIsDelete,
   updatePassword,
   updateRole,
@@ -22,5 +23,7 @@ router.patch("/user/block", checkPermission, updateIsDelete);
 router.patch("/user/role", checkPermission, updateRole);
 router.get("/getUser", getUser);
 router.patch("/user/updatePassword", updatePassword);
+router.get("/Search", searchUser);
+
 
 export default router;
