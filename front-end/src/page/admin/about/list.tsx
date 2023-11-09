@@ -13,7 +13,9 @@ const AboutAdmin: React.FC = () => {
   const navigate = useNavigate();
 
   const [removeAbout] = useRemoveAboutMutation();
-
+  function createMarkup(description: any) {
+    return { __html: description };
+  }
   const confirm = (id: number) => {
     removeAbout(id)
       .then((response: any) => {
@@ -51,6 +53,9 @@ const AboutAdmin: React.FC = () => {
       dataIndex: "description",
       key: "description",
       width: 150,
+      render: (description) => (
+        <div dangerouslySetInnerHTML={createMarkup(description)} />
+      ),
     },
     {
       title: "Thao tác",
