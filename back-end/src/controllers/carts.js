@@ -27,7 +27,7 @@ export const getIDlistCarts = async (req, res) => {
   }
 };
 
-export const deleteIDCarts = async (req, res) => {
+export const deleteAllCarts = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -40,6 +40,31 @@ export const deleteIDCarts = async (req, res) => {
     } else {
       try {
         const carts = await Carts.deleteAllCarts(user?.id);
+        res.json(carts);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
+  }
+};
+export const deleteIDCarts = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      try {
+        const cartId = req.params.cartId;
+        const carts = await Carts.deleteCartsById(user?.id, cartId);
         res.json(carts);
       } catch (err) {
         res.status(500).json({ error: err.message });

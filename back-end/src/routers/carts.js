@@ -5,6 +5,7 @@ import {
   updateQuantityCarts,
   increaseQuantityCarts,
   decreaseQuantityCarts,
+  deleteAllCarts,
   deleteIDCarts,
 } from "../controllers/carts";
 
@@ -15,6 +16,7 @@ router.post("/addCarts", createCarts);
 router.patch("/updateCarts/:id", updateQuantityCarts);
 router.patch("/increaseQuantityCarts/:id", increaseQuantityCarts);
 router.patch("/decreaseQuantityCarts/:id", decreaseQuantityCarts);
-router.delete("/deleteIDCarts", deleteIDCarts);
+router.delete("/deleteAllCarts", deleteAllCarts);
+router.delete("/deleteIDCarts/:cartId", deleteIDCarts);
 
 export default router;

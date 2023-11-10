@@ -25,6 +25,18 @@ export default class Carts {
       );
     });
   }
+  static deleteCartsById(userId, cartId) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM carts WHERE user_id = ? AND id = ?",
+        [userId, cartId],
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
+    });
+  }
 
   static createCarts(user_id, product_id, quantity) {
     return new Promise((resolve, reject) => {
