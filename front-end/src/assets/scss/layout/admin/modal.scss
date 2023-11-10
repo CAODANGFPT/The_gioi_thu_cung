@@ -5,6 +5,7 @@
   margin-top: 10px;
   max-width: 230px;
   background-color: white;
+  box-shadow: 10px;
   &-title{
     padding: 15px 20px;
     display: flex;
@@ -12,9 +13,11 @@
     gap: 18px;
     &-image{
       width: 20%;
+      height: 25px;
       img{
-        width: 100%;
-        border-radius: 100%;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
       }
       svg{
         path{

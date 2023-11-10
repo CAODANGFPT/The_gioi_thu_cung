@@ -1,8 +1,6 @@
 import UserIcons from "../svg/account/User";
 import PethouseIcon from "../svg/pethouseIcon";
 import ReviewIcon from "../svg/review";
-import ServicesIcon from "../svg/services";
-import SpeciesIcon from "../svg/species";
 import StatusIcon from "../svg/status";
 import { personsImgs } from "../utils/images";
 import BillsIcon from "./../svg/billsIcon";
@@ -12,26 +10,51 @@ import PetIcon from "../svg/PetsIcon";
 import NewIcon from "../svg/newIcon";
 import ProfileIcon from "../svg/profileIcon";
 import AppoinmentIcon from "../svg/appoinmentIcon";
+import HistoryIcon from "../svg/history";
+import StatusAppoint from "../svg/statusAppoint";
+import StatusContact from "../svg/statusContact";
+import SpeciesIcon from "../svg/speciesIcon";
+import ServicesIcon from "../svg/serviceIcon";
+import AddressCardIcon from "../svg/addressCard";
+import BreedIcon from "../svg/breed";
+import StaffDo from "../svg/staffDo";
+import TimeLine from "../svg/timeLine";
+import RoleIcon from "../svg/roleIcon";
+import AboutMeIcon from "../svg/aboutMe";
+import Category from "../svg/category";
+import ProductIcon from "../svg/products";
 export const navigationLinks = [
-  { id: 1, title: "Home", image: HomeIcon, link: "dashboard" },
-  { id: 2, title: "Services", image: ServicesIcon, link: "services" },
-  { id: 3, title: "Đánh giá", image: ReviewIcon, link: "review" },
-  { id: 4, title: "User", image: UserIcons, link: "user" },
-  { id: 5, title: "Role", image: BillsIcon, link: "role" },
-  { id: 6, title: "SetTime", image: ReportIcon, link: "settime" },
-  { id: 7, title: "PetHouse", image: PethouseIcon, link: "pethouse" },
-  { id: 8, title: "Species", image: SpeciesIcon, link: "species" },
-  { id: 9, title: "Staff", image: ReportIcon, link: "staff" },
-  { id: 10, title: "Breed", image: SpeciesIcon, link: "breed" },
-  { id: 11, title: "Contact", image: SpeciesIcon, link: "contact" },
-  { id: 12, title: "Profile", image: ProfileIcon, link: "profile" },
-  { id: 13, title: "News", image: NewIcon, link: "news" },
-  { id: 14, title: "Pets", image: PetIcon, link: "pets" },
-  { id: 15, title: "Trạng thái đặt lịch", image: StatusIcon, link: "status_appointment" },
-  { id: 16, title: "StatusContact", image: StatusIcon, link: "status_contact" },
-  { id: 17, title: "About", image: StatusIcon, link: "about" },
-  { id: 18, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
-
+  { id: 1, title: "Dasboard", image: HomeIcon, link: "dashboard" },
+  { id: 2, title: "History", image: HistoryIcon, link: "history" },
+  { id: 3, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
+  { id: 4, title: "Pets", image: PetIcon, link: "pets" },
+  { id: 5, title: "Contact", image: AddressCardIcon, link: "contact" },
+  {
+    id: 6,
+    title: "Status Confirmed",
+    image: StatusAppoint,
+    link: "status_appointment",
+  },
+  {
+    id: 7,
+    title: "Status Contact",
+    image: StatusContact,
+    link: "status_contact",
+  },
+  { id: 8, title: "Services", image: ServicesIcon, link: "services" },
+  { id: 9, title: "Pet House", image: PethouseIcon, link: "pethouse" },
+  { id: 10, title: "Breed", image: BreedIcon, link: "breed" },
+  { id: 11, title: "Species", image: SpeciesIcon, link: "species" },
+  { id: 12, title: "Staff Do", image: StaffDo, link: "staff" },
+  { id: 13, title: "Set Time", image: TimeLine, link: "settime" },
+  { id: 14, title: "Category", image: Category, link: "category" },
+  { id: 21, title: "Product", image: ProductIcon, link: "products" },
+  { id: 15, title: "User", image: UserIcons, link: "user" },
+  { id: 16, title: "Role", image: RoleIcon, link: "role" },
+  { id: 17, title: "Profile", image: ProfileIcon, link: "profile" },
+  { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
+  { id: 19, title: "News", image: NewIcon, link: "news" },
+  { id: 20, title: "About", image: AboutMeIcon, link: "about" },
 ];
 
 export const transactions = [

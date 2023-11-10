@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TServices, TServicesRequest } from "../schema/services";
+import { TBlockService, TServices, TServicesRequest } from "../schema/services";
 
 const servicesApi = createApi({
   reducerPath: "services",
@@ -9,7 +9,7 @@ const servicesApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -60,11 +60,15 @@ const servicesApi = createApi({
         },
         invalidatesTags: ["Services"],
       }),
-      deleteServices: builder.mutation<any, number>({
-        query: (id) => {
+      updateBlockServices: builder.mutation<
+        TBlockService,
+        Partial<TBlockService>
+      >({
+        query: (services) => {
           return {
-            url: `/services/${id}`,
-            method: "DELETE",
+            url: `/services/block`,
+            method: "PATCH",
+            body: services,
           };
         },
         invalidatesTags: ["Services"],
@@ -78,7 +82,7 @@ export const {
   useAddServicesMutation,
   useServicesByIdQuery,
   useUpdateServicesMutation,
-  useDeleteServicesMutation,
+  useUpdateBlockServicesMutation,
 } = servicesApi;
 export const servicesReducer = servicesApi.reducer;
 export default servicesApi;

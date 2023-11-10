@@ -20,7 +20,11 @@ import staffRouter from "./routers/staff";
 import imageRouter from "./routers/uploadImage";
 import statusContactRouter from "./routers/status_contact";
 import shiftWorkRouter from "./routers/shift_work";
-
+import menuRouter from "./routers/menu";
+import statusOrderRouter from "./routers/stauts_order";
+import category from "./routers/category";
+import products from "./routers/products";
+import carts from "./routers/carts";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -30,7 +34,7 @@ app.use("/api", authRouter);
 app.use("/api", speciesRouter);
 app.use("/api", petRouter);
 app.use("/api", breedRouter);
-app.use("/api", pethouseRouter)
+app.use("/api", pethouseRouter);
 app.use("/api", roleRouter);
 app.use("/api", statusRouter);
 app.use("/api", contactRouter);
@@ -45,5 +49,10 @@ app.use("/api", staffRouter);
 app.use("/api", imageRouter);
 app.use("/api", statusContactRouter);
 app.use("/api", shiftWorkRouter);
+app.use("/api", menuRouter);
+app.use("/api", statusOrderRouter);
+app.use("/api", category);
+app.use("/api", products);
+app.use("/api", carts);
 
 export const viteNodeApp = app;

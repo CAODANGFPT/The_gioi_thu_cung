@@ -44,13 +44,12 @@ const ModalResetPassword: FC<ModalResetPasswordProps> = ({
     <>
       <Modal
         className="modal-password"
-        title="Cập nhập mật khẩu"
+        title={<h1 style={{ marginBottom: 20 }}>Cập nhật mật khẩu</h1>}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
       >
         <div>
-          <h1>Cập nhật mật khẩu</h1>
           <div>
             <Form
               form={form}

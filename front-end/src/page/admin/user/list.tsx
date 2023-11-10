@@ -1,19 +1,26 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Image, Popconfirm, message } from "antd";
+import Search from "antd/es/input/Search";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
+import { TUser } from "../../../schema/user";
 import {
   useUpdateBlockUserMutation,
   useUserQuery,
 } from "../../../services/user";
-import { TUser } from "../../../schema/user";
-import { Link } from "react-router-dom";
 
 const UserAdmin: React.FC = () => {
   const { data } = useUserQuery();
-
+  const [listUser, setListUser] = useState<TUser[] | undefined>([]);
   const [removeProducts] = useUpdateBlockUserMutation();
+  const [filter, setFilter] = useState({ name: "", email: "", phone: "" });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
 
   const confirm = (id: number) => {
     removeProducts({ id: id, is_delete: 0 });
@@ -53,6 +60,7 @@ const UserAdmin: React.FC = () => {
       dataIndex: "img",
       key: "img",
       width: 150,
+      render: (img) => <Image width={100} src={img} />,
     },
     {
       title: "SĐT",
@@ -108,7 +116,66 @@ const UserAdmin: React.FC = () => {
       ),
     },
   ];
-  return <TableAdmin columns={columns} data={data} />;
+
+  useEffect(() => {
+    const filteredData = data?.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.email.toLowerCase().includes(filter.email.trim().toLowerCase()) &&
+        item.phone.toLowerCase().includes(filter.phone.trim().toLowerCase())
+    );
+    setListUser(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.email === "" && filter.phone === "" && filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.email, filter.name, filter.phone]);
+
+  useEffect(() => {
+    setListUser(data);
+  }, [data]);
+
+  return (
+    <>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm tên"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm kiếm email"
+            value={filter?.email}
+            onChange={(e) => handleFilterChange("email", e.target.value)}
+            // onSearch={(value) => handleFilterChange("email", value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm kiếm số điện thoại"
+            value={filter?.phone}
+            type="number"
+            onChange={(e) => handleFilterChange("phone", e.target.value)}
+            // onSearch={(value) => handleFilterChange("phone", value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "", email: "", phone: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
+      <TableAdmin columns={columns} data={listUser} />
+    </>
+  );
 };
 
 export default UserAdmin;

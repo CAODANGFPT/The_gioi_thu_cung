@@ -35,7 +35,7 @@ export const add = async (req, res) => {
       });
     }
     const setAbout = await About.addAbout(image, description);
-    res.json({ id: setAbout });
+    res.json({ id: setAbout, mesage: "Thêm about thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

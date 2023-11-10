@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
-import { updatePasswordSchema } from "../schemas/user";
+import { SearchUserSchema, updatePasswordSchema } from "../schemas/user";
 
 export const list = async (req, res) => {
   try {
@@ -103,11 +103,38 @@ export const updatePassword = async (req, res) => {
   }
 };
 
+
 export const updateUser = async (req, res) => {
   try {
     const { id, img, email, name, gender, phone } = req.body;
     await User.updateUser(id, img, email, name, gender, phone);
     res.json({ message: "Cập nhập thông tin khách hàng thành công" });
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+export const searchUser = async (req, res) => {
+  try {
+    const { error } = SearchUserSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    const {name, email, phone, is_delete , gender, role_id} = req.body;
+    const users =await User.search(name, email, phone, is_delete , gender, role_id);
+    if(users.length === 0) {
+      return res.status(400).json({
+        message: "Không có tài khoản nào phù hợp",
+      });
+    }
+    return res.status(200).json({
+      users,
+      message: "search thành công",
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

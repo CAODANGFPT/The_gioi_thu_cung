@@ -87,7 +87,7 @@ const BreedAdmin: React.FC = () => {
       >
         THÊM GIỐNG
       </Button>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </>
   );
 };

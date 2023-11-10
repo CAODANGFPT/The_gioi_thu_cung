@@ -4,16 +4,25 @@ import { navigationLinks } from "../../assets/data/data";
 import "../../assets/scss/layout/admin/sidebar.scss";
 import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const Sidebar = () => {
   const navigate = useNavigate()
   const [activeLinkIdx, setActiveLinkIdx] = useState(1);
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
+  const [resourceName, setResourceName] = useState("");
 
   const { isSidebarOpen } = useContext<any>(SidebarContext);
+  const url = window.location.href;
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    const order = navigationLinks.find(
+      (item) => item.link === pathname.split("/")[2]
+    );
+    setActiveLinkIdx(order?.id || 1);
+  }, [pathname]);
   useEffect(() => {
     if (isSidebarOpen) {
       setSidebarClass("sidebar-change");
@@ -24,7 +33,7 @@ const Sidebar = () => {
       setSidebarText("");
       setBorderRadius("");
     }
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, resourceName, url]);
 
   const handleLinkClick = (id: number) => {
     setActiveLinkIdx(id);

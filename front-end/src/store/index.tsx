@@ -31,10 +31,12 @@ import profileApi, { profileReducer } from "../services/profile";
 import newsApi, { newsReducer } from "../services/news";
 import reviewApi, { reviewReducer } from "../services/review";
 import petsApi, { petsReducer } from "../services/pets";
+import categoryApi, { categoryReducer } from "../services/category";
 import statusContactApi, {
   statusContactReducer,
 } from "../services/status_contact";
 import aboutApi, { aboutReducer } from "../services/about";
+import ProductsApi, { productsReducer } from "../services/products";
 const persistConfig = {
   key: "root",
   storage,
@@ -60,6 +62,8 @@ const rootReducer = combineReducers({
   [petsApi.reducerPath]: petsReducer,
   [statusContactApi.reducerPath]: statusContactReducer,
   [aboutApi.reducerPath]: aboutReducer,
+  [categoryApi.reducerPath]: categoryReducer,
+  [ProductsApi.reducerPath]: productsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -90,7 +94,9 @@ export const store = configureStore({
       reviewApi.middleware,
       petsApi.middleware,
       statusContactApi.middleware,
-      aboutApi.middleware
+      aboutApi.middleware,
+      categoryApi.middleware,
+      ProductsApi.middleware
     ),
 });
 

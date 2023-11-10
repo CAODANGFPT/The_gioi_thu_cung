@@ -1,17 +1,33 @@
 import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TAbout } from "../../../schema/about";
-import { useAboutQuery } from "../../../services/about";
+import { useAboutQuery, useRemoveAboutMutation } from "../../../services/about";
 import { PlusOutlined } from "@ant-design/icons";
 
 const AboutAdmin: React.FC = () => {
   const { data } = useAboutQuery();
 
-  const confirm = () => {
-    message.success("Xóa thành công.");
+  const navigate = useNavigate();
+
+  const [removeAbout] = useRemoveAboutMutation();
+  function createMarkup(description: any) {
+    return { __html: description };
+  }
+  const confirm = (id: number) => {
+    removeAbout(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
 
   const cancel = () => {
@@ -37,6 +53,9 @@ const AboutAdmin: React.FC = () => {
       dataIndex: "description",
       key: "description",
       width: 150,
+      render: (description) => (
+        <div dangerouslySetInnerHTML={createMarkup(description)} />
+      ),
     },
     {
       title: "Thao tác",
@@ -52,7 +71,9 @@ const AboutAdmin: React.FC = () => {
           <Popconfirm
             title="Xóa about."
             description="Bạn có muốn xóa không?"
-            onConfirm={confirm}
+            onConfirm={() =>
+              about.id !== undefined ? confirm(about.id) : undefined
+            }
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"
