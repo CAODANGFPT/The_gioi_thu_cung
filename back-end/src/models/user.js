@@ -125,9 +125,20 @@ export default class User {
       );
     });
   }
-
-  static search(name, email, phone, is_delete , gender, role_id ) {
-    let query = 'SELECT * FROM users WHERE ';
+  static updateUser(id, img, email, name, gender, phone) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE users SET img = ?, email = ?, name = ?, gender = ?, phone = ? WHERE id = ?",
+        [img, email, name, gender, phone, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+  static search(name, email, phone, is_delete, gender, role_id) {
+    let query = "SELECT * FROM users WHERE ";
     const conditions = [];
 
     if (name) {
@@ -150,10 +161,12 @@ export default class User {
     }
 
     if (conditions.length === 0) {
-      return Promise.reject({ error: 'At least one search parameter is required.' });
+      return Promise.reject({
+        error: "At least one search parameter is required.",
+      });
     }
 
-    query += conditions.join(' AND ');
+    query += conditions.join(" AND ");
 
     return new Promise((resolve, reject) => {
       connection.query(query, (err, results) => {

@@ -104,6 +104,17 @@ export const updatePassword = async (req, res) => {
 };
 
 
+export const updateUser = async (req, res) => {
+  try {
+    const { id, img, email, name, gender, phone } = req.body;
+    await User.updateUser(id, img, email, name, gender, phone);
+    res.json({ message: "Cập nhập thông tin khách hàng thành công" });
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 export const searchUser = async (req, res) => {
   try {
     const { error } = SearchUserSchema.validate(req.body);

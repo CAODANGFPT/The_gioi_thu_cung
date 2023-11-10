@@ -4,6 +4,7 @@ import {
   TResetPasswordUserSchema,
   TUpdatePasswordUserSchema,
 } from "../schema/resetPassword";
+import { TAccountEdit } from "../schema/accountSchema";
 
 const userApi = createApi({
   reducerPath: "user",
@@ -93,6 +94,14 @@ const userApi = createApi({
         },
         invalidatesTags: ["User"],
       }),
+      updateUser: builder.mutation<TAccountEdit, Partial<TAccountEdit>>({
+        query: (user) => ({
+          url: `/updateUser/${user.id}`,
+          method: "PUT",
+          body: user,
+        }),
+        invalidatesTags: ["User"],
+      }),
     };
   },
 });
@@ -105,6 +114,7 @@ export const {
   useUpdateBlockUserMutation,
   useUpdateRoleUserMutation,
   useUpdatePasswordMutation,
+  useUpdateUserMutation,
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi;
