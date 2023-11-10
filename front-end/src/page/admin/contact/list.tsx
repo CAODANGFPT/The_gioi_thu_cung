@@ -38,8 +38,8 @@ const ContactAdmin: React.FC = () => {
     },
     {
       title: "User_id",
-      dataIndex: "user_id",
-      key: "user_id",
+      dataIndex: "nameUser",
+      key: "nameUser",
       width: 150,
     },
     {

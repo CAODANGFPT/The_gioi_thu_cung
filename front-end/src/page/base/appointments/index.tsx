@@ -34,6 +34,7 @@ import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import { useStaffQuery } from "../../../services/staff";
 import { RangePickerProps } from "antd/es/date-picker";
+import { TStaff } from "../../../schema/staff";
 
 type TFinish = {
   petHouse_id: number;
@@ -239,7 +240,7 @@ const Appointment: React.FC = () => {
               rules={[{ required: true }]}
             >
               <Select>
-                {listStaff?.map((item: TServices) => (
+                {listStaff?.map((item: TStaff) => (
                   <Select.Option key={item.id} value={item.id}>
                     {item.name}
                   </Select.Option>

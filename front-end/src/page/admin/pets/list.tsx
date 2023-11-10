@@ -53,13 +53,13 @@ const PetsAdmin: React.FC = () => {
       title: "Age",
       dataIndex: "age",
       key: "age",
-      width: 150,
+      width: 50,
     },
     {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
-      width: 150,
+      width: 100,
     },
     {
       title: "User_id",
@@ -82,7 +82,7 @@ const PetsAdmin: React.FC = () => {
     {
       title: "Thao tác",
       key: "action",
-      width: 100,
+      width: 150,
       render: (pets: TPets) => (
         <div>
           <Link to="URL">
