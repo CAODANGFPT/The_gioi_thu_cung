@@ -57,6 +57,12 @@ export const navigationLinks = [
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
 ];
 
+export const navigationLinksAccount = [
+  { id: 1, title: "Thông tin đăng nhập", link: "/account" },
+  { id: 2, title: "Cài đặt thanh toán", link: "payment" },
+  { id: 3, title: "Lịch sử mua hàng & theo dõi đơn hàng", link: "history_follow" },
+];
+
 export const transactions = [
   {
     id: 11,

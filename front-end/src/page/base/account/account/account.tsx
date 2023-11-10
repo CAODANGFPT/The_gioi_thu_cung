@@ -1,7 +1,7 @@
-import "../../assets/scss/page/account.scss";
-import { useGetUserQuery } from "../../services/user";
+import "../../../../assets/scss/page/account.scss";
+import { useGetUserQuery } from "../../../../services/user";
 import { FC, useState } from "react";
-import ModalResetPassword from "../modal/resetPassword";
+import ModalResetPassword from "../../../../components/modal/resetPassword";
 
 export const Account: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

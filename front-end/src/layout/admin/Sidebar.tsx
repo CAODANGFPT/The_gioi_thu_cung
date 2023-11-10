@@ -11,10 +11,9 @@ const Sidebar = () => {
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
-  const [resourceName, setResourceName] = useState("");
 
   const { isSidebarOpen } = useContext<any>(SidebarContext);
-  const url = window.location.href;
+
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const Sidebar = () => {
       setSidebarText("");
       setBorderRadius("");
     }
-  }, [isSidebarOpen, resourceName, url]);
+  }, [isSidebarOpen]);
 
   const handleLinkClick = (id: number) => {
     setActiveLinkIdx(id);
