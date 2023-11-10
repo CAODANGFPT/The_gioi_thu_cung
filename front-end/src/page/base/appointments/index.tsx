@@ -1,7 +1,6 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
-  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -11,6 +10,7 @@ import {
   UploadFile,
   message,
 } from "antd";
+import { RangePickerProps } from "antd/es/date-picker";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import { TSetTime } from "../../../schema/setTime";
 import { Tspecies } from "../../../schema/species";
+import { TStaff } from "../../../schema/staff";
 import { useAddAppointmentMutation } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -31,10 +32,8 @@ import {
 import { useServicesQuery } from "../../../services/services";
 import { useSetTimeQuery } from "../../../services/setTime";
 import { useGetAllspeciesQuery } from "../../../services/species";
-import { useGetUserQuery } from "../../../services/user";
 import { useStaffQuery } from "../../../services/staff";
-import { RangePickerProps } from "antd/es/date-picker";
-import { TStaff } from "../../../schema/staff";
+import { useGetUserQuery } from "../../../services/user";
 
 type TFinish = {
   petHouse_id: number;
