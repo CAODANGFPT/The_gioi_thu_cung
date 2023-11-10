@@ -24,6 +24,7 @@ import menuRouter from "./routers/menu";
 import statusOrderRouter from "./routers/stauts_order";
 import category from "./routers/category";
 import products from "./routers/products";
+import carts from "./routers/carts";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -52,5 +53,6 @@ app.use("/api", menuRouter);
 app.use("/api", statusOrderRouter);
 app.use("/api", category);
 app.use("/api", products);
+app.use("/api", carts);
 
 export const viteNodeApp = app;
