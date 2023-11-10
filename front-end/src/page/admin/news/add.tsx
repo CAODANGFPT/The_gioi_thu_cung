@@ -1,4 +1,4 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Upload } from "antd";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -7,13 +7,19 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { TNews } from "../../../schema/news";
 import { useAddNewsMutation } from "../../../services/news";
 import dayjs from "dayjs";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 const Addnews = () => {
   const [value, setValue] = useState("");
+
   const [form] = Form.useForm();
+
   const [addNews, { reset, isLoading: isAddLoading }] = useAddNewsMutation();
 
   const navigate = useNavigate();
+
+  const [image, setImage] = useState<any | null>(null);
+
   const confirm = () => {
     message.success("Tạo bài đăng thành công.");
   };
@@ -24,19 +30,18 @@ const Addnews = () => {
 
   const user = JSON.parse(localStorage.getItem("user") as string);
 
-  const handleFormSubmit = async (values: {
-    title: string;
-    img: string;
-    description: string;
-  }) => {
+  const handleFormSubmit = async (values: TNews) => {
+    const { title, description, created_at, user_id } = values;
+
+    const dateNews = {
+      title,
+      img: image,
+      description,
+      created_at: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+      user_id: user.user.id,
+    };
+
     try {
-      const dateNews: TNews = {
-        title: values.title,
-        img: values.img,
-        description: values.description,
-        created_at: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-        user_id: user.user.id,
-      };
       await addNews(dateNews).unwrap();
       confirm();
       reset();
@@ -47,6 +52,24 @@ const Addnews = () => {
       reset();
     }
   };
+
+  const handleImageChange = (info: any) => {
+    console.log("API Response:", info.file.response);
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+      console.log("Image URL:", info.file.response.url);
+      setImage(info.file.response.url);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {isAddLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
@@ -76,13 +99,33 @@ const Addnews = () => {
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300" />
           </Form.Item>
+
           <Form.Item
             label={<span className="text-base dark:text-white">Image</span>}
             name="img"
             rules={[{ required: true, message: "Vui lòng nhập image!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300" />
+            <Upload
+              name="file"
+              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+              data={{
+                upload_preset: "wh3rdke8",
+                cloud_name: "dksgvucji",
+              }}
+              listType="picture-card"
+              maxCount={1}
+              showUploadList={false}
+              className="ant-upload-wrapper ant-upload-select"
+              onChange={handleImageChange}
+            >
+              {image ? (
+                <img src={image} alt="avatar" style={{ width: "100%" }} />
+              ) : (
+                uploadButton
+              )}
+            </Upload>
           </Form.Item>
+
           <Form.Item
             label={<span className="text-base dark:text-white">Mô tả</span>}
             name="description"
