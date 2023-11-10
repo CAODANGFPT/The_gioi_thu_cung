@@ -13,7 +13,7 @@ export default class Breed {
   static getBreedsSpecies(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT breed.id, breed.name, breed.species_id FROM breed WHERE species_id = ?",
+        "SELECT breed.id, breed.name, breed.species_id, species.name as nameSpecies FROM breed JOIN species on breed.species_id = species.id",
         [id],
         (err, results) => {
           if (err) reject(err);

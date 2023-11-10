@@ -29,8 +29,18 @@ export const navigationLinks = [
   { id: 3, title: "Appointments", image: AppoinmentIcon, link: "appointment" },
   { id: 4, title: "Pets", image: PetIcon, link: "pets" },
   { id: 5, title: "Contact", image: AddressCardIcon, link: "contact" },
-  { id: 6, title: "Status Confirmed", image: StatusAppoint, link: "status_appointment" },
-  { id: 7, title: "Status Contact", image: StatusContact, link: "status_contact" },
+  {
+    id: 6,
+    title: "Status Confirmed",
+    image: StatusAppoint,
+    link: "status_appointment",
+  },
+  {
+    id: 7,
+    title: "Status Contact",
+    image: StatusContact,
+    link: "status_contact",
+  },
   { id: 8, title: "Services", image: ServicesIcon, link: "services" },
   { id: 9, title: "Pet House", image: PethouseIcon, link: "pethouse" },
   { id: 10, title: "Breed", image: BreedIcon, link: "breed" },
@@ -38,14 +48,13 @@ export const navigationLinks = [
   { id: 12, title: "Staff Do", image: StaffDo, link: "staff" },
   { id: 13, title: "Set Time", image: TimeLine, link: "settime" },
   { id: 14, title: "Category", image: Category, link: "category" },
+  { id: 21, title: "Product", image: ProductIcon, link: "products" },
   { id: 15, title: "User", image: UserIcons, link: "user" },
   { id: 16, title: "Role", image: RoleIcon, link: "role" },
   { id: 17, title: "Profile", image: ProfileIcon, link: "profile" },
   { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
   { id: 19, title: "News", image: NewIcon, link: "news" },
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
-  { id: 21, title: "Product", image: ProductIcon, link: "products" },
-
 ];
 
 export const transactions = [
