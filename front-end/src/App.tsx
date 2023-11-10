@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
-import Account from "./components/account_info/account";
+import Account from "./page/base/account/account/account";
 import Follow from "./components/account_info/follow";
 import History from "./components/account_info/history";
 import Historyfollow from "./components/account_info/history_follow";
@@ -11,7 +11,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";

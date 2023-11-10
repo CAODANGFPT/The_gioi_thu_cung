@@ -1,10 +1,9 @@
-import "../../assets/scss/page/account.scss";
-import { useGetUserQuery } from "../../services/user";
-
-import { useState, useEffect } from "react";
-import ModalResetPassword from "../modal/resetPassword";
-import EditProfile from "./editprofile";
-import { TAccountEdit } from "../../schema/accountSchema";
+import "../../../../assets/scss/page/account.scss";
+import EditProfile from "../../../../components/account_info/editprofile";
+import { TAccountEdit } from "../../../../schema/accountSchema";
+import { useGetUserQuery } from "../../../../services/user";
+import { FC, useState, useEffect } from "react";
+import ModalResetPassword from "../../../../components/modal/resetPassword";
 
 export const Account: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,7 +100,7 @@ export const Account: FC = () => {
                 idUser={Number(user?.id)}
               />
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </>
