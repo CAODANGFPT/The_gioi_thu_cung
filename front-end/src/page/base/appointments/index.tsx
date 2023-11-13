@@ -1,6 +1,7 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -10,8 +11,8 @@ import {
   UploadFile,
   message,
 } from "antd";
-import { RangePickerProps } from "antd/es/date-picker";
-import dayjs from "dayjs";
+import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
+import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/appointment.scss";
@@ -57,7 +58,11 @@ const Appointment: React.FC = () => {
   const [pet, setPet] = useState<TPets | undefined>({});
   const [openAddPest, setOpenAddPest] = useState<boolean>(true);
   const [openBreed, setOpenBreed] = useState<boolean>(false);
+  const [openTime, setOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
+  const [idServices, setIdServices] = useState<number>(0);
+  const [dateTime, setDateTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
@@ -173,6 +178,11 @@ const Appointment: React.FC = () => {
     form.resetFields(["breed_id"]);
   };
 
+  const onChangeServices = (value: number) => {
+    setOpenTime(true);
+    setIdServices(value);
+  };
+
   useEffect(() => {
     setFileList([
       {
@@ -209,6 +219,41 @@ const Appointment: React.FC = () => {
     },
   });
 
+  const onChangeTime = (value: Dayjs | null, dateString: string) => {
+    setDateTime(dateString);
+    if (value) {
+      const servicesId = services?.find((service) => service.id === idServices);
+      const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
+      if (regexResult) {
+        const [extractedHour, , extractedSeconds] = regexResult;
+        const newEndTime = dayjs(dateString)
+          .add(parseInt(extractedHour, 10), "hour")
+          .add(parseInt(extractedSeconds, 10), "minute");
+        setEndTime(newEndTime);
+      }
+    } else {
+      setEndTime(null);
+    }
+  };
+
+  useEffect(() => {
+    if (dateTime) {
+      const servicesId = services?.find((service) => service.id === idServices);
+      const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
+      if (regexResult) {
+        const [extractedHour, , extractedSeconds] = regexResult;
+        const newEndTime = dayjs(dateTime)
+          .add(parseInt(extractedHour, 10), "hour")
+          .add(parseInt(extractedSeconds, 10), "minute");
+        setEndTime(newEndTime);
+      }
+    }
+  }, [dateTime, idServices, services]);
+
+  useEffect(() => {
+    console.log(endTime?.toISOString()); // Check the ISO string in the console
+  }, [endTime]);
+
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20 }}>Đặt lịch chăm sóc thú cưng</h1>
@@ -233,7 +278,7 @@ const Appointment: React.FC = () => {
                   ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name="staff_id"
               label="Nhân viên"
               rules={[{ required: true }]}
@@ -245,13 +290,13 @@ const Appointment: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               name="services_id"
               label="Dịch vụ"
               rules={[{ required: true }]}
             >
-              <Select>
+              <Select onChange={onChangeServices}>
                 {services?.map((item: TServices) => (
                   <Select.Option key={item.id} value={item.id}>
                     {item.name}
@@ -272,27 +317,32 @@ const Appointment: React.FC = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              name="time_id"
-              label="Thời gian"
-              rules={[{ required: true }]}
-            >
-              <Select>
-                {settime?.map((item: TSetTime) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name} (
-                    {dayjs(item.start_time, "HH:mm:ss").format("HH:mm")} -{" "}
-                    {dayjs(item.end_time, "HH:mm:ss").format("HH:mm")})
-                  </Select.Option>
-                ))}
-              </Select>
-              {/* <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
-                disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-              /> */}
-            </Form.Item>
+            {openTime && (
+              <Form.Item
+                name="time_id"
+                label="Thời gian"
+                rules={[{ required: true }]}
+              >
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm"
+                  disabledDate={disabledDate}
+                  disabledTime={disabledDateTime}
+                  showTime={{
+                    defaultValue: dayjs("08:00:00", "HH:mm:ss"),
+                    minuteStep: 30,
+                  }}
+                  onChange={onChangeTime}
+                  showNow={false}
+                />
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm"
+                  disabledDate={disabledDate}
+                  disabledTime={disabledDateTime}
+                  value={endTime}
+                  disabled
+                />
+              </Form.Item>
+            )}
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
