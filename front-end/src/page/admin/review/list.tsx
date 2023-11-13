@@ -30,10 +30,12 @@ const ReviewAdmin: React.FC = () => {
 
   const columns: ColumnsType<TStatus> = [
     {
-      title: "TT",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 150,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Tên tài khoản",
