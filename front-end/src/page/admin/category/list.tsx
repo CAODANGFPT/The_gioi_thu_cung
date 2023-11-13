@@ -32,10 +32,12 @@ const CategoryAdmin: React.FC = () => {
 
   const columns: ColumnsType<Tcategory> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 150,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
