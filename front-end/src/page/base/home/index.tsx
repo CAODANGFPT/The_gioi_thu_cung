@@ -40,7 +40,7 @@ const Home: React.FC = () => (
         })}
       </div>
       <CarouselProduct productData={productData} name="Deals Of The Month " />
-      <CarouselProduct productData={productData} name="New  Arrivals" />
+      <CarouselProduct productData={productData} name="Sản Phẩm" />
       <CarouselProduct productData={productData} name="Best-selling" />
 
       <CarouseBlog blogData={blogData} />
