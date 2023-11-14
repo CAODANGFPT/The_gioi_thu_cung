@@ -11,7 +11,7 @@ import {
   UploadFile,
   message,
 } from "antd";
-import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
+import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,9 +20,7 @@ import { TBreed } from "../../../schema/breed";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
-import { TSetTime } from "../../../schema/setTime";
 import { Tspecies } from "../../../schema/species";
-import { TStaff } from "../../../schema/staff";
 import { useAddAppointmentMutation } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -61,6 +59,8 @@ const Appointment: React.FC = () => {
   const [openTime, setOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
   const [idServices, setIdServices] = useState<number>(0);
+  const [idPetHouse, setIdPetHouse] = useState<number>(0);
+  const [total, setTotal] = useState<number | undefined>(0);
   const [dateTime, setDateTime] = useState<string>("");
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([
@@ -114,6 +114,18 @@ const Appointment: React.FC = () => {
       <div style={{ marginTop: 8 }}>Tải ảnh</div>
     </div>
   );
+
+  const optionsServices = services?.map((item: TServices) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.is_delete === 1,
+  }));
+
+  const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.status_id === 1,
+  }));
 
   const onFinish = async (values: TFinish) => {
     const petNew = {
@@ -169,7 +181,6 @@ const Appointment: React.FC = () => {
       await setPet(listPet?.find((p) => p.id === value));
       setOpenAddPest(false);
     }
-    console.log(value);
   };
 
   const onChangeSpecies = (value: number) => {
@@ -181,6 +192,16 @@ const Appointment: React.FC = () => {
   const onChangeServices = (value: number) => {
     setOpenTime(true);
     setIdServices(value);
+    const servicesId = services?.find((service) => service.id === value);
+    const petHouseId = pethouse?.find((pethouse) => pethouse.id === idPetHouse);
+    setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
+  };
+
+  const onChangePetHouse = (value: number) => {
+    setIdPetHouse(value);
+    const servicesId = services?.find((service) => service.id === idServices);
+    const petHouseId = pethouse?.find((pethouse) => pethouse.id === value);
+    setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
   };
 
   useEffect(() => {
@@ -193,14 +214,6 @@ const Appointment: React.FC = () => {
       },
     ]);
   }, [pet?.img]);
-
-  const range = (start: number, end: number) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
-  };
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     if (!current) {
@@ -251,12 +264,14 @@ const Appointment: React.FC = () => {
   }, [dateTime, idServices, services]);
 
   useEffect(() => {
-    console.log(endTime?.toISOString()); // Check the ISO string in the console
+    console.log(endTime?.toISOString());
   }, [endTime]);
 
   return (
     <div className="appointment">
-      <h1 style={{ marginBottom: 20 }}>Đặt lịch chăm sóc thú cưng</h1>
+      <h1 style={{ marginBottom: 20, color: "#00575c" }}>
+        Đặt lịch chăm sóc thú cưng
+      </h1>
       <Form
         form={form}
         name="validateOnly"
@@ -278,52 +293,35 @@ const Appointment: React.FC = () => {
                   ))}
               </Select>
             </Form.Item>
-            {/* <Form.Item
-              name="staff_id"
-              label="Nhân viên"
-              rules={[{ required: true }]}
-            >
-              <Select>
-                {listStaff?.map((item: TStaff) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item> */}
             <Form.Item
               name="services_id"
               label="Dịch vụ"
               rules={[{ required: true }]}
             >
-              <Select onChange={onChangeServices}>
-                {services?.map((item: TServices) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+              <Select onChange={onChangeServices} options={optionsServices} />
             </Form.Item>
             <Form.Item
               name="petHouse_id"
               label="Loại phòng"
               rules={[{ required: true }]}
             >
-              <Select>
-                {pethouse?.map((item: TpetHouse) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+              <Select onChange={onChangePetHouse} options={optionsPetHouse} />
             </Form.Item>
-            {openTime && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                gap: 20,
+              }}
+            >
               <Form.Item
                 name="time_id"
                 label="Thời gian"
                 rules={[{ required: true }]}
+                style={{ width: "100%" }}
               >
                 <DatePicker
+                  style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
@@ -333,16 +331,26 @@ const Appointment: React.FC = () => {
                   }}
                   onChange={onChangeTime}
                   showNow={false}
+                  disabled={!openTime}
                 />
+              </Form.Item>
+              <Form.Item style={{ width: "100%" }}>
                 <DatePicker
+                  style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
-                  disabledDate={disabledDate}
-                  disabledTime={disabledDateTime}
                   value={endTime}
                   disabled
                 />
               </Form.Item>
-            )}
+            </div>
+            <Form.Item label="Tổng số tiền">
+              <div>
+                <span style={{ fontSize: 24, color: "#00575c" }}>
+                  {new Intl.NumberFormat("vi-VN").format(total ?? 0)}
+                </span>
+                <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
+              </div>
+            </Form.Item>
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">

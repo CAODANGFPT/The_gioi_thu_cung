@@ -36,3 +36,17 @@
     content: "*";
   }
 }
+.ant-form-item-control-input-content {
+  display: flex;
+  column-gap: 20px;
+}
+.ant-btn {
+  background-color: $EagleGreen;
+  border: 1px solid $EagleGreen;
+}
+:where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  background-color: white;
+  color: $EagleGreen;
+}
