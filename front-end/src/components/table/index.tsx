@@ -8,7 +8,7 @@ type TableAdminProps = {
 };
 
 const TableAdmin: React.FC<TableAdminProps> = ({ columns, data }) => (
-  <Table columns={columns} dataSource={data} />
+  <Table columns={columns} dataSource={data}  />
 );
 
 export default TableAdmin;

@@ -32,10 +32,12 @@ const AppointmentsAdmin: React.FC = () => {
 
   const columns: ColumnsType<TAppointment> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Email người dùng",
