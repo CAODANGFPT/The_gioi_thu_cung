@@ -39,8 +39,18 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { day, pet_id, services_id, user_id, pethouse_id, time_id } =
-      req.body;
+    const {
+      day,
+      pet_id,
+      services_id,
+      user_id,
+      pethouse_id,
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete,
+    } = req.body;
     const { error } = appointmentsSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -54,7 +64,11 @@ export const create = async (req, res) => {
       services_id,
       user_id,
       pethouse_id,
-      time_id
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete
     );
     res.json({ id: appointmentsId, message: "Gửi thành công rồi !" });
   } catch (err) {

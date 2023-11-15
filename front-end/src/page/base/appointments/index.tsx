@@ -29,17 +29,16 @@ import {
   useGetAllUserPetsQuery,
 } from "../../../services/pets";
 import { useServicesQuery } from "../../../services/services";
-import { useSetTimeQuery } from "../../../services/setTime";
 import { useGetAllspeciesQuery } from "../../../services/species";
-import { useStaffQuery } from "../../../services/staff";
 import { useGetUserQuery } from "../../../services/user";
 
 type TFinish = {
   petHouse_id: number;
   pet_id: number;
-  staff_id: number;
   services_id: number;
-  time_id: number;
+  start_time: string;
+  end_time: string;
+  total: number;
   age: number;
   breed_id: number;
   gender: string;
@@ -75,10 +74,8 @@ const Appointment: React.FC = () => {
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseQuery();
   const { data: services } = useServicesQuery();
-  const { data: settime } = useSetTimeQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
-  const { data: listStaff } = useStaffQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
   const [createSPets] = useCreatePetsMutation();
@@ -128,6 +125,7 @@ const Appointment: React.FC = () => {
   }));
 
   const onFinish = async (values: TFinish) => {
+    console.log(values);
     const petNew = {
       img: image,
       name: values.name,
@@ -146,7 +144,9 @@ const Appointment: React.FC = () => {
           services_id: values.services_id,
           user_id: user?.id,
           pethouse_id: values.petHouse_id,
-          time_id: values.time_id,
+          start_time: values.start_time,
+          end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+          total: total,
           status_id: 1,
         });
         if ("data" in resAppointment) {
@@ -161,8 +161,12 @@ const Appointment: React.FC = () => {
         services_id: values.services_id,
         user_id: user?.id,
         pethouse_id: values.petHouse_id,
-        time_id: values.time_id,
+        start_time: values.start_time,
+        end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+        total: total,
+        status_id: 1,
       });
+      console.log(endTime?.toString());
       if ("data" in resAppointment) {
         message.success(resAppointment.data.message);
         navigate("/");
@@ -315,7 +319,7 @@ const Appointment: React.FC = () => {
               }}
             >
               <Form.Item
-                name="time_id"
+                name="start_time"
                 label="Thời gian"
                 rules={[{ required: true }]}
                 style={{ width: "100%" }}
@@ -422,21 +426,19 @@ const Appointment: React.FC = () => {
                     ))}
                   </Select>
                 </Form.Item>
-                {openBreed && (
-                  <Form.Item
-                    name="breed_id"
-                    label="Giống"
-                    rules={[{ required: true }]}
-                  >
-                    <Select>
-                      {breed?.map((item: TBreed) => (
-                        <Select.Option key={item.id} value={item.id}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                )}
+                <Form.Item
+                  name="breed_id"
+                  label="Giống"
+                  rules={[{ required: true }]}
+                >
+                  <Select disabled={!openBreed}>
+                    {breed?.map((item: TBreed) => (
+                      <Select.Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
               </>
             ) : (
               <>

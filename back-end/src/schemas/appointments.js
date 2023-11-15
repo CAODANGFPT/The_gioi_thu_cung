@@ -21,9 +21,14 @@ export const appointmentsSchema = joi.object({
     "String.empty": "Pethouse_id không được để trống",
     "any.required": "Trường pethouse_id là bắt buộc",
   }),
-  time_id: joi.number().required().messages({
-    "String.empty": "Time_id không được để trống",
-    "any.required": "Trường time_id là bắt buộc",
+  start_time: joi.string().required().messages({
+    "String.empty": "start_time không được để trống",
+  }),
+  end_time: joi.string().required().messages({
+    "String.empty": "end_time không được để trống",
+  }),
+  total: joi.number().required().messages({
+    "String.empty": "total không được để trống",
   }),
   status_id: joi.number(),
 });
