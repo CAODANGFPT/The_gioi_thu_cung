@@ -4,6 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import Breadcrumb from "../../../components/breadcrumb";
 import { useServicesByIdQuery } from "../../../services/services";
 
+const formatCurrency = (price?: number) => {
+  return price
+    ? price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+    : "0 VNĐ";
+};
+
 const ServiceDetail = () => {
   const { id } = useParams();
 
@@ -14,10 +20,6 @@ const ServiceDetail = () => {
       <div className="">
         <Breadcrumb name="dịch vụ" />
       </div>
-      <div className="service_info-row">
-        <h4 className="service_info-heading">Chi Tiết Dịch Vụ </h4>
-      </div>
-
       <div className="serviceContent">
         <div className="content-left">
           <img src={serviceDetails?.image} alt="ảnh dịch vụ" />
@@ -30,7 +32,9 @@ const ServiceDetail = () => {
           <div className="item-flex">
             <div className="title-name-2">Giá dịch vụ:</div>
             <div className="price-flex">
-              <div className="list-price">{serviceDetails?.price}đ</div>
+              <div className="list-price">
+                {formatCurrency(serviceDetails?.price)}
+              </div>
               <div className="list-price-sale">100đ</div>
             </div>
           </div>
@@ -51,7 +55,12 @@ const ServiceDetail = () => {
       <div className="bottom-service">
         <div className="description-box">
           <div className="description-title">Mô tả dịch vụ</div>
-          <div className="description-text">{serviceDetails?.description}</div>
+          <div
+            className="description-text"
+            dangerouslySetInnerHTML={{
+              __html: serviceDetails?.description || "",
+            }}
+          />
         </div>
       </div>
     </div>

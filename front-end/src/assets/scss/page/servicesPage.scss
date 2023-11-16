@@ -22,6 +22,7 @@
   }
 
   .serviceContent {
+    margin-top: 30px;
     line-height: 45px;
     @include Flex(Flex, space-around, "");
     @include max-screen($lg) {
@@ -32,7 +33,8 @@
       width: 50%;
       text-align: center;
       img {
-        width: 50%;
+        width: 55%;
+        border-radius: 12px;
       }
       @include max-screen($lg) {
         width: 100%;
@@ -65,32 +67,36 @@
           }
         }
         .price-flex {
-          flex-direction: column;
+          display: flex;
+          align-items: baseline;
+          .list-price {
+            font-size: 18px;
+            color: red;
+          }
+          .list-price-sale {
+            margin-left: 8px;
+            font-size: 12px;
+            color: $SilverSand;
+            text-decoration: line-through;
+          }
         }
         .list {
           font-size: 18px;
           text-transform: capitalize;
         }
-        .list-price {
-          font-size: 18px;
-          color: red;
-        }
-        .list-price-sale {
-          font-size: 12px;
-          color: $SilverSand;
-          text-decoration: line-through;
-        }
       }
     }
 
     .flex-btn {
-      flex-direction: column;
+      margin-top: 20px;
+      display: flex;
       @include max-screen($lg) {
-        flex-direction: row;
+        flex-direction: column;
       }
       .btn-router {
         border: 1px solid $EagleGreen;
         border-radius: 45px;
+        margin-left: 2px;
         margin-bottom: 14px;
         font-size: 13px;
         background-color: white;
@@ -146,72 +152,119 @@
     }
   }
 
-  .content {
-    @include Gird(grid, 4);
-    @include Gap(20px, 20px);
-    margin-top: 40px;
-    align-items: center;
-    @include max-screen($lg) {
-      @include Gird(grid, 3);
-    }
-    @include max-screen($md) {
-      @include Gird(grid, 2);
-    }
-    @include max-screen($sm) {
-      @include Gird(grid, 1);
-    }
-    margin: 0 auto;
-    padding-bottom: 25px;
-    margin: 40px 50px;
+  .serviceCardContainer {
+    display: grid;
+    grid-template-columns: 3fr 9fr; /* Service Card chiếm 75%, Filter chiếm 25% */
+    gap: 20px; /* Khoảng cách giữa các phần tử */
 
-    @include max-screen($sx) {
-      margin: 30px 0;
+    @include max-screen($lg) {
+      grid-template-columns: 1fr; /* Khi màn hình nhỏ, chuyển sang hiển thị một cột */
     }
-    .nameService {
-      color: $EagleGreen;
-      font-weight: bold;
-      padding-left: 24px;
-      margin: 20px 0px;
-      text-align: start;
-      font-size: 18px;
-      text-transform: capitalize;
-      &:hover {
-        color: $SeaSerpent;
+
+    .Filter {
+      height: 30%;
+      @include max-screen($lg) {
+        order: 2; // Đảo ngược thứ tự hiển thị khi màn hình nhỏ hơn hoặc bằng 1024px
+        height: 100%;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .Filter-box {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+        div {
+          flex-grow: 1;
+        }
+        .title-box {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+        .text-box {
+          font-size: 16px;
+          font-family: $fontFamily;
+        }
+        img {
+          width: 100%;
+          border-radius: 8px;
+        }
       }
     }
-    .sold-flex {
-      @include Flex(Flex, space-between, center);
-      .priceService {
+  }
+  .serviceCard {
+    width: 100%; /* Chiếm toàn bộ width trong trường hợp chỉ có một cột */
+    @include max-screen($lg) {
+      width: auto; /* Khi màn hình nhỏ, chiếm chiều rộng tự nhiên */
+    }
+    .content {
+      @include Gird(grid, 3);
+      @include Gap(20px, 20px);
+      align-items: center;
+      @include max-screen($md) {
+        @include Gird(grid, 2);
+      }
+      @include max-screen($sm) {
+        @include Gird(grid, 1);
+      }
+      margin: 0 auto;
+      padding-bottom: 25px;
+      margin: 0px 20px;
+
+      @include max-screen($sx) {
+        margin: 30px 0;
+      }
+      .nameService {
         color: $EagleGreen;
+        font-weight: bold;
         padding-left: 24px;
         margin: 20px 0px;
         text-align: start;
         font-size: 18px;
+        text-transform: capitalize;
+        &:hover {
+          color: $SeaSerpent;
+        }
       }
-      .sold {
-        color: $SilverSand;
-        padding-right: 24px;
-        font-size: 14px;
+      .sold-flex {
+        @include Flex(Flex, space-between, center);
+        .priceService {
+          color: $EagleGreen;
+          padding-left: 24px;
+          margin: 20px 0px;
+          text-align: start;
+          font-size: 18px;
+        }
+        .sold {
+          color: $SilverSand;
+          padding-right: 24px;
+          font-size: 14px;
+        }
       }
     }
-  }
 
-  .content > div {
-    border-radius: 10px;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: auto 0.5rem;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    height: 100%;
-  }
+    .content > div {
+      border-radius: 10px;
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      margin: auto 0.5rem;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      height: 100%;
+    }
 
-  .content img {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    width: 100%;
-    height: 16em;
-    object-fit: cover;
+    .content img {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      width: 100%;
+      height: 16em;
+      object-fit: cover;
+    }
   }
 }
