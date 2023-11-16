@@ -19,7 +19,6 @@ const ShoppingCart = () => {
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
   const [removeOrder] = useRemoveCartsByIdMutation();
   const shippingCost: number = 12312;
-  // const [prireProduct, setPrireProduct] =useState<any>([]);
   useEffect(() => {
     if (data) {
       setDataOrder(data);
@@ -167,8 +166,9 @@ const ShoppingCart = () => {
                             </button>
                             <input
                               type="text"
-                              className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8 text-center"
+                              className=""
                               value={data.quantity}
+                              readOnly
                             />
                             <button
                               className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8"
@@ -190,6 +190,7 @@ const ShoppingCart = () => {
                         </button>
                         <input
                           type="text"
+                          readOnly
                           className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8 text-center"
                           value={data.quantity}
                         />

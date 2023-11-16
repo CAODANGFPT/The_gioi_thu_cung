@@ -4,7 +4,7 @@ export default class Carts {
   static getAllCarts(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT carts.id, carts.quantity, users.name AS userCart, products.name AS productCart, products.price AS priceCart, products.img AS imgCart, (SELECT name FROM category WHERE category.id = products.category_id) AS cateProductCart FROM carts JOIN users ON carts.user_id = users.id JOIN products ON carts.products_id = products.id WHERE carts.user_id = ?",
+        "SELECT carts.id, carts.quantity, users.name AS userCart, products.name AS productCart, products.price AS priceCart,products.id AS productsId, products.img AS imgCart, (SELECT name FROM category WHERE category.id = products.category_id) AS cateProductCart FROM carts JOIN users ON carts.user_id = users.id JOIN products ON carts.products_id = products.id WHERE carts.user_id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);
