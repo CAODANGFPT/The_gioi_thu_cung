@@ -17,3 +17,11 @@ export const cartsSchema = joi.object({
   created_at: joi.string(),
   updated_at: joi.string(),
 });
+
+export const cartsQuantitySchema = joi.object({
+  id: joi.number(),
+  quantity: joi.number().required().messages({
+    "String.empty": "quantity không được để trống",
+    "any.required": "Trường quantity là bắt buộc",
+  }),
+});

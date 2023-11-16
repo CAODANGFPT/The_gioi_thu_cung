@@ -36,7 +36,7 @@ const AccountPage = () => {
         <div className="account_info-col col_1">
           <ul className="account_col-list">
             {navigationLinksAccount.map((item) => (
-              <li className="account_col-item">
+              <li className="account_col-item" key={item.id}>
                 <Link
                   to={item.link}
                   className={`account_col-link ${
