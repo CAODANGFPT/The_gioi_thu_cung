@@ -18,7 +18,11 @@ const ServiceDetail = () => {
   return (
     <div className="backg">
       <div className="">
-        <Breadcrumb name="dịch vụ" />
+        <Breadcrumb
+          nameLink="dịch vụ"
+          link="/services"
+          name={serviceDetails?.name}
+        />
       </div>
       <div className="serviceContent">
         <div className="content-left">

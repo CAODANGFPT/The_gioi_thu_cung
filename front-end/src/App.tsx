@@ -73,6 +73,8 @@ import AddCategory from "./page/admin/category/add";
 import ProductsAdmin from "./page/admin/products/list";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
+import ServicePage from "./page/base/servicePage";
+import ServiceDetail from "./page/base/serviceDetail";
 
 function App() {
   return (
@@ -90,6 +92,8 @@ function App() {
             <Route path="follow" element={<Follow />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
+          <Route path="services" element={<ServicePage />} />
+          <Route path="service/:id" element={<ServiceDetail />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -13,14 +13,14 @@ const ServicePage = () => {
   const [data, setData] = useState<TServices[]>();
   const { data: listService } = useServicesQuery();
   useEffect(() => {
-    if (location.pathname !== "/services") {
+    if (location.pathname !== "/service") {
       setData(listService);
     }
   }, [listService, location.pathname]);
   return (
     <div className="backg">
       <div className="">
-        <Breadcrumb name="dịch vụ" />
+        <Breadcrumb name={"dịch vụ"} />
       </div>
       <div className="service_info-row">
         <h4 className="service_info-heading">Dịch vụ</h4>
@@ -43,7 +43,7 @@ const ServicePage = () => {
           <div className="content">
             {data?.map((item) => (
               <div key={item.id}>
-                <Link to={`/services/${item.id}`}>
+                <Link to={`/service/${item.id}`}>
                   <img src={item.image} alt="" />
                   <div className="nameService">{item.name}</div>
                 </Link>
