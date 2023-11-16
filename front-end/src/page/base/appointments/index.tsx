@@ -230,9 +230,13 @@ const Appointment: React.FC = () => {
 
   const disabledDateTime = () => ({
     disabledHours: () => {
-      return Array.from({ length: 24 }, (_, i) => i).filter(
-        (hour) => hour < 9 || hour > 18
-      );
+      // Danh sách giờ mặc định từ 9 giờ sáng đến 6 giờ chiều
+      const defaultDisabledHours = Array.from(
+        { length: 24 },
+        (_, i) => i
+      ).filter((hour) => hour < 9 || hour > 18);
+      const additionalDisabledHours = [11, 12, 16];
+      return [...defaultDisabledHours, ...additionalDisabledHours];
     },
   });
 
@@ -311,7 +315,8 @@ const Appointment: React.FC = () => {
             >
               <Select onChange={onChangePetHouse} options={optionsPetHouse} />
             </Form.Item>
-            <div
+            <Form.Item
+              label="Thời gian"
               style={{
                 display: "flex",
                 alignItems: "flex-end",
@@ -320,18 +325,16 @@ const Appointment: React.FC = () => {
             >
               <Form.Item
                 name="start_time"
-                label="Thời gian"
                 rules={[{ required: true }]}
                 style={{ width: "100%" }}
               >
                 <DatePicker
                   style={{ width: "100%" }}
-                  format="YYYY-MM-DD HH:mm"
+                  format="YYYY-MM-DD HH"
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
                     defaultValue: dayjs("08:00:00", "HH:mm:ss"),
-                    minuteStep: 30,
                   }}
                   onChange={onChangeTime}
                   showNow={false}
@@ -341,12 +344,12 @@ const Appointment: React.FC = () => {
               <Form.Item style={{ width: "100%" }}>
                 <DatePicker
                   style={{ width: "100%" }}
-                  format="YYYY-MM-DD HH:mm"
+                  format="YYYY-MM-DD HH"
                   value={endTime}
                   disabled
                 />
               </Form.Item>
-            </div>
+            </Form.Item>
             <Form.Item label="Tổng số tiền">
               <div>
                 <span style={{ fontSize: 24, color: "#00575c" }}>
