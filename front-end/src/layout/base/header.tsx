@@ -12,6 +12,7 @@ import { useGetUserQuery } from "../../services/user";
 import User from "../../assets/image/user.png";
 import { Dropdown } from "antd";
 import ModalUser from "./modal";
+import CalendarIcon from "../../assets/svg/calendar";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
@@ -120,8 +121,12 @@ const HeaderBase = () => {
             <HeartIcon />
             <div className="group13">0</div>
           </div>
-          <div className="frame5" onClick={() => navigate("cart")}>
+          <div className="frame5" onClick={() => navigate("shoppingCart")}>
             <ShoppingCartIcon />
+            <div className="group13">0</div>
+          </div>
+          <div className="frame5" onClick={() => navigate("cart")}>
+            <CalendarIcon />
             <div className="group13">0</div>
           </div>
         </div>
