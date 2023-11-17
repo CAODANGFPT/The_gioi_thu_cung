@@ -160,7 +160,7 @@ const Appointment: React.FC = () => {
         });
         if ("data" in resAppointment) {
           message.success(resAppointment.data.message);
-          navigate("/");
+          navigate("/cart");
         }
       }
     } else {
@@ -177,7 +177,7 @@ const Appointment: React.FC = () => {
       });
       if ("data" in resAppointment) {
         message.success(resAppointment.data.message);
-        navigate("/");
+        navigate("/cart");
       }
     }
   };
