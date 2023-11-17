@@ -55,7 +55,8 @@ const Appointment: React.FC = () => {
   const [pet, setPet] = useState<TPets | undefined>({});
   const [openAddPest, setOpenAddPest] = useState<boolean>(true);
   const [openBreed, setOpenBreed] = useState<boolean>(false);
-  const [openTime, setOpenTime] = useState<boolean>(false);
+  const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
+  const [petHouseOpenTime, setPetHouseOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
   const [idServices, setIdServices] = useState<number>(0);
   const [idPetHouse, setIdPetHouse] = useState<number>(0);
@@ -144,7 +145,9 @@ const Appointment: React.FC = () => {
           services_id: values.services_id,
           user_id: user?.id,
           pethouse_id: values.petHouse_id,
-          start_time: values.start_time,
+          start_time: dayjs(values.start_time).format(
+            "YYYY-MM-DDTHH:mm:ssZ[Z]"
+          ),
           end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           total: total,
           status_id: 1,
@@ -161,7 +164,7 @@ const Appointment: React.FC = () => {
         services_id: values.services_id,
         user_id: user?.id,
         pethouse_id: values.petHouse_id,
-        start_time: values.start_time,
+        start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         total: total,
         status_id: 1,
@@ -194,7 +197,7 @@ const Appointment: React.FC = () => {
   };
 
   const onChangeServices = (value: number) => {
-    setOpenTime(true);
+    setServicesOpenTime(true);
     setIdServices(value);
     const servicesId = services?.find((service) => service.id === value);
     const petHouseId = pethouse?.find((pethouse) => pethouse.id === idPetHouse);
@@ -202,6 +205,7 @@ const Appointment: React.FC = () => {
   };
 
   const onChangePetHouse = (value: number) => {
+    setPetHouseOpenTime(true);
     setIdPetHouse(value);
     const servicesId = services?.find((service) => service.id === idServices);
     const petHouseId = pethouse?.find((pethouse) => pethouse.id === value);
@@ -230,11 +234,12 @@ const Appointment: React.FC = () => {
 
   const disabledDateTime = () => ({
     disabledHours: () => {
-      // Danh sách giờ mặc định từ 9 giờ sáng đến 6 giờ chiều
       const defaultDisabledHours = Array.from(
         { length: 24 },
         (_, i) => i
-      ).filter((hour) => hour < 9 || hour > 18);
+      ).filter(
+        (hour) => hour < 9 || hour <= +dayjs().format("HH") || hour > 18
+      );
       const additionalDisabledHours = [11, 12, 16];
       return [...defaultDisabledHours, ...additionalDisabledHours];
     },
@@ -274,6 +279,7 @@ const Appointment: React.FC = () => {
   useEffect(() => {
     console.log(endTime?.toISOString());
   }, [endTime]);
+  console.log(!petHouseOpenTime && !servicesOpenTime);
 
   return (
     <div className="appointment">
@@ -330,21 +336,22 @@ const Appointment: React.FC = () => {
               >
                 <DatePicker
                   style={{ width: "100%" }}
-                  format="YYYY-MM-DD HH"
+                  format="YYYY-MM-DD HH:mm"
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
                     defaultValue: dayjs("08:00:00", "HH:mm:ss"),
+                    format: "HH:00",
                   }}
                   onChange={onChangeTime}
                   showNow={false}
-                  disabled={!openTime}
+                  disabled={!petHouseOpenTime || !servicesOpenTime}
                 />
               </Form.Item>
               <Form.Item style={{ width: "100%" }}>
                 <DatePicker
                   style={{ width: "100%" }}
-                  format="YYYY-MM-DD HH"
+                  format="YYYY-MM-DD HH:mm"
                   value={endTime}
                   disabled
                 />
