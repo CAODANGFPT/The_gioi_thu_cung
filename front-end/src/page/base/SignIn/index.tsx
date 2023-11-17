@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
@@ -19,6 +19,12 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [loginForm] = useLoginUserMutation();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if(token){
+      navigate("/")
+    }
+  }, [navigate, token])
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
@@ -105,12 +111,12 @@ const SignIn = () => {
           </button>
 
           <div className="forgot-phone">
-            <Link to="" className="text-login">
+            <p onClick={() => navigate("/forgotPassword")} className="text-login">
               Quên mật khẩu
-            </Link>
-            <Link to="" className="text-login">
-              Login with phone number
-            </Link>
+            </p>
+            <p onClick={() => navigate("/signup")} className="text-login">
+             Đăng ký
+            </p>
           </div>
           <br />
 

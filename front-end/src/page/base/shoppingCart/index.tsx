@@ -219,6 +219,11 @@ const ShoppingCart = () => {
                 ))}
             </tbody>
           </table>
+          { dataOrder.length === 0 && (
+            <div className="text">
+              Không có sản phẩm nào trong giỏ hàng
+            </div>
+            )}
         </div>
         <div className="shoppingCart-blog-right">
           <div className="shoppingCart-blog-right-item">
