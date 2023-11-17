@@ -2,13 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
-import Account from "./page/base/account/account/account";
 import Follow from "./components/account_info/follow";
 import History from "./components/account_info/history";
 import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
+import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
 import SignUp from "./page/base/signUp";
@@ -46,9 +46,6 @@ import RoleAdmin from "./page/admin/role/list";
 import AddService from "./page/admin/services/add";
 import EditService from "./page/admin/services/edit";
 import ServicesAdmin from "./page/admin/services/list";
-import AddSetTime from "./page/admin/setTime/add";
-import EditSetTime from "./page/admin/setTime/edit";
-import SetTimeAdmin from "./page/admin/setTime/list";
 import AddSpecies from "./page/admin/species/add";
 import EditSpecies from "./page/admin/species/edit";
 import SpeciesAdmin from "./page/admin/species/list";
@@ -63,18 +60,18 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
+import AddCategory from "./page/admin/category/add";
+import EditCategory from "./page/admin/category/edit";
+import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
 import EditNews from "./page/admin/news/edit";
-import CartPage from "./page/base/cart";
-import PageNotFound from "./page/pageNotFound";
-import CategoryAdmin from "./page/admin/category/list";
-import EditCategory from "./page/admin/category/edit";
-import AddCategory from "./page/admin/category/add";
-import ProductsAdmin from "./page/admin/products/list";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
+import ProductsAdmin from "./page/admin/products/list";
+import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
 import ShoppingCart from "./page/base/shoppingCart";
+import PageNotFound from "./page/pageNotFound";
 
 function App() {
   return (
@@ -93,7 +90,6 @@ function App() {
             <Route path="history_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
-            Ro
           </Route>
           <Route path="cart" element={<CartPage />} />
         </Route>
@@ -145,12 +141,6 @@ function App() {
             <Route index element={<RoleAdmin />} />
             <Route path="add" element={<AddRoleAdmin />} />
             <Route path="edit/:id" element={<EditRole />} />
-          </Route>
-
-          <Route path="settime">
-            <Route index element={<SetTimeAdmin />} />
-            <Route path="add" element={<AddSetTime />} />
-            <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />

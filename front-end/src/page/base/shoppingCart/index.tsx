@@ -86,12 +86,12 @@ const ShoppingCart = () => {
       }
     }
   };
-  const remove =  (id: number) => {
+  const remove = (id: number) => {
     const confirm = window.confirm("Bạn có muốn xóa");
-      if (confirm) {
-        removeOrder(id);
-      }
-  }
+    if (confirm) {
+      removeOrder(id);
+    }
+  };
   return (
     <div className="shoppingCart">
       <div className="breadcrumbs" role="presentation">
@@ -145,7 +145,10 @@ const ShoppingCart = () => {
                           <div className="product-item-text-title">
                             {data.productCart}
                           </div>
-                          <div className="remove" onClick={() => remove(data.id)}>
+                          <div
+                            className="remove"
+                            onClick={() => remove(data.id)}
+                          >
                             <TrashAlt />
                           </div>
                           <div className="price">
@@ -202,12 +205,16 @@ const ShoppingCart = () => {
                         </button>
                       </div>
                     </td>
-                    <td className="sum"> {(
-                  data.priceCart * data.quantity
-                ).toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}</td>
+                    <td className="sum">
+                      {" "}
+                      {(data.priceCart * data.quantity).toLocaleString(
+                        "vi-VN",
+                        {
+                          style: "currency",
+                          currency: "VND",
+                        }
+                      )}
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -218,30 +225,34 @@ const ShoppingCart = () => {
             <p className="shoppingCart-blog-right-item-title">
               Tổng số mặt hàng
             </p>
-            <p>${(calculateTotalAmount()).toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}</p>
+            <p>
+              <span style={{ fontSize: 24, color: "#00575c" }}>
+                {new Intl.NumberFormat("vi-VN").format(
+                  calculateTotalAmount() ?? 0
+                )}
+              </span>
+              <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
+            </p>
           </div>
           <div className="shoppingCart-blog-right-item">
             <p className="shoppingCart-blog-right-item-title">Tiền ship</p>
             <p>
-              {shippingCost.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}
+              <span style={{ fontSize: 24, color: "#00575c" }}>
+                {new Intl.NumberFormat("vi-VN").format(shippingCost ?? 0)}
+              </span>
+              <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
             </p>
           </div>
           <hr />
           <div className="shoppingCart-blog-right-item">
             <p className="shoppingCart-blog-right-item-title">Tổng cộng</p>
             <p>
-              $
-              {(calculateTotalAmount() +
-                shippingCost).toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
+              <span style={{ fontSize: 24, color: "#00575c" }}>
+                {new Intl.NumberFormat("vi-VN").format(
+                  calculateTotalAmount() + shippingCost ?? 0
+                )}
+              </span>
+              <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
             </p>
           </div>
           <div className="shoppingCart-blog-right-checkOut">CHECK OUT</div>

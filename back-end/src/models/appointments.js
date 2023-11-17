@@ -23,16 +23,15 @@ export default class Appointments {
   static getAppointmentsData() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, pets.name AS pet_name, " +
+        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, pets.name AS pet_name, " +
           "services.name AS service_name, users.email AS user_email, " +
-          "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
-          "settime.start_time, settime.end_time, status_appointment.name AS status_name " +
+          "pethouse.name AS pethouse_name," +
+          "status_appointment.name AS status_name " +
           "FROM appointments " +
           "JOIN pets ON appointments.pet_id = pets.id " +
           "JOIN services ON appointments.services_id = services.id " +
           "JOIN users ON appointments.user_id = users.id " +
           "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
-          "JOIN settime ON appointments.time_id = settime.id " +
           "JOIN status_appointment ON appointments.status_id = status_appointment.id",
         (err, results) => {
           if (err) reject(err);
@@ -45,16 +44,15 @@ export default class Appointments {
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, appointments.is_delete, pets.name AS pet_name, " +
+        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, appointments.is_delete, pets.name AS pet_name, " +
           "services.name AS service_name, users.email AS user_email, " +
-          "pethouse.name AS pethouse_name, settime.name AS settime_name, " +
-          "settime.start_time, settime.end_time, status_appointment.name AS status_name " +
+          "pethouse.name AS pethouse_name, " +
+          "status_appointment.name AS status_name " +
           "FROM appointments " +
           "JOIN pets ON appointments.pet_id = pets.id " +
           "JOIN services ON appointments.services_id = services.id " +
           "JOIN users ON appointments.user_id = users.id " +
           "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
-          "JOIN settime ON appointments.time_id = settime.id " +
           "JOIN status_appointment ON appointments.status_id = status_appointment.id " +
           "WHERE appointments.user_id = ?",
         [id],

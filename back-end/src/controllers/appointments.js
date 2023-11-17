@@ -14,6 +14,7 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const listAppointmentData = async (req, res) => {
   try {
     const appointments = await Appointments.getAppointmentsData();
@@ -22,6 +23,7 @@ export const listAppointmentData = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const show = async (req, res) => {
   try {
     const appointmentsItem = await Appointments.getAppointmentsById(

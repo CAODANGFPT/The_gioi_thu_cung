@@ -1,28 +1,24 @@
-import UserIcons from "../svg/account/User";
-import PethouseIcon from "../svg/pethouseIcon";
-import ReviewIcon from "../svg/review";
-import StatusIcon from "../svg/status";
-import { personsImgs } from "../utils/images";
-import BillsIcon from "./../svg/billsIcon";
-import HomeIcon from "./../svg/homeIcon";
-import ReportIcon from "./../svg/reportIcon";
 import PetIcon from "../svg/PetsIcon";
-import NewIcon from "../svg/newIcon";
-import ProfileIcon from "../svg/profileIcon";
+import AboutMeIcon from "../svg/aboutMe";
+import UserIcons from "../svg/account/User";
+import AddressCardIcon from "../svg/addressCard";
 import AppoinmentIcon from "../svg/appoinmentIcon";
+import BreedIcon from "../svg/breed";
+import Category from "../svg/category";
 import HistoryIcon from "../svg/history";
+import NewIcon from "../svg/newIcon";
+import PethouseIcon from "../svg/pethouseIcon";
+import ProductIcon from "../svg/products";
+import ProfileIcon from "../svg/profileIcon";
+import ReviewIcon from "../svg/review";
+import RoleIcon from "../svg/roleIcon";
+import ServicesIcon from "../svg/serviceIcon";
+import SpeciesIcon from "../svg/speciesIcon";
+import StaffDo from "../svg/staffDo";
 import StatusAppoint from "../svg/statusAppoint";
 import StatusContact from "../svg/statusContact";
-import SpeciesIcon from "../svg/speciesIcon";
-import ServicesIcon from "../svg/serviceIcon";
-import AddressCardIcon from "../svg/addressCard";
-import BreedIcon from "../svg/breed";
-import StaffDo from "../svg/staffDo";
-import TimeLine from "../svg/timeLine";
-import RoleIcon from "../svg/roleIcon";
-import AboutMeIcon from "../svg/aboutMe";
-import Category from "../svg/category";
-import ProductIcon from "../svg/products";
+import { personsImgs } from "../utils/images";
+import HomeIcon from "./../svg/homeIcon";
 export const navigationLinks = [
   { id: 1, title: "Dasboard", image: HomeIcon, link: "dashboard" },
   { id: 2, title: "History", image: HistoryIcon, link: "history" },
@@ -46,7 +42,6 @@ export const navigationLinks = [
   { id: 10, title: "Breed", image: BreedIcon, link: "breed" },
   { id: 11, title: "Species", image: SpeciesIcon, link: "species" },
   { id: 12, title: "Staff Do", image: StaffDo, link: "staff" },
-  { id: 13, title: "Set Time", image: TimeLine, link: "settime" },
   { id: 14, title: "Category", image: Category, link: "category" },
   { id: 21, title: "Product", image: ProductIcon, link: "products" },
   { id: 15, title: "User", image: UserIcons, link: "user" },
