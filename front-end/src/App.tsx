@@ -82,6 +82,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
+          <Route path="appointment/:id" element={<Appointments />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />

@@ -14,7 +14,7 @@ import {
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../../assets/scss/page/appointment.scss";
 import { TBreed } from "../../../schema/breed";
 import { TpetHouse } from "../../../schema/pethouse";
@@ -31,7 +31,10 @@ import {
   useCreatePetsMutation,
   useGetAllUserPetsQuery,
 } from "../../../services/pets";
-import { useServicesQuery } from "../../../services/services";
+import {
+  useServicesByIdQuery,
+  useServicesQuery,
+} from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import { TGetAppointmentTime } from "../../../schema/appointments";
@@ -86,6 +89,22 @@ const Appointment: React.FC = () => {
   const [createAppointment] = useAddAppointmentMutation();
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [createSPets] = useCreatePetsMutation();
+
+  const { id: idService } = useParams<{ id: string }>();
+  const { data: servicesById, isLoading } = useServicesByIdQuery(
+    Number(idService)
+  );
+  console.log(servicesById);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (idService === String(servicesById?.id)) {
+        form.setFieldValue("services_id", servicesById?.id);
+      } else {
+        navigate("/*");
+      }
+    }
+  }, [form, idService, isLoading, navigate, servicesById, servicesById?.id]);
 
   useEffect(() => {
     if (listPet) {
@@ -222,7 +241,7 @@ const Appointment: React.FC = () => {
         id: item.id,
         start_time: dayjs(item.start_time).format("YYYY-MM-DD HH:mm:ss"),
         end_time: dayjs(item.end_time)
-          .subtract(1, 'second')
+          .subtract(1, "second")
           .format("YYYY-MM-DD HH:mm:ss"),
       }));
       setDisableTime(formattedData);
@@ -347,7 +366,11 @@ const Appointment: React.FC = () => {
               label="Dịch vụ"
               rules={[{ required: true }]}
             >
-              <Select onChange={onChangeServices} options={optionsServices} />
+              <Select
+                disabled={!!idService}
+                onChange={onChangeServices}
+                options={optionsServices}
+              />
             </Form.Item>
             <Form.Item
               name="petHouse_id"

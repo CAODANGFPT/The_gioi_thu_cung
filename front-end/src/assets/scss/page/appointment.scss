@@ -24,29 +24,29 @@
     @include Flex(flex, space-between, flex-start);
     @include Gap(90px, 0);
   }
-}
-.label {
-  &::before {
-    display: inline-block;
-    margin-inline-end: 4px;
-    color: #ff4d4f;
-    font-size: 14px;
-    font-family: SimSun, sans-serif;
-    line-height: 1;
-    content: "*";
+  .label {
+    &::before {
+      display: inline-block;
+      margin-inline-end: 4px;
+      color: #ff4d4f;
+      font-size: 14px;
+      font-family: SimSun, sans-serif;
+      line-height: 1;
+      content: "*";
+    }
   }
-}
-.ant-form-item-control-input-content {
-  display: flex;
-  column-gap: 20px;
-}
-.ant-btn {
-  background-color: $EagleGreen;
-  border: 1px solid $EagleGreen;
-}
-:where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(:disabled):not(
-    .ant-btn-disabled
-  ):hover {
-  background-color: white;
-  color: $EagleGreen;
+  .ant-form-item-control-input-content {
+    display: flex;
+    column-gap: 20px;
+  }
+  .ant-btn {
+    background-color: $EagleGreen;
+    border: 1px solid $EagleGreen;
+  }
+  :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(
+      :disabled
+    ):not(.ant-btn-disabled):hover {
+    background-color: white;
+    color: $EagleGreen;
+  }
 }

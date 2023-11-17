@@ -4,14 +4,16 @@ import "../../../assets/scss/page/home.scss";
 import ArrowRightIcon from "../../../assets/svg/arrowRightIcon";
 
 import "react-multi-carousel/lib/styles.css";
+import { useNavigate } from "react-router-dom";
+import CarouseBlog from "../../../components/carouselBlog";
 import CarouselProduct from "../../../components/carouselProduct";
 import ServiceCard from "../../../components/serviceCard";
-import { ServiceCardData, blogData, productData } from "./data";
-import CarouseBlog from "../../../components/carouselBlog";
-import { useNavigate } from "react-router-dom";
+import { useServicesTop8Query } from "../../../services/services";
+import { blogData, productData } from "./data";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
+  const { data: listServices } = useServicesTop8Query();
   return (
     <div className="bg">
       <div className="home">
@@ -32,12 +34,13 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div className="home-listCate">
-          {ServiceCardData.map((ServiceCardData, i) => {
+          {listServices?.map((serviceCardData) => {
             return (
               <ServiceCard
-                key={i}
-                image={ServiceCardData.imageUrl}
-                name={ServiceCard.name}
+                key={serviceCardData.id}
+                id={serviceCardData.id}
+                image={serviceCardData.image}
+                name={serviceCardData.name}
               />
             );
           })}
