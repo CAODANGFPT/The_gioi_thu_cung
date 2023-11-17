@@ -1,9 +1,9 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as React from "react";
 import "../../../assets/scss/page/detailProduct.scss";
 import imageDetail from "../../../assets/image/blog3.png";
-import user from "../../../assets/image/user.png";
+import userImg from "../../../assets/image/user.png";
 import FacebookIcon from "../../../assets/svg/facebook";
 import MessageIcon from "../../../assets/svg/mesageIcon2";
 import TwitterIcon from "../../../assets/svg/twitterIcon";
@@ -14,16 +14,48 @@ import CarouselProduct from "../../../components/carouselProduct";
 import { productData, productData2 } from "./data";
 import ListProductCard from "../../../components/listProduct";
 import { Pagination, Stack } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import product10 from "../../../assets/image/project10.png";
+import Minus from "../../../assets/svg/minus";
+import AddIcon from "../../../assets/svg/add";
+import {
+  useAddToCartsMutation,
+  useGetUserListCartsQuery,
+  useUpdateQuantityCartsMutation,
+} from "../../../services/shoppingCart";
+import { message } from "antd";
+import { useGetUserQuery } from "../../../services/user";
 
 const DetailProduct: React.FC = () => {
+  const { id } = useParams();
+  const [idOrder, setIdOrder] = useState<number>(1);
+  const [AddToCart, { reset }] = useAddToCartsMutation();
+  const [dataOrder, setDataOrder] = useState<any>([]);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [quantityCarts, setQuantityCarts] = useState<number>(0);
+  const { data } = useGetUserListCartsQuery();
+  const { data: user } = useGetUserQuery();
+  const [updateOrderMutation] = useUpdateQuantityCartsMutation();
+  console.log(dataOrder);
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
   }
-
-  //pagination list
+  useEffect(() => {
+    if (data) {
+      setDataOrder(data);
+    }
+  }, [data]);
+  const Cong = () => {
+    setQuantity(quantity + 1);
+  };
+  const Tru = () => {
+    if (quantity >= 2) {
+      setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity);
+    }
+  };
   const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (
     _event: any,
@@ -31,12 +63,57 @@ const DetailProduct: React.FC = () => {
   ) => {
     setCurrentPage(page);
   };
-  const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
+  const itemsPerPage = 8;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = productData2.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(productData2.length / itemsPerPage);
+  useEffect(() => {
+    if (dataOrder) {
+      const orderItem = dataOrder.find(
+        (item: any) => item.productsId === Number(id)
+      );
+      console.log(orderItem);
+      if (orderItem) {
+        const { id, quantity } = orderItem;
+        setQuantityCarts(quantity)
+        setIdOrder(id);
+      }
+    }
+  }, [id, dataOrder]);
+  const addToCart = async () => {
+    const isProductInCart = dataOrder?.some(
+      (item: { productsId: number }) => item.productsId === Number(id)
+    );
+    console.log(isProductInCart);
 
+    if (!isProductInCart) {
+      if (user) {
+        const cartItem = {
+          user_id: user?.id,
+          products_id: Number(id),
+          quantity: quantity,
+        };
+        try {
+          await AddToCart(cartItem).unwrap();
+          message.success("Add to cart  successfully");
+          reset();
+        } catch (error) {
+          message.error("Failed add to cart product");
+          console.log(cartItem);
+        }
+      }
+    } else {
+      try {
+        const dataQuantity = quantity + quantityCarts;
+        await updateOrderMutation({ id: idOrder, quantity:dataQuantity });
+        message.success("Add to cart  successfully");
+        reset();
+      } catch (error) {
+        message.error("Failed add to cart product");
+      }
+    }
+  };
   return (
     <div className="bg">
       <div className="breadcrumbs" role="presentation" onClick={handleClick}>
@@ -126,7 +203,7 @@ const DetailProduct: React.FC = () => {
             <div className="feedback">
               <div className="userName">
                 <div className="avt">
-                  <img src={user} alt="" />
+                  <img src={userImg} alt="" />
                 </div>
                 <div className="name">
                   <h3>mr.bean</h3>
@@ -155,7 +232,7 @@ const DetailProduct: React.FC = () => {
             <div className="feedback">
               <div className="userName">
                 <div className="avt">
-                  <img src={user} alt="" />
+                  <img src={userImg} alt="" />
                 </div>
                 <div className="name">
                   <h3>mr.bean</h3>
@@ -208,15 +285,18 @@ const DetailProduct: React.FC = () => {
 
             <div className="quantity">
               <label htmlFor="">Số lượng: </label>
-
               <div className="quantity-input">
-                <button>-</button>
-                <input type="number" />
-                <button>+</button>
+                <button className="" onClick={() => Tru()}>
+                  <Minus />
+                </button>
+                <input type="text" className="" value={quantity} readOnly />
+                <button className="" onClick={() => Cong()}>
+                  <AddIcon />
+                </button>
               </div>
             </div>
 
-            <div className="add-to-cart">
+            <div className="add-to-cart" onClick={() => addToCart()}>
               <button>
                 <div>
                   <ShoppingCartIcon />
@@ -285,6 +365,7 @@ const DetailProduct: React.FC = () => {
           {currentItems.map((productData2) => {
             return (
               <ListProductCard
+                key={productData2.id}
                 name={productData2.name}
                 sold={productData2.sold}
                 url={productData2.imageUrl}
@@ -309,3 +390,4 @@ const DetailProduct: React.FC = () => {
 };
 
 export default DetailProduct;
+

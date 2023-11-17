@@ -13,18 +13,31 @@ import User from "../../assets/image/user.png";
 import { Dropdown } from "antd";
 import ModalUser from "./modal";
 import CalendarIcon from "../../assets/svg/calendar";
+import { useGetUserListCartsQuery } from "../../services/shoppingCart";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
+  const [dataOrder, setDataOrder] = useState<any>([]);
+  const { data: carts } = useGetUserListCartsQuery();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
-
+  useEffect(() => {
+    if(carts){
+      setDataOrder(carts)
+    }
+  }, [carts]);
+  useEffect(() => {
+    if(dataOrder){
+      setCountCarts(dataOrder.length);
+    }
+  }, [dataOrder]);
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -123,7 +136,7 @@ const HeaderBase = () => {
           </div>
           <div className="frame5" onClick={() => navigate("shoppingCart")}>
             <ShoppingCartIcon />
-            <div className="group13">0</div>
+            <div className="group13">{countCarts}</div>
           </div>
           <div className="frame5" onClick={() => navigate("cart")}>
             <CalendarIcon />

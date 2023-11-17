@@ -15,7 +15,7 @@ const cartsApi = createApi({
   }),
   endpoints(builder) {
     return {
-      getUserListCarts: builder.query<any, void>({
+      getUserListCarts: builder.query<void, void>({
         query: () => {
           return {
             url: "/getUserListCarts",
@@ -32,7 +32,15 @@ const cartsApi = createApi({
         }),
         invalidatesTags: ["Carts"],
       }),
-      removeCartsById: builder.mutation<any, number>({
+      addToCarts: builder.mutation<any, any>({
+        query: (cart) => ({
+          url: `/addCarts`,
+          method: "POST",
+          body: cart,
+        }),
+        invalidatesTags: ["Carts"],
+      }),
+      removeCartsById: builder.mutation<number, number>({
         query: (id) => {
           return {
             url: `/deleteIDCarts/${id}`,
@@ -48,6 +56,7 @@ const cartsApi = createApi({
 export const {
   useGetUserListCartsQuery,
   useUpdateQuantityCartsMutation,
+  useAddToCartsMutation,
   useRemoveCartsByIdMutation
 } = cartsApi;
 export const cartsReducer = cartsApi.reducer;

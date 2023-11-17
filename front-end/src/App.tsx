@@ -11,7 +11,7 @@ import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -74,7 +74,7 @@ import ProductsAdmin from "./page/admin/products/list";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
 import DetailProduct from "./page/base/detailProduct";
-import ShoppingCart from "./page/base/shppingCart";
+import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
   return (
@@ -84,7 +84,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
-          <Route path="detailproduct" element={<DetailProduct />} />
+          <Route path="detailproduct/:id" element={<DetailProduct />} />
           <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
