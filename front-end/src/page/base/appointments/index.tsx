@@ -31,7 +31,7 @@ import {
 import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
-
+import isBetween from "dayjs/plugin/isBetween";
 type TFinish = {
   petHouse_id: number;
   pet_id: number;
@@ -232,18 +232,64 @@ const Appointment: React.FC = () => {
     return current.isBefore(today) || current.isAfter(afterFiveDays);
   };
 
-  const disabledDateTime = () => ({
-    disabledHours: () => {
-      const defaultDisabledHours = Array.from(
-        { length: 24 },
-        (_, i) => i
-      ).filter(
-        (hour) => hour < 9 || hour <= +dayjs().format("HH") || hour > 18
-      );
-      const additionalDisabledHours = [11, 12, 16];
-      return [...defaultDisabledHours, ...additionalDisabledHours];
-    },
-  });
+  const disabledDateTime = (current: Dayjs | null) => {
+    console.log(current);
+    const array = [
+      {
+        id: 1,
+        start_time: "2023-11-18 09:00:00",
+        end_time: "2023-11-18 14:00:00",
+      },
+      {
+        id: 2,
+        start_time: "2023-11-18 14:00:00",
+        end_time: "2023-11-18 15:00:00",
+      },
+    ];
+  
+    const now = dayjs();
+  
+    return {
+      disabledHours: () => {
+        const defaultDisabledHours = Array.from(
+          { length: 24 },
+          (_, i) => i
+        ).filter((hour) => hour < 9 || hour > 17 || hour === 12);
+  
+        if (current && current.isSame(now, "day")) {
+          console.log(1);
+          
+          const currentDayDisabledHours = Array.from(
+            { length: now.hour() + 1 },
+            (_, i) => i
+          );
+          return [...defaultDisabledHours, ...currentDayDisabledHours];
+        } else {
+          console.log(2);
+          let disabledHours: number[] = [];
+          array.forEach(({ start_time, end_time }) => {
+            const startTime = dayjs(start_time);
+            console.log(startTime.hour());
+            const endTime = dayjs(end_time);
+            if (
+              current &&
+              current.isSame(startTime, "day")
+            ) {
+              disabledHours = disabledHours.concat(
+                Array.from({ length: 24 }, (_, i) => i).filter(
+                  (hour) => hour >= startTime.hour() && hour <= endTime.hour()
+                )
+              );
+              console.log(disabledHours);
+            }
+          });
+          return [...defaultDisabledHours, ...disabledHours];
+        }
+      },
+    };
+  };
+  
+  
 
   const onChangeTime = (value: Dayjs | null, dateString: string) => {
     setDateTime(dateString);
