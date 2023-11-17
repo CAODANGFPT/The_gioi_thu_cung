@@ -41,7 +41,7 @@ export default class Appointments {
       );
     });
   }
-  
+
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -72,12 +72,27 @@ export default class Appointments {
     services_id,
     user_id,
     pethouse_id,
-    time_id
+    start_time,
+    end_time,
+    total,
+    status_id,
+    is_delete
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, time_id,status_id) VALUES (?,?,?,?,?,?,1)",
-        [day, pet_id, services_id, user_id, pethouse_id, time_id],
+        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,?,?,1)",
+        [
+          day,
+          pet_id,
+          services_id,
+          user_id,
+          pethouse_id,
+          start_time,
+          end_time,
+          total,
+          status_id,
+          is_delete,
+        ],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
@@ -132,6 +147,19 @@ export default class Appointments {
     return new Promise((resolve, reject) => {
       connection.query(
         "UPDATE appointments SET is_delete = 1 WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static getAppointmentTime(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT DISTINCT appointments.id, appointments.start_time, appointments.end_time FROM appointments JOIN pethouse ON appointments.pethouse_id = pethouse.id WHERE appointments.start_time >= CURRENT_DATE AND pethouse.id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);

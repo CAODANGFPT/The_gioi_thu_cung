@@ -55,13 +55,13 @@ export const createAppointmentSchema = yup.object().shape({
   services_id: yup.number().required(),
   user_id: yup.number().required(),
   pethouse_id: yup.number().required(),
-  time_id: yup.number().required(),
+  start_time: yup.string().required(),
+  end_time: yup.string().required(),
+  total: yup.number().required(),
   status_id: yup.number().required(),
 });
 
-export type TCreateAppointment = yup.InferType<
-  typeof createAppointmentSchema
->;
+export type TCreateAppointment = yup.InferType<typeof createAppointmentSchema>;
 
 export const cancelHistoryAppointmentSchema = yup.object().shape({
   id: yup.number().required(),
@@ -69,4 +69,22 @@ export const cancelHistoryAppointmentSchema = yup.object().shape({
 
 export type TCancelHistoryAppointment = yup.InferType<
   typeof cancelHistoryAppointmentSchema
+>;
+
+export const getAppointmentRequestTimeSchema = yup.object().shape({
+  pethouse_id: yup.number().required(),
+});
+
+export type TGetAppointmentTimeRequest = yup.InferType<
+  typeof getAppointmentRequestTimeSchema
+>;
+
+export const getAppointmentTimeSchema = yup.object().shape({
+  id: yup.number().required(),
+  start_time: yup.string().required(),
+  end_time: yup.string().required(),
+});
+
+export type TGetAppointmentTime = yup.InferType<
+  typeof getAppointmentTimeSchema
 >;

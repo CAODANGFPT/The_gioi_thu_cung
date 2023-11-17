@@ -25,6 +25,15 @@ const servicesApi = createApi({
         },
         providesTags: ["Services"],
       }),
+      servicesTop8: builder.query<TServices[], void>({
+        query: () => {
+          return {
+            url: "/servicesTop8",
+            method: "GET",
+          };
+        },
+        providesTags: ["Services"],
+      }),
       servicesById: builder.query<TServicesRequest, number>({
         query: (id) => {
           return {
@@ -79,6 +88,7 @@ const servicesApi = createApi({
 
 export const {
   useServicesQuery,
+  useServicesTop8Query,
   useAddServicesMutation,
   useServicesByIdQuery,
   useUpdateServicesMutation,

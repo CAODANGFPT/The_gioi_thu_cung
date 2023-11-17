@@ -6,7 +6,8 @@ export const ServicesSchema = yup.object().shape({
   image: yup.string().required(),
   description: yup.string().required(),
   price: yup.number().required(),
-  is_delete: yup.boolean().required(),
+  time: yup.string().required(),
+  is_delete: yup.number().required(),
 });
 
 export const ServicesRequestSchema = yup.object().shape({

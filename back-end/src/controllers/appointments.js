@@ -39,8 +39,18 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { day, pet_id, services_id, user_id, pethouse_id, time_id } =
-      req.body;
+    const {
+      day,
+      pet_id,
+      services_id,
+      user_id,
+      pethouse_id,
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete,
+    } = req.body;
     const { error } = appointmentsSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -54,7 +64,11 @@ export const create = async (req, res) => {
       services_id,
       user_id,
       pethouse_id,
-      time_id
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete
     );
     res.json({ id: appointmentsId, message: "Gửi thành công rồi !" });
   } catch (err) {
@@ -135,6 +149,20 @@ export const cancelHistoryAppointment = async (req, res) => {
     const { id } = req.body;
     await Appointments.cancelHistoryAppointment(id);
     res.json({ message: "Hủy đặt hàng thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAppointmentTime = async (req, res) => {
+  try {
+    const { pethouse_id } = req.body;
+    const appointmentsTime = await Appointments.getAppointmentTime(pethouse_id);
+    if (!appointmentsTime) {
+      res.status(404).json({ error: "AppointmentsItem not found" });
+    } else {
+      res.json(appointmentsTime);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

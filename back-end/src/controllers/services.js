@@ -10,6 +10,15 @@ export const list = async (req, res) => {
   }
 };
 
+export const getTop8Services = async (req, res) => {
+  try {
+    const services = await Services.getTop8Services();
+    res.json(services);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const showById = async (req, res) => {
   try {
     const services = await Services.getServicesById(req.params.id);
