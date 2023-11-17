@@ -217,6 +217,8 @@ const Appointment: React.FC = () => {
     const servicesId = services?.find((service) => service.id === idServices);
     const petHouseId = pethouse?.find((pethouse) => pethouse.id === value);
     setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
+    form.setFieldValue("start_time", null);
+    setEndTime(null);
     const res = await getAppointmentTime({ pethouse_id: value });
     if ("data" in res) {
       setDisableTime([res.data]);
