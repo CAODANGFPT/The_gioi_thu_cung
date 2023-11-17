@@ -67,6 +67,8 @@ import EditContact from "./page/admin/contact/edit";
 import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
+import ServicePage from "./page/base/servicePage";
+import ServiceDetail from "./page/base/serviceDetail";
 import ProductsAdmin from "./page/admin/products/list";
 import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
@@ -92,6 +94,8 @@ function App() {
             <Route path="follow" element={<Follow />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
+          <Route path="services" element={<ServicePage />} />
+          <Route path="service/:id" element={<ServiceDetail />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
