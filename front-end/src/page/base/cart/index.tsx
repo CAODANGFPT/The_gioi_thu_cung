@@ -6,6 +6,7 @@ import {
   useGetAppointmentUserQuery,
 } from "../../../services/appointments";
 import { Button, Popconfirm, message } from "antd";
+import dayjs from "dayjs";
 
 const CartPage: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserQuery();
@@ -37,7 +38,7 @@ const CartPage: FC = () => {
               <th>STT</th>
               <th>Thông tin người đặt</th>
               <th>Loại thú cưng</th>
-              <th>Nhân viên thực hiện</th>
+              <th>Ngày giờ đặt</th>
               <th>Phòng</th>
               <th>Trạng thái</th>
               <th>Thao tác</th>
@@ -54,7 +55,9 @@ const CartPage: FC = () => {
                   <td>{index}</td>
                   <td>{item.user_email}</td>
                   <td>{item.pet_name}</td>
-                  <td></td>
+                  <td>
+                    {dayjs(item.start_time).format("DD-MM-YYYY (HH:mm:ss")}
+                  </td>
                   <td>{item.pethouse_name}</td>
                   <td>{item.status_name}</td>
                   <td>
@@ -69,7 +72,11 @@ const CartPage: FC = () => {
                       <Button
                         disabled={item.status_name !== "Đang chờ xác nhận"}
                         danger
-                        className="btn-delete"
+                        className={
+                          item.status_name === "Đang chờ xác nhận"
+                            ? "btn-delete"
+                            : 'btn-disable'
+                        }
                       >
                         Hủy đặt lịch
                       </Button>

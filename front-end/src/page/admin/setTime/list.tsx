@@ -1,15 +1,15 @@
-import { Button, Popconfirm, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TSetTime, TSetTimeAdd } from "../../../schema/setTime";
+import { TSetTime } from "../../../schema/setTime";
 import {
   useRemoveSetTimeMutation,
   useSetTimeQuery,
 } from "../../../services/setTime";
-import dayjs from "dayjs";
 
 const SetTimeAdmin: React.FC = () => {
   const navigate = useNavigate();
@@ -37,10 +37,12 @@ const SetTimeAdmin: React.FC = () => {
 
   const columns: ColumnsType<TSetTime> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
-      width: 150,
+      fixed: "right",
+      width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Ca",

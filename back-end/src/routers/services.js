@@ -5,6 +5,7 @@ import {
   create,
   update,
   updateIsDelete,
+  getTop8Services,
 } from "../controllers/services";
 import { checkPermission } from "../middlewares/checkPermission";
 const router = Router();
@@ -14,5 +15,6 @@ router.get("/services/:id", showById);
 router.post("/services", checkPermission, create);
 router.put("/services/:id", checkPermission, update);
 router.patch("/services/block", checkPermission, updateIsDelete);
+router.get("/servicesTop8", getTop8Services);
 
 export default router;

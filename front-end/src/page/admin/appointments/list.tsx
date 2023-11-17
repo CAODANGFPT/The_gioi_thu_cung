@@ -32,10 +32,12 @@ const AppointmentsAdmin: React.FC = () => {
 
   const columns: ColumnsType<TAppointment> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Email người dùng",
@@ -45,7 +47,7 @@ const AppointmentsAdmin: React.FC = () => {
     },
     {
       title: "Ngày đặt",
-      dataIndex: "day",
+      dataIndex: "start_time",
       key: "day",
       render: (text) => <div>{dayjs(text).format("DD-MM-YYYY")}</div>,
       width: 100,
@@ -71,14 +73,13 @@ const AppointmentsAdmin: React.FC = () => {
     },
     {
       title: "Thời gian Ca",
-      key: "settime",
       width: 100,
-      render: (setTime) => (
+      render: (data) => (
         <>
-          {setTime.start_time && setTime.end_time ? (
+          {data.start_time && data.end_time ? (
             <div>
-              ({dayjs(setTime.start_time, "HH:mm:ss").format("HH:mm")} -
-              {dayjs(setTime.end_time, "HH:mm:ss").format("HH:mm")})
+              ({dayjs(data.start_time, "HH:mm:ss").format("HH:mm")} -
+              {dayjs(data.end_time, "HH:mm:ss").format("HH:mm")})
             </div>
           ) : (
             <div>null</div>

@@ -49,7 +49,7 @@ const ServiceDetail = () => {
               </Link>
             </button>
             <button className="btn-router">
-              <Link to="/service">
+              <Link to="/services">
                 <p>Quay lại dịch vụ</p>
               </Link>
             </button>

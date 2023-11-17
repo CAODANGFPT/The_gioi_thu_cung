@@ -32,15 +32,23 @@ const PetHouseAdmin: React.FC = () => {
 
   const columns: ColumnsType<TpetHouse> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 150,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      width: 150,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
       width: 150,
     },
     {

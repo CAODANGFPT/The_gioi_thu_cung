@@ -11,22 +11,25 @@ type Props = {};
 const LayoutAdmin: FC<Props> = (props) => {
   const navigate = useNavigate();
   const { data: user, isLoading } = useGetUserQuery();
-  const token = localStorage.getItem("token");
   useEffect(() => {
-    if (!token) {
-      navigate("/signin");
-      console.log("1");
-    }
-    if (!isLoading) {
-      if (!user) {
+    const checkAuthentication = async () => {
+      const token = await localStorage.getItem("token");
+      if (!token) {
         navigate("/signin");
-        console.log("2");
-      } else if (Number(user?.role_id) !== 1 && !isLoading) {
-        console.log("3");
-        navigate("/");
+        console.log("1");
+      } else if (!isLoading) {
+        if (!user) {
+          navigate("/signin");
+          console.log("2");
+        } else if (Number(user?.role_id) !== 1) {
+          console.log("3");
+          navigate("/");
+        }
       }
-    }
-  }, [isLoading, token, navigate, user]);
+    };
+
+    checkAuthentication();
+  }, [isLoading, user, navigate]);
   return (
     <div>
       <div className="app">

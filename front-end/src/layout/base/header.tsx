@@ -1,16 +1,17 @@
-import "../../assets/scss/layout/base/headerBase.scss";
-import logo from "../../assets/image/logo.png";
-import SearchIcon from "../../assets/svg/searchIcon";
-import UserIcon from "../../assets/svg/userIcon";
-import HeartIcon from "../../assets/svg/heartIcon";
-import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import MenuIcon from "../../assets/svg/menuIcon";
-import { useEffect, useState } from "react";
-import RightIcon from "../../assets/svg/rightIcon";
-import { useGetUserQuery } from "../../services/user";
-import User from "../../assets/image/user.png";
 import { Dropdown } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../assets/image/logo.png";
+import User from "../../assets/image/user.png";
+import "../../assets/scss/layout/base/headerBase.scss";
+import CalendarIcon from "../../assets/svg/calendar";
+import HeartIcon from "../../assets/svg/heartIcon";
+import MenuIcon from "../../assets/svg/menuIcon";
+import RightIcon from "../../assets/svg/rightIcon";
+import SearchIcon from "../../assets/svg/searchIcon";
+import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
+import { useGetUserListCartsQuery } from "../../services/shoppingCart";
+import { useGetUserQuery } from "../../services/user";
 import ModalUser from "./modal";
 
 const HeaderBase = () => {
@@ -18,12 +19,24 @@ const HeaderBase = () => {
   const location = useLocation();
   const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
+  const [dataOrder, setDataOrder] = useState<any>([]);
+  const { data: carts } = useGetUserListCartsQuery();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
-
+  useEffect(() => {
+    if(carts){
+      setDataOrder(carts)
+    }
+  }, [carts]);
+  useEffect(() => {
+    if(dataOrder){
+      setCountCarts(dataOrder.length);
+    }
+  }, [dataOrder]);
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -120,8 +133,12 @@ const HeaderBase = () => {
             <HeartIcon />
             <div className="group13">0</div>
           </div>
-          <div className="frame5" onClick={() => navigate("cart")}>
+          <div className="frame5" onClick={() => navigate("shoppingCart")}>
             <ShoppingCartIcon />
+            <div className="group13">{countCarts}</div>
+          </div>
+          <div className="frame5" onClick={() => navigate("cart")}>
+            <CalendarIcon />
             <div className="group13">0</div>
           </div>
         </div>
