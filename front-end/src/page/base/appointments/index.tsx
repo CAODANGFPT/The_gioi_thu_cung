@@ -34,7 +34,6 @@ import {
 import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
-import isBetween from "dayjs/plugin/isBetween";
 import { TGetAppointmentTime } from "../../../schema/appointments";
 
 type TFinish = {
@@ -133,7 +132,6 @@ const Appointment: React.FC = () => {
   }));
 
   const onFinish = async (values: TFinish) => {
-    console.log(values);
     const petNew = {
       img: image,
       name: values.name,
@@ -176,7 +174,6 @@ const Appointment: React.FC = () => {
         total: total,
         status_id: 1,
       });
-      console.log(endTime?.toString());
       if ("data" in resAppointment) {
         message.success(resAppointment.data.message);
         navigate("/");
@@ -221,7 +218,14 @@ const Appointment: React.FC = () => {
     setEndTime(null);
     const res = await getAppointmentTime({ pethouse_id: value });
     if ("data" in res) {
-      setDisableTime([res.data]);
+      const formattedData = res.data.map((item) => ({
+        id: item.id,
+        start_time: dayjs(item.start_time).format("YYYY-MM-DD HH:mm:ss"),
+        end_time: dayjs(item.end_time)
+          .subtract(1, 'second')
+          .format("YYYY-MM-DD HH:mm:ss"),
+      }));
+      setDisableTime(formattedData);
     }
   };
 
@@ -246,43 +250,22 @@ const Appointment: React.FC = () => {
   };
 
   const disabledDateTime = (current: Dayjs | null) => {
-    console.log(current);
-    const array = [
-      {
-        id: 1,
-        start_time: "2023-11-18 09:00:00",
-        end_time: "2023-11-18 14:00:00",
-      },
-      {
-        id: 2,
-        start_time: "2023-11-18 14:00:00",
-        end_time: "2023-11-18 15:00:00",
-      },
-    ];
-
-    const now = dayjs();
-
     return {
       disabledHours: () => {
         const defaultDisabledHours = Array.from(
           { length: 24 },
           (_, i) => i
         ).filter((hour) => hour < 9 || hour > 17 || hour === 12);
-
-        if (current && current.isSame(now, "day")) {
-          console.log(1);
-
+        if (current && current.isSame(dayjs(), "day")) {
           const currentDayDisabledHours = Array.from(
-            { length: now.hour() + 1 },
+            { length: dayjs().hour() + 1 },
             (_, i) => i
           );
           return [...defaultDisabledHours, ...currentDayDisabledHours];
         } else {
-          console.log(2);
           let disabledHours: number[] = [];
           disableTime.forEach(({ start_time, end_time }) => {
             const startTime = dayjs(start_time);
-            console.log(startTime.hour());
             const endTime = dayjs(end_time);
             if (current && current.isSame(startTime, "day")) {
               disabledHours = disabledHours.concat(
@@ -290,7 +273,6 @@ const Appointment: React.FC = () => {
                   (hour) => hour >= startTime.hour() && hour <= endTime.hour()
                 )
               );
-              console.log(disabledHours);
             }
           });
           return [...defaultDisabledHours, ...disabledHours];
@@ -333,7 +315,6 @@ const Appointment: React.FC = () => {
   useEffect(() => {
     console.log(endTime?.toISOString());
   }, [endTime]);
-  console.log(!petHouseOpenTime && !servicesOpenTime);
 
   return (
     <div className="appointment">

@@ -67,7 +67,7 @@ const appointmentApi = createApi({
         invalidatesTags: ["Appointment"],
       }),
       getAppointmentTime: builder.mutation<
-        TGetAppointmentTime,
+        TGetAppointmentTime[],
         Partial<TGetAppointmentTimeRequest>
       >({
         query: (appointments) => ({
