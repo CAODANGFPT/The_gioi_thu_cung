@@ -14,6 +14,8 @@ import { TStatus } from "../../../schema/status";
 const ServicesAdmin: React.FC = () => {
   const navigate = useNavigate();
   const { data } = useServicesQuery();
+  console.log(data);
+  
   const [blockServices] = useUpdateBlockServicesMutation();
 
   const confirmBlock = (id: number) => {
@@ -32,11 +34,12 @@ const ServicesAdmin: React.FC = () => {
 
   const columns: ColumnsType<TStatus> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
       fixed: "right",
-      width: 150,
+      width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Name",
@@ -45,10 +48,15 @@ const ServicesAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      width: 150,
+      title: "Image",
+      dataIndex: "image",
+      key: "img",
+      width: 90,
+      render: (img: string) => (
+        <div>
+          <img style={{ width: "100%" }} src={img} alt="img" />
+        </div>
+      ),
     },
     {
       title: "Price",

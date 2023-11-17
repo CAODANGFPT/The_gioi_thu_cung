@@ -38,10 +38,12 @@ const UserAdmin: React.FC = () => {
 
   const columns: ColumnsType<TStatus> = [
     {
-      title: "TT",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Tên",

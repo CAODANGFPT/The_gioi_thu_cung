@@ -73,6 +73,8 @@ import AddCategory from "./page/admin/category/add";
 import ProductsAdmin from "./page/admin/products/list";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
+import DetailProduct from "./page/base/detailProduct";
+import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
   return (
@@ -83,12 +85,15 @@ function App() {
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
           <Route path="appointment/:id" element={<Appointments />} />
+          <Route path="detailproduct/:id" element={<DetailProduct />} />
+          <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
             <Route path="history_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
+            Ro
           </Route>
           <Route path="cart" element={<CartPage />} />
         </Route>

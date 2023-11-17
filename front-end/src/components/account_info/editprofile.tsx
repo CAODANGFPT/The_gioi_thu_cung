@@ -26,27 +26,25 @@ const EditProfile: React.FC<EditProfileProps> = ({
 }) => {
   const [updateProfile, { isLoading: isAddLoading }] = useUpdateUserMutation();
   const [form] = Form.useForm();
-  const [img, setImage] = useState<string | undefined>();
-
+  const [image, setImage] = useState<string | undefined>();
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
-      name: "img.png",
+      name: "image.png",
       status: "done",
-      url: img,
+      url: image,
     },
   ]);
-
   useEffect(() => {
+    setImage(user.img);
     setFileList([
       {
         uid: "-1",
-        name: "img.png",
+        name: "image.png",
         status: "done",
         url: user.img,
       },
     ]);
-    setImage(user.img);
     form.setFieldsValue({
       id: user.id,
       img: user.img,
@@ -56,23 +54,14 @@ const EditProfile: React.FC<EditProfileProps> = ({
       gender: user.gender,
     });
   }, [form, user.id, user.img, user.name, user.email, user.phone, user.gender]);
-  const handleImageChange = (info: any) => {
-    console.log("File status:", info.file.status);
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      console.log("ảnh info", info.file.response.url);
-      setImage(info.file.response.url);
-      setFileList([
-        {
-          uid: "-1",
-          name: "img.png",
-          status: "done",
-          url: info.file.response.url,
-        },
-      ]);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
+  const handleImageChange = ({ fileList: newFileList } : any) => {
+    console.log(newFileList);
+    if(newFileList[0].response){
+      setImage(newFileList[0].response.secure_url);
+      console.log(image);
+      
     }
+    setFileList(newFileList);
   };
   const uploadButton = (
     <div>
@@ -85,12 +74,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
     try {
       const dataUpdate = {
         id: user.id,
-        img: img,
+        img: image,
         email: values.email,
         name: values.name,
         phone: values.phone,
         gender: values.gender,
       };
+      console.log(dataUpdate);
       await updateProfile(dataUpdate).unwrap();
       message.success("thay đổi dữ liệu thành công");
     } catch (error: any) {
@@ -109,7 +99,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
     <div>
       <Modal
         className=""
-        title="sửa thông tin người dùng"
+        title="Sửa thông tin người dùng"
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
@@ -123,6 +113,28 @@ const EditProfile: React.FC<EditProfileProps> = ({
           onFinishFailed={onFinishFailed}
           layout="vertical"
         >
+          <Form.Item
+            label={<span className="">Ảnh dại diện</span>}
+            name="img"
+            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          >
+            <Upload
+              name="file"
+              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+              data={{
+                upload_preset: "wh3rdke8",
+                cloud_name: "dksgvucji",
+              }}
+              listType="picture-card"
+              maxCount={1}
+              showUploadList={true}
+              className="ant-upload-wrapper ant-upload-select"
+              onChange={handleImageChange}
+              fileList={fileList}
+            >
+                {uploadButton}
+            </Upload>
+          </Form.Item>
           <Form.Item
             label={<span className="">Email</span>}
             name="email"
@@ -143,28 +155,6 @@ const EditProfile: React.FC<EditProfileProps> = ({
             rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
-          <Form.Item
-            label={<span className="">Ảnh đại diện</span>}
-            name="img"
-            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
-          >
-            <Upload
-              name="file"
-              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-              data={{
-                upload_preset: "wh3rdke8",
-                cloud_name: "dksgvucji",
-              }}
-              listType="picture-card"
-              maxCount={1}
-              fileList={fileList}
-              showUploadList={true}
-              className="ant-upload-wrapper ant-upload-select"
-              onChange={handleImageChange}
-            >
-              {uploadButton}
-            </Upload>
           </Form.Item>
           <Form.Item
             label={<span className="">giới tính</span>}

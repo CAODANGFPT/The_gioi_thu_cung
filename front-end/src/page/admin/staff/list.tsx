@@ -29,10 +29,12 @@ const StaffAdmin: React.FC = () => {
 
   const columns: ColumnsType<TStaff> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
-      width: 150,
+      fixed: "right",
+      width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Tên nhân viên",
