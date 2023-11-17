@@ -155,4 +155,17 @@ export default class Appointments {
       );
     });
   }
+
+  static getAppointmentTime(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT DISTINCT appointments.id, appointments.start_time, appointments.end_time FROM appointments JOIN pethouse ON appointments.pethouse_id = pethouse.id WHERE appointments.start_time >= CURRENT_DATE AND pethouse.id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
 }

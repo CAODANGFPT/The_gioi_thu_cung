@@ -21,7 +21,10 @@ import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import { Tspecies } from "../../../schema/species";
-import { useAddAppointmentMutation } from "../../../services/appointments";
+import {
+  useAddAppointmentMutation,
+  useGetAppointmentTimeMutation,
+} from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
@@ -32,6 +35,8 @@ import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import isBetween from "dayjs/plugin/isBetween";
+import { TGetAppointmentTime } from "../../../schema/appointments";
+
 type TFinish = {
   petHouse_id: number;
   pet_id: number;
@@ -62,6 +67,7 @@ const Appointment: React.FC = () => {
   const [idPetHouse, setIdPetHouse] = useState<number>(0);
   const [total, setTotal] = useState<number | undefined>(0);
   const [dateTime, setDateTime] = useState<string>("");
+  const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
@@ -79,6 +85,7 @@ const Appointment: React.FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
+  const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [createSPets] = useCreatePetsMutation();
 
   useEffect(() => {
@@ -204,12 +211,16 @@ const Appointment: React.FC = () => {
     setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
   };
 
-  const onChangePetHouse = (value: number) => {
+  const onChangePetHouse = async (value: number) => {
     setPetHouseOpenTime(true);
     setIdPetHouse(value);
     const servicesId = services?.find((service) => service.id === idServices);
     const petHouseId = pethouse?.find((pethouse) => pethouse.id === value);
     setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
+    const res = await getAppointmentTime({ pethouse_id: value });
+    if ("data" in res) {
+      setDisableTime([res.data]);
+    }
   };
 
   useEffect(() => {
@@ -246,19 +257,19 @@ const Appointment: React.FC = () => {
         end_time: "2023-11-18 15:00:00",
       },
     ];
-  
+
     const now = dayjs();
-  
+
     return {
       disabledHours: () => {
         const defaultDisabledHours = Array.from(
           { length: 24 },
           (_, i) => i
         ).filter((hour) => hour < 9 || hour > 17 || hour === 12);
-  
+
         if (current && current.isSame(now, "day")) {
           console.log(1);
-          
+
           const currentDayDisabledHours = Array.from(
             { length: now.hour() + 1 },
             (_, i) => i
@@ -267,14 +278,11 @@ const Appointment: React.FC = () => {
         } else {
           console.log(2);
           let disabledHours: number[] = [];
-          array.forEach(({ start_time, end_time }) => {
+          disableTime.forEach(({ start_time, end_time }) => {
             const startTime = dayjs(start_time);
             console.log(startTime.hour());
             const endTime = dayjs(end_time);
-            if (
-              current &&
-              current.isSame(startTime, "day")
-            ) {
+            if (current && current.isSame(startTime, "day")) {
               disabledHours = disabledHours.concat(
                 Array.from({ length: 24 }, (_, i) => i).filter(
                   (hour) => hour >= startTime.hour() && hour <= endTime.hour()
@@ -288,8 +296,6 @@ const Appointment: React.FC = () => {
       },
     };
   };
-  
-  
 
   const onChangeTime = (value: Dayjs | null, dateString: string) => {
     setDateTime(dateString);

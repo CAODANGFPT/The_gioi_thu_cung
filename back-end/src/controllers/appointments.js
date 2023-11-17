@@ -153,3 +153,17 @@ export const cancelHistoryAppointment = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getAppointmentTime = async (req, res) => {
+  try {
+    const { pethouse_id } = req.body;
+    const appointmentsTime = await Appointments.getAppointmentTime(pethouse_id);
+    if (!appointmentsTime) {
+      res.status(404).json({ error: "AppointmentsItem not found" });
+    } else {
+      res.json(appointmentsTime);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
