@@ -61,6 +61,7 @@ const Appointment: React.FC = () => {
   const [openBreed, setOpenBreed] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [petHouseOpenTime, setPetHouseOpenTime] = useState<boolean>(false);
+  // const [timeServices, setTimeServices] = useState<Date>();
   const [idSpecies, setIdSpecies] = useState<number>(0);
   const [idServices, setIdServices] = useState<number>(0);
   const [idPetHouse, setIdPetHouse] = useState<number>(0);
@@ -222,7 +223,7 @@ const Appointment: React.FC = () => {
         id: item.id,
         start_time: dayjs(item.start_time).format("YYYY-MM-DD HH:mm:ss"),
         end_time: dayjs(item.end_time)
-          .subtract(1, 'second')
+          .subtract(1, "second")
           .format("YYYY-MM-DD HH:mm:ss"),
       }));
       setDisableTime(formattedData);
@@ -248,7 +249,6 @@ const Appointment: React.FC = () => {
     const afterFiveDays = today.add(5, "day").endOf("day");
     return current.isBefore(today) || current.isAfter(afterFiveDays);
   };
-
   const disabledDateTime = (current: Dayjs | null) => {
     return {
       disabledHours: () => {
@@ -256,27 +256,63 @@ const Appointment: React.FC = () => {
           { length: 24 },
           (_, i) => i
         ).filter((hour) => hour < 9 || hour > 17 || hour === 12);
+
         if (current && current.isSame(dayjs(), "day")) {
           const currentDayDisabledHours = Array.from(
             { length: dayjs().hour() + 1 },
             (_, i) => i
           );
+
           return [...defaultDisabledHours, ...currentDayDisabledHours];
         } else {
           let disabledHours: number[] = [];
+
           disableTime.forEach(({ start_time, end_time }) => {
             const startTime = dayjs(start_time);
             const endTime = dayjs(end_time);
-            if (current && current.isSame(startTime, "day")) {
+
+            if (
+              current &&
+              current.isSame(startTime, "day") &&
+              current.isSame(endTime, "day")
+            ) {
               disabledHours = disabledHours.concat(
                 Array.from({ length: 24 }, (_, i) => i).filter(
-                  (hour) => hour >= startTime.hour() && hour <= endTime.hour()
+                  (hour) =>
+                    hour >= startTime.hour() && hour <= endTime.hour() - 1
                 )
               );
             }
           });
+
           return [...defaultDisabledHours, ...disabledHours];
         }
+      },
+      disabledMinutes: () => {
+        let disabledMinutes: number[] = [];
+
+        disableTime.forEach(({ start_time, end_time }) => {
+          const startTime = dayjs(start_time);
+          const endTime = dayjs(end_time);
+
+          if (
+            current &&
+            current.isSame(startTime, "day") &&
+            current.isSame(endTime, "day")
+          ) {
+            console.log(endTime.hour());
+            if (current.hour() === endTime.hour()) {
+              disabledMinutes = disabledMinutes.concat(
+                Array.from({ length: 60 }, (_, i) => i).filter(
+                  (minute) =>
+                    minute <= endTime.minute()
+                )
+              );
+            }
+          }
+        });
+
+        return disabledMinutes;
       },
     };
   };
@@ -297,6 +333,15 @@ const Appointment: React.FC = () => {
       setEndTime(null);
     }
   };
+
+  useEffect(() => {
+    const servicesId = services?.find((service) => service.id === idServices);
+    const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
+    if (regexResult) {
+      const [extractedHour, ,] = regexResult;
+      console.log(extractedHour);
+    }
+  }, [idServices, services]);
 
   useEffect(() => {
     if (dateTime) {
@@ -376,7 +421,6 @@ const Appointment: React.FC = () => {
                   disabledTime={disabledDateTime}
                   showTime={{
                     defaultValue: dayjs("08:00:00", "HH:mm:ss"),
-                    format: "HH:00",
                   }}
                   onChange={onChangeTime}
                   showNow={false}
