@@ -46,6 +46,12 @@ const PetHouseAdmin: React.FC = () => {
       width: 150,
     },
     {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      width: 150,
+    },
+    {
       title: "Thao tác",
       key: "action",
       width: 100,
