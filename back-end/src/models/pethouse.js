@@ -23,11 +23,11 @@ export default class Pethouse {
     });
   }
 
-  static createPethouse(name, status_id) {
+  static createPethouse(name, price) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO pethouse (name,status_id) VALUES (?, ?)",
-        [name, status_id],
+        "INSERT INTO pethouse (name,price) VALUES (?,?)",
+        [name, price],
         (err, results) => {
           if (err) {
             reject(err);
@@ -39,10 +39,9 @@ export default class Pethouse {
     });
   }
 
-  static updatePethouse(id, name, status_id) {
-    const updateSql =
-      "UPDATE pethouse SET name = ?, status_id = ? WHERE id = ?";
-    const values = [name, status_id , id];
+  static updatePethouse(id, name, price) {
+    const updateSql = "UPDATE pethouse SET name = ?, price = ? WHERE id = ?";
+    const values = [name, price, id];
     return new Promise((resolve, reject) => {
       connection.query(updateSql, values, (err) => {
         if (err) reject(err);
@@ -50,7 +49,6 @@ export default class Pethouse {
       });
     });
   }
-  
 
   static deletePethouse(id) {
     return new Promise((resolve, reject) => {
