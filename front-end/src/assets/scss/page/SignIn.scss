@@ -241,6 +241,10 @@
             display: flex;
             justify-content: space-between;
 
+            p {
+                cursor: pointer;
+            }
+
             .text-login {
                 color: $EagleGreen;
                 text-decoration: none;

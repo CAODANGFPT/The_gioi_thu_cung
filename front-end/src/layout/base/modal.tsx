@@ -62,7 +62,7 @@ const ModalUser = (props: Props) => {
           <div className="model-user-content">
             <div
               className="model-user-content-item"
-              onClick={() => navigate("account")}
+              onClick={() => navigate("signin")}
             >
               <div>
                 <Login />
@@ -73,9 +73,7 @@ const ModalUser = (props: Props) => {
           <hr />
           <div
             className="model-user-logout dk"
-            onClick={() => {
-              logout();
-            }}
+            onClick={() => navigate("signup")}
           >
             <div>Đăng ký</div>
           </div>

@@ -40,7 +40,12 @@
 
     &-left {
       flex: 1;
-
+      .text{
+        text-align: center;
+        margin-top: 20px;
+        font-weight: 500;
+        font-size: 20px;
+      }
       &-table {
         margin-top: 10px;
         width: 100%;

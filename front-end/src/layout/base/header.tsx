@@ -1,19 +1,18 @@
-import "../../assets/scss/layout/base/headerBase.scss";
-import logo from "../../assets/image/logo.png";
-import SearchIcon from "../../assets/svg/searchIcon";
-import UserIcon from "../../assets/svg/userIcon";
-import HeartIcon from "../../assets/svg/heartIcon";
-import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import MenuIcon from "../../assets/svg/menuIcon";
-import { useEffect, useState } from "react";
-import RightIcon from "../../assets/svg/rightIcon";
-import { useGetUserQuery } from "../../services/user";
-import User from "../../assets/image/user.png";
 import { Dropdown } from "antd";
-import ModalUser from "./modal";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../assets/image/logo.png";
+import User from "../../assets/image/user.png";
+import "../../assets/scss/layout/base/headerBase.scss";
 import CalendarIcon from "../../assets/svg/calendar";
+import HeartIcon from "../../assets/svg/heartIcon";
+import MenuIcon from "../../assets/svg/menuIcon";
+import RightIcon from "../../assets/svg/rightIcon";
+import SearchIcon from "../../assets/svg/searchIcon";
+import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
 import { useGetUserListCartsQuery } from "../../services/shoppingCart";
+import { useGetUserQuery } from "../../services/user";
+import ModalUser from "./modal";
 
 const HeaderBase = () => {
   const navigate = useNavigate();

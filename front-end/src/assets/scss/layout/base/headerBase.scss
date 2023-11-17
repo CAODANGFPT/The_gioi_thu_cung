@@ -8,51 +8,63 @@
   list-style-type: none;
   text-decoration: none;
 }
+
 .headerBase {
   margin: 0 auto;
   font-family: $Roboto;
+
   .frame29 {
     width: 100%;
     background-color: $EagleGreen;
     @include Flex(flex, center, center);
     @include Gap(10px, 0);
     padding: 8px 0;
+
     @include max-screen($md) {
       display: none;
     }
+
     &-title1 {
       color: white;
       @include Size(14px, 600, normal);
+
       span {
         @include Size(14px, 400, normal);
       }
     }
+
     &-title2 {
       color: white;
       @include Size(14px, 600, normal);
       text-decoration-line: underline;
     }
   }
+
   .frame32 {
     @include Flex(flex, flex-end, center);
     @include Gap(22px, 0);
     max-width: $xl;
     margin: 10px auto;
+
     @include max-screen($xl) {
       margin: 10px 30px;
     }
+
     @include max-screen($md) {
       display: none;
     }
+
     &-title {
       @include Size(14px, 400, normal);
       text-decoration-line: underline;
       cursor: pointer;
+
       &:hover {
         color: $EagleGreen;
       }
     }
   }
+
   .nav {
     @include Flex(flex, space-between, center);
     @include Gap(10px, 0);
@@ -60,23 +72,29 @@
     margin: 10px auto;
     padding: 0 10px;
     overflow: hidden;
+
     @include max-screen($xl) {
       margin: 10px 30px;
     }
+
     @include max-screen($md) {
       margin: 10px 15px;
     }
+
     .menu {
       display: none;
+
       @include max-screen($md) {
         display: block;
         cursor: pointer;
       }
     }
+
     .logo {
       &-image {
         width: auto;
         height: auto;
+
         @include max-screen($md) {
           width: 100px;
           height: auto;
@@ -84,24 +102,29 @@
         }
       }
     }
+
     .frame31 {
       @include Flex(flex, space-between, center);
       border: 1px solid $EagleGreen;
       border-radius: 24px;
       width: 527px;
       height: 44px;
+
       @include max-screen($md) {
         display: none;
       }
+
       .frame33 {
         flex: 1;
         height: 40px;
         border: none;
         outline: none;
       }
+
       svg {
         margin: 0 10px;
       }
+
       .Rectangle29 {
         @include Size(15px, 400, normal);
         border-radius: 24px;
@@ -113,23 +136,28 @@
         padding: 0 20px;
         cursor: pointer;
         opacity: 1;
+
         &:hover {
           opacity: 0.8;
         }
       }
     }
+
     .frame31-1 {
       border: 1px solid $EagleGreen;
       border-radius: 24px;
       width: 250px;
       height: 44px;
       display: none;
+
       @include max-screen($md) {
         @include Flex(flex, space-between, center);
       }
+
       @include max-screen($sx) {
         display: none;
       }
+
       .frame33 {
         flex: 1;
         height: 40px;
@@ -138,6 +166,7 @@
         outline: none;
         border-radius: 24px;
       }
+
       .Rectangle29 {
         border-radius: 24px;
         padding-right: 10px;
@@ -147,15 +176,18 @@
         cursor: pointer;
       }
     }
+
     .frame31-2 {
       border: 1px solid $EagleGreen;
       border-radius: 24px;
       width: 150px;
       height: 44px;
       display: none;
+
       @include max-screen($sx) {
         @include Flex(flex, space-between, center);
       }
+
       .frame33 {
         flex: 1;
         height: 40px;
@@ -165,6 +197,7 @@
         outline: none;
         border-radius: 24px;
       }
+
       .Rectangle29 {
         border-radius: 24px;
         padding-right: 10px;
@@ -174,15 +207,19 @@
         cursor: pointer;
       }
     }
+
     .frame51 {
       @include Flex(flex, space-between, center);
       @include Gap(30px, 0);
+
       @include max-screen($md) {
         @include Gap(15px, 0);
       }
+
       .frame5 {
         position: relative;
         cursor: pointer;
+
         .group13 {
           position: absolute;
           background-color: $SelectiveYellow;
@@ -191,7 +228,8 @@
           padding: 1px 4px;
           border-radius: 50%;
         }
-        .img{
+
+        .img {
           width: 25px;
           height: 25px;
           border-radius: 100%;
@@ -199,26 +237,34 @@
       }
     }
   }
+
   .frame52 {
     max-width: $xl;
     margin: 30px auto;
+
     @include max-screen($xl) {
       margin: 30px 30px;
     }
+
     @include max-screen($md) {
       display: none;
     }
+
     .menu {
       @include Flex(flex, space-between, center);
       width: 100%;
+
       &-title {
         border-bottom: 2px solid transparent;
         padding-bottom: 10px;
+
         &:hover {
           border-bottom: 2px solid $EagleGreen;
         }
+
         .title1 {
           color: black;
+
           &:hover {
             color: $EagleGreen;
           }
@@ -226,6 +272,7 @@
       }
     }
   }
+
   .menu-2 {
     position: fixed;
     top: 0;
@@ -235,15 +282,19 @@
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     transition: margin 0.7s ease-in-out;
     z-index: 20;
+
     .box {
       @include Flex(flex, center, center);
       margin: 0 20px;
+
       .logo {
         @include Flex(flex, center, center);
         margin-top: 20px;
+
         &-image {
           width: auto;
           height: auto;
+
           @include max-screen($md) {
             width: 100px;
             height: auto;
@@ -256,25 +307,30 @@
     .menu {
       width: 100%;
       margin-top: 10px;
+
       &-title {
         @include Flex(flex, space-between, center);
         padding: 10px;
+
         &:hover {
           .title1 {
             color: $EagleGreen;
           }
+
           svg {
             path {
               fill: $EagleGreen;
             }
           }
         }
+
         .title1 {
           color: black;
         }
       }
     }
   }
+
   .background {
     position: fixed;
     top: 0;
