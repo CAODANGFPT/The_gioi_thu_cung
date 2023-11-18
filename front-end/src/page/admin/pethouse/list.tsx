@@ -40,13 +40,13 @@ const PetHouseAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
-      title: "Price",
+      title: "Giá",
       dataIndex: "price",
       key: "price",
       width: 150,

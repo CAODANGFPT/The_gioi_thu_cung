@@ -40,7 +40,7 @@ const CategoryAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
