@@ -37,13 +37,13 @@ const BreedAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
-      title: "Species",
+      title: "Giống",
       dataIndex: "nameSpecies",
       key: "nameSpecies",
       width: 150,

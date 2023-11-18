@@ -27,7 +27,7 @@ const ContactAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Title",
+      title: "Tiêu đề",
       dataIndex: "title",
       key: "title",
       width: 150,
@@ -39,7 +39,7 @@ const ContactAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "User_id",
+      title: "ID người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,
