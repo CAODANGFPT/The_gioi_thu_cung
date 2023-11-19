@@ -5,6 +5,7 @@ import {
   updateAppointmentStatusSchema,
 } from "../schemas/appointments";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 export const list = async (req, res) => {
   try {
@@ -167,5 +168,44 @@ export const getAppointmentTime = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+const sendEmail = async (to, subject, text) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "hainv21123@gmail.com",
+      pass: "yfaqudeffxnjptla",
+    },
+  });
+
+  const mailOptions = {
+    from: "hainv21123@gmail.com",
+    to,
+    subject,
+    text,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+export const updateStatusCancelAppointment = async () => {
+  try {
+    const currentTime = new Date();
+    await Appointments.updateStatusCancel(currentTime);
+    const appointments = await Appointments.getUserEmail();
+    if (appointments.length > 0) {
+      const email = appointments[0].user_email;
+      console.log("User Email:", email);
+      const subject = "Lich Hẹn Của Bạn Đã Bị Hủy";
+      const text = "đặt còn hủy vl =))";
+      await sendEmail(email, subject, text);
+      console.log("Email sent successfully to:", email);
+    } else {
+      console.log("Lỗi");
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
 };

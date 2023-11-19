@@ -1,4 +1,5 @@
 import connection from "../db";
+
 export default class Appointments {
   static getAllAppointments() {
     return new Promise((resolve, reject) => {
@@ -159,6 +160,63 @@ export default class Appointments {
       connection.query(
         "SELECT DISTINCT appointments.id, appointments.start_time, appointments.end_time FROM appointments JOIN pethouse ON appointments.pethouse_id = pethouse.id WHERE appointments.start_time >= CURRENT_DATE AND pethouse.id = ?",
         [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+  static updateStatusCancel(currentTime) {
+    return new Promise((resolve, reject) => {
+      const sqlUpdateStatus1 =
+        "UPDATE appointments SET status_id = 5 WHERE status_id = 1 AND start_time <= ?";
+      const sqlUpdateStatus2 =
+        "UPDATE appointments SET status_id = 5 WHERE status_id = 2 AND ADDTIME(start_time, '00:30:00') <= ?";
+      connection.beginTransaction((err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        connection.query(sqlUpdateStatus1, [currentTime], (err1, results1) => {
+          if (err1) {
+            connection.rollback(() => {
+              reject(err1);
+            });
+          } else {
+            connection.query(
+              sqlUpdateStatus2,
+              [currentTime],
+              (err2, results2) => {
+                if (err2) {
+                  connection.rollback(() => {
+                    reject(err2);
+                  });
+                } else {
+                  connection.commit((err3) => {
+                    if (err3) {
+                      connection.rollback(() => {
+                        reject(err3);
+                      });
+                    } else {
+                      resolve({ results1, results2 });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      });
+    });
+  }
+  static getUserEmail() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT users.email AS user_email " +
+          "FROM appointments " +
+          "JOIN users ON appointments.user_id = users.id " +
+          "WHERE appointments.status_id = 5",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
