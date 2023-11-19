@@ -65,10 +65,10 @@ export const create = async (req, res) => {
       is_delete
     );
     for (const item of services) {
-      await AppointmentsDetail.createAppointmentsServices(appointmentsId, item.service_id); 
+      await AppointmentsDetail.createAppointmentsServices(appointmentsId, item); 
     }
     for (const item of pet) {
-      await AppointmentsDetail.createAppointmentsPet( appointmentsId, item.pet_id);
+      await AppointmentsDetail.createAppointmentsPet( appointmentsId, item);
     }
     res.json({ id: appointmentsId, message: "Gửi thành công rồi !" });
   } catch (err) {

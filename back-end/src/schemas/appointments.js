@@ -1,4 +1,4 @@
-import joi from "joi";
+import joi, { number } from "joi";
 
 export const appointmentsSchema = joi.object({
   id: joi.number(),
@@ -6,14 +6,10 @@ export const appointmentsSchema = joi.object({
     "String.empty": "Tên không được để trống",
   }),
   pet: joi.array().items(
-    joi.object().keys({
-      pet_id: joi.number().required(),
-    })
+    number
   ),
-  services: joi.array().items(
-    joi.object().keys({
-      service_id: joi.number().required(),
-    })
+  services:  joi.array().items(
+    number
   ),
   user_id: joi.number().required().messages({
     "String.empty": "User_ID không được để trống",
