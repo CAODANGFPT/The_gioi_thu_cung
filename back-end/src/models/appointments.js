@@ -66,8 +66,6 @@ export default class Appointments {
 
   static createAppointments(
     day,
-    pet_id,
-    services_id,
     user_id,
     pethouse_id,
     start_time,
@@ -78,11 +76,9 @@ export default class Appointments {
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,?,?,1)",
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,1)",
         [
           day,
-          pet_id,
-          services_id,
           user_id,
           pethouse_id,
           start_time,
