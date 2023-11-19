@@ -37,12 +37,15 @@ import {
 } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
-import { TGetAppointmentTime } from "../../../schema/appointments";
+import {
+  TCreateAppointment,
+  TGetAppointmentTime,
+} from "../../../schema/appointments";
 
 type TFinish = {
   petHouse_id: number;
-  pet_id: number;
-  services_id: number;
+  pet_id: number[];
+  services_id: number[];
   start_time: string;
   end_time: string;
   total: number;
@@ -58,7 +61,12 @@ const Appointment: React.FC = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
-  const [pets, setPets] = useState<TUserPets[] | undefined>([]);
+  const [pets, setPets] = useState<
+    {
+      value: number | undefined;
+      label: string | undefined;
+    }[]
+  >([]);
   const [pet, setPet] = useState<TPets | undefined>({});
   const [openAddPest, setOpenAddPest] = useState<boolean>(true);
   const [openBreed, setOpenBreed] = useState<boolean>(false);
@@ -66,7 +74,7 @@ const Appointment: React.FC = () => {
   const [petHouseOpenTime, setPetHouseOpenTime] = useState<boolean>(false);
   // const [timeServices, setTimeServices] = useState<Date>();
   const [idSpecies, setIdSpecies] = useState<number>(0);
-  const [idServices, setIdServices] = useState<number>(0);
+  const [idServices, setIdServices] = useState<number[]>([]);
   const [idPetHouse, setIdPetHouse] = useState<number>(0);
   const [total, setTotal] = useState<number | undefined>(0);
   const [dateTime, setDateTime] = useState<string>("");
@@ -95,27 +103,14 @@ const Appointment: React.FC = () => {
   const { data: servicesById, isLoading } = useServicesByIdQuery(
     Number(idService)
   );
-  console.log(servicesById);
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (idService === String(servicesById?.id)) {
-        form.setFieldValue("services_id", servicesById?.id);
-      } else {
-        navigate("/*");
-      }
-    }
-  }, [form, idService, isLoading, navigate, servicesById, servicesById?.id]);
 
   useEffect(() => {
     if (listPet) {
-      setPets([
-        { id: 0, name: "Thêm mới" },
-        ...listPet.map((pet) => ({
-          id: pet?.id,
-          name: pet?.name,
-        })),
-      ]);
+      const optionsPet = listPet?.map((item: TUserPets) => ({
+        value: item.id,
+        label: item.name,
+      }));
+      setPets(optionsPet);
     }
   }, [listPet]);
 
@@ -161,57 +156,48 @@ const Appointment: React.FC = () => {
       species_id: values.species_id,
       breed_id: values.breed_id,
     };
-    if (openAddPest) {
-      const res = await createSPets(petNew);
-      if ("data" in res) {
-        const resAppointment = await createAppointment({
-          day: dayjs().format("YYYY-MM-DD HH:mm:00"),
-          pet_id: res.data.id,
-          services_id: values.services_id,
-          user_id: user?.id,
-          pethouse_id: values.petHouse_id,
-          start_time: dayjs(values.start_time).format(
-            "YYYY-MM-DDTHH:mm:ssZ[Z]"
-          ),
-          end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-          total: total,
-          status_id: 1,
-        });
-        if ("data" in resAppointment) {
-          message.success(resAppointment.data.message);
-          navigate("/cart");
-        }
-      }
-    } else {
-      const resAppointment = await createAppointment({
-        day: dayjs().format("YYYY-MM-DD HH:mm:00"),
-        pet_id: values.pet_id,
-        services_id: values.services_id,
-        user_id: user?.id,
-        pethouse_id: values.petHouse_id,
-        start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-        end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-        total: total,
-        status_id: 1,
-      });
-      if ("data" in resAppointment) {
-        message.success(resAppointment.data.message);
-        navigate("/cart");
-      }
+    const newData = {
+      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
+      pethouse_id: values.petHouse_id,
+      pet_id: values.pet_id,
+      user_id: user?.id,
+      services_id: values.services_id,
+      start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      total: total,
+      status_id: 1,
+    };
+    // if (openAddPest) {
+    //   const res = await createSPets(petNew);
+    //   if ("data" in res) {
+    //     const resAppointment = await createAppointment({
+    //       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
+    //       pet_id: res.data.id,
+    //       user_id: user?.id,
+    //       pethouse_id: values.petHouse_id,
+    //       start_time: dayjs(values.start_time).format(
+    //         "YYYY-MM-DDTHH:mm:ssZ[Z]"
+    //       ),
+    //       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+    //       total: total,
+    //       status_id: 1,
+    //     });
+    //     if ("data" in resAppointment) {
+    //       message.success(resAppointment.data.message);
+    //       navigate("/cart");
+    //     }
+    //   }
+    // } else {
+    const resAppointment = await createAppointment(newData);
+    if ("data" in resAppointment) {
+      message.success(resAppointment.data.message);
+      navigate("/cart");
     }
+    // }
   };
 
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
-  };
-
-  const onChange = async (value: number) => {
-    if (value === 0) {
-      setOpenAddPest(true);
-    } else {
-      await setPet(listPet?.find((p) => p.id === value));
-      setOpenAddPest(false);
-    }
   };
 
   const onChangeSpecies = (value: number) => {
@@ -220,20 +206,14 @@ const Appointment: React.FC = () => {
     form.resetFields(["breed_id"]);
   };
 
-  const onChangeServices = (value: number) => {
-    setServicesOpenTime(true);
-    setIdServices(value);
-    const servicesId = services?.find((service) => service.id === value);
-    const petHouseId = pethouse?.find((pethouse) => pethouse.id === idPetHouse);
-    setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
-  };
-
   const onChangePetHouse = async (value: number) => {
     setPetHouseOpenTime(true);
     setIdPetHouse(value);
-    const servicesId = services?.find((service) => service.id === idServices);
-    const petHouseId = pethouse?.find((pethouse) => pethouse.id === value);
-    setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
+    const servicesId =
+      services?.filter((service) => idServices.includes(service.id)) || [];
+    const totalServices =
+      servicesId?.reduce((acc, service) => acc + (service.price ?? 0), 0) ?? 0;
+    setTotal(totalServices);
     form.setFieldValue("start_time", null);
     setEndTime(null);
     const res = await getAppointmentTime({ pethouse_id: value });
@@ -268,6 +248,7 @@ const Appointment: React.FC = () => {
     const afterFiveDays = today.add(5, "day").endOf("day");
     return current.isBefore(today) || current.isAfter(afterFiveDays);
   };
+
   const disabledDateTime = (current: Dayjs | null) => {
     return {
       disabledHours: () => {
@@ -319,12 +300,10 @@ const Appointment: React.FC = () => {
             current.isSame(startTime, "day") &&
             current.isSame(endTime, "day")
           ) {
-            console.log(endTime.hour());
             if (current.hour() === endTime.hour()) {
               disabledMinutes = disabledMinutes.concat(
                 Array.from({ length: 60 }, (_, i) => i).filter(
-                  (minute) =>
-                    minute <= endTime.minute()
+                  (minute) => minute <= endTime.minute()
                 )
               );
             }
@@ -339,14 +318,36 @@ const Appointment: React.FC = () => {
   const onChangeTime = (value: Dayjs | null, dateString: string) => {
     setDateTime(dateString);
     if (value) {
-      const servicesId = services?.find((service) => service.id === idServices);
-      const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
-      if (regexResult) {
-        const [extractedHour, , extractedSeconds] = regexResult;
-        const newEndTime = dayjs(dateString)
-          .add(parseInt(extractedHour, 10), "hour")
-          .add(parseInt(extractedSeconds, 10), "minute");
-        setEndTime(newEndTime);
+      const servicesId =
+        services?.filter((service) => idServices.includes(service.id)) || [];
+
+      if (servicesId.length > 0) {
+        const totalMilliseconds = servicesId.reduce((total, service) => {
+          const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+
+          if (regexResult) {
+            const [, hours, minutes, seconds] = regexResult;
+            const milliseconds =
+              parseInt(hours, 10) * 3600000 +
+              parseInt(minutes, 10) * 60000 +
+              parseInt(seconds, 10) * 1000;
+            return total + milliseconds;
+          }
+
+          return total;
+        }, 0);
+
+        if (totalMilliseconds > 0) {
+          const newEndTime = dayjs(dateString).add(
+            totalMilliseconds,
+            "millisecond"
+          );
+          setEndTime(newEndTime);
+        } else {
+          setEndTime(null);
+        }
+      } else {
+        setEndTime(null);
       }
     } else {
       setEndTime(null);
@@ -354,31 +355,61 @@ const Appointment: React.FC = () => {
   };
 
   useEffect(() => {
-    const servicesId = services?.find((service) => service.id === idServices);
-    const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
-    if (regexResult) {
-      const [extractedHour, ,] = regexResult;
-      console.log(extractedHour);
-    }
+    const servicesId =
+      services?.filter((service) => idServices.includes(service.id)) || [];
+
+    servicesId.forEach((service) => {
+      const regexResult = service?.time.match(/(\d+):(\d+):(\d+)/);
+
+      if (regexResult) {
+        const [extractedHour, ,] = regexResult;
+        console.log(extractedHour);
+      }
+    });
   }, [idServices, services]);
 
-  useEffect(() => {
-    if (dateTime) {
-      const servicesId = services?.find((service) => service.id === idServices);
-      const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
-      if (regexResult) {
-        const [extractedHour, , extractedSeconds] = regexResult;
-        const newEndTime = dayjs(dateTime)
-          .add(parseInt(extractedHour, 10), "hour")
-          .add(parseInt(extractedSeconds, 10), "minute");
-        setEndTime(newEndTime);
-      }
-    }
-  }, [dateTime, idServices, services]);
+  // useEffect(() => {
+  //   if (dateTime) {
+  //     const servicesId =
+  //     services?.filter((service) => idServices.includes(service.id)) || [];
+  //     const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
+  //     if (regexResult) {
+  //       const [extractedHour, , extractedSeconds] = regexResult;
+  //       const newEndTime = dayjs(dateTime)
+  //         .add(parseInt(extractedHour, 10), "hour")
+  //         .add(parseInt(extractedSeconds, 10), "minute");
+  //       setEndTime(newEndTime);
+  //     }
+  //   }
+  // }, [dateTime, idServices, services]);
 
   useEffect(() => {
     console.log(endTime?.toISOString());
   }, [endTime]);
+
+  const handleChangePets = async (value: string[]) => {
+    console.log(`selected ${value}`);
+    // await setPet(listPet?.find((p) => p.id === value));
+  };
+
+  const handleChangeService = (value: number[]) => {
+    if (value.length > 0) {
+      setServicesOpenTime(true);
+      setIdServices(value);
+      const servicesId =
+        services?.filter((service) => value.includes(service.id)) || [];
+      const totalServices =
+        servicesId?.reduce((acc, service) => acc + (service.price ?? 0), 0) ??
+        0;
+      setTotal(totalServices);
+    } else {
+      setServicesOpenTime(false);
+    }
+    // setServicesOpenTime()
+    // const servicesId = services?.find((service) => service.id === value);
+    // const petHouseId = pethouse?.find((pethouse) => pethouse.id === idPetHouse);
+    // setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
+  };
 
   return (
     <div className="appointment">
@@ -396,15 +427,18 @@ const Appointment: React.FC = () => {
       >
         <div className="fromAppointment">
           <div style={{ flex: 1 }}>
-            <Form.Item name="pet_id" label="Thú cưng">
-              <Select defaultValue={0} onChange={onChange}>
-                {pets &&
-                  pets?.map((item: TUserPets) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-              </Select>
+            <Form.Item
+              name="pet_id"
+              label="Thú cưng"
+              rules={[{ required: true }]}
+            >
+              <Select
+                mode="multiple"
+                style={{ width: "100%" }}
+                defaultValue={[]}
+                onChange={handleChangePets}
+                options={pets}
+              />
             </Form.Item>
             <Form.Item
               name="services_id"
@@ -412,8 +446,11 @@ const Appointment: React.FC = () => {
               rules={[{ required: true }]}
             >
               <Select
+                mode="multiple"
                 disabled={!!idService}
-                onChange={onChangeServices}
+                style={{ width: "100%" }}
+                defaultValue={[]}
+                onChange={handleChangeService}
                 options={optionsServices}
               />
             </Form.Item>
@@ -427,8 +464,6 @@ const Appointment: React.FC = () => {
             <Form.Item
               label="Thời gian"
               style={{
-                display: "flex",
-                alignItems: "flex-end",
                 gap: 20,
               }}
             >
@@ -436,6 +471,7 @@ const Appointment: React.FC = () => {
                 name="start_time"
                 rules={[{ required: true }]}
                 style={{ width: "100%" }}
+                noStyle
               >
                 <DatePicker
                   style={{ width: "100%" }}
@@ -447,10 +483,10 @@ const Appointment: React.FC = () => {
                   }}
                   onChange={onChangeTime}
                   showNow={false}
-                  disabled={!petHouseOpenTime || !servicesOpenTime}
+                  disabled={!servicesOpenTime}
                 />
               </Form.Item>
-              <Form.Item style={{ width: "100%" }}>
+              <Form.Item style={{ width: "100%" }} noStyle>
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
@@ -475,7 +511,7 @@ const Appointment: React.FC = () => {
               </Space>
             </Form.Item>
           </div>
-          <div style={{ flex: 1 }}>
+          {/* <div style={{ flex: 1 }}>
             {openAddPest ? (
               <>
                 <Form.Item
@@ -592,7 +628,7 @@ const Appointment: React.FC = () => {
                 </Form.Item>
               </>
             )}
-          </div>
+          </div> */}
         </div>
       </Form>
     </div>
