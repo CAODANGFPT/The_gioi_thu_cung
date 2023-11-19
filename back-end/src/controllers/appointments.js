@@ -1,4 +1,5 @@
 import Appointments from "../models/appointments";
+import AppointmentsDetail from "../models/appointmentsDetail";
 import User from "../models/user";
 import {
   appointmentsSchema,
@@ -30,7 +31,7 @@ export const show = async (req, res) => {
       req.params.id
     );
     if (!appointmentsItem) {
-      res.status(404).json({ error: "AppointmentsItem not found" });
+      res.status(404).json({ error: "Không tìm thấy mục lịch hẹn" });
     } else {
       res.json(appointmentsItem);
     }
@@ -43,8 +44,8 @@ export const create = async (req, res) => {
   try {
     const {
       day,
-      pet_id,
-      services_id,
+      pet,
+      services,
       user_id,
       pethouse_id,
       start_time,
@@ -53,17 +54,8 @@ export const create = async (req, res) => {
       status_id,
       is_delete,
     } = req.body;
-    const { error } = appointmentsSchema.validate(req.body);
-    if (error) {
-      const errors = error.details.map((errorItem) => errorItem.message);
-      return res.status(400).json({
-        message: errors,
-      });
-    }
     const appointmentsId = await Appointments.createAppointments(
       day,
-      pet_id,
-      services_id,
       user_id,
       pethouse_id,
       start_time,
@@ -72,6 +64,12 @@ export const create = async (req, res) => {
       status_id,
       is_delete
     );
+    for (const item of services) {
+      await AppointmentsDetail.createAppointmentsServices(appointmentsId, item.service_id); 
+    }
+    for (const item of pet) {
+      await AppointmentsDetail.createAppointmentsPet( appointmentsId, item.pet_id);
+    }
     res.json({ id: appointmentsId, message: "Gửi thành công rồi !" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -98,7 +96,7 @@ export const update = async (req, res) => {
       pethouse_id,
       time_id
     );
-    res.json({ message: "Appointments updated successfully" });
+    res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -115,7 +113,7 @@ export const updateAppointmentStatus = async (req, res) => {
       });
     }
     await Appointments.updateAppointmentStatus(req.params.id, status_id);
-    res.json({ message: "Appointments updated successfully" });
+    res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -161,7 +159,7 @@ export const getAppointmentTime = async (req, res) => {
     const { pethouse_id } = req.body;
     const appointmentsTime = await Appointments.getAppointmentTime(pethouse_id);
     if (!appointmentsTime) {
-      res.status(404).json({ error: "AppointmentsItem not found" });
+      res.status(404).json({ error: "Không tìm thấy mục lịch hẹn" });
     } else {
       res.json(appointmentsTime);
     }
