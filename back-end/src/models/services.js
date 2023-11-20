@@ -18,7 +18,18 @@ export default class Services {
       });
     });
   }
-
+  static getNameServicesById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM services WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getServicesById(id) {
     return new Promise((resolve, reject) => {
       connection.query(

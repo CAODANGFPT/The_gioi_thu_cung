@@ -20,16 +20,14 @@
     margin: 0 auto;
 
     @include max-screen($xl) {
-      margin: 10px 30px;
+      margin: 10px 20px;
       display: flex;
-      margin: 10px 30px;
     }
 
-    @include max-screen($sm) {
+    @include max-screen($md) {
       display: flex;
-      margin: 10px 30px;
+      margin: 10px 20px;
       flex-direction: column;
-      margin: 0px;
     }
 
     .account_info-heading {
@@ -39,20 +37,8 @@
       padding: 20px 0px;
       margin: 0px 0px;
 
-      .logout {
-        font-size: 15px;
-        text-decoration: none;
-        color: $EagleGreen;
-        margin-left: 8px;
-        font-weight: 550;
-      }
-
       @include max-screen($lg) {
         font-size: 20px;
-
-        .logout {
-          font-size: 16px;
-        }
       }
 
       @include max-screen($sm) {
@@ -76,7 +62,7 @@
         flex: 1;
       }
 
-      @include max-screen($sm) {
+      @include max-screen($md) {
         width: 100%;
         background-color: white;
         font-size: 18px;
@@ -87,7 +73,7 @@
         list-style: none;
         line-height: 30px;
 
-        @include max-screen($sm) {
+        @include max-screen($md) {
           margin: 0px;
         }
 
@@ -120,7 +106,7 @@
               font-size: 15px;
             }
 
-            @include max-screen($sm) {
+            @include max-screen($md) {
               .icon {
                 display: block;
                 margin: 0px 10px 0px 0px;
@@ -164,7 +150,7 @@
             }
           }
 
-          @include max-screen($sm) {
+          @include max-screen($md) {
             .his_track {
               display: none;
             }
@@ -189,8 +175,11 @@
           }
         }
       }
-
-      @include max-screen($sm) {
+      .ant-menu {
+        background: none;
+        border: none;
+      }
+      @include max-screen($md) {
         margin-left: 0;
         padding-left: 15px;
       }
@@ -200,7 +189,6 @@
       display: flex;
       flex: 3;
       background-color: white;
-      margin: -40px 0px;
       padding: 30px 30px 20px 30px;
       border-radius: 8px;
 
@@ -214,7 +202,7 @@
         flex: 2;
       }
 
-      @include max-screen($sm) {
+      @include max-screen($md) {
         width: 100%;
         padding: 0px 30px 20px 20px;
       }
@@ -230,7 +218,7 @@
           font-size: 22px;
         }
 
-        @include max-screen($sm) {
+        @include max-screen($md) {
           margin: 20px 0px 25px 0px;
         }
       }
@@ -369,7 +357,7 @@
     margin: 0px 12px;
   }
 
-  @include max-screen($sm) {
+  @include max-screen($md) {
     padding: 10px 20px;
   }
 }

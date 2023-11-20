@@ -74,6 +74,7 @@ import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
+import CancelledAppointment from "./components/account_info/cancelledAppointment";
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function App() {
             <Route path="history_follow" element={<Historyfollow />} />
             <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
+            <Route path="cancelled" element={<CancelledAppointment />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

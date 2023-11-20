@@ -37,7 +37,6 @@ const CartPage: FC = () => {
             <tr>
               <th>STT</th>
               <th>Thông tin người đặt</th>
-              <th>Loại thú cưng</th>
               <th>Ngày giờ đặt</th>
               <th>Phòng</th>
               <th>Trạng thái</th>
@@ -54,7 +53,6 @@ const CartPage: FC = () => {
                 <tr key={item.id}>
                   <td>{index}</td>
                   <td>{item.user_email}</td>
-                  <td>{item.pet_name}</td>
                   <td>
                     {dayjs(item.start_time).format("DD-MM-YYYY (HH:mm:ss")}
                   </td>

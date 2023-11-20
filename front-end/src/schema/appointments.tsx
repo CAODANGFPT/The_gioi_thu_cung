@@ -3,8 +3,6 @@ import * as yup from "yup";
 export const AppointmentSchema = yup.object().shape({
   id: yup.number(),
   day: yup.string(),
-  pet_name: yup.string(),
-  services_name: yup.string(),
   user_email: yup.string(),
   pethouse_name: yup.string(),
   settime_name: yup.string(),
