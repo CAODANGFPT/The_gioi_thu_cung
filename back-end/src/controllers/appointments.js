@@ -193,17 +193,44 @@ const sendEmail = async (to, subject, text) => {
 export const updateStatusCancelAppointment = async () => {
   try {
     const currentTime = new Date();
-    await Appointments.updateStatusCancel(currentTime);
-    const appointments = await Appointments.getUserEmail();
-    if (appointments.length > 0) {
-      const email = appointments[0].user_email;
-      console.log("User Email:", email);
-      const subject = "Lich Hẹn Của Bạn Đã Bị Hủy";
-      const text = "đặt còn hủy vl =))";
-      await sendEmail(email, subject, text);
-      console.log("Email sent successfully to:", email);
-    } else {
-      console.log("Lỗi");
+    const { updatedAppointmentIds } = await Appointments.updateStatusCancel(
+      currentTime
+    );
+    console.log("Updated Appointment IDs:", updatedAppointmentIds);
+
+    for (const appointmentId of updatedAppointmentIds) {
+      const appointmentDetails = await Appointments.getAppointmentDetails(
+        appointmentId
+      );
+
+      if (appointmentDetails) {
+        const userEmails = await Appointments.getUserEmail(appointmentId);
+
+        if (userEmails.length > 0) {
+          const email = userEmails[0].user_email;
+          console.log("User Email:", email);
+
+          const subject = "Lịch Hẹn Của Bạn Đã Bị Hủy";
+          const htmlText = `
+ID Lịch Hẹn: ${appointmentId}
+Thông tin chi tiết:
+Ngày: ${appointmentDetails.id}
+Start_time:  ${appointmentDetails.start_time}
+End_time:  ${appointmentDetails.end_time}
+Trạng Thái: Hủy
+`;
+
+          await sendEmail(email, subject, htmlText);
+          console.log("Email sent successfully to:", email);
+        } else {
+          console.log("Không tìm thấy email cho appointmentId:", appointmentId);
+        }
+      } else {
+        console.log(
+          "Không tìm thấy chi tiết lịch hẹn cho appointmentId:",
+          appointmentId
+        );
+      }
     }
   } catch (error) {
     console.error("Error:", error);
