@@ -24,16 +24,12 @@ function getItem(
 const items: MenuItem[] = [
   getItem(<Link to={"/account"}>Thông tin đăng nhập</Link>, "/account"),
   getItem(<Link to={"payment"}>Cài đặt thanh toán</Link>, "payment"),
-  getItem(
-    <Link to={"history_follow"}>Lịch sử mua hàng & theo dõi đơn hàng</Link>,
-    "history_follow"
-  ),
   getItem("Lịch đã đặt", "sub1", null, [
-    getItem("Chờ xác nhận", "5"),
-    getItem("Đẵ xác nhận", "6"),
-    getItem("Chưa thanh toán", "7"),
-    getItem("Đã thanh toán", "8"),
-    getItem(<Link to={"cancelled"}>Đã hủy</Link>, "9"),
+    getItem(<Link to={"wait-for-confirmation-appointment"}>Chờ xác nhận</Link>, "5"),
+    getItem(<Link to={"confirm-appointment"}>Đã xác nhận</Link>, "6"),
+    getItem( <Link to={"unpaid-appointment"}>Chưa thanh toán</Link>, "7"),
+    getItem( <Link to={"confirm-appointment"}>Đã thanh toán</Link>, "8"),
+    getItem(<Link to={"cancelledAppointment"}>Đã hủy</Link>, "9"),
   ]),
 
 ];

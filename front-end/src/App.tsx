@@ -72,7 +72,11 @@ import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
-import CancelledAppointment from "./components/account_info/cancelledAppointment";
+import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
+import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
+import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
+import PaidAppointment from "./components/account_info/appointment/paid";
+import UnpaidAppointment from "./components/account_info/appointment/unpaid";
 
 function App() {
   return (
@@ -89,7 +93,11 @@ function App() {
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
             <Route path="follow" element={<Follow />} />
-            <Route path="cancelled" element={<CancelledAppointment />} />
+            <Route path="cancelledAppointment" element={<CancelledAppointment />} />
+            <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
+            <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
+            <Route path="paid-appointment" element={<PaidAppointment />} />
+            <Route path="confirm-appointment" element={<ConfirmedAppointment />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />
