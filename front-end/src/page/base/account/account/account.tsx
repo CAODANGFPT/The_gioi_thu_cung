@@ -1,4 +1,4 @@
-import "../../../../assets/scss/page/account.scss";
+import "../../../../assets/scss/page/account/account.scss";
 import EditProfile from "../../../../components/account_info/editprofile";
 import { TAccountEdit } from "../../../../schema/accountSchema";
 import { useGetUserQuery } from "../../../../services/user";

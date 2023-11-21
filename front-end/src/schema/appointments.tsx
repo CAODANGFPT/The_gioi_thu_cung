@@ -3,15 +3,25 @@ import * as yup from "yup";
 export const AppointmentSchema = yup.object().shape({
   id: yup.number(),
   day: yup.string(),
-  pet_name: yup.string(),
-  services_name: yup.string(),
   user_email: yup.string(),
   pethouse_name: yup.string(),
   settime_name: yup.string(),
   status_name: yup.string(),
   start_time: yup.string(),
   end_time: yup.string(),
-  is_delete: yup.boolean(),
+  total: yup.number(),
+  services: yup.array().of(
+    yup.object().shape({
+      id: yup.number().required(),
+      name: yup.string().required()
+    })
+  ).required(),
+  pets: yup.array().of(
+    yup.object().shape({
+      id: yup.number().required(),
+      name: yup.string().required()
+    })
+  ).required()
 });
 
 export const AppointmentRequestSchema = yup.object().shape({

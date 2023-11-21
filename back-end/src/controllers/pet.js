@@ -68,7 +68,6 @@ export const createPet = async (req, res) => {
       species_id,
       breed_id
     );
-    console.log(pet);
     res.json({ id: pet.insertId, message: "thêm thông tin thú cưng thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -25,6 +25,18 @@ export default class Pet {
     });
   }
 
+  static getNamePet(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM pets WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getPetById(id) {
     return new Promise((resolve, reject) => {
       connection.query(

@@ -64,11 +64,8 @@ const EditService = () => {
   ]);
 
   const handleImageChange = ({ fileList: newFileList } : any) => {
-    console.log(newFileList);
     if(newFileList[0].response){
       setImage(newFileList[0].response.secure_url);
-      console.log(image);
-      
     }
     setFileList(newFileList);
   };
@@ -83,12 +80,10 @@ const EditService = () => {
       description,
     };
     try {
-      console.log(servicesData);
       await updateServices(servicesData).unwrap();
       message.success(" Update services successfully");
       reset();
       navigate("/admin/services");
-      console.log(servicesData);
     } catch (error) {
       message.error("Failed to update product");
     }
