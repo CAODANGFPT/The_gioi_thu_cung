@@ -1,0 +1,56 @@
+@import "../../utils/functions.scss";
+@import "../../utils/variables.scss";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.cancelledAppointment {
+  width: 100%;
+  padding: 10px 15px;
+  .table-scroll {
+    overflow-x: auto;
+    margin: 30px 0px;
+    width: 100%;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead {
+        background-color: #fafafa;
+        color: $EagleGreen;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+      tbody {
+        .action{
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          .btn{
+            border-radius: 10px;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: $EagleGreen;
+          }
+        }
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      @include max-screen($lg) {
+        th,
+        td {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}

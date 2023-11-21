@@ -3,24 +3,22 @@ import {
   Button,
   DatePicker,
   Form,
-  Input,
-  InputNumber,
   Select,
   Space,
-  Upload,
   UploadFile,
-  message,
+  message
 } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../../assets/scss/page/appointment.scss";
-import { TBreed } from "../../../schema/breed";
+import {
+  TGetAppointmentTime
+} from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
-import { Tspecies } from "../../../schema/species";
 import {
   useAddAppointmentMutation,
   useGetAppointmentTimeMutation,
@@ -37,10 +35,6 @@ import {
 } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
-import {
-  TCreateAppointment,
-  TGetAppointmentTime,
-} from "../../../schema/appointments";
 
 type TFinish = {
   petHouse_id: number;
@@ -363,7 +357,6 @@ const Appointment: React.FC = () => {
 
       if (regexResult) {
         const [extractedHour, ,] = regexResult;
-        console.log(extractedHour);
       }
     });
   }, [idServices, services]);

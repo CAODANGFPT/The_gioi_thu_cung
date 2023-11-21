@@ -93,7 +93,6 @@ export const create = async (req, res) => {
       petNamesArray.length > 0
         ? petNamesArray.join(", ")
         : "No pet name available";
-    console.log(petNamesString);
     const { email, name } = await User.getUser(user_id);
     const transporter = nodemailer.createTransport({
       service: "Gmail",
@@ -223,8 +222,50 @@ export const getAppointmentUserStatus = async (req, res) => {
       res.status(404).json({ error: "" });
     } else {
       try {
-        const appointments = await Appointments.getAppointmentUserStatus(user?.id,  req.params.status_id);
-        res.json(appointments);
+        const appointments = await Appointments.getAppointmentUserStatus(user.id,  req.params.status_id);
+        const uniqueData = appointments.reduce((result, record) => {
+          if (record && record.id !== undefined) {
+            if (Array.isArray(result) && result.length > 0) {
+              const existingRecordIndex = result.findIndex((r) => r.id === record.id);
+              if (existingRecordIndex === -1) {
+                result.push({
+                  id: record.id,
+                  day: record.day,
+                  services: [{ id: record.serviceId, name: record.serviceName }],
+                  pets: [{ id: record.petId, name: record.petName }],
+                  total: record.total,
+                  start_time: record.start_time,
+                  end_time: record.end_time,
+                  user_email: record.user_email,
+                  pethouse_name: record.pethouse_name,
+                  status_name: record.status_name,
+                });
+              } else {
+                const existingPetIndex = result[existingRecordIndex].pets.findIndex((pet) => pet.id === record.petId);
+                if (existingPetIndex === -1) {
+                  result[existingRecordIndex].pets.push({ id: record.petId, name: record.petName });
+                }
+                result[existingRecordIndex].services.push({ id: record.serviceId, name: record.serviceName });
+              }
+            } else {
+              result.push({
+                id: record.id,
+                day: record.day,
+                services: [{ id: record.serviceId, name: record.serviceName }],
+                pets: [{ id: record.petId, name: record.petName }],
+                total: record.total,
+                start_time: record.start_time,
+                end_time: record.end_time,
+                user_email: record.user_email,
+                pethouse_name: record.pethouse_name,
+                status_name: record.status_name,
+              });
+            }
+          }
+          return result;
+        }, []);
+        
+        res.json(uniqueData);
       } catch (err) {
         res.status(500).json({ error: err.message });
       }

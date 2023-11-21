@@ -43,9 +43,9 @@ const appointmentApi = createApi({
         providesTags: ["Appointment"],
       }),
       getAppointmentUserStatus: builder.query<TAppointment[], number>({
-        query: (id) => {
+        query: (status_id) => {
           return {
-            url: `/getAppointmentUserStatus/${id}`,
+            url: `/getAppointmentUserStatus/${status_id}`,
             method: "GET",
           };
         },

@@ -14,8 +14,6 @@ import { TStatus } from "../../../schema/status";
 const ServicesAdmin: React.FC = () => {
   const navigate = useNavigate();
   const { data } = useServicesQuery();
-  console.log(data);
-  
   const [blockServices] = useUpdateBlockServicesMutation();
 
   const confirmBlock = (id: number) => {

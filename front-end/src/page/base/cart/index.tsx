@@ -46,9 +46,6 @@ const CartPage: FC = () => {
           </thead>
           <tbody>
             {listAppointment?.map((item, index) => {
-              if (item.is_delete) {
-                return null;
-              }
               return (
                 <tr key={item.id}>
                   <td>{index}</td>

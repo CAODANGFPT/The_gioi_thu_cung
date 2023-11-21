@@ -1,53 +1,76 @@
 import dayjs from "dayjs";
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import "../../assets/scss/page/cancelledAppointment.scss";
+import "../../assets/scss/page/account/cancelledAppointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../services/appointments";
 
 const CancelledAppointment: FC = (p) => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
+  console.log(listAppointment);
+
   return (
     <div className="cancelledAppointment">
-    <h1>Thông tin lịch đặt</h1>
-    <div className="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Thông tin người đặt</th>
-            <th>Ngày giờ đặt</th>
-            <th>Phòng</th>
-            <th>Trạng thái</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {listAppointment?.map((item, index) => {
-            if (item.is_delete) {
-              return null;
-            }
-            return (
-              <tr key={item.id}>
-                <td>{index + 1}</td>
-                <td>{item.user_email}</td>
-                <td>
-                  {dayjs(item.start_time).format("DD-MM-YYYY (HH:mm:ss")}
-                </td>
-                <td>{item.pethouse_name}</td>
-                <td>{item.status_name}</td>
-                <td>
-                  <Link to={""} className="chitiet" onClick={() => {}}>
-                    Chi tiết
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <h1>Thông tin lịch đặt</h1>
+      <div className="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style={{ textAlign: "center" }}>STT</th>
+              <th>Dịch vụ</th>
+              <th>Thú cưng</th>
+              <th>Ngày giờ đặt</th>
+              <th>Phòng</th>
+              <th>Tổng tiền</th>
+              <th style={{ textAlign: "center" }}>Trạng thái</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {listAppointment &&
+              listAppointment.map((item, index) => {
+                return (
+                  <tr key={item.id}>
+                    <td style={{ textAlign: "center" }}>{index + 1}</td>
+                    <td>
+                      {item.services &&
+                        Array.isArray(item.services) &&
+                        item.services.map((service, serviceIndex) => (
+                          <span key={serviceIndex}>
+                            {service.name}
+                            {serviceIndex < item.services.length - 1
+                              ? ", "
+                              : ""}
+                          </span>
+                        ))}
+                    </td>
+                    <td>{item.pets &&
+                        Array.isArray(item.pets) &&
+                        item.pets.map((pet, serviceIndex) => (
+                          <span key={serviceIndex}>
+                            {pet.name}
+                            {serviceIndex < item.pets.length - 1
+                              ? ", "
+                              : ""}
+                          </span>
+                        ))}</td>
+                    <td>{dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}</td>
+                    <td>{item.pethouse_name}</td>
+                    <td>{item.total}</td>
+                    <td style={{ textAlign: "center" }}>{item.status_name}</td>
+                    <td className="action">
+                      <div className="btn">Đặt lại</div>
+                      <Link to={""} className="chitiet" onClick={() => {}}>
+                        Chi tiết
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default CancelledAppointment
+export default CancelledAppointment;

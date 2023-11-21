@@ -36,7 +36,6 @@ const DetailProduct: React.FC = () => {
   const { data } = useGetUserListCartsQuery();
   const { data: user } = useGetUserQuery();
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
-  console.log(dataOrder);
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
@@ -73,7 +72,6 @@ const DetailProduct: React.FC = () => {
       const orderItem = dataOrder.find(
         (item: any) => item.productsId === Number(id)
       );
-      console.log(orderItem);
       if (orderItem) {
         const { id, quantity } = orderItem;
         setQuantityCarts(quantity)
@@ -85,7 +83,6 @@ const DetailProduct: React.FC = () => {
     const isProductInCart = dataOrder?.some(
       (item: { productsId: number }) => item.productsId === Number(id)
     );
-    console.log(isProductInCart);
 
     if (!isProductInCart) {
       if (user) {
@@ -100,7 +97,6 @@ const DetailProduct: React.FC = () => {
           reset();
         } catch (error) {
           message.error("Failed add to cart product");
-          console.log(cartItem);
         }
       }
     } else {

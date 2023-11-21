@@ -3,8 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import Follow from "./components/account_info/follow";
-import History from "./components/account_info/history";
-import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
@@ -90,8 +88,6 @@ function App() {
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="history_follow" element={<Historyfollow />} />
-            <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
             <Route path="cancelled" element={<CancelledAppointment />} />
           </Route>

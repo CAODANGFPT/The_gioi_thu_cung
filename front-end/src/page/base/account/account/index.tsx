@@ -1,6 +1,6 @@
 import { Menu, MenuProps } from "antd";
 import { Link, Outlet } from "react-router-dom";
-import "../../../../assets/scss/page/account.scss";
+import "../../../../assets/scss/page/account/account.scss";
 import Breadcrumb from "../../../../components/breadcrumb";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -48,8 +48,7 @@ const AccountPage = () => {
       </div>
       <div className="account_info-row">
         <div className="account_info-col col_1">
-          <Menu
-            style={{ width: 256 }}
+          <Menu 
             defaultSelectedKeys={["1"]}
             mode="inline"
             items={items}

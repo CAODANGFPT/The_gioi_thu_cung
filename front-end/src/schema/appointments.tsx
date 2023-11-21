@@ -9,7 +9,19 @@ export const AppointmentSchema = yup.object().shape({
   status_name: yup.string(),
   start_time: yup.string(),
   end_time: yup.string(),
-  is_delete: yup.boolean(),
+  total: yup.number(),
+  services: yup.array().of(
+    yup.object().shape({
+      id: yup.number().required(),
+      name: yup.string().required()
+    })
+  ).required(),
+  pets: yup.array().of(
+    yup.object().shape({
+      id: yup.number().required(),
+      name: yup.string().required()
+    })
+  ).required()
 });
 
 export const AppointmentRequestSchema = yup.object().shape({
