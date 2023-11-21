@@ -63,8 +63,8 @@ const EditService = () => {
     servicesById.data?.description,
   ]);
 
-  const handleImageChange = ({ fileList: newFileList } : any) => {
-    if(newFileList[0].response){
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList[0].response) {
       setImage(newFileList[0].response.secure_url);
     }
     setFileList(newFileList);
@@ -151,7 +151,7 @@ const EditService = () => {
               onChange={handleImageChange}
               fileList={fileList}
             >
-                {uploadButton}
+              {uploadButton}
             </Upload>
           </Form.Item>
           <Form.Item
