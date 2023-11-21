@@ -101,7 +101,10 @@ export const create = async (req, res) => {
         pass: "yfaqudeffxnjptla",
       },
     });
-    const formattedTotal = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+    const formattedTotal = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(total);
 
     const mailOptions = {
       from: email,
@@ -222,16 +225,23 @@ export const getAppointmentUserStatus = async (req, res) => {
       res.status(404).json({ error: "" });
     } else {
       try {
-        const appointments = await Appointments.getAppointmentUserStatus(user.id,  req.params.status_id);
+        const appointments = await Appointments.getAppointmentUserStatus(
+          user.id,
+          req.params.status_id
+        );
         const uniqueData = appointments.reduce((result, record) => {
           if (record && record.id !== undefined) {
             if (Array.isArray(result) && result.length > 0) {
-              const existingRecordIndex = result.findIndex((r) => r.id === record.id);
+              const existingRecordIndex = result.findIndex(
+                (r) => r.id === record.id
+              );
               if (existingRecordIndex === -1) {
                 result.push({
                   id: record.id,
                   day: record.day,
-                  services: [{ id: record.serviceId, name: record.serviceName }],
+                  services: [
+                    { id: record.serviceId, name: record.serviceName },
+                  ],
                   pets: [{ id: record.petId, name: record.petName }],
                   total: record.total,
                   start_time: record.start_time,
@@ -241,11 +251,19 @@ export const getAppointmentUserStatus = async (req, res) => {
                   status_name: record.status_name,
                 });
               } else {
-                const existingPetIndex = result[existingRecordIndex].pets.findIndex((pet) => pet.id === record.petId);
+                const existingPetIndex = result[
+                  existingRecordIndex
+                ].pets.findIndex((pet) => pet.id === record.petId);
                 if (existingPetIndex === -1) {
-                  result[existingRecordIndex].pets.push({ id: record.petId, name: record.petName });
+                  result[existingRecordIndex].pets.push({
+                    id: record.petId,
+                    name: record.petName,
+                  });
                 }
-                result[existingRecordIndex].services.push({ id: record.serviceId, name: record.serviceName });
+                result[existingRecordIndex].services.push({
+                  id: record.serviceId,
+                  name: record.serviceName,
+                });
               }
             } else {
               result.push({
@@ -264,7 +282,7 @@ export const getAppointmentUserStatus = async (req, res) => {
           }
           return result;
         }, []);
-        
+
         res.json(uniqueData);
       } catch (err) {
         res.status(500).json({ error: err.message });
@@ -297,5 +315,73 @@ export const getAppointmentTime = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateStatusCancelAppointment = async () => {
+  try {
+    const currentTime = new Date();
+    const { updatedAppointmentIds } = await Appointments.updateStatusCancel(
+      currentTime
+    );
+    console.log("Updated Appointment IDs:", updatedAppointmentIds);
+
+    for (const appointmentId of updatedAppointmentIds) {
+      const appointmentDetails = await Appointments.getAppointmentDetails(
+        appointmentId
+      );
+
+      if (appointmentDetails) {
+        const userEmails = await Appointments.getUserEmail(appointmentId);
+
+        if (userEmails.length > 0) {
+          const email = userEmails[0].user_email;
+          console.log("User Email:", email);
+
+          const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+              user: "hainv21123@gmail.com",
+              pass: "yfaqudeffxnjptla",
+            },
+          });
+          const mailOptions = {
+            from: email,
+            to: email,
+            subject: "Lịch Hẹn Của Bạn Đã Bị Hủy",
+            html: `<div style="background-color: white; border: 5px solid #5ebdc2; width: 390px; padding: 30px 25px;">
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <img style="width: 100%;" src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png" alt="">
+      </div>
+      <div style="margin-top: 30px;">
+        <div style="font-weight: 600;">Chào ${email}</div>
+        <div style="margin: 15px 0;">Lịch Hẹn ID ${appointmentDetails.id} Của Bạn Đã Bị Hủy !</div>
+        <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bạn đặt: </span> <span  style="padding-left: 10px;">${appointmentDetails.day}</span></div>
+        <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bắt đầu lịch: </span> <span  style="padding-left: 10px;">${appointmentDetails.start_time}</span></div>
+        <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian kết lịch: </span> <span  style="padding-left: 10px;">${appointmentDetails.end_time}</span></div>
+      
+       <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Trạng Thái </span> <span  style="padding: 10px;background:red; color:white;">Đã Hủy</span></div>
+      
+        <div>
+          Thân mến
+        </div>
+      </div>
+    </div>`,
+          };
+
+          await transporter.sendMail(mailOptions);
+          console.log("Email sent successfully to:", email);
+        } else {
+          console.log("Không tìm thấy email cho appointmentId:", appointmentId);
+        }
+      } else {
+        console.log(
+          "Không tìm thấy chi tiết lịch hẹn cho appointmentId:",
+          appointmentId
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
 };
