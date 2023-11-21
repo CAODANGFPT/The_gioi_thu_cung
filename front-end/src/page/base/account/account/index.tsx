@@ -22,7 +22,8 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link to={"/account"}>Thông tin đăng nhập</Link>, "/account"),
+  getItem(<Link to={"/account"}>Thông tin</Link>, "account"),
+  getItem(<Link to={"pet-user"}>Thú cưng</Link>, "pet-user"),
   getItem(<Link to={"payment"}>Cài đặt thanh toán</Link>, "payment"),
   getItem("Lịch đã đặt", "sub1", null, [
     getItem(<Link to={"wait-for-confirmation-appointment"}>Chờ xác nhận</Link>, "5"),

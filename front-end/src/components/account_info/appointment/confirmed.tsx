@@ -11,7 +11,7 @@ const ConfirmedAppointment: FC = () => {
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h1>Lịch đặt đã xác nhận</h1>
+          <h4>Lịch đặt đã xác nhận</h4>
           <div className="table-scroll">
             <table>
               <thead>

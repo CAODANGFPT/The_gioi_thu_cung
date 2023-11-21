@@ -77,6 +77,7 @@ import WaitForConfirmation from "./components/account_info/appointment/wait-for-
 import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
 import PaidAppointment from "./components/account_info/appointment/paid";
 import UnpaidAppointment from "./components/account_info/appointment/unpaid";
+import PetUser from "./components/account_info/pet";
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function App() {
             <Route path="payment" element={<Pay />} />
             <Route path="follow" element={<Follow />} />
             <Route path="cancelledAppointment" element={<CancelledAppointment />} />
+            <Route path="pet-user" element={<PetUser />} />
             <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
             <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
             <Route path="paid-appointment" element={<PaidAppointment />} />
