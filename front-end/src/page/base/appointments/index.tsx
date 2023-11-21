@@ -1,21 +1,25 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Avatar,
   Button,
   DatePicker,
   Form,
+  Input,
+  InputNumber,
   Select,
   Space,
+  Upload,
   UploadFile,
-  message
+  message,
 } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/page/appointment.scss";
-import {
-  TGetAppointmentTime
-} from "../../../schema/appointments";
+import { TGetAppointmentTime } from "../../../schema/appointments";
+import { TBreed } from "../../../schema/breed";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
@@ -28,6 +32,7 @@ import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
   useCreatePetsMutation,
   useGetAllUserPetsQuery,
+  useUserPetMutation,
 } from "../../../services/pets";
 import {
   useServicesByIdQuery,
@@ -35,11 +40,14 @@ import {
 } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
+import TextArea from "antd/es/input/TextArea";
+import { AnyAction } from "@reduxjs/toolkit";
+import { Tspecies } from "../../../schema/species";
 
 type TFinish = {
   petHouse_id: number;
-  pet_id: number[];
-  services_id: number[];
+  pet: number[];
+  services: number[];
   start_time: string;
   end_time: string;
   total: number;
@@ -54,34 +62,25 @@ const Appointment: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [image, setImage] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
   const [pets, setPets] = useState<
     {
       value: number | undefined;
       label: string | undefined;
     }[]
   >([]);
-  const [pet, setPet] = useState<TPets | undefined>({});
-  const [openAddPest, setOpenAddPest] = useState<boolean>(true);
-  const [openBreed, setOpenBreed] = useState<boolean>(false);
+  const [pet, setPet] = useState<TPets[]>([]);
+  const [openAddPest, setOpenAddPest] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [petHouseOpenTime, setPetHouseOpenTime] = useState<boolean>(false);
-  // const [timeServices, setTimeServices] = useState<Date>();
   const [idSpecies, setIdSpecies] = useState<number>(0);
   const [idServices, setIdServices] = useState<number[]>([]);
   const [idPetHouse, setIdPetHouse] = useState<number>(0);
   const [total, setTotal] = useState<number | undefined>(0);
   const [dateTime, setDateTime] = useState<string>("");
+  const [namePet, setNamePet] = useState<number>();
+  const [defaultValue, setDefaultValue] = useState<number[]>([]);
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "",
-    },
-  ]);
 
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseQuery();
@@ -91,41 +90,11 @@ const Appointment: React.FC = () => {
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
-  const [createSPets] = useCreatePetsMutation();
+  const [userPet] = useUserPetMutation();
 
   const { id: idService } = useParams<{ id: string }>();
   const { data: servicesById, isLoading } = useServicesByIdQuery(
     Number(idService)
-  );
-
-  useEffect(() => {
-    if (listPet) {
-      const optionsPet = listPet?.map((item: TUserPets) => ({
-        value: item.id,
-        label: item.name,
-      }));
-      setPets(optionsPet);
-    }
-  }, [listPet]);
-
-  const handleImageChange = (info: any) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-    } else if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      setImage(info.file.response.url);
-      setLoading(false);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
-    }
-  };
-
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Tải ảnh</div>
-    </div>
   );
 
   const optionsServices = services?.map((item: TServices) => ({
@@ -138,6 +107,12 @@ const Appointment: React.FC = () => {
     value: item.id,
     label: item.name,
     disabled: item.status_id === 1,
+  }));
+
+  const optionsPet = listPet?.map((item: TUserPets) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.id === namePet,
   }));
 
   const onFinish = async (values: TFinish) => {
@@ -153,9 +128,9 @@ const Appointment: React.FC = () => {
     const newData = {
       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
       pethouse_id: values.petHouse_id,
-      pet_id: values.pet_id,
+      pet: values.pet,
       user_id: user?.id,
-      services_id: values.services_id,
+      services: values.services,
       start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
@@ -194,15 +169,9 @@ const Appointment: React.FC = () => {
     console.log("Failed:", values);
   };
 
-  const onChangeSpecies = (value: number) => {
-    setOpenBreed(true);
-    setIdSpecies(value);
-    form.resetFields(["breed_id"]);
-  };
-
   const onChangePetHouse = async (value: number) => {
     setPetHouseOpenTime(true);
-    setIdPetHouse(value);
+    // setIdPetHouse(value);
     const servicesId =
       services?.filter((service) => idServices.includes(service.id)) || [];
     const totalServices =
@@ -222,17 +191,6 @@ const Appointment: React.FC = () => {
       setDisableTime(formattedData);
     }
   };
-
-  useEffect(() => {
-    setFileList([
-      {
-        uid: "-1",
-        name: "image.png",
-        status: "done",
-        url: pet?.img,
-      },
-    ]);
-  }, [pet?.img]);
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     if (!current) {
@@ -380,8 +338,19 @@ const Appointment: React.FC = () => {
     console.log(endTime?.toISOString());
   }, [endTime]);
 
-  const handleChangePets = async (value: string[]) => {
-    console.log(`selected ${value}`);
+  const handleChangePets = async (value: number[]) => {
+    if (value.length > 0) {
+      const petData = value.map((petId) => ({
+        pet_id: petId,
+      }));
+      const pets = await userPet({ data: petData });
+      if ("data" in pets) {
+        setPet(pets.data);
+      }
+    } else {
+      setPet([]);
+    }
+
     // await setPet(listPet?.find((p) => p.id === value));
   };
 
@@ -397,6 +366,7 @@ const Appointment: React.FC = () => {
       setTotal(totalServices);
     } else {
       setServicesOpenTime(false);
+      setTotal(0);
     }
     // setServicesOpenTime()
     // const servicesId = services?.find((service) => service.id === value);
@@ -420,21 +390,17 @@ const Appointment: React.FC = () => {
       >
         <div className="fromAppointment">
           <div style={{ flex: 1 }}>
-            <Form.Item
-              name="pet_id"
-              label="Thú cưng"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="pet" label="Thú cưng" rules={[{ required: true }]}>
               <Select
                 mode="multiple"
                 style={{ width: "100%" }}
-                defaultValue={[]}
+                defaultValue={defaultValue}
                 onChange={handleChangePets}
-                options={pets}
+                options={optionsPet}
               />
             </Form.Item>
             <Form.Item
-              name="services_id"
+              name="services"
               label="Dịch vụ"
               rules={[{ required: true }]}
             >
@@ -504,128 +470,288 @@ const Appointment: React.FC = () => {
               </Space>
             </Form.Item>
           </div>
-          {/* <div style={{ flex: 1 }}>
-            {openAddPest ? (
-              <>
-                <Form.Item
-                  name="name"
-                  label="Tên Thú cưng"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="img"
-                  style={{ height: "130px" }}
-                  label="Ảnh"
-                  rules={[{ required: true }]}
-                >
-                  <Upload
-                    name="file"
-                    action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-                    data={{
-                      upload_preset: "wh3rdke8",
-                      cloud_name: "dksgvucji",
+
+          <div style={{ flex: 1 }}>
+            {pet.length > 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  rowGap: 20,
+                }}
+              >
+                {pet.map((item) => (
+                  <div
+                    style={{
+                      position: "relative",
+                      background: "#F7F7F7",
+                      padding: 10,
+                      color: "#00575C",
+                      border: 2,
+                      borderColor: "#00575C",
                     }}
-                    listType="picture-card"
-                    maxCount={1}
-                    showUploadList={true}
-                    className="ant-upload-wrapper ant-upload-select"
-                    onChange={handleImageChange}
                   >
-                    {uploadButton}
-                  </Upload>
-                </Form.Item>
-                <Form.Item name="age" label="Tuổi" rules={[{ required: true }]}>
-                  <InputNumber min={0} />
-                </Form.Item>
-
-                <Form.Item
-                  name="gender"
-                  label="Giới tính"
-                  rules={[{ required: true }]}
+                    <div>Tên thú cưng: {item?.name}</div>
+                    <div>Tuổi: {item?.age}</div>
+                    <div>Giới tính: {item?.gender}</div>
+                    <div>Giống loài: {item?.nameSpecies}</div>
+                    <div>Giống: {item?.nameBreed}</div>
+                    <div style={{ position: "absolute", top: 5, right: 5 }}>
+                      <Avatar size={100} shape="circle" src={item.img} />
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  onClick={() => setOpenAddPest(!openAddPest)}
+                  style={{ maxWidth: 100, color: "white" }}
                 >
-                  <Select>
-                    <Select.Option key={1} value={"Đực"}>
-                      Đực
-                    </Select.Option>
-                    <Select.Option key={2} value={"Cái"}>
-                      Cái
-                    </Select.Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="species_id"
-                  label="Giống loài"
-                  rules={[{ required: true }]}
-                >
-                  <Select onChange={onChangeSpecies}>
-                    {species?.map((item: Tspecies) => (
-                      <Select.Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="breed_id"
-                  label="Giống"
-                  rules={[{ required: true }]}
-                >
-                  <Select disabled={!openBreed}>
-                    {breed?.map((item: TBreed) => (
-                      <Select.Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </>
+                  Thêm mới
+                </Button>
+              </div>
             ) : (
-              <>
-                <Form.Item label={<span className="label">Tên Loại</span>}>
-                  <Input disabled value={pet?.name} />
-                </Form.Item>
-                <Form.Item
-                  style={{ height: "130px" }}
-                  label={<span className="label">Ảnh</span>}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar size={200} src={avatarPet} />
+                <div>Chưa chọn thú cưng</div>
+                <p>Nếu bạn chưa có hoặc thêm mới ấn vào đây!</p>
+                <Button
+                  onClick={() => setOpenAddPest(!openAddPest)}
+                  style={{ maxWidth: 100, color: "white" }}
                 >
-                  <Upload
-                    name="file"
-                    disabled
-                    action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-                    data={{
-                      upload_preset: "wh3rdke8",
-                      cloud_name: "dksgvucji",
-                    }}
-                    fileList={fileList}
-                    listType="picture-card"
-                    maxCount={1}
-                    showUploadList={true}
-                    className="ant-upload-wrapper ant-upload-select"
-                    onChange={handleImageChange}
-                  />
-                </Form.Item>
-                <Form.Item label={<span className="label">Tuổi</span>}>
-                  <Input disabled value={pet?.age} />
-                </Form.Item>
-
-                <Form.Item label={<span className="label">Giới tính</span>}>
-                  <Input disabled value={pet?.gender} />
-                </Form.Item>
-                <Form.Item label={<span className="label">Giống loài</span>}>
-                  <Input disabled value={pet?.nameSpecies} />
-                </Form.Item>
-                <Form.Item label={<span className="label">Giống</span>}>
-                  <Input disabled value={pet?.nameBreed} />
-                </Form.Item>
-              </>
+                  Thêm mới
+                </Button>
+              </div>
             )}
-          </div> */}
+          </div>
         </div>
       </Form>
+      <ModalAddPet
+        setIdSpecies={setIdSpecies}
+        openAddPest={openAddPest}
+        setImage={setImage}
+        species={species}
+        breed={breed}
+        setOpenAddPest={setOpenAddPest}
+        user={user}
+        setNamePet={setNamePet}
+        setDefaultValue={setDefaultValue}
+      />
     </div>
   );
 };
 
 export default Appointment;
+
+type TModalAddPet = {
+  setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
+  setImage: React.Dispatch<any>;
+  species?: {
+    id?: number | undefined;
+    name?: string | undefined;
+  }[];
+  breed?: {
+    id?: number | undefined;
+    name?: string | undefined;
+    species_id?: string | undefined;
+    nameSpecies?: number | undefined;
+  }[];
+  openAddPest: boolean;
+  setOpenAddPest: React.Dispatch<React.SetStateAction<boolean>>;
+  user: any;
+  setNamePet: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setDefaultValue: React.Dispatch<React.SetStateAction<number[]>>;
+};
+
+const ModalAddPet: FC<TModalAddPet> = ({
+  setIdSpecies,
+  setImage,
+  species,
+  breed,
+  openAddPest,
+  setOpenAddPest,
+  setNamePet,
+  setDefaultValue,
+  user,
+}) => {
+  const [openBreed, setOpenBreed] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [createSPets] = useCreatePetsMutation();
+  const [form] = Form.useForm();
+
+  const onFinish = async (values: any) => {
+    console.log("onFinish:", values);
+    const petNew = {
+      img: values.img.file.response.secure_url,
+      name: values.name,
+      age: values.age,
+      gender: values.gender,
+      user_id: user?.id,
+      species_id: values.species_id,
+      breed_id: values.breed_id,
+      health_condition: values.health_condition,
+    };
+    const res = await createSPets(petNew);
+    if ("data" in res) {
+      setDefaultValue([res.data.id]);
+      setOpenAddPest(false);
+      form.resetFields();
+    }
+  };
+
+  const onFinishFailed = async (values: any) => {
+    console.log("Failed:", values);
+  };
+
+  const onChangeSpecies = (value: number) => {
+    setOpenBreed(true);
+    setIdSpecies(value);
+    form.resetFields(["breed_id"]);
+  };
+
+  const handleImageChange = (info: any) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+      setImage(info.file.response.url);
+      setLoading(false);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+      setLoading(false);
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Tải ảnh</div>
+    </div>
+  );
+
+  return (
+    <>
+      {openAddPest && (
+        <>
+          <div
+            className="modal-1"
+            style={{
+              position: "fixed",
+              top: 60,
+              left: "15%",
+              zIndex: 20,
+              width: "70%",
+              background: "white",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: 500,
+                color: "#00575C",
+                marginBottom: 10,
+              }}
+            >
+              Thêm mới Thú cưng
+            </div>
+            <Form
+              form={form}
+              name="validateOnly"
+              layout="vertical"
+              autoComplete="off"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+            >
+              <Form.Item
+                name="name"
+                label="Tên Thú cưng"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="img"
+                style={{ height: "130px" }}
+                label="Ảnh"
+                rules={[{ required: true }]}
+              >
+                <Upload
+                  name="file"
+                  action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+                  data={{
+                    upload_preset: "wh3rdke8",
+                    cloud_name: "dksgvucji",
+                  }}
+                  listType="picture-card"
+                  maxCount={1}
+                  showUploadList={true}
+                  className="ant-upload-wrapper ant-upload-select"
+                  onChange={handleImageChange}
+                >
+                  {uploadButton}
+                </Upload>
+              </Form.Item>
+              <Form.Item name="age" label="Tuổi" rules={[{ required: true }]}>
+                <InputNumber min={0} />
+              </Form.Item>
+
+              <Form.Item
+                name="gender"
+                label="Giới tính"
+                rules={[{ required: true }]}
+              >
+                <Select>
+                  <Select.Option key={1} value={"Đực"}>
+                    Đực
+                  </Select.Option>
+                  <Select.Option key={2} value={"Cái"}>
+                    Cái
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="species_id"
+                label="Giống loài"
+                rules={[{ required: true }]}
+              >
+                <Select onChange={onChangeSpecies}>
+                  {species?.map((item: Tspecies) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="breed_id"
+                label="Giống"
+                rules={[{ required: true }]}
+              >
+                <Select disabled={!openBreed}>
+                  {breed?.map((item: TBreed) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item name="health_condition" label="Tình trạng sức khỏe">
+                <TextArea rows={4} />
+              </Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form>
+          </div>
+          <div onClick={() => setOpenAddPest(false)} className="background" />
+        </>
+      )}
+    </>
+  );
+};

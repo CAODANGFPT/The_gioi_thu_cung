@@ -61,8 +61,8 @@ export type TAupdateStatusAppointment = yup.InferType<
 
 export const createAppointmentSchema = yup.object().shape({
   day: yup.string().required(),
-  pet_id: yup.array().of(yup.number()),
-  services_id: yup.array().of(yup.number()),
+  pet: yup.array().of(yup.number()),
+  services: yup.array().of(yup.number()),
   user_id: yup.number(),
   pethouse_id: yup.number().required(),
   start_time: yup.string().required(),
