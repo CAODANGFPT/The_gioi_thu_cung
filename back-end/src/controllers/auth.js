@@ -20,7 +20,13 @@ export const Register = async (req, res) => {
       return res.status(400).json({ message: "Email đã tồn tại" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = await User.createUser(name, email, hashedPassword, phone, address);
+    const userId = await User.createUser(
+      name,
+      email,
+      hashedPassword,
+      phone,
+      address
+    );
     const accessToken = jwt.sign({ id: userId }, "duantotnghiep", {
       expiresIn: "1d",
     });
@@ -57,7 +63,7 @@ export const Login = async (req, res) => {
     });
     res.json({
       user,
-      accessToken
+      accessToken,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -135,7 +141,6 @@ export const sendResetLinkEmail = async (req, res) => {
     console.error("Error sending email:", error);
   }
 };
-
 
 export const resetPassword = async (req, res) => {
   const { email, token, password } = req.body;
