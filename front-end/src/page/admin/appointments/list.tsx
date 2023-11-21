@@ -26,7 +26,6 @@ const AppointmentsAdmin: React.FC = () => {
     id: number;
     status_id: number;
   }) => {
-    console.log(id, status_id);
     await updateStatusAppointment({ id, status_id });
   };
 
@@ -106,7 +105,12 @@ const AppointmentsAdmin: React.FC = () => {
     },
   ];
 
-  return <TableAdmin columns={columns} data={data} />;
+  // return <TableAdmin columns={columns} data={data} />;
+  return (
+    <>
+      <div>sdafasd</div>
+    </>
+  );
 };
 
 export default AppointmentsAdmin;

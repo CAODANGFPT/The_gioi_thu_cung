@@ -25,6 +25,18 @@ export default class Pet {
     });
   }
 
+  static getNamePet(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM pets WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getPetById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -38,11 +50,42 @@ export default class Pet {
     });
   }
 
-  static addPet(img, name, age, gender, user_id, species_id, breed_id) {
+  static getUserPet(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [img, name, age, gender, user_id, species_id, breed_id],
+        "SELECT pets.id, pets.img, pets.name, pets.age, pets.gender, pets.user_id, users.name AS nameUser, pets.species_id, species.name AS nameSpecies, pets.breed_id, breed.name AS nameBreed FROM pets JOIN users ON pets.user_id = users.id JOIN species ON pets.species_id = species.id JOIN breed ON pets.breed_id = breed.id  WHERE pets.id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results[0]);
+        }
+      );
+    });
+  }
+
+  static addPet(
+    img,
+    name,
+    age,
+    gender,
+    user_id,
+    species_id,
+    breed_id,
+    health_condition
+  ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id,status_id ,health_condition) VALUES (?, ?, ?, ?, ?, ?, ?,1, ?)",
+        [
+          img,
+          name,
+          age,
+          gender,
+          user_id,
+          species_id,
+          breed_id,
+          health_condition,
+        ],
         (err, results) => {
           if (err) {
             console.error("Error inserting pet:", err);

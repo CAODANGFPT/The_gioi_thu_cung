@@ -23,12 +23,12 @@ const Home: React.FC = () => {
           </div>
           <div className="home-banner-text">
             <div className="top">
-              <p>CAT SUPPLIES</p>
-              <div className="top-title">SALE UP TO 50%</div>
+              <p>Dịch vụ chăm sóc</p>
+              <div className="top-title">Giảm giá tới 50%</div>
             </div>
             <div className="bottom">
               <button onClick={() => navigator("/appointment")}>
-                <div>Explore Now</div> <ArrowRightIcon />
+                <div>Khám phá ngay</div> <ArrowRightIcon />
               </button>
             </div>
           </div>
@@ -45,9 +45,9 @@ const Home: React.FC = () => {
             );
           })}
         </div>
-        <CarouselProduct productData={productData} name="Deals Of The Month " />
-        <CarouselProduct productData={productData} name="New  Arrivals" />
-        <CarouselProduct productData={productData} name="Best-selling" />
+        <CarouselProduct productData={productData} name="Ưu đãi của tháng " />
+        <CarouselProduct productData={productData} name="Điểm đến mới" />
+        <CarouselProduct productData={productData} name="Siêu giảm giá" />
 
         <CarouseBlog blogData={blogData} />
       </div>

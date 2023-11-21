@@ -31,6 +31,8 @@ const RegisterAccount = () => {
         const response = await registerForm(values);
         if ("error" in response) {
           formik.setFieldError("email", "Email đã tồn tại");
+          alert("Email đã tồn tại");
+          
         } else {
           alert("Đăng ký thành công!");
           navigate("/");

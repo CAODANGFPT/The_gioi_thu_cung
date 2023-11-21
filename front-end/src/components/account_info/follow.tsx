@@ -1,4 +1,4 @@
-import "../../assets/scss/page/account.scss";
+import "../../assets/scss/page/account/account.scss";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";

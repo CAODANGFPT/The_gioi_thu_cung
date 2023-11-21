@@ -5,7 +5,6 @@ import logo from "../../assets/image/logo.png";
 import User from "../../assets/image/user.png";
 import "../../assets/scss/layout/base/headerBase.scss";
 import CalendarIcon from "../../assets/svg/calendar";
-import HeartIcon from "../../assets/svg/heartIcon";
 import MenuIcon from "../../assets/svg/menuIcon";
 import RightIcon from "../../assets/svg/rightIcon";
 import SearchIcon from "../../assets/svg/searchIcon";
@@ -129,10 +128,6 @@ const HeaderBase = () => {
               )}
             </div>
           </Dropdown>
-          <div className="frame5">
-            <HeartIcon />
-            <div className="group13">0</div>
-          </div>
           <div className="frame5" onClick={() => navigate("shoppingCart")}>
             <ShoppingCartIcon />
             <div className="group13">{countCarts}</div>

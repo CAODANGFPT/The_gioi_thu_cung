@@ -3,8 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import Follow from "./components/account_info/follow";
-import History from "./components/account_info/history";
-import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
@@ -74,6 +72,12 @@ import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
+import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
+import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
+import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
+import PaidAppointment from "./components/account_info/appointment/paid";
+import UnpaidAppointment from "./components/account_info/appointment/unpaid";
+import PetUser from "./components/account_info/pet";
 
 function App() {
   return (
@@ -89,9 +93,13 @@ function App() {
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="history_follow" element={<Historyfollow />} />
-            <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
+            <Route path="cancelledAppointment" element={<CancelledAppointment />} />
+            <Route path="pet-user" element={<PetUser />} />
+            <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
+            <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
+            <Route path="paid-appointment" element={<PaidAppointment />} />
+            <Route path="confirm-appointment" element={<ConfirmedAppointment />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

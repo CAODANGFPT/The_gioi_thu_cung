@@ -40,10 +40,6 @@ const AddAbout: React.FC = () => {
 
   const handleFormSubmit = async (values: TAbout) => {
     const { description } = values;
-    // const image = typeof values.image === "string" ? values.image : "";
-
-    console.log("Image Value:", image);
-
     const aboutData = {
       image: image,
       description,
@@ -62,10 +58,8 @@ const AddAbout: React.FC = () => {
   };
 
   const handleImageChange = (info: any) => {
-    console.log("API Response:", info.file.response);
     if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
-      console.log("Image URL:", info.file.response.url);
       setImage(info.file.response.url);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);

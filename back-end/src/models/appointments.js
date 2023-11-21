@@ -45,13 +45,11 @@ export default class Appointments {
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, appointments.is_delete, pets.name AS pet_name, " +
-          "services.name AS service_name, users.email AS user_email, " +
+        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, appointments.is_delete, " +
+          "users.email AS user_email, " +
           "pethouse.name AS pethouse_name, " +
           "status_appointment.name AS status_name " +
           "FROM appointments " +
-          "JOIN pets ON appointments.pet_id = pets.id " +
-          "JOIN services ON appointments.services_id = services.id " +
           "JOIN users ON appointments.user_id = users.id " +
           "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
           "JOIN status_appointment ON appointments.status_id = status_appointment.id " +
@@ -65,10 +63,20 @@ export default class Appointments {
     });
   }
 
+  static getAppointmentUserStatus(id, status_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ? AND appointments.status_id = ?",
+        [id, status_id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static createAppointments(
     day,
-    pet_id,
-    services_id,
     user_id,
     pethouse_id,
     start_time,
@@ -79,11 +87,9 @@ export default class Appointments {
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, pet_id, services_id, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,?,?,1)",
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,1)",
         [
           day,
-          pet_id,
-          services_id,
           user_id,
           pethouse_id,
           start_time,

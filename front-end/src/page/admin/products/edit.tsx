@@ -93,7 +93,6 @@ const EditProduct = () => {
       message.success(" Update successfully");
       reset();
       navigate("/admin/products");
-      console.log(productData);
     } catch (error) {
       message.error("Failed to update product");
     }

@@ -42,7 +42,6 @@ const AddProduct = () => {
       category_id,
     };
     try {
-      console.log(productsData);
 
       await addProducts(productsData).unwrap();
       message.success("Product added successfully");

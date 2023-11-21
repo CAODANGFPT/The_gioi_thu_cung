@@ -20,7 +20,13 @@ export const Register = async (req, res) => {
       return res.status(400).json({ message: "Email đã tồn tại" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = await User.createUser(name, email, hashedPassword, phone, address);
+    const userId = await User.createUser(
+      name,
+      email,
+      hashedPassword,
+      phone,
+      address
+    );
     const accessToken = jwt.sign({ id: userId }, "duantotnghiep", {
       expiresIn: "1d",
     });
@@ -44,7 +50,6 @@ export const Login = async (req, res) => {
       });
     }
     const user = await User.checkEmailExists(email);
-    console.log(user);
     if (!user) {
       return res.status(404).json({ message: "Email không tồn tại" });
     }
@@ -57,7 +62,7 @@ export const Login = async (req, res) => {
     });
     res.json({
       user,
-      accessToken
+      accessToken,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -136,12 +141,10 @@ export const sendResetLinkEmail = async (req, res) => {
   }
 };
 
-
 export const resetPassword = async (req, res) => {
   const { email, token, password } = req.body;
   try {
     bcrypt.compare(email, token, (err, result) => {
-      console.log("compare", result);
       if (result == true) {
         bcrypt
           .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
