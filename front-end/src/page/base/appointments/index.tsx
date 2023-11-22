@@ -81,16 +81,16 @@ const Appointment: React.FC = () => {
         form.setFieldsValue({
           services: serviceId,
           pet: petIds,
-          petHouse_id: appointmentData.pethouse_id
+          petHouse_id: appointmentData.pethouse_id,
         });
         listPets(petIds);
         setDefaultValue(petIds);
-        totalService(serviceId);      
+        totalService(serviceId);
         setServicesOpenTime(true);
       }
     };
     fetchData();
-  }, [appointmentData,form, services]);
+  }, [appointmentData, form, services]);
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
     label: item.name,
@@ -237,7 +237,9 @@ const Appointment: React.FC = () => {
               parseInt(hours, 10) * 3600000 +
               parseInt(minutes, 10) * 60000 +
               parseInt(seconds, 10) * 1000;
-            return total + milliseconds;
+            console.log(pet?.length);
+
+            return total + milliseconds * pet.length;
           }
 
           return total;
@@ -276,12 +278,46 @@ const Appointment: React.FC = () => {
   const handleChangePets = (value: number[]) => {
     listPets(value);
     setDefaultValue(value);
+    const servicesId =
+      services?.filter((service) => idServices.includes(service.id)) || [];
+
+    if (servicesId.length > 0) {
+      const totalMilliseconds = servicesId.reduce((total, service) => {
+        const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+
+        if (regexResult) {
+          const [, hours, minutes, seconds] = regexResult;
+          const milliseconds =
+            parseInt(hours, 10) * 3600000 +
+            parseInt(minutes, 10) * 60000 +
+            parseInt(seconds, 10) * 1000;
+
+          return total + milliseconds * value.length; // Use the selected pets' length
+        }
+
+        return total;
+      }, 0);
+
+      if (totalMilliseconds > 0) {
+        const newEndTime = dayjs(form.getFieldValue("start_time")).add(
+          totalMilliseconds,
+          "millisecond"
+        );
+        setEndTime(newEndTime);
+      } else {
+        setEndTime(null);
+      }
+    } else {
+      setEndTime(null);
+    }
   };
+
   useEffect(() => {
     if (totalServices && defaultValue.length) {
       setTotal(totalServices * defaultValue.length);
     }
   }, [defaultValue, totalServices]);
+
   useEffect(() => {
     if (valueId) {
       defaultValue.push(valueId);
@@ -293,23 +329,58 @@ const Appointment: React.FC = () => {
 
   const handleChangeService = (value: number[]) => {
     if (value.length > 0) {
-      totalService(value)
+      totalService(value);
       setServicesOpenTime(true);
       setIdServices(value);
+      const servicesId =
+        services?.filter((service) => value.includes(service.id)) || [];
+
+      if (servicesId.length > 0) {
+        const totalMilliseconds = servicesId.reduce((total, service) => {
+          const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+
+          if (regexResult) {
+            const [, hours, minutes, seconds] = regexResult;
+            const milliseconds =
+              parseInt(hours, 10) * 3600000 +
+              parseInt(minutes, 10) * 60000 +
+              parseInt(seconds, 10) * 1000;
+
+            return total + milliseconds;
+          }
+
+          return total;
+        }, 0);
+
+        if (totalMilliseconds > 0) {
+          const newEndTime = dayjs(form.getFieldValue('start_time')).add(
+            totalMilliseconds,
+            "millisecond"
+          );
+          setEndTime(newEndTime);
+        } else {
+          setEndTime(null);
+        }
+      } else {
+        setEndTime(null);
+      }
     } else {
       setServicesOpenTime(false);
       setTotal(0);
+      setEndTime(null);
     }
   };
   const totalService = (value: number[]) => {
-    if(services){
+    if (services) {
       const servicesId =
-      services.filter((service) => value.includes(service.id)) || [];
-      const totalServices =
-      servicesId.reduce((acc, service) => acc + (service.price ?? 0), 0); 
+        services.filter((service) => value.includes(service.id)) || [];
+      const totalServices = servicesId.reduce(
+        (acc, service) => acc + (service.price ?? 0),
+        0
+      );
       setTotalServices(totalServices);
     }
-  }
+  };
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20, color: "#00575c" }}>
