@@ -31,7 +31,7 @@ export const Account: FC = () => {
   }, [user]);
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
-  const showModal = () => {
+  const showModal = () => { 
     setIsModalOpen(true);
   };
 

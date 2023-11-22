@@ -9,7 +9,7 @@ export const PetsSchema = yup.object().shape({
   nameUser: yup.number(),
   nameSpecies: yup.number(),
   nameBreed: yup.number(),
-});
+}).required();
 
 export const PetsRequestSchema = yup.object().shape({
   id: yup.number(),
@@ -23,7 +23,7 @@ export const PetsRequestSchema = yup.object().shape({
 });
 
 export const PetsResponseSchema = yup.object().shape({
-  id: yup.number().required(),
+  data: PetsSchema,
   message: yup.string(),
 });
 
