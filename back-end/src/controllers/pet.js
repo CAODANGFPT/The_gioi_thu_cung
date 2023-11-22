@@ -69,9 +69,9 @@ export const createPet = async (req, res) => {
       breed_id,
       health_condition,
     );
-    console.log(pet);
-    res.json({
-      id: pet.insertId,
+    const petData = await Pet.getPetById(pet.insertId);
+    res.json({  
+      data: petData,
       message: "thêm thông tin thú cưng thành công",
     });
   } catch (err) {
