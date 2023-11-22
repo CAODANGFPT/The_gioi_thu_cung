@@ -2,12 +2,22 @@ import dayjs from "dayjs";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
-import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import "../../../assets/scss/page/account/appointment.scss"
+import {
+  useGetAppointmentUserStatusQuery,
+  useUpdateStatusAppointmentMutation,
+} from "../../../services/appointments";
+import "../../../assets/scss/page/account/appointment.scss";
+import { Popconfirm } from "antd";
 const WaitForConfirmation: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(1);
-  console.log(listAppointment);
-
+  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  const confirm = async (id: number | undefined) => {
+    try {
+      await updateStatusAppointment({ id: id, status_id: 5 });
+    } catch (error) {
+      
+    }
+  };
   return (
     <>
       {listAppointment?.length ? (
@@ -66,7 +76,13 @@ const WaitForConfirmation: FC = () => {
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn">Đặt lại</div>
+                          <Popconfirm
+                            onConfirm={() => confirm(item.id)}
+                            title="Hủy lịch"
+                            description="Bạn có chắc chắn hủy lịch này không?"
+                          >
+                            <div className="btn">Hủy</div>
+                          </Popconfirm>
                           <Link to={""} className="chitiet" onClick={() => {}}>
                             Chi tiết
                           </Link>
@@ -80,7 +96,9 @@ const WaitForConfirmation: FC = () => {
         </div>
       ) : (
         <div className="notAppointment">
-          <div><img src={imageNot} alt="" /></div>
+          <div>
+            <img src={imageNot} alt="" />
+          </div>
           <div>Chưa có lịch nào</div>
         </div>
       )}
