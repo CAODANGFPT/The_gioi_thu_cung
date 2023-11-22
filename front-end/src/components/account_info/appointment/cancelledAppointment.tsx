@@ -1,12 +1,16 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import imageNot from "../../../assets/image/notAppoiment.png";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
+  const navigate  = useNavigate();
+  const redirectToAppointment = (item: any) => {
+    navigate('/appointment', { state: { appointmentData: item } });
+  };
   return (
     <>
       {listAppointment?.length ? (
@@ -65,7 +69,7 @@ const CancelledAppointment: FC = () => {
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn">Đặt lại</div>
+                          <div className="btn" onClick={() => redirectToAppointment(item)}>Đặt lại</div>
                           <Link to={""} className="chitiet" onClick={() => {}}>
                             Chi tiết
                           </Link>

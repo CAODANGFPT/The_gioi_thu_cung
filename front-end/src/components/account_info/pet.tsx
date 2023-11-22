@@ -4,8 +4,6 @@ import { useGetAllUserPetsQuery } from "../../services/pets";
 import { EditOutlined, DeleteOutlined,PlusOutlined } from "@ant-design/icons";
 const PetUser: FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
-  console.log(listPet);
-
   return (
     <>
       <div className="pet">

@@ -5,6 +5,7 @@ export const AppointmentSchema = yup.object().shape({
   day: yup.string(),
   user_email: yup.string(),
   pethouse_name: yup.string(),
+  pethouse_id: yup.number(),
   settime_name: yup.string(),
   status_name: yup.string(),
   start_time: yup.string(),

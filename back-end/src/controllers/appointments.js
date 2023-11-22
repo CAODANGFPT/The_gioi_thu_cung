@@ -248,6 +248,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                   end_time: record.end_time,
                   user_email: record.user_email,
                   pethouse_name: record.pethouse_name,
+                  pethouse_id: record.pethouse_id,
                   status_name: record.status_name,
                 });
               } else {
@@ -260,10 +261,17 @@ export const getAppointmentUserStatus = async (req, res) => {
                     name: record.petName,
                   });
                 }
-                result[existingRecordIndex].services.push({
-                  id: record.serviceId,
-                  name: record.serviceName,
-                });
+                const existingServicesIndex = result[
+                  existingRecordIndex
+                ].services.findIndex(
+                  (services) => services.id === record.serviceId
+                );
+                if (existingServicesIndex === -1) {
+                  result[existingRecordIndex].services.push({
+                    id: record.serviceId,
+                    name: record.serviceName,
+                  });
+                }
               }
             } else {
               result.push({
@@ -276,6 +284,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                 end_time: record.end_time,
                 user_email: record.user_email,
                 pethouse_name: record.pethouse_name,
+                pethouse_id: record.pethouse_id,
                 status_name: record.status_name,
               });
             }
@@ -324,8 +333,6 @@ export const updateStatusCancelAppointment = async () => {
     const { updatedAppointmentIds } = await Appointments.updateStatusCancel(
       currentTime
     );
-    console.log("Updated Appointment IDs:", updatedAppointmentIds);
-
     for (const appointmentId of updatedAppointmentIds) {
       const appointmentDetails = await Appointments.getAppointmentDetails(
         appointmentId
@@ -336,8 +343,6 @@ export const updateStatusCancelAppointment = async () => {
 
         if (userEmails.length > 0) {
           const email = userEmails[0].user_email;
-          console.log("User Email:", email);
-
           const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
@@ -370,7 +375,6 @@ export const updateStatusCancelAppointment = async () => {
           };
 
           await transporter.sendMail(mailOptions);
-          console.log("Email sent successfully to:", email);
         } else {
           console.log("Không tìm thấy email cho appointmentId:", appointmentId);
         }
