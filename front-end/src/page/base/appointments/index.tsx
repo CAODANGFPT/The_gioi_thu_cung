@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
@@ -65,8 +64,7 @@ const Appointment: React.FC = () => {
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const [appointmentData, setAppointmentData] = useState<any>(
+  const [appointmentData] = useState<any>(
     location.state?.appointmentData || undefined
   );
   useEffect(() => {
@@ -85,6 +83,7 @@ const Appointment: React.FC = () => {
         });
         listPets(petIds);
         setDefaultValue(petIds);
+        setIdServices(serviceId);
         totalService(serviceId);
         setServicesOpenTime(true);
       }
@@ -230,14 +229,12 @@ const Appointment: React.FC = () => {
       if (servicesId.length > 0) {
         const totalMilliseconds = servicesId.reduce((total, service) => {
           const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
-
           if (regexResult) {
             const [, hours, minutes, seconds] = regexResult;
             const milliseconds =
               parseInt(hours, 10) * 3600000 +
               parseInt(minutes, 10) * 60000 +
               parseInt(seconds, 10) * 1000;
-            console.log(pet?.length);
 
             return total + milliseconds * pet.length;
           }
@@ -246,10 +243,33 @@ const Appointment: React.FC = () => {
         }, 0);
 
         if (totalMilliseconds > 0) {
-          const newEndTime = dayjs(dateString).add(
+          let newEndTime = dayjs(dateString).add(
             totalMilliseconds,
             "millisecond"
           );
+          if (newEndTime.hour() > 18) {
+            const currentHour = newEndTime.hour();
+            const currentMinute = newEndTime.minute();
+            const remainingMinutes = (currentHour - 18) * 60 + currentMinute;
+            const remainingHours = Math.floor(remainingMinutes / 60);
+            const remainingMinutesAfterHours = remainingMinutes % 60;
+            newEndTime = newEndTime.add(1, "day");
+            newEndTime = newEndTime
+              .hour(9)
+              .minute(0)
+              .second(0)
+              .millisecond(0)
+              .add(remainingHours, "hours")
+              .add(remainingMinutesAfterHours, "minutes");
+          }
+          if (value.hour() < 12 && newEndTime.hour() >= 12) {
+            if (newEndTime.hour() === 12 && newEndTime.minute() > 0) {
+              newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+            } else {
+              newEndTime = newEndTime.add(3, "millisecond");
+            }
+          }
+
           setEndTime(newEndTime);
         } else {
           setEndTime(null);
@@ -275,40 +295,11 @@ const Appointment: React.FC = () => {
       setPet([]);
     }
   };
-  const handleChangePets = (value: number[]) => {
-    listPets(value);
-    setDefaultValue(value);
-    const servicesId =
-      services?.filter((service) => idServices.includes(service.id)) || [];
-
-    if (servicesId.length > 0) {
-      const totalMilliseconds = servicesId.reduce((total, service) => {
-        const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
-
-        if (regexResult) {
-          const [, hours, minutes, seconds] = regexResult;
-          const milliseconds =
-            parseInt(hours, 10) * 3600000 +
-            parseInt(minutes, 10) * 60000 +
-            parseInt(seconds, 10) * 1000;
-
-          return total + milliseconds * value.length; // Use the selected pets' length
-        }
-
-        return total;
-      }, 0);
-
-      if (totalMilliseconds > 0) {
-        const newEndTime = dayjs(form.getFieldValue("start_time")).add(
-          totalMilliseconds,
-          "millisecond"
-        );
-        setEndTime(newEndTime);
-      } else {
-        setEndTime(null);
-      }
-    } else {
-      setEndTime(null);
+  const handleChangePets = (petValue: number[]) => {
+    listPets(petValue);
+    setDefaultValue(petValue);
+    if (form.getFieldValue("start_time")) {
+      functionEndTimeChange(undefined, petValue);
     }
   };
 
@@ -324,7 +315,6 @@ const Appointment: React.FC = () => {
       listPets(defaultValue);
       setValueId(undefined);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue, valueId]);
 
   const handleChangeService = (value: number[]) => {
@@ -332,41 +322,70 @@ const Appointment: React.FC = () => {
       totalService(value);
       setServicesOpenTime(true);
       setIdServices(value);
-      const servicesId =
-        services?.filter((service) => value.includes(service.id)) || [];
-
-      if (servicesId.length > 0) {
-        const totalMilliseconds = servicesId.reduce((total, service) => {
-          const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
-
-          if (regexResult) {
-            const [, hours, minutes, seconds] = regexResult;
-            const milliseconds =
-              parseInt(hours, 10) * 3600000 +
-              parseInt(minutes, 10) * 60000 +
-              parseInt(seconds, 10) * 1000;
-
-            return total + milliseconds;
-          }
-
-          return total;
-        }, 0);
-
-        if (totalMilliseconds > 0) {
-          const newEndTime = dayjs(form.getFieldValue('start_time')).add(
-            totalMilliseconds,
-            "millisecond"
-          );
-          setEndTime(newEndTime);
-        } else {
-          setEndTime(null);
-        }
-      } else {
-        setEndTime(null);
+      if (form.getFieldValue("start_time")) {
+        functionEndTimeChange(value);
       }
     } else {
       setServicesOpenTime(false);
       setTotal(0);
+      setEndTime(null);
+    }
+  };
+
+  const functionEndTimeChange = (
+    servicesValue?: number[],
+    petValue?: number[]
+  ) => {
+    let servicesId: any[] = [];
+    if (servicesValue) {
+      servicesId =
+        services?.filter((service) => servicesValue.includes(service.id)) || [];
+    } else {
+      servicesId =
+        services?.filter((service) => idServices.includes(service.id)) || [];
+    }
+    if (servicesId.length > 0) {
+      const totalMilliseconds = servicesId.reduce((total, service) => {
+        const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+
+        if (regexResult) {
+          const [, hours, minutes, seconds] = regexResult;
+          const milliseconds =
+            parseInt(hours, 10) * 3600000 +
+            parseInt(minutes, 10) * 60000 +
+            parseInt(seconds, 10) * 1000;
+          if (petValue) {
+            return total + milliseconds * petValue.length;
+          } else {
+            return total + milliseconds * pet.length;
+          }
+        }
+
+        return total;
+      }, 0);
+
+      if (totalMilliseconds > 0) {
+        console.log(form.getFieldValue("start_time").hour());
+
+        let newEndTime = dayjs(form.getFieldValue("start_time")).add(
+          totalMilliseconds,
+          "millisecond"
+        );
+        if (
+          form.getFieldValue("start_time").hour() < 12 &&
+          newEndTime.hour() > 12
+        ) {
+          newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+        }
+        if (newEndTime.hour() === 12 && newEndTime.minute() > 0) {
+          newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+        }
+
+        setEndTime(newEndTime);
+      } else {
+        setEndTime(null);
+      }
+    } else {
       setEndTime(null);
     }
   };
