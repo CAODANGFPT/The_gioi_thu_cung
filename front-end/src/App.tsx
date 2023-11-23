@@ -62,6 +62,7 @@ import AddCategory from "./page/admin/category/add";
 import EditCategory from "./page/admin/category/edit";
 import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
+import PaymentPage from "./page/base/Payment";
 import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
@@ -94,12 +95,21 @@ function App() {
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
             <Route path="follow" element={<Follow />} />
-            <Route path="cancelledAppointment" element={<CancelledAppointment />} />
+            <Route
+              path="cancelledAppointment"
+              element={<CancelledAppointment />}
+            />
             <Route path="pet-user" element={<PetUser />} />
-            <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
+            <Route
+              path="wait-for-confirmation-appointment"
+              element={<WaitForConfirmation />}
+            />
             <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
             <Route path="paid-appointment" element={<PaidAppointment />} />
-            <Route path="confirm-appointment" element={<ConfirmedAppointment />} />
+            <Route
+              path="confirm-appointment"
+              element={<ConfirmedAppointment />}
+            />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />
@@ -203,6 +213,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
+        <Route path="payment" element={<PaymentPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
