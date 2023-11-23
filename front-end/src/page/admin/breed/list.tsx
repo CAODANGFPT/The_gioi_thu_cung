@@ -29,19 +29,21 @@ const BreedAdmin: React.FC = () => {
 
   const columns: ColumnsType<TBreed> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 150,
+      render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
-      title: "Species",
+      title: "Giống",
       dataIndex: "nameSpecies",
       key: "nameSpecies",
       width: 150,
@@ -87,7 +89,7 @@ const BreedAdmin: React.FC = () => {
       >
         THÊM GIỐNG
       </Button>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </>
   );
 };

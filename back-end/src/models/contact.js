@@ -11,20 +11,20 @@ export default class Contact {
 
     static getAllStatusContact() {
         return new Promise((resolve, reject) => {
-          connection.query(
-            "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , status_contact.name as statusName FROM contact  JOIN status_contact on contact.status_id = status_contact.id",
-            (err, results) => {
-              if (err) reject(err);
-              resolve(results);
-            }
-          );
+            connection.query(
+                "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , status_contact.name as statusName FROM contact  JOIN status_contact on contact.status_id = status_contact.id",
+                (err, results) => {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
         });
-      }
+    }
 
     static getContactUser() {
         return new Promise((resolve, reject) => {
             connection.query(
-                "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , status_contact.name as statusName FROM contact JOIN status_contact on contact.status_id = status_contact.id",
+                "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , users.name as nameUser, status_contact.name as statusName FROM contact " + "JOIN status_contact on contact.status_id = status_contact.id " + "JOIN users on contact.user_id = users.id",
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results);
@@ -71,16 +71,16 @@ export default class Contact {
 
     static updateStatusContact(id, status_id) {
         return new Promise((resolve, reject) => {
-          connection.query(
-            "UPDATE contact SET status_id = ? WHERE id = ?",
-            [status_id, id],
-            (err, results) => {
-              if (err) reject(err);
-              resolve(results);
-            }
-          );
+            connection.query(
+                "UPDATE contact SET status_id = ? WHERE id = ?",
+                [status_id, id],
+                (err, results) => {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
         });
-      }
+    }
 
     static deleteContact(id) {
         return new Promise((resolve, reject) => {

@@ -2,16 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
-import Account from "./components/account_info/account";
 import Follow from "./components/account_info/follow";
-import History from "./components/account_info/history";
-import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
+import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -46,9 +44,6 @@ import RoleAdmin from "./page/admin/role/list";
 import AddService from "./page/admin/services/add";
 import EditService from "./page/admin/services/edit";
 import ServicesAdmin from "./page/admin/services/list";
-import AddSetTime from "./page/admin/setTime/add";
-import EditSetTime from "./page/admin/setTime/edit";
-import SetTimeAdmin from "./page/admin/setTime/list";
 import AddSpecies from "./page/admin/species/add";
 import EditSpecies from "./page/admin/species/edit";
 import SpeciesAdmin from "./page/admin/species/list";
@@ -63,10 +58,28 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
-import EditNews from "./page/admin/news/edit";
-import PageNotFound from "./page/pageNotFound";
+import AddCategory from "./page/admin/category/add";
+import EditCategory from "./page/admin/category/edit";
+import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
 import PaymentPage from "./page/base/Payment";
+import EditNews from "./page/admin/news/edit";
+import AddProduct from "./page/admin/products/add";
+import EditProduct from "./page/admin/products/edit";
+import ServicePage from "./page/base/servicePage";
+import ServiceDetail from "./page/base/serviceDetail";
+import ProductsAdmin from "./page/admin/products/list";
+import CartPage from "./page/base/cart";
+import DetailProduct from "./page/base/detailProduct";
+import ShoppingCart from "./page/base/shoppingCart";
+import PageNotFound from "./page/pageNotFound";
+import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
+import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
+import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
+import PaidAppointment from "./components/account_info/appointment/paid";
+import UnpaidAppointment from "./components/account_info/appointment/unpaid";
+import PetUser from "./components/account_info/pet";
+
 function App() {
   return (
     <BrowserRouter>
@@ -75,13 +88,23 @@ function App() {
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
           <Route path="appointment" element={<Appointments />} />
+          <Route path="appointment/:id" element={<Appointments />} />
+          <Route path="detailproduct/:id" element={<DetailProduct />} />
+          <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="his_follow" element={<Historyfollow />} />
-            <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
+            <Route path="cancelledAppointment" element={<CancelledAppointment />} />
+            <Route path="pet-user" element={<PetUser />} />
+            <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
+            <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
+            <Route path="paid-appointment" element={<PaidAppointment />} />
+            <Route path="confirm-appointment" element={<ConfirmedAppointment />} />
           </Route>
+          <Route path="cart" element={<CartPage />} />
+          <Route path="services" element={<ServicePage />} />
+          <Route path="service/:id" element={<ServiceDetail />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -104,6 +127,18 @@ function App() {
             <Route path="edit/:id" element={<EditAbout />} />
           </Route>
 
+          <Route path="category">
+            <Route index element={<CategoryAdmin />} />
+            <Route path="add" element={<AddCategory />} />
+            <Route path="edit/:id" element={<EditCategory />} />
+          </Route>
+
+          <Route path="products">
+            <Route index element={<ProductsAdmin />} />
+            <Route path="add" element={<AddProduct />} />
+            <Route path="edit/:id" element={<EditProduct />} />
+          </Route>
+
           <Route path="user">
             <Route index element={<UserAdmin />} />
             <Route path="edit/:id" element={<EditUser />} />
@@ -120,13 +155,6 @@ function App() {
             <Route path="add" element={<AddRoleAdmin />} />
             <Route path="edit/:id" element={<EditRole />} />
           </Route>
-
-          <Route path="settime">
-            <Route index element={<SetTimeAdmin />} />
-            <Route path="add" element={<AddSetTime />} />
-            <Route path="edit/:id" element={<EditSetTime />} />
-          </Route>
-
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
             <Route path="edit/:id" element={<EditPetHouse />} />
@@ -148,7 +176,6 @@ function App() {
             <Route path="add" element={<AddSpecies />} />
             <Route path="edit/:id" element={<EditSpecies />} />
           </Route>
-
           <Route path="breed">
             <Route index element={<BreedAdmin />} />
             <Route path="add" element={<AddBreed />} />

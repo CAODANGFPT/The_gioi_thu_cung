@@ -79,7 +79,7 @@ const ListProduct: React.FC = () => {
                 <ul>
                   {ListFilterBrandData.map((FilterCard) => {
                     return (
-                      <li>
+                      <li key={FilterCard.id}>
                         <form action="">
                           <input
                             type="checkbox"
@@ -100,7 +100,7 @@ const ListProduct: React.FC = () => {
                 <ul>
                   {ListFilterPriceData.map((FilterCard) => {
                     return (
-                      <li>
+                      <li key={FilterCard.id}>
                         <form action="">
                           <input
                             type="checkbox"
@@ -121,7 +121,7 @@ const ListProduct: React.FC = () => {
                 <ul>
                   {ListFilterColorData.map((FilterCard) => {
                     return (
-                      <li>
+                      <li key={FilterCard.id}>
                         <form action="">
                           <input
                             type="checkbox"
@@ -156,7 +156,7 @@ const ListProduct: React.FC = () => {
               <ul>
                 {ListFilterBrandData.map((FilterCard) => {
                   return (
-                    <li>
+                    <li key={FilterCard.id}>
                       <form action="">
                         <input
                           type="checkbox"
@@ -177,7 +177,7 @@ const ListProduct: React.FC = () => {
               <ul>
                 {ListFilterPriceData.map((FilterCard) => {
                   return (
-                    <li>
+                    <li key={FilterCard.id}>
                       <form action="">
                         <input
                           type="checkbox"
@@ -198,7 +198,7 @@ const ListProduct: React.FC = () => {
               <ul>
                 {ListFilterColorData.map((FilterCard) => {
                   return (
-                    <li>
+                    <li key={FilterCard.id}>
                       <form action="">
                         <input
                           type="checkbox"
@@ -220,6 +220,7 @@ const ListProduct: React.FC = () => {
             {currentItems.map((productData) => {
               return (
                 <ListProductCard
+                  key={productData.id}
                   name={productData.name}
                   sold={productData.sold}
                   url={productData.imageUrl}

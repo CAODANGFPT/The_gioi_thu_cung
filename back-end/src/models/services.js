@@ -10,6 +10,26 @@ export default class Services {
     });
   }
 
+  static getTop8Services() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM services ORDER BY id LIMIT 8;", (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
+  static getNameServicesById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM services WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getServicesById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -51,11 +71,11 @@ export default class Services {
     });
   }
 
-  static deleteServices(id) {
+  static updateBlockService(id, is_delete) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM services WHERE id = ?",
-        [id],
+        "UPDATE services SET is_delete = ? WHERE id = ?",
+        [is_delete, id],
         (err, results) => {
           if (err) reject(err);
           resolve(results);

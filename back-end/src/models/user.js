@@ -4,7 +4,7 @@ export default class User {
   static createUser(name, email, password, phone, address, img) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO users (name, email,gender, password, role_id , phone, address, img) VALUES (?, ?, ?, 2, ?, ?, ?, 5)",
+        "INSERT INTO users (name, email,gender, password, role_id , phone, address, img) VALUES (?, ?, 2, ?, 2, ?,?, null)",
         [name, email, password, phone, address, img],
         (err, results) => {
           if (err) reject(err);
@@ -123,6 +123,56 @@ export default class User {
           resolve(results);
         }
       );
+    });
+  }
+  static updateUser(id, img, email, name, gender, phone) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE users SET img = ?, email = ?, name = ?, gender = ?, phone = ? WHERE id = ?",
+        [img, email, name, gender, phone, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+  static search(name, email, phone, is_delete, gender, role_id) {
+    let query = "SELECT * FROM users WHERE ";
+    const conditions = [];
+
+    if (name) {
+      conditions.push(`name LIKE '%${name}%'`);
+    }
+    if (phone) {
+      conditions.push(`phone LIKE '%${phone}%'`);
+    }
+    if (email) {
+      conditions.push(`email LIKE '%${email}%'`);
+    }
+    if (is_delete) {
+      conditions.push(`is_delete = '${is_delete}'`);
+    }
+    if (gender) {
+      conditions.push(`gender = '${gender}'`);
+    }
+    if (role_id) {
+      conditions.push(`role_id = '${role_id}'`);
+    }
+
+    if (conditions.length === 0) {
+      return Promise.reject({
+        error: "At least one search parameter is required.",
+      });
+    }
+
+    query += conditions.join(" AND ");
+
+    return new Promise((resolve, reject) => {
+      connection.query(query, (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
     });
   }
 }

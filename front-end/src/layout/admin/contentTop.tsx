@@ -26,9 +26,6 @@ const ContentTop: React.FC = () => {
         <h3 className="content-top-title">Home</h3>
       </div>
       <div className="content-top-btn">
-        {/* <button type="button" className="search-btn content-top-btn">
-          <SearchIcon />
-        </button> */}
         <button className="notification-btn content-top-btn">
           <BellIcon />
           <span className="notification-btn-dot" />

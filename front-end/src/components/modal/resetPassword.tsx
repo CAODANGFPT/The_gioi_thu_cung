@@ -1,6 +1,6 @@
+import { Button, Form, Input, message } from "antd";
 import Modal from "antd/es/modal/Modal";
-import { FC, useState } from "react";
-import { Form, Input, Button, message } from "antd";
+import { FC } from "react";
 import "../../assets/scss/components/modalPassword.scss";
 import { useUpdatePasswordMutation } from "../../services/user";
 type ModalResetPasswordProps = {
@@ -14,7 +14,9 @@ const ModalResetPassword: FC<ModalResetPasswordProps> = ({
   setIsModalOpen,
   idUser,
 }) => {
-  const [updatePassword, { reset }] = useUpdatePasswordMutation();
+  const [form] = Form.useForm();
+  form.resetFields();
+  const [updatePassword] = useUpdatePasswordMutation();
   const onFinish = async (values: any) => {
     try {
       const dataUpdate = {
@@ -26,7 +28,7 @@ const ModalResetPassword: FC<ModalResetPasswordProps> = ({
       message.success("Đổi mât khẩu thành công");
     } catch (error: any) {
       console.log(error);
-      if (error?.status == 400) {
+      if (error?.status === 400) {
         message.error("Mật khẩu cũ không chính xác");
       } else {
         message.error("Đổi mât khẩu thất bại");
@@ -35,21 +37,22 @@ const ModalResetPassword: FC<ModalResetPasswordProps> = ({
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalOpen(false);
   };
   return (
     <>
       <Modal
         className="modal-password"
-        title="Basic Modal"
+        title={<h1 style={{ marginBottom: 20 }}>Cập nhật mật khẩu</h1>}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
       >
         <div>
-          <h1>Cập nhật mật khẩu</h1>
           <div>
             <Form
+              form={form}
               name="updatePassword"
               onFinish={onFinish}
               labelCol={{ span: 9 }}

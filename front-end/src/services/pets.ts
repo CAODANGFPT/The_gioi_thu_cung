@@ -1,11 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PetsResponse, TPets } from "../schema/pets";
+import { PetsResponse, TPets, TUserPet } from "../schema/pets";
 
 const petsApi = createApi({
   reducerPath: "pets",
   tagTypes: ["Pets"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", "Bearer " + token);
+      }
+      return headers;
+    },
   }),
   endpoints(builder) {
     return {
@@ -18,10 +25,10 @@ const petsApi = createApi({
         },
         providesTags: ["Pets"],
       }),
-      getAllUserPets: builder.query<TPets[], number | undefined>({
-        query: (id) => {
+      getAllUserPets: builder.query<TPets[], void>({
+        query: () => {
           return {
-            url: `/ListUserPets/${id}`,
+            url: `/ListUserPets`,
             method: "GET",
           };
         },
@@ -35,6 +42,23 @@ const petsApi = createApi({
         }),
         invalidatesTags: ["Pets"],
       }),
+      userPet: builder.mutation<TPets[], Partial<TUserPet>>({
+        query: (pets) => ({
+          url: "/userPet",
+          method: "PATCH",
+          body: pets,
+        }),
+        invalidatesTags: ["Pets"],
+      }),
+      removePets: builder.mutation<TPets, number>({
+        query: (id) => {
+          return {
+            url: `/pets/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Pets"],
+      }),
     };
   },
 });
@@ -43,6 +67,8 @@ export const {
   useGetAllPetsQuery,
   useGetAllUserPetsQuery,
   useCreatePetsMutation,
+  useRemovePetsMutation,
+  useUserPetMutation,
 } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;

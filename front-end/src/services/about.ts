@@ -54,10 +54,20 @@ const aboutApi = createApi({
         invalidatesTags: ["About"],
     }),
 
+    removeAbout: builder.mutation<TAbout, number>({
+      query: (id) => {
+        return {
+          url: `/about/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["About"],
+    }),
+
     };
   },
 });
 
-export const { useAboutQuery, useAddAboutMutation, useUpdateAboutMutation, useGetAboutByIdQuery } = aboutApi;
+export const { useAboutQuery, useAddAboutMutation, useUpdateAboutMutation, useGetAboutByIdQuery, useRemoveAboutMutation } = aboutApi;
 export const aboutReducer = aboutApi.reducer;
 export default aboutApi;

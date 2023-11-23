@@ -28,10 +28,12 @@ const NewsAdmin: React.FC = () => {
 
   const columns: ColumnsType<TContact> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
+      fixed: "right",
       width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Ảnh",
@@ -41,25 +43,25 @@ const NewsAdmin: React.FC = () => {
       render: (img) => <Image width={100} src={img} />,
     },
     {
-      title: "Title",
+      title: "Tiêu đề",
       dataIndex: "title",
       key: "title",
       width: 150,
     },
     {
-      title: "Description",
+      title: "Mô tả",
       dataIndex: "description",
       key: "description",
       width: 150,
     },
     {
-      title: "Created_At",
+      title: "Thời gian tạo",
       dataIndex: "created_at",
       key: "created_at",
       width: 150,
     },
     {
-      title: "User_ID",
+      title: "ID người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,

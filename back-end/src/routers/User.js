@@ -6,9 +6,11 @@ import {
   getUser,
   list,
   listUsersRole,
+  searchUser,
   updateIsDelete,
   updatePassword,
   updateRole,
+  updateUser,
 } from "../controllers/user";
 import { resetPassword } from "../controllers/auth";
 const router = express.Router();
@@ -22,5 +24,7 @@ router.patch("/user/block", checkPermission, updateIsDelete);
 router.patch("/user/role", checkPermission, updateRole);
 router.get("/getUser", getUser);
 router.patch("/user/updatePassword", updatePassword);
+router.put("/updateUser/:id", updateUser);
+router.get("/Search", searchUser);
 
 export default router;

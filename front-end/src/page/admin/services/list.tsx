@@ -6,76 +6,100 @@ import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
 import {
-  useDeleteServicesMutation,
   useServicesQuery,
+  useUpdateBlockServicesMutation,
 } from "../../../services/services";
+import { TStatus } from "../../../schema/status";
 
 const ServicesAdmin: React.FC = () => {
   const navigate = useNavigate();
-  const [removeServices] = useDeleteServicesMutation();
+  const { data } = useServicesQuery();
+  const [blockServices] = useUpdateBlockServicesMutation();
+
+  const confirmBlock = (id: number) => {
+    blockServices({ id: id, is_delete: 1 });
+    message.success("khóa thành công");
+  };
+
   const confirm = (id: number) => {
-    try {
-      removeServices(id);
-      message.success("Xóa thành công.");
-    } catch (error) {
-      message.error("Xóa không thành công.");
-    }
+    blockServices({ id: id, is_delete: 0 });
+    message.success("Mở thành công.");
   };
 
   const cancel = () => {
-    message.error("Xóa không thành công.");
+    message.error("khóa không thành công.");
   };
-  const { data } = useServicesQuery();
-  const columns: ColumnsType<TServices> = [
+
+  const columns: ColumnsType<TStatus> = [
     {
-      title: "ID",
+      title: "STT",
       dataIndex: "id",
       key: "id",
       fixed: "right",
-      width: 150,
+      width: 50,
+      render: (text, record, index) => index + 1,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      width: 150,
+      title: "Ảnh",
+      dataIndex: "image",
+      key: "img",
+      width: 90,
+      render: (img: string) => (
+        <div>
+          <img style={{ width: "100%" }} src={img} alt="img" />
+        </div>
+      ),
     },
     {
-      title: "Price",
+      title: "Giá",
       dataIndex: "price",
       key: "price",
       width: 150,
     },
     {
       title: "Thao tác",
-      key: "action",
-      dataIndex: "id",
+      key: "id",
       width: 100,
-      render: (id) => (
+      render: (services: TServices) => (
         <div>
-          <Link to={`edit/${id}`}>
+          <Link to={`edit/${services.id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
           </Link>
-          <Popconfirm
-            title="Xóa trạng thái."
-            description="Bạn có muốn xóa không?"
-            onConfirm={() => confirm(id)}
-            onCancel={cancel}
-            okText="Đồng ý"
-            cancelText="Không"
-          >
-            <Button danger className="btn-delete">
-              Xóa
-            </Button>
-          </Popconfirm>
+          {services.is_delete ? (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn mở khóa không?"
+              onConfirm={() => confirm(services.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button type="primary" ghost>
+                Mở Khóa
+              </Button>
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn khóa không?"
+              onConfirm={() => confirmBlock(services.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button danger className="btn-delete">
+                Khóa
+              </Button>
+            </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -90,7 +114,7 @@ const ServicesAdmin: React.FC = () => {
       >
         THÊM DỊCH VỤ
       </Button>
-      <TableAdmin columns={columns} data={data} />;
+      <TableAdmin columns={columns} data={data} />
     </>
   );
 };
