@@ -1,16 +1,26 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import "../../assets/scss/page/account/pet.scss";
 import { useGetAllUserPetsQuery } from "../../services/pets";
 import { EditOutlined, DeleteOutlined,PlusOutlined } from "@ant-design/icons";
+import ModalAddPetCLient from "../modal/modalAddPet";
+import { useGetUserQuery } from "../../services/user";
+
 const PetUser: FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
+  const { data: user } = useGetUserQuery();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => { 
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <div className="pet">
         <div className="pet-title">
           <div  className="pet-title-text"><h4>Thú cưng</h4></div>
           <div className="pet-title-add">
-            <button>Thêm</button>
+            <button onClick={showModal}>Thêm</button>
           </div>
           <div className="pet-title-plus">
           <PlusOutlined />
@@ -91,6 +101,12 @@ const PetUser: FC = () => {
               );
             })}
         </div>
+
+        <ModalAddPetCLient
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        idUser={Number(user?.id)}
+      />
       </div>
     </>
   );
