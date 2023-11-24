@@ -9,7 +9,7 @@ import LayoutBase from "./layout/base";
 import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -62,6 +62,7 @@ import AddCategory from "./page/admin/category/add";
 import EditCategory from "./page/admin/category/edit";
 import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
+import PaymentPage from "./page/base/Payment";
 import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
@@ -100,13 +101,11 @@ function App() {
               path="cancelledAppointment"
               element={<CancelledAppointment />}
             />
-
             <Route path="pet-user">
               <Route index element={<PetUser />} />
               <Route path="add" element={<AddPetPage />} />
               <Route path="edit/:id" element={<EditPetPage />} />
             </Route>
-
             <Route
               path="wait-for-confirmation-appointment"
               element={<WaitForConfirmation />}
@@ -220,6 +219,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
+        <Route path="payment" element={<PaymentPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

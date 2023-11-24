@@ -26,6 +26,7 @@ import category from "./routers/category";
 import products from "./routers/products";
 import carts from "./routers/carts";
 import statusPet from "./routers/status_pet";
+import vnpayRoutes from "./routers/vnpayRoutes";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -56,5 +57,5 @@ app.use("/api", category);
 app.use("/api", products);
 app.use("/api", carts);
 app.use("/api", statusPet);
-
+app.use("/api", vnpayRoutes);
 export const viteNodeApp = app;

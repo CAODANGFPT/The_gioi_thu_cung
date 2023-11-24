@@ -9,6 +9,7 @@ import {
   getAppointmentUserStatus,
   list,
   listAppointmentData,
+  searchAppointmentsAdmin,
   show,
   update,
   updateAppointmentStatus,
@@ -22,6 +23,8 @@ router.get("/appointment/:id", show);
 router.get("/getAllAppointmentData", listAppointmentData);
 router.get("/getAppointmentUser", getAppointmentUser);
 router.get("/getAppointmentUserStatus/:status_id", getAppointmentUserStatus);
+router.post("/searchAppointmentsAdmin", searchAppointmentsAdmin);
+
 
 
 router.post("/appointment", create);
