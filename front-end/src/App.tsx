@@ -78,6 +78,8 @@ import ConfirmedAppointment from "./components/account_info/appointment/confirme
 import PaidAppointment from "./components/account_info/appointment/paid";
 import UnpaidAppointment from "./components/account_info/appointment/unpaid";
 import PetUser from "./components/account_info/pet";
+import EditPetPage from "./components/account_info/editpet";
+import AddPetPage from "./components/account_info/addpet";
 
 function App() {
   return (
@@ -94,12 +96,27 @@ function App() {
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
             <Route path="follow" element={<Follow />} />
-            <Route path="cancelledAppointment" element={<CancelledAppointment />} />
-            <Route path="pet-user" element={<PetUser />} />
-            <Route path="wait-for-confirmation-appointment" element={<WaitForConfirmation />} />
+            <Route
+              path="cancelledAppointment"
+              element={<CancelledAppointment />}
+            />
+
+            <Route path="pet-user">
+              <Route index element={<PetUser />} />
+              <Route path="add" element={<AddPetPage />} />
+              <Route path="edit/:id" element={<EditPetPage />} />
+            </Route>
+
+            <Route
+              path="wait-for-confirmation-appointment"
+              element={<WaitForConfirmation />}
+            />
             <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
             <Route path="paid-appointment" element={<PaidAppointment />} />
-            <Route path="confirm-appointment" element={<ConfirmedAppointment />} />
+            <Route
+              path="confirm-appointment"
+              element={<ConfirmedAppointment />}
+            />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

@@ -14,7 +14,7 @@ router.get("/pets", listPet);
 router.get("/ListUserPets", listUserPet);
 router.get("/pets/:id", showPet);
 router.post("/pets", createPet);
-router.patch("/pets/:id", updatePet);
+router.put("/pets/:id", updatePet);
 router.delete("/pets/:id", deletePet);
 router.patch("/userPet", userPet);
 export default router;

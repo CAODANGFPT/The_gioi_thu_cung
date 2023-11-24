@@ -18,7 +18,7 @@ export const petSchema = joi.object({
   }),
   user_id: joi.number().required().messages({
     "String.empty": "userId không được để trống",
-    "any.required": "Trường quantity là bắt buộc",
+    "any.required": "Trường user_id là bắt buộc",
   }),
   species_id: joi.number().required().messages({
     "String.empty": "speciesId không được để trống",
@@ -28,7 +28,6 @@ export const petSchema = joi.object({
     "String.empty": "breedId không được để trống",
     "any.required": "Trường breedId là bắt buộc",
   }),
-  health_condition: joi.string().messages({
-    "String.empty": "health_condition không được để trống",
-  }),
+  status_id: joi.number(),
+  health_condition: joi.string().allow(""),
 });
