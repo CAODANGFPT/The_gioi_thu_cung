@@ -29,7 +29,7 @@ router.post("/searchAppointmentsAdmin", searchAppointmentsAdmin);
 
 router.post("/appointment", create);
 router.patch("/appointment/:id", update);
-router.patch("/appointmentStatus/:id", updateAppointmentStatus);
+router.put("/appointmentStatus/:id", updateAppointmentStatus);
 router.post("/appointmentTime", getAppointmentTime);
 router.patch("/cancelHistoryAppointment", cancelHistoryAppointment);
 router.get("/updateStatusCancelAppointment", updateStatusCancelAppointment);

@@ -9,7 +9,7 @@ import LayoutBase from "./layout/base";
 import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -79,6 +79,8 @@ import ConfirmedAppointment from "./components/account_info/appointment/confirme
 import PaidAppointment from "./components/account_info/appointment/paid";
 import UnpaidAppointment from "./components/account_info/appointment/unpaid";
 import PetUser from "./components/account_info/pet";
+import EditPetPage from "./components/account_info/editpet";
+import AddPetPage from "./components/account_info/addpet";
 
 function App() {
   return (
@@ -99,7 +101,11 @@ function App() {
               path="cancelledAppointment"
               element={<CancelledAppointment />}
             />
-            <Route path="pet-user" element={<PetUser />} />
+            <Route path="pet-user">
+              <Route index element={<PetUser />} />
+              <Route path="add" element={<AddPetPage />} />
+              <Route path="edit/:id" element={<EditPetPage />} />
+            </Route>
             <Route
               path="wait-for-confirmation-appointment"
               element={<WaitForConfirmation />}
