@@ -5,12 +5,8 @@ export const appointmentsSchema = joi.object({
   day: joi.string().required().messages({
     "String.empty": "Tên không được để trống",
   }),
-  pet: joi.array().items(
-    number
-  ),
-  services:  joi.array().items(
-    number
-  ),
+  pet: joi.array().items(number),
+  services: joi.array().items(number),
   user_id: joi.number().required().messages({
     "String.empty": "User_ID không được để trống",
     "any.required": "Trường User_ID là bắt buộc",
@@ -35,5 +31,3 @@ export const updateAppointmentStatusSchema = joi.object({
   id: joi.number().required(),
   status_id: joi.number().required(),
 });
-
-// day, pet_id, services_id, user_id, pethouse_id, time_id

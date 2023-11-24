@@ -2,6 +2,8 @@ import Appointments from "../models/appointments";
 import AppointmentsDetail from "../models/appointmentsDetail";
 import Services from "../models/services";
 import User from "../models/user";
+import nodemailer from "nodemailer";
+
 import {
   appointmentsSchema,
   updateAppointmentStatusSchema,
@@ -32,9 +34,7 @@ export const listAppointmentData = async (req, res) => {
             result.push({
               id: record.id,
               day: record.day,
-              services: [
-                { id: record.serviceId, name: record.serviceName },
-              ],
+              services: [{ id: record.serviceId, name: record.serviceName }],
               pets: [{ id: record.petId, name: record.petName }],
               total: record.total,
               start_time: record.start_time,
@@ -46,9 +46,9 @@ export const listAppointmentData = async (req, res) => {
               status_name: record.status_name,
             });
           } else {
-            const existingPetIndex = result[
-              existingRecordIndex
-            ].pets.findIndex((pet) => pet.id === record.petId);
+            const existingPetIndex = result[existingRecordIndex].pets.findIndex(
+              (pet) => pet.id === record.petId
+            );
             if (existingPetIndex === -1) {
               result[existingRecordIndex].pets.push({
                 id: record.petId,
@@ -136,6 +136,9 @@ export const create = async (req, res) => {
     );
     for (const item of services) {
       await AppointmentsDetail.createAppointmentsServices(appointmentsId, item);
+    }
+    for (const item of pet) {
+      await AppointmentsDetail.createAppointmentsPet(appointmentsId, item);
       const servicesDetails = await Services.getNameServicesById(item);
       if (servicesDetails && servicesDetails.length > 0) {
         const servicesName = servicesDetails[0].name;
@@ -246,7 +249,48 @@ export const updateAppointmentStatus = async (req, res) => {
         message: errors,
       });
     }
-    await Appointments.updateAppointmentStatus(req.params.id, status_id);
+    const appointmentId = req.params.id;
+    await Appointments.updateAppointmentStatus(appointmentId, status_id);
+    const appointment = await Appointments.getAppointmentsById(appointmentId);
+    const userId = appointment.user_id;
+    const user = await User.getUserById(userId);
+    if (user && user.email) {
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: "hainv21123@gmail.com",
+          pass: "yfaqudeffxnjptla",
+        },
+      });
+
+      const mailOptions = {
+        from: "hainv21123@gmail.com",
+        to: user.email,
+        subject: "Xác nhận đặt lịch thành công",
+        html: `<div style="font-family: sans-serif; margin: 0 40px;">
+          <img
+            style="width: 200px"
+            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
+            alt=""
+          />
+          <p>Chào <span style="font-weight: 600">${user.name},</span></p>
+          <p>
+            Chúc mừng bạn đã đặt lịch thành công tại
+            <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
+          </p>
+          <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+          <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
+          <div style="text-align: right;">
+            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
+            <p>Trân trọng,</p>
+            <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
+          </div>
+        </div>`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
+
     res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -457,9 +501,14 @@ export const updateStatusCancelAppointment = async () => {
 
 export const searchAppointmentsAdmin = async (req, res) => {
   try {
-    const {nameUser, pethouse_id, start_time, status_id} = req.body;
-    const appointments =await Appointments.searchAppointments(nameUser, pethouse_id, start_time, status_id);
-    if(appointments.length === 0) {
+    const { nameUser, pethouse_id, start_time, status_id } = req.body;
+    const appointments = await Appointments.searchAppointments(
+      nameUser,
+      pethouse_id,
+      start_time,
+      status_id
+    );
+    if (appointments.length === 0) {
       return res.status(400).json({
         message: "Không có lịch nào phù hợp",
       });
@@ -475,9 +524,7 @@ export const searchAppointmentsAdmin = async (req, res) => {
             result.push({
               id: record.id,
               day: record.day,
-              services: [
-                { id: record.serviceId, name: record.serviceName },
-              ],
+              services: [{ id: record.serviceId, name: record.serviceName }],
               pets: [{ id: record.petId, name: record.petName }],
               total: record.total,
               start_time: record.start_time,
@@ -489,9 +536,9 @@ export const searchAppointmentsAdmin = async (req, res) => {
               status_name: record.status_name,
             });
           } else {
-            const existingPetIndex = result[
-              existingRecordIndex
-            ].pets.findIndex((pet) => pet.id === record.petId);
+            const existingPetIndex = result[existingRecordIndex].pets.findIndex(
+              (pet) => pet.id === record.petId
+            );
             if (existingPetIndex === -1) {
               result[existingRecordIndex].pets.push({
                 id: record.petId,
