@@ -7,6 +7,7 @@ import {
   TCreateAppointment,
   TGetAppointmentTime,
   TGetAppointmentTimeRequest,
+  TSearchAppointment
 } from "../schema/appointments";
 
 const appointmentApi = createApi({
@@ -64,6 +65,19 @@ const appointmentApi = createApi({
         },
         invalidatesTags: ["Appointment"],
       }),
+      searchAddAppointment: builder.mutation<
+      TAppointment,
+        TSearchAppointment
+      >({
+        query: (appointments) => {
+          return {
+            url: "/searchAppointmentsAdmin",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
       updateStatusAppointment: builder.mutation<
         TAppointment,
         Partial<TAupdateStatusAppointment>
@@ -106,6 +120,7 @@ export const {
   useGetAppointmentUserStatusQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
+  useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
   useCancelHistoryAppointmentMutation,
   useGetAppointmentTimeMutation,

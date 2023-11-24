@@ -24,16 +24,7 @@ export default class Appointments {
   static getAppointmentsData() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, pets.name AS pet_name, " +
-          "services.name AS service_name, users.email AS user_email, " +
-          "pethouse.name AS pethouse_name," +
-          "status_appointment.name AS status_name " +
-          "FROM appointments " +
-          "JOIN pets ON appointments.pet_id = pets.id " +
-          "JOIN services ON appointments.services_id = services.id " +
-          "JOIN users ON appointments.user_id = users.id " +
-          "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
-          "JOIN status_appointment ON appointments.status_id = status_appointment.id",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, users.name AS user_name, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -260,7 +251,38 @@ export default class Appointments {
       );
     });
   }
+  static searchAppointments(nameUser, pethouse_id, start_time, status_id) {
+    let query = "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, users.name AS user_name, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id WHERE ";
+    const conditions = [];
 
+    if (nameUser) {
+      conditions.push(`users.name LIKE '%${nameUser}%'`);
+    } 
+    if (pethouse_id) {
+      conditions.push(`appointments.pethouse_id = '${pethouse_id}'`);
+    }
+    if (start_time) {
+      conditions.push(`DATE(appointments.start_time) = '${start_time}'`);
+    }
+    if (status_id) {
+      conditions.push(`appointments.status_id = '${status_id}'`);
+    }
+
+    if (conditions.length === 0) {
+      return Promise.reject({
+        error: "At least one search parameter is required.",
+      });
+    }
+
+    query += conditions.join(" AND ");
+
+    return new Promise((resolve, reject) => {
+      connection.query(query, (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
   static getAppointmentDetails(appointmentId) {
     return new Promise((resolve, reject) => {
       connection.query(
