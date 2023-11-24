@@ -212,8 +212,18 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { day, pet_id, services_id, user_id, pethouse_id, time_id } =
-      req.body;
+    const {
+      day,
+      pet,
+      services,
+      user_id,
+      pethouse_id,
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete,
+    } = req.body;
     const { error } = appointmentsSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -224,11 +234,15 @@ export const update = async (req, res) => {
     await Appointments.updateAppointments(
       req.params.id,
       day,
-      pet_id,
-      services_id,
+      pet,
+      services,
       user_id,
       pethouse_id,
-      time_id
+      start_time,
+      end_time,
+      total,
+      status_id,
+      is_delete
     );
     res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {

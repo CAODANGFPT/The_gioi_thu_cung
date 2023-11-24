@@ -68,20 +68,36 @@ const Appointment: React.FC = () => {
   const [appointmentData] = useState<any>(
     location.state?.appointmentData || undefined
   );
+  console.log(appointmentData);
+
   useEffect(() => {
     const fetchData = async () => {
       if (appointmentData) {
-        const petIds = appointmentData.pets.map(
+        const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id
         );
         const serviceId = appointmentData.services.map(
           (item: { id: number }) => item.id
         );
-        form.setFieldsValue({
-          services: serviceId,
-          pet: petIds,
-          petHouse_id: appointmentData.pethouse_id,
-        });
+        if (appointmentData.type === 1) {
+          form.setFieldsValue({
+            services: serviceId,
+          });
+        } else if (appointmentData.type === 2) {
+          form.setFieldsValue({
+            services: serviceId,
+            pet: petIds,
+            petHouse_id: appointmentData.pethouse_id,
+          });
+        } else if (appointmentData.type === 3) {
+          form.setFieldsValue({
+            services: serviceId,
+            pet: petIds,
+            petHouse_id: appointmentData.pethouse_id,
+            start_time: dayjs(appointmentData.start_time),
+          });
+          setEndTime(dayjs(appointmentData.end_time));
+        }
         listPets(petIds);
         setDefaultValue(petIds);
         setIdServices(serviceId);
@@ -91,6 +107,7 @@ const Appointment: React.FC = () => {
     };
     fetchData();
   }, [appointmentData, form, services]);
+
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
     label: item.name,
@@ -108,6 +125,7 @@ const Appointment: React.FC = () => {
     label: item.name,
     disabled: item.id === namePet,
   }));
+
   const onFinish = async (values: TFinish) => {
     const newData = {
       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
@@ -116,6 +134,26 @@ const Appointment: React.FC = () => {
       user_id: user?.id,
       services: values.services,
       start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      total: total,
+      status_id: 1,
+    };
+    const resAppointment = await createAppointment(newData);
+    if ("data" in resAppointment) {
+      message.success(resAppointment.data.message);
+      navigate("/cart");
+    }
+  };
+
+  const handleUpdate = async () => {
+    const newValue = form.getFieldsValue();
+    const newData = {
+      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
+      pethouse_id: newValue.petHouse_id,
+      pet: newValue.pet,
+      user_id: user?.id,
+      services: newValue.services,
+      start_time: dayjs(newValue.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
       status_id: 1,
@@ -538,9 +576,15 @@ const Appointment: React.FC = () => {
             </Form.Item>
             <Form.Item>
               <Space>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                {appointmentData.type === 3 ? (
+                  <Button type="primary" onClick={() => handleUpdate()}>
+                    Sửa
+                  </Button>
+                ) : (
+                  <Button type="primary" htmlType="submit">
+                    Đăng ký
+                  </Button>
+                )}
               </Space>
             </Form.Item>
           </div>

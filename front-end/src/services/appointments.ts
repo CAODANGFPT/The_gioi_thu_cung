@@ -52,6 +52,15 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+      showAppointment: builder.query<TAppointment[], number>({
+        query: (id) => {
+          return {
+            url: `/appointment/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
       addAppointment: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointment>
@@ -118,6 +127,7 @@ const appointmentApi = createApi({
 export const {
   useGetAllappointmentDataQuery,
   useGetAppointmentUserStatusQuery,
+  useShowAppointmentQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
