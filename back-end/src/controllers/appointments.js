@@ -2,14 +2,9 @@ import Appointments from "../models/appointments";
 import AppointmentsDetail from "../models/appointmentsDetail";
 import Services from "../models/services";
 import User from "../models/user";
+import { updateAppointmentStatusSchema } from "../schemas/appointments";
 import nodemailer from "nodemailer";
-
-import {
-  appointmentsSchema,
-  updateAppointmentStatusSchema,
-} from "../schemas/appointments";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
 import Pet from "../models/pet";
 
 export const list = async (req, res) => {
@@ -120,7 +115,6 @@ export const create = async (req, res) => {
       end_time,
       total,
       status_id,
-      is_delete,
     } = req.body;
     const petNamesArray = [];
     const ServicesArray = [];
@@ -131,8 +125,7 @@ export const create = async (req, res) => {
       start_time,
       end_time,
       total,
-      status_id,
-      is_delete
+      status_id
     );
     for (const item of services) {
       await AppointmentsDetail.createAppointmentsServices(appointmentsId, item);
@@ -214,24 +207,26 @@ export const create = async (req, res) => {
 };
 
 export const update = async (req, res) => {
+  const id = Number(req.params.id);
   try {
-    const { day, pet_id, services_id, user_id, pethouse_id, time_id } =
+    const { pet, services, pethouse_id, start_time, end_time, total } =
       req.body;
-    const { error } = appointmentsSchema.validate(req.body);
-    if (error) {
-      const errors = error.details.map((errorItem) => errorItem.message);
-      return res.status(400).json({
-        message: errors,
-      });
+    await AppointmentsDetail.removeAppointmentsPet(id);
+    await AppointmentsDetail.removeAppointmentsServices(id);
+
+    for (const item of services) {
+      await AppointmentsDetail.createAppointmentsServices(id, item);
+    }
+
+    for (const item of pet) {
+      await AppointmentsDetail.createAppointmentsPet(id, item);
     }
     await Appointments.updateAppointments(
-      req.params.id,
-      day,
-      pet_id,
-      services_id,
-      user_id,
+      id,
       pethouse_id,
-      time_id
+      start_time,
+      total,
+      end_time
     );
     res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {

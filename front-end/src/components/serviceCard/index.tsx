@@ -12,7 +12,17 @@ const ServiceCard: FC<ServiceCardProps> = ({ id, name, image }) => {
   return (
     <div
       className="home-listCate-item"
-      onClick={() => navigate(`/appointment/${id}`)}
+      onClick={() =>
+        navigate(`/appointment`, {
+          state: {
+            appointmentData: {
+              pets: [],
+              services: [{ id, name }],
+              type: 1,
+            },
+          },
+        })
+      }
     >
       <div className="top">
         <img src={image} alt="" />

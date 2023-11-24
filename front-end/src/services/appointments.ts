@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AppointmentResponse,
   TAppointment,
+  TAppointmentUpdateSchema,
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
@@ -52,6 +53,15 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+      showAppointment: builder.query<TAppointment[], number>({
+        query: (id) => {
+          return {
+            url: `/appointment/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
       addAppointment: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointment>
@@ -89,6 +99,18 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+
+      updateAppointment: builder.mutation<
+        TAppointmentUpdateSchema,
+        Partial<TAppointmentUpdateSchema>
+      >({
+        query: (appointments) => ({
+          url: `/appointment/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
       getAppointmentTime: builder.mutation<
         TGetAppointmentTime[],
         Partial<TGetAppointmentTimeRequest>
@@ -118,10 +140,12 @@ const appointmentApi = createApi({
 export const {
   useGetAllappointmentDataQuery,
   useGetAppointmentUserStatusQuery,
+  useShowAppointmentQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
   useGetAppointmentTimeMutation,
 } = appointmentApi;
