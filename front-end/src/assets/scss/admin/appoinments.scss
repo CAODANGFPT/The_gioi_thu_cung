@@ -1,0 +1,18 @@
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
+
+.search-appointments{
+  display: flex;
+  justify-content: space-between;
+  &-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    @include max-screen(420px) {
+      grid-template-columns: 1fr;
+    }
+    .ant-form-item{
+      margin: 0;
+    }
+  }
+}

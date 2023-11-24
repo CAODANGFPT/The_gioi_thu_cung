@@ -22,7 +22,72 @@ export const list = async (req, res) => {
 export const listAppointmentData = async (req, res) => {
   try {
     const appointments = await Appointments.getAppointmentsData();
-    res.json(appointments);
+    const uniqueData = appointments.reduce((result, record) => {
+      if (record && record.id !== undefined) {
+        if (Array.isArray(result) && result.length > 0) {
+          const existingRecordIndex = result.findIndex(
+            (r) => r.id === record.id
+          );
+          if (existingRecordIndex === -1) {
+            result.push({
+              id: record.id,
+              day: record.day,
+              services: [
+                { id: record.serviceId, name: record.serviceName },
+              ],
+              pets: [{ id: record.petId, name: record.petName }],
+              total: record.total,
+              start_time: record.start_time,
+              end_time: record.end_time,
+              user_email: record.user_email,
+              user_name: record.user_name,
+              pethouse_name: record.pethouse_name,
+              pethouse_id: record.pethouse_id,
+              status_name: record.status_name,
+            });
+          } else {
+            const existingPetIndex = result[
+              existingRecordIndex
+            ].pets.findIndex((pet) => pet.id === record.petId);
+            if (existingPetIndex === -1) {
+              result[existingRecordIndex].pets.push({
+                id: record.petId,
+                name: record.petName,
+              });
+            }
+            const existingServicesIndex = result[
+              existingRecordIndex
+            ].services.findIndex(
+              (services) => services.id === record.serviceId
+            );
+            if (existingServicesIndex === -1) {
+              result[existingRecordIndex].services.push({
+                id: record.serviceId,
+                name: record.serviceName,
+              });
+            }
+          }
+        } else {
+          result.push({
+            id: record.id,
+            day: record.day,
+            services: [{ id: record.serviceId, name: record.serviceName }],
+            pets: [{ id: record.petId, name: record.petName }],
+            total: record.total,
+            start_time: record.start_time,
+            end_time: record.end_time,
+            user_email: record.user_email,
+            user_name: record.user_name,
+            pethouse_name: record.pethouse_name,
+            pethouse_id: record.pethouse_id,
+            status_name: record.status_name,
+          });
+        }
+      }
+      return result;
+    }, []);
+
+    res.json(uniqueData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -387,5 +452,89 @@ export const updateStatusCancelAppointment = async () => {
     }
   } catch (error) {
     console.error("Error:", error);
+  }
+};
+
+export const searchAppointmentsAdmin = async (req, res) => {
+  try {
+    const {nameUser, pethouse_id, start_time, status_id} = req.body;
+    const appointments =await Appointments.searchAppointments(nameUser, pethouse_id, start_time, status_id);
+    if(appointments.length === 0) {
+      return res.status(400).json({
+        message: "Không có lịch nào phù hợp",
+      });
+    }
+
+    const uniqueData = appointments.reduce((result, record) => {
+      if (record && record.id !== undefined) {
+        if (Array.isArray(result) && result.length > 0) {
+          const existingRecordIndex = result.findIndex(
+            (r) => r.id === record.id
+          );
+          if (existingRecordIndex === -1) {
+            result.push({
+              id: record.id,
+              day: record.day,
+              services: [
+                { id: record.serviceId, name: record.serviceName },
+              ],
+              pets: [{ id: record.petId, name: record.petName }],
+              total: record.total,
+              start_time: record.start_time,
+              end_time: record.end_time,
+              user_email: record.user_email,
+              user_name: record.user_name,
+              pethouse_name: record.pethouse_name,
+              pethouse_id: record.pethouse_id,
+              status_name: record.status_name,
+            });
+          } else {
+            const existingPetIndex = result[
+              existingRecordIndex
+            ].pets.findIndex((pet) => pet.id === record.petId);
+            if (existingPetIndex === -1) {
+              result[existingRecordIndex].pets.push({
+                id: record.petId,
+                name: record.petName,
+              });
+            }
+            const existingServicesIndex = result[
+              existingRecordIndex
+            ].services.findIndex(
+              (services) => services.id === record.serviceId
+            );
+            if (existingServicesIndex === -1) {
+              result[existingRecordIndex].services.push({
+                id: record.serviceId,
+                name: record.serviceName,
+              });
+            }
+          }
+        } else {
+          result.push({
+            id: record.id,
+            day: record.day,
+            services: [{ id: record.serviceId, name: record.serviceName }],
+            pets: [{ id: record.petId, name: record.petName }],
+            total: record.total,
+            start_time: record.start_time,
+            end_time: record.end_time,
+            user_email: record.user_email,
+            user_name: record.user_name,
+            pethouse_name: record.pethouse_name,
+            pethouse_id: record.pethouse_id,
+            status_name: record.status_name,
+          });
+        }
+      }
+      return result;
+    }, []);
+    return res.status(200).json({
+      uniqueData,
+      message: "search thành công",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
   }
 };
