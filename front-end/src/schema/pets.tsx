@@ -9,7 +9,7 @@ export const PetsSchema = yup.object().shape({
   nameUser: yup.number(),
   nameSpecies: yup.number(),
   nameBreed: yup.number(),
-});
+}).required();
 
 export const PetsRequestSchema = yup.object().shape({
   id: yup.number(),
@@ -23,7 +23,7 @@ export const PetsRequestSchema = yup.object().shape({
 });
 
 export const PetsResponseSchema = yup.object().shape({
-  id: yup.number(),
+  data: PetsSchema,
   message: yup.string(),
 });
 
@@ -41,3 +41,13 @@ export const UserPetsSchema = yup.object().shape({
 });
 
 export type TUserPets = yup.InferType<typeof UserPetsSchema>;
+
+export const UserPetRequestSchema = yup.object().shape({
+  data: yup.array().of(
+    yup.object().shape({
+      pet_id: yup.number().required(),
+    })
+  ),
+});
+
+export type TUserPet = yup.InferType<typeof UserPetRequestSchema>;

@@ -96,10 +96,8 @@
         height: auto;
 
         @include max-screen($md) {
-          width: 100px;
-          height: auto;
-          z-index: 10;
-        }
+            display: none
+          }
       }
     }
 

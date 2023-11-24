@@ -7,6 +7,7 @@ import {
   TCreateAppointment,
   TGetAppointmentTime,
   TGetAppointmentTimeRequest,
+  TSearchAppointment
 } from "../schema/appointments";
 
 const appointmentApi = createApi({
@@ -42,6 +43,15 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+      getAppointmentUserStatus: builder.query<TAppointment[], number>({
+        query: (status_id) => {
+          return {
+            url: `/getAppointmentUserStatus/${status_id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
       addAppointment: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointment>
@@ -49,6 +59,19 @@ const appointmentApi = createApi({
         query: (appointments) => {
           return {
             url: "/appointment",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
+      searchAddAppointment: builder.mutation<
+      TAppointment,
+        TSearchAppointment
+      >({
+        query: (appointments) => {
+          return {
+            url: "/searchAppointmentsAdmin",
             method: "POST",
             body: appointments,
           };
@@ -94,8 +117,10 @@ const appointmentApi = createApi({
 
 export const {
   useGetAllappointmentDataQuery,
+  useGetAppointmentUserStatusQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
+  useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
   useCancelHistoryAppointmentMutation,
   useGetAppointmentTimeMutation,

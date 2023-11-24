@@ -55,11 +55,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
     });
   }, [form, user.id, user.img, user.name, user.email, user.phone, user.gender]);
   const handleImageChange = ({ fileList: newFileList } : any) => {
-    console.log(newFileList);
     if(newFileList[0].response){
       setImage(newFileList[0].response.secure_url);
-      console.log(image);
-      
     }
     setFileList(newFileList);
   };
@@ -80,7 +77,6 @@ const EditProfile: React.FC<EditProfileProps> = ({
         phone: values.phone,
         gender: values.gender,
       };
-      console.log(dataUpdate);
       await updateProfile(dataUpdate).unwrap();
       message.success("thay đổi dữ liệu thành công");
     } catch (error: any) {

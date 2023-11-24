@@ -1,49 +1,55 @@
-import { Select } from "antd";
+import "../../../assets/scss/admin/appoinments.scss";
+import { useState, useEffect } from "react";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import React from "react";
 import TableAdmin from "../../../components/table";
-import { TAppointment } from "../../../schema/appointments";
+import { TAppointmentSchemaRes } from "../../../schema/appointments";
+import { TpetHouse } from "../../../schema/pethouse";
 import {
   useGetAllappointmentDataQuery,
-  useUpdateStatusAppointmentMutation,
+  useSearchAddAppointmentMutation,
 } from "../../../services/appointments";
+import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
 const AppointmentsAdmin: React.FC = () => {
+  const [dataAppoiment, setDataAppoiment] = useState<any | null>(null);
   const { data } = useGetAllappointmentDataQuery();
-  const { data: status } = useStatusQuery();
-  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  useEffect(() => {
+    if (data) {
+      setDataAppoiment(data);
+    }
+  }, [data]);
+  const { data: petHouse } = useGetAllpetHouseQuery();
+  const [searchAddAppointment] = useSearchAddAppointmentMutation();
 
-  const options = status?.map((item) => ({
+  const { data: petStatus } = useStatusQuery();
+
+  const optionsPetHouse = petHouse?.map((item: TpetHouse) => ({
     value: item.id,
     label: item.name,
+    disabled: item.status_id === 1,
   }));
-
-  const handleChange = async ({
-    id,
-    status_id,
-  }: {
-    id: number;
-    status_id: number;
-  }) => {
-    console.log(id, status_id);
-    await updateStatusAppointment({ id, status_id });
-  };
-
-  const columns: ColumnsType<TAppointment> = [
+  const optionsStatus = petStatus?.map((item: TpetHouse) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.status_id === 1,
+  }));
+  const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
       title: "STT",
       dataIndex: "id",
       key: "id",
       fixed: "right",
-      width: 50,
+      width: 20,
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Email người dùng",
-      dataIndex: "user_email",
-      key: "user_email",
-      width: 150,
+      title: "Người đặt",
+      dataIndex: "user_name",
+      key: "user_name",
+      width: 100,
     },
     {
       title: "Ngày đặt",
@@ -54,15 +60,39 @@ const AppointmentsAdmin: React.FC = () => {
     },
     {
       title: "Tên thú cưng",
-      dataIndex: "pet_name",
-      key: "pet_name",
+      dataIndex: "pets",
+      key: "pets",
       width: 100,
+      render: (pets) => (
+        <div>
+          {pets &&
+            Array.isArray(pets) &&
+            pets.map((pet, serviceIndex) => (
+              <span key={serviceIndex}>
+                {pet.name}
+                {serviceIndex < pets.length - 1 ? ", " : ""}
+              </span>
+            ))}
+        </div>
+      ),
     },
     {
       title: "Tên dịch vụ",
-      dataIndex: "service_name",
-      key: "service_name",
+      dataIndex: "services",
+      key: "services",
       width: 100,
+      render: (services) => (
+        <div>
+          {services &&
+            Array.isArray(services) &&
+            services.map((service, serviceIndex) => (
+              <span key={serviceIndex}>
+                {service.name}
+                {serviceIndex < services.length - 1 ? ", " : ""}
+              </span>
+            ))}
+        </div>
+      ),
     },
 
     {
@@ -73,13 +103,14 @@ const AppointmentsAdmin: React.FC = () => {
     },
     {
       title: "Thời gian Ca",
+      key: "time",
       width: 100,
       render: (data) => (
         <>
           {data.start_time && data.end_time ? (
             <div>
-              ({dayjs(data.start_time, "HH:mm:ss").format("HH:mm")} -
-              {dayjs(data.end_time, "HH:mm:ss").format("HH:mm")})
+              {dayjs(data.start_time).format("HH:mm")} -
+              {dayjs(data.end_time).format("HH:mm")}
             </div>
           ) : (
             <div>null</div>
@@ -89,24 +120,85 @@ const AppointmentsAdmin: React.FC = () => {
     },
     {
       title: "Trạng thái",
+      dataIndex: "status_name",
       key: "status_name",
       width: 100,
-      render: (appointment) => (
+      render: (status_name) => (
         <>
-          <Select
-            defaultValue={appointment.status_name}
-            style={{ width: "100%" }}
-            onChange={(status_id) =>
-              handleChange({ id: appointment.id, status_id: status_id })
-            }
-            options={options}
-          />
+          <div>{status_name}</div>
+        </>
+      ),
+    },
+    {
+      key: "action",
+      width: 100,
+      render: (data) => (
+        <>
+          <div>
+            <button>Chi tiết</button>
+            <button>Chi tiết</button>
+          </div>
         </>
       ),
     },
   ];
-
-  return <TableAdmin columns={columns} data={data} />;
+  const onFinish = async (values: any) => {
+    if(values.start_time){
+      values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
+    }
+    const { nameUser, pethouse_id, start_time, status_id } = values;
+    const servicesData = {
+      nameUser,
+      pethouse_id,
+      start_time: start_time,
+      status_id,
+    };
+   
+    try {
+      const data: any = await searchAddAppointment(servicesData).unwrap();
+      setDataAppoiment(data.uniqueData);
+    } catch (error) {
+      console.log(error);
+      message.error("Không tìm thấy bài nào phù hợp");
+    }
+  };
+  return (
+    <>
+      <h4>Tìm kiếm</h4>
+      <Form
+        name="validateOnly"
+        className="search-appointments"
+        layout="vertical"
+        autoComplete="off"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        // onFinishFailed={onFinishFailed}
+      >
+        <div className="search-appointments-form">
+          <Form.Item name="nameUser" label="Tên người đặt">
+            <Input />
+          </Form.Item>
+          <Form.Item name="pethouse_id" label="Phòng">
+            <Select options={optionsPetHouse} />
+          </Form.Item>
+          <Form.Item label="Ngày" name="start_time" style={{ width: "100%" }}>
+            <DatePicker
+              style={{ width: "100%" }}
+              format="YYYY-MM-DD"
+              showNow={false}
+            />
+          </Form.Item>
+          <Form.Item name="status_id" label="Trạng thái">
+            <Select options={optionsStatus} />
+          </Form.Item>
+        </div>
+        <div>
+          <Button htmlType="submit">Tìm kiếm</Button>
+        </div>
+      </Form>
+      <TableAdmin columns={columns} data={dataAppoiment} />;
+    </>
+  );
 };
 
 export default AppointmentsAdmin;

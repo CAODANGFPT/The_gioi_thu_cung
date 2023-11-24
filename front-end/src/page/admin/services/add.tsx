@@ -31,13 +31,11 @@ const AddService = () => {
       description,
     };
     try {
-      console.log(servicesData);
 
       await addServices(servicesData).unwrap();
       message.success("Product added successfully");
       reset();
       navigate("/admin/services");
-      console.log(servicesData);
     } catch (error) {
       message.error("Failed to add product");
     }

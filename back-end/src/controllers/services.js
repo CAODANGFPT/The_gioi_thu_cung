@@ -75,9 +75,7 @@ export const update = async (req, res) => {
     await Services.updateServices(serviceId, name,image, description, price);
     res.json({ message: "Dịch vụ đã được cập nhật thành công" });
   } catch (err) {
-    // Log the error for debugging purposes
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: err });
   }
 };
 

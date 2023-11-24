@@ -50,7 +50,6 @@ export const Login = async (req, res) => {
       });
     }
     const user = await User.checkEmailExists(email);
-    console.log(user);
     if (!user) {
       return res.status(404).json({ message: "Email không tồn tại" });
     }
@@ -146,7 +145,6 @@ export const resetPassword = async (req, res) => {
   const { email, token, password } = req.body;
   try {
     bcrypt.compare(email, token, (err, result) => {
-      console.log("compare", result);
       if (result == true) {
         bcrypt
           .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))

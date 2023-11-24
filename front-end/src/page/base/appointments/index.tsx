@@ -1,26 +1,14 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Space,
-  Upload,
-  UploadFile,
-  message,
-} from "antd";
+import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/page/appointment.scss";
-import { TBreed } from "../../../schema/breed";
+import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
-import { Tspecies } from "../../../schema/species";
 import {
   useAddAppointmentMutation,
   useGetAppointmentTimeMutation,
@@ -28,24 +16,18 @@ import {
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
-  useCreatePetsMutation,
   useGetAllUserPetsQuery,
+  useUserPetMutation,
 } from "../../../services/pets";
-import {
-  useServicesByIdQuery,
-  useServicesQuery,
-} from "../../../services/services";
+import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
-import {
-  TCreateAppointment,
-  TGetAppointmentTime,
-} from "../../../schema/appointments";
+import ModalAddPet from "./modalAddPet";
 
 type TFinish = {
   petHouse_id: number;
-  pet_id: number[];
-  services_id: number[];
+  pet: number[];
+  services: number[];
   start_time: string;
   end_time: string;
   total: number;
@@ -59,36 +41,19 @@ type TFinish = {
 const Appointment: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [image, setImage] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [pets, setPets] = useState<
-    {
-      value: number | undefined;
-      label: string | undefined;
-    }[]
-  >([]);
-  const [pet, setPet] = useState<TPets | undefined>({});
-  const [openAddPest, setOpenAddPest] = useState<boolean>(true);
-  const [openBreed, setOpenBreed] = useState<boolean>(false);
+  const [pet, setPet] = useState<TPets[]>([]);
+  const [openAddPest, setOpenAddPest] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
-  const [petHouseOpenTime, setPetHouseOpenTime] = useState<boolean>(false);
-  // const [timeServices, setTimeServices] = useState<Date>();
   const [idSpecies, setIdSpecies] = useState<number>(0);
+  const [timeServices, setTimeServices] = useState<number>(0);
   const [idServices, setIdServices] = useState<number[]>([]);
-  const [idPetHouse, setIdPetHouse] = useState<number>(0);
   const [total, setTotal] = useState<number | undefined>(0);
-  const [dateTime, setDateTime] = useState<string>("");
+  const [totalServices, setTotalServices] = useState<number | undefined>(0);
+  const [namePet, setNamePet] = useState<number>();
+  const [defaultValue, setDefaultValue] = useState<number[]>([]);
+  const [valueId, setValueId] = useState<number | undefined>();
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "",
-    },
-  ]);
-
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseQuery();
   const { data: services } = useServicesQuery();
@@ -97,43 +62,35 @@ const Appointment: React.FC = () => {
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
-  const [createSPets] = useCreatePetsMutation();
-
+  const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
-  const { data: servicesById, isLoading } = useServicesByIdQuery(
-    Number(idService)
+  const location = useLocation();
+  const [appointmentData] = useState<any>(
+    location.state?.appointmentData || undefined
   );
-
   useEffect(() => {
-    if (listPet) {
-      const optionsPet = listPet?.map((item: TUserPets) => ({
-        value: item.id,
-        label: item.name,
-      }));
-      setPets(optionsPet);
-    }
-  }, [listPet]);
-
-  const handleImageChange = (info: any) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-    } else if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      setImage(info.file.response.url);
-      setLoading(false);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
-    }
-  };
-
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Tải ảnh</div>
-    </div>
-  );
-
+    const fetchData = async () => {
+      if (appointmentData) {
+        const petIds = appointmentData.pets.map(
+          (item: { id: number }) => item.id
+        );
+        const serviceId = appointmentData.services.map(
+          (item: { id: number }) => item.id
+        );
+        form.setFieldsValue({
+          services: serviceId,
+          pet: petIds,
+          petHouse_id: appointmentData.pethouse_id,
+        });
+        listPets(petIds);
+        setDefaultValue(petIds);
+        setIdServices(serviceId);
+        totalService(serviceId);
+        setServicesOpenTime(true);
+      }
+    };
+    fetchData();
+  }, [appointmentData, form, services]);
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
     label: item.name,
@@ -146,74 +103,35 @@ const Appointment: React.FC = () => {
     disabled: item.status_id === 1,
   }));
 
+  const optionsPet = listPet?.map((item: TUserPets) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.id === namePet,
+  }));
   const onFinish = async (values: TFinish) => {
-    const petNew = {
-      img: image,
-      name: values.name,
-      age: values.age,
-      gender: values.gender,
-      user_id: user?.id,
-      species_id: values.species_id,
-      breed_id: values.breed_id,
-    };
     const newData = {
       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
       pethouse_id: values.petHouse_id,
-      pet_id: values.pet_id,
+      pet: values.pet,
       user_id: user?.id,
-      services_id: values.services_id,
+      services: values.services,
       start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
       status_id: 1,
     };
-    // if (openAddPest) {
-    //   const res = await createSPets(petNew);
-    //   if ("data" in res) {
-    //     const resAppointment = await createAppointment({
-    //       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
-    //       pet_id: res.data.id,
-    //       user_id: user?.id,
-    //       pethouse_id: values.petHouse_id,
-    //       start_time: dayjs(values.start_time).format(
-    //         "YYYY-MM-DDTHH:mm:ssZ[Z]"
-    //       ),
-    //       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-    //       total: total,
-    //       status_id: 1,
-    //     });
-    //     if ("data" in resAppointment) {
-    //       message.success(resAppointment.data.message);
-    //       navigate("/cart");
-    //     }
-    //   }
-    // } else {
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
       message.success(resAppointment.data.message);
       navigate("/cart");
     }
-    // }
   };
 
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
   };
 
-  const onChangeSpecies = (value: number) => {
-    setOpenBreed(true);
-    setIdSpecies(value);
-    form.resetFields(["breed_id"]);
-  };
-
   const onChangePetHouse = async (value: number) => {
-    setPetHouseOpenTime(true);
-    setIdPetHouse(value);
-    const servicesId =
-      services?.filter((service) => idServices.includes(service.id)) || [];
-    const totalServices =
-      servicesId?.reduce((acc, service) => acc + (service.price ?? 0), 0) ?? 0;
-    setTotal(totalServices);
     form.setFieldValue("start_time", null);
     setEndTime(null);
     const res = await getAppointmentTime({ pethouse_id: value });
@@ -229,17 +147,6 @@ const Appointment: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    setFileList([
-      {
-        uid: "-1",
-        name: "image.png",
-        status: "done",
-        url: pet?.img,
-      },
-    ]);
-  }, [pet?.img]);
-
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     if (!current) {
       return false;
@@ -250,6 +157,22 @@ const Appointment: React.FC = () => {
   };
 
   const disabledDateTime = (current: Dayjs | null) => {
+    const servicesId =
+      services?.filter((service) => idServices.includes(service.id)) || [];
+    const totalMilliseconds = servicesId.reduce((total, service) => {
+      const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+      if (regexResult) {
+        const [, hours, minutes, seconds] = regexResult;
+        const milliseconds =
+          parseInt(hours, 10) * 3600000 +
+          parseInt(minutes, 10) * 60000 +
+          parseInt(seconds, 10) * 1000;
+
+        return total + milliseconds * pet.length;
+      }
+
+      return total;
+    }, 0);
     return {
       disabledHours: () => {
         const defaultDisabledHours = Array.from(
@@ -276,15 +199,22 @@ const Appointment: React.FC = () => {
               current.isSame(startTime, "day") &&
               current.isSame(endTime, "day")
             ) {
+              let newStartTime = startTime.subtract(
+                totalMilliseconds,
+                "millisecond"
+              );
+              let newEndTime = endTime;
+              if (newEndTime.minute() > 0) {
+                newEndTime = newEndTime.subtract(1, "minute");
+              }
               disabledHours = disabledHours.concat(
                 Array.from({ length: 24 }, (_, i) => i).filter(
                   (hour) =>
-                    hour >= startTime.hour() && hour <= endTime.hour() - 1
+                    hour >= newStartTime.hour() + 1 && hour <= newEndTime.hour()
                 )
               );
             }
           });
-
           return [...defaultDisabledHours, ...disabledHours];
         }
       },
@@ -295,6 +225,10 @@ const Appointment: React.FC = () => {
           const startTime = dayjs(start_time);
           const endTime = dayjs(end_time);
 
+          let newStartTime = startTime.subtract(
+            totalMilliseconds,
+            "millisecond"
+          );
           if (
             current &&
             current.isSame(startTime, "day") &&
@@ -307,16 +241,29 @@ const Appointment: React.FC = () => {
                 )
               );
             }
+            if (current.hour() === newStartTime.hour()) {
+              if (newStartTime.hour() === 9) {
+                disabledMinutes = disabledMinutes.concat(
+                  Array.from({ length: 60 }, (_, i) => i).filter(
+                    (minute) => minute > 0
+                  )
+                );
+              } else {
+                disabledMinutes = disabledMinutes.concat(
+                  Array.from({ length: 60 }, (_, i) => i).filter(
+                    (minute) => minute > newStartTime.minute()
+                  )
+                );
+              }
+            }
           }
         });
-
         return disabledMinutes;
       },
     };
   };
 
   const onChangeTime = (value: Dayjs | null, dateString: string) => {
-    setDateTime(dateString);
     if (value) {
       const servicesId =
         services?.filter((service) => idServices.includes(service.id)) || [];
@@ -324,24 +271,47 @@ const Appointment: React.FC = () => {
       if (servicesId.length > 0) {
         const totalMilliseconds = servicesId.reduce((total, service) => {
           const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
-
           if (regexResult) {
             const [, hours, minutes, seconds] = regexResult;
             const milliseconds =
               parseInt(hours, 10) * 3600000 +
               parseInt(minutes, 10) * 60000 +
               parseInt(seconds, 10) * 1000;
-            return total + milliseconds;
+
+            return total + milliseconds * pet.length;
           }
 
           return total;
         }, 0);
 
         if (totalMilliseconds > 0) {
-          const newEndTime = dayjs(dateString).add(
+          let newEndTime = dayjs(dateString).add(
             totalMilliseconds,
             "millisecond"
           );
+          if (newEndTime.hour() > 18) {
+            const currentHour = newEndTime.hour();
+            const currentMinute = newEndTime.minute();
+            const remainingMinutes = (currentHour - 18) * 60 + currentMinute;
+            const remainingHours = Math.floor(remainingMinutes / 60);
+            const remainingMinutesAfterHours = remainingMinutes % 60;
+            newEndTime = newEndTime.add(1, "day");
+            newEndTime = newEndTime
+              .hour(9)
+              .minute(0)
+              .second(0)
+              .millisecond(0)
+              .add(remainingHours, "hours")
+              .add(remainingMinutesAfterHours, "minutes");
+          }
+          if (value.hour() < 12 && newEndTime.hour() >= 12) {
+            if (newEndTime.hour() === 12 && newEndTime.minute() > 0) {
+              newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+            } else {
+              newEndTime = newEndTime.add(3, "millisecond");
+            }
+          }
+
           setEndTime(newEndTime);
         } else {
           setEndTime(null);
@@ -354,63 +324,122 @@ const Appointment: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const servicesId =
-      services?.filter((service) => idServices.includes(service.id)) || [];
-
-    servicesId.forEach((service) => {
-      const regexResult = service?.time.match(/(\d+):(\d+):(\d+)/);
-
-      if (regexResult) {
-        const [extractedHour, ,] = regexResult;
-        console.log(extractedHour);
+  const listPets = async (value: number[]) => {
+    if (value.length > 0) {
+      const petData = value.map((petId) => ({
+        pet_id: petId,
+      }));
+      const pets = await userPet({ data: petData });
+      if ("data" in pets) {
+        setPet(pets.data);
       }
-    });
-  }, [idServices, services]);
-
-  // useEffect(() => {
-  //   if (dateTime) {
-  //     const servicesId =
-  //     services?.filter((service) => idServices.includes(service.id)) || [];
-  //     const regexResult = servicesId?.time.match(/(\d+):(\d+):(\d+)/);
-  //     if (regexResult) {
-  //       const [extractedHour, , extractedSeconds] = regexResult;
-  //       const newEndTime = dayjs(dateTime)
-  //         .add(parseInt(extractedHour, 10), "hour")
-  //         .add(parseInt(extractedSeconds, 10), "minute");
-  //       setEndTime(newEndTime);
-  //     }
-  //   }
-  // }, [dateTime, idServices, services]);
+    } else {
+      setPet([]);
+    }
+  };
+  const handleChangePets = (petValue: number[]) => {
+    listPets(petValue);
+    setDefaultValue(petValue);
+    if (form.getFieldValue("start_time")) {
+      functionEndTimeChange(undefined, petValue);
+    }
+  };
 
   useEffect(() => {
-    console.log(endTime?.toISOString());
-  }, [endTime]);
+    if (totalServices && defaultValue.length) {
+      setTotal(totalServices * defaultValue.length);
+    }
+  }, [defaultValue, totalServices]);
 
-  const handleChangePets = async (value: string[]) => {
-    console.log(`selected ${value}`);
-    // await setPet(listPet?.find((p) => p.id === value));
-  };
+  useEffect(() => {
+    if (valueId) {
+      defaultValue.push(valueId);
+      listPets(defaultValue);
+      setValueId(undefined);
+    }
+  }, [defaultValue, valueId]);
 
   const handleChangeService = (value: number[]) => {
     if (value.length > 0) {
+      totalService(value);
       setServicesOpenTime(true);
       setIdServices(value);
-      const servicesId =
-        services?.filter((service) => value.includes(service.id)) || [];
-      const totalServices =
-        servicesId?.reduce((acc, service) => acc + (service.price ?? 0), 0) ??
-        0;
-      setTotal(totalServices);
+      if (form.getFieldValue("start_time")) {
+        functionEndTimeChange(value);
+      }
     } else {
       setServicesOpenTime(false);
+      setTotal(0);
+      setEndTime(null);
     }
-    // setServicesOpenTime()
-    // const servicesId = services?.find((service) => service.id === value);
-    // const petHouseId = pethouse?.find((pethouse) => pethouse.id === idPetHouse);
-    // setTotal((servicesId?.price ?? 0) + (petHouseId?.price ?? 0));
   };
 
+  const functionEndTimeChange = (
+    servicesValue?: number[],
+    petValue?: number[]
+  ) => {
+    let servicesId: any[] = [];
+    if (servicesValue) {
+      servicesId =
+        services?.filter((service) => servicesValue.includes(service.id)) || [];
+    } else {
+      servicesId =
+        services?.filter((service) => idServices.includes(service.id)) || [];
+    }
+    if (servicesId.length > 0) {
+      const totalMilliseconds = servicesId.reduce((total, service) => {
+        const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
+
+        if (regexResult) {
+          const [, hours, minutes, seconds] = regexResult;
+          const milliseconds =
+            parseInt(hours, 10) * 3600000 +
+            parseInt(minutes, 10) * 60000 +
+            parseInt(seconds, 10) * 1000;
+          if (petValue) {
+            return total + milliseconds * petValue.length;
+          } else {
+            return total + milliseconds * pet.length;
+          }
+        }
+
+        return total;
+      }, 0);
+
+      if (totalMilliseconds > 0) {
+        let newEndTime = dayjs(form.getFieldValue("start_time")).add(
+          totalMilliseconds,
+          "millisecond"
+        );
+        if (
+          form.getFieldValue("start_time").hour() < 12 &&
+          newEndTime.hour() > 12
+        ) {
+          newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+        }
+        if (newEndTime.hour() === 12 && newEndTime.minute() > 0) {
+          newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
+        }
+
+        setEndTime(newEndTime);
+      } else {
+        setEndTime(null);
+      }
+    } else {
+      setEndTime(null);
+    }
+  };
+  const totalService = (value: number[]) => {
+    if (services) {
+      const servicesId =
+        services.filter((service) => value.includes(service.id)) || [];
+      const totalServices = servicesId.reduce(
+        (acc, service) => acc + (service.price ?? 0),
+        0
+      );
+      setTotalServices(totalServices);
+    }
+  };
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20, color: "#00575c" }}>
@@ -428,22 +457,22 @@ const Appointment: React.FC = () => {
         <div className="fromAppointment">
           <div style={{ flex: 1 }}>
             <Form.Item
-              name="pet_id"
+              name="pet"
               label="Thú cưng"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select
                 mode="multiple"
                 style={{ width: "100%" }}
-                defaultValue={[]}
+                defaultValue={defaultValue}
                 onChange={handleChangePets}
-                options={pets}
+                options={optionsPet}
               />
             </Form.Item>
             <Form.Item
-              name="services_id"
+              name="services"
               label="Dịch vụ"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select
                 mode="multiple"
@@ -457,7 +486,7 @@ const Appointment: React.FC = () => {
             <Form.Item
               name="petHouse_id"
               label="Loại phòng"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select onChange={onChangePetHouse} options={optionsPetHouse} />
             </Form.Item>
@@ -469,7 +498,7 @@ const Appointment: React.FC = () => {
             >
               <Form.Item
                 name="start_time"
-                rules={[{ required: true }]}
+                rules={[{ required: true, message: "Không được để trống" }]}
                 style={{ width: "100%" }}
                 noStyle
               >
@@ -479,14 +508,18 @@ const Appointment: React.FC = () => {
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
-                    defaultValue: dayjs("08:00:00", "HH:mm:ss"),
+                    defaultValue: dayjs("09:00:00", "HH:mm:ss"),
                   }}
                   onChange={onChangeTime}
                   showNow={false}
                   disabled={!servicesOpenTime}
                 />
               </Form.Item>
-              <Form.Item style={{ width: "100%" }} noStyle>
+              <Form.Item
+                style={{ width: "100%" }}
+                noStyle
+                rules={[{ required: true, message: "Không được để trống" }]}
+              >
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
@@ -511,126 +544,77 @@ const Appointment: React.FC = () => {
               </Space>
             </Form.Item>
           </div>
-          {/* <div style={{ flex: 1 }}>
-            {openAddPest ? (
-              <>
-                <Form.Item
-                  name="name"
-                  label="Tên Thú cưng"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="img"
-                  style={{ height: "130px" }}
-                  label="Ảnh"
-                  rules={[{ required: true }]}
-                >
-                  <Upload
-                    name="file"
-                    action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-                    data={{
-                      upload_preset: "wh3rdke8",
-                      cloud_name: "dksgvucji",
+
+          <div style={{ flex: 1 }}>
+            {pet.length > 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  rowGap: 20,
+                }}
+              >
+                {pet.map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      position: "relative",
+                      background: "#F7F7F7",
+                      padding: 10,
+                      color: "#00575C",
+                      border: 2,
+                      borderColor: "#00575C",
                     }}
-                    listType="picture-card"
-                    maxCount={1}
-                    showUploadList={true}
-                    className="ant-upload-wrapper ant-upload-select"
-                    onChange={handleImageChange}
                   >
-                    {uploadButton}
-                  </Upload>
-                </Form.Item>
-                <Form.Item name="age" label="Tuổi" rules={[{ required: true }]}>
-                  <InputNumber min={0} />
-                </Form.Item>
-
-                <Form.Item
-                  name="gender"
-                  label="Giới tính"
-                  rules={[{ required: true }]}
+                    <div>Tên thú cưng: {item?.name}</div>
+                    <div>Tuổi: {item?.age}</div>
+                    <div>Giới tính: {item?.gender}</div>
+                    <div>Giống: {item?.nameBreed}</div>
+                    <div style={{ position: "absolute", top: 5, right: 5 }}>
+                      <Avatar size={100} shape="circle" src={item.img} />
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  onClick={() => setOpenAddPest(!openAddPest)}
+                  style={{ maxWidth: 100, color: "white" }}
                 >
-                  <Select>
-                    <Select.Option key={1} value={"Đực"}>
-                      Đực
-                    </Select.Option>
-                    <Select.Option key={2} value={"Cái"}>
-                      Cái
-                    </Select.Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="species_id"
-                  label="Giống loài"
-                  rules={[{ required: true }]}
-                >
-                  <Select onChange={onChangeSpecies}>
-                    {species?.map((item: Tspecies) => (
-                      <Select.Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="breed_id"
-                  label="Giống"
-                  rules={[{ required: true }]}
-                >
-                  <Select disabled={!openBreed}>
-                    {breed?.map((item: TBreed) => (
-                      <Select.Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </>
+                  Thêm mới
+                </Button>
+              </div>
             ) : (
-              <>
-                <Form.Item label={<span className="label">Tên Loại</span>}>
-                  <Input disabled value={pet?.name} />
-                </Form.Item>
-                <Form.Item
-                  style={{ height: "130px" }}
-                  label={<span className="label">Ảnh</span>}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar size={200} src={avatarPet} />
+                <div>Chưa chọn thú cưng</div>
+                <p>Nếu bạn chưa có hoặc thêm mới ấn vào đây!</p>
+                <Button
+                  onClick={() => setOpenAddPest(!openAddPest)}
+                  style={{ maxWidth: 100, color: "white" }}
                 >
-                  <Upload
-                    name="file"
-                    disabled
-                    action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-                    data={{
-                      upload_preset: "wh3rdke8",
-                      cloud_name: "dksgvucji",
-                    }}
-                    fileList={fileList}
-                    listType="picture-card"
-                    maxCount={1}
-                    showUploadList={true}
-                    className="ant-upload-wrapper ant-upload-select"
-                    onChange={handleImageChange}
-                  />
-                </Form.Item>
-                <Form.Item label={<span className="label">Tuổi</span>}>
-                  <Input disabled value={pet?.age} />
-                </Form.Item>
-
-                <Form.Item label={<span className="label">Giới tính</span>}>
-                  <Input disabled value={pet?.gender} />
-                </Form.Item>
-                <Form.Item label={<span className="label">Giống loài</span>}>
-                  <Input disabled value={pet?.nameSpecies} />
-                </Form.Item>
-                <Form.Item label={<span className="label">Giống</span>}>
-                  <Input disabled value={pet?.nameBreed} />
-                </Form.Item>
-              </>
+                  Thêm mới
+                </Button>
+              </div>
             )}
-          </div> */}
+          </div>
         </div>
       </Form>
+      <ModalAddPet
+        setIdSpecies={setIdSpecies}
+        openAddPest={openAddPest}
+        species={species}
+        breed={breed}
+        setOpenAddPest={setOpenAddPest}
+        user={user}
+        setNamePet={setNamePet}
+        setValueId={setValueId}
+      />
     </div>
   );
 };

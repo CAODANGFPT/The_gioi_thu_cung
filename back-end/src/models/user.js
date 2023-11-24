@@ -4,7 +4,7 @@ export default class User {
   static createUser(name, email, password, phone, address, img) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO users (name, email,gender, password, role_id , phone, address, img) VALUES (?, ?, ?, 2, ?, ?, ?, 5)",
+        "INSERT INTO users (name, email,gender, password, role_id , phone, address, img) VALUES (?, ?, 2, ?, 2, ?,?, null)",
         [name, email, password, phone, address, img],
         (err, results) => {
           if (err) reject(err);

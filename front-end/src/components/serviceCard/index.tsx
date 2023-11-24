@@ -9,8 +9,6 @@ type ServiceCardProps = {
 
 const ServiceCard: FC<ServiceCardProps> = ({ id, name, image }) => {
   const navigate = useNavigate();
-  console.log(id);
-
   return (
     <div
       className="home-listCate-item"

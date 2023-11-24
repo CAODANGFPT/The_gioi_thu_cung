@@ -28,4 +28,7 @@ export const petSchema = joi.object({
     "String.empty": "breedId không được để trống",
     "any.required": "Trường breedId là bắt buộc",
   }),
+  health_condition: joi.string().messages({
+    "String.empty": "health_condition không được để trống",
+  }),
 });

@@ -3,17 +3,58 @@ import * as yup from "yup";
 export const AppointmentSchema = yup.object().shape({
   id: yup.number(),
   day: yup.string(),
-  pet_name: yup.string(),
-  services_name: yup.string(),
   user_email: yup.string(),
   pethouse_name: yup.string(),
+  pethouse_id: yup.number(),
   settime_name: yup.string(),
   status_name: yup.string(),
   start_time: yup.string(),
   end_time: yup.string(),
-  is_delete: yup.boolean(),
+  total: yup.number(),
+  services: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        name: yup.string().required(),
+      })
+    )
+    .required(),
+  pets: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        name: yup.string().required(),
+      })
+    )
+    .required(),
 });
-
+export const AppointmentSchemaRes = yup.object().shape({
+  id: yup.number(),
+  day: yup.string(),
+  user_email: yup.string(),
+  user_name: yup.string(),
+  pethouse_name: yup.string(),
+  pethouse_id: yup.number(),
+  settime_name: yup.string(),
+  status_name: yup.string(),
+  start_time: yup.string(),
+  end_time: yup.string(),
+  total: yup.number(),
+  services: yup.array().of(
+    yup.object().shape({
+      id: yup.number(),
+      name: yup.string(),
+    })
+  ),
+  pets: yup.array().of(
+    yup.object().shape({
+      id: yup.number(),
+      name: yup.string(),
+    })
+  ),
+});
 export const AppointmentRequestSchema = yup.object().shape({
   id: yup.number(),
   day: yup.string(),
@@ -24,7 +65,12 @@ export const AppointmentRequestSchema = yup.object().shape({
   time_id: yup.number(),
   status_id: yup.number(),
 });
-
+export const searchAppointmentSchema = yup.object().shape({
+  services_id: yup.number(),
+  nameUser: yup.number(),
+  pethouse_id: yup.number(),
+  status_id: yup.number(),
+});
 export const AppointmentResponseSchema = yup.object().shape({
   id: yup.number(),
   message: yup.string(),
@@ -33,6 +79,9 @@ export const AppointmentResponseSchema = yup.object().shape({
 export const AppointmentErrorSchema = yup.object({});
 
 export type TAppointment = yup.InferType<typeof AppointmentSchema>;
+export type TSearchAppointment = yup.InferType<typeof searchAppointmentSchema>;
+
+export type TAppointmentSchemaRes = yup.InferType<typeof AppointmentSchemaRes>;
 
 export type AppointmentResponse = yup.InferType<
   typeof AppointmentResponseSchema
@@ -51,8 +100,8 @@ export type TAupdateStatusAppointment = yup.InferType<
 
 export const createAppointmentSchema = yup.object().shape({
   day: yup.string().required(),
-  pet_id: yup.array().of(yup.number()),
-  services_id: yup.array().of(yup.number()),
+  pet: yup.array().of(yup.number()),
+  services: yup.array().of(yup.number()),
   user_id: yup.number(),
   pethouse_id: yup.number().required(),
   start_time: yup.string().required(),
