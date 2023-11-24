@@ -19,20 +19,22 @@
     }
 
     &-add {
-      button{
+      button {
         cursor: pointer;
         padding: 10px 15px;
         font-weight: 500;
-        color: white;
         border: none;
         border-radius: 5px;
         background-color: $EagleGreen;
         @include max-screen($md) {
           display: none;
         }
+        .btn-add {
+          color: white;
+        }
       }
     }
-    &-plus{
+    &-plus {
       color: $EagleGreen;
       font-size: 26px;
       @include min-screen($md) {
@@ -55,7 +57,6 @@
       color: $EagleGreen;
 
       &-tr {
-
         &-stt {
           text-align: center;
         }
@@ -89,8 +90,10 @@
             border-radius: 5px;
             padding: 5px 15px;
             background-color: $SeaSerpent;
-            color: white;
             margin-left: 10px;
+            .btn-edit {
+              color: white;
+            }
           }
 
           &-detail {
@@ -145,7 +148,6 @@
             display: flex;
             gap: 10px;
             font-size: 14px;
-
           }
 
           &-breed {

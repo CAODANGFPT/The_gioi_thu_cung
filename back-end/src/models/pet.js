@@ -75,7 +75,7 @@ export default class Pet {
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id,status_id ,health_condition) VALUES (?, ?, ?, ?, ?, ?, ?,1, ?)",
+        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id,status_id ,health_condition) VALUES (?, ?, ?, ?, ?, ?, ?,2, ?)",
         [
           img,
           name,
@@ -97,11 +97,33 @@ export default class Pet {
       );
     });
   }
-  static updatePet(id, img, name, age, gender, user_id, species_id, breed_id) {
+  static updatePet(
+    id,
+    img,
+    name,
+    age,
+    gender,
+    user_id,
+    species_id,
+    breed_id,
+    status_id,
+    health_condition
+  ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE pets SET img = ?,name = ?,age = ?,gender = ?,user_id = ?,species_id = ?,breed_id = ? WHERE id = ?",
-        [img, name, age, gender, user_id, species_id, breed_id, id],
+        "UPDATE pets SET img = ?,name = ?,age = ?,gender = ?,user_id = ?,species_id = ?,breed_id = ?,status_id = ?,health_condition = ? WHERE id = ?",
+        [
+          img,
+          name,
+          age,
+          gender,
+          user_id,
+          species_id,
+          breed_id,
+          status_id,
+          health_condition,
+          id,
+        ],
         (err) => {
           if (err) reject(err);
           resolve();

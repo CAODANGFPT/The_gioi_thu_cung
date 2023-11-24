@@ -1,29 +1,30 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import "../../assets/scss/page/account/pet.scss";
 import { useGetAllUserPetsQuery } from "../../services/pets";
-import { EditOutlined, DeleteOutlined,PlusOutlined } from "@ant-design/icons";
-import ModalAddPetCLient from "../modal/modalAddPet";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { useGetUserQuery } from "../../services/user";
 
 const PetUser: FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: user } = useGetUserQuery();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => { 
-    setIsModalOpen(true);
-  };
 
   return (
     <>
       <div className="pet">
         <div className="pet-title">
-          <div  className="pet-title-text"><h4>Thú cưng</h4></div>
+          <div className="pet-title-text">
+            <h4>Thú cưng</h4>
+          </div>
           <div className="pet-title-add">
-            <button onClick={showModal}>Thêm</button>
+            <button className="">
+              <Link to={"add"}>
+                <p className="btn-add">Thêm</p>
+              </Link>
+            </button>
           </div>
           <div className="pet-title-plus">
-          <PlusOutlined />
+            <PlusOutlined />
           </div>
         </div>
         <table className="pet-table">
@@ -35,7 +36,7 @@ const PetUser: FC = () => {
               <th className="pet-table-thead-tr-age">Tuổi</th>
               <th className="pet-table-thead-tr-breed">Giống</th>
               <th className="pet-table-thead-tr-gender">Giới tính</th>
-              <th></th>
+              <th>hành động</th>
             </tr>
           </thead>
           <tbody className="pet-table-tbody">
@@ -58,7 +59,9 @@ const PetUser: FC = () => {
                         Chi tiết
                       </button>
                       <button className="pet-table-tbody-tr-btn-edit">
-                        Sửa
+                        <Link to={`edit/${item.id}`}>
+                          <p className="btn-edit">Sửa</p>
+                        </Link>
                       </button>
                     </td>
                   </tr>
@@ -101,12 +104,6 @@ const PetUser: FC = () => {
               );
             })}
         </div>
-
-        <ModalAddPetCLient
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        idUser={Number(user?.id)}
-      />
       </div>
     </>
   );

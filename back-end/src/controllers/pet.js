@@ -51,7 +51,16 @@ export const showPet = async (req, res) => {
 };
 export const createPet = async (req, res) => {
   try {
-    const { img, name, age, gender, user_id, species_id, breed_id, health_condition } = req.body;
+    const {
+      img,
+      name,
+      age,
+      gender,
+      user_id,
+      species_id,
+      breed_id,
+      health_condition,
+    } = req.body;
     const { error } = petSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -67,10 +76,10 @@ export const createPet = async (req, res) => {
       user_id,
       species_id,
       breed_id,
-      health_condition,
+      health_condition
     );
     const petData = await Pet.getPetById(pet.insertId);
-    res.json({  
+    res.json({
       data: petData,
       message: "thêm thông tin thú cưng thành công",
     });
@@ -80,7 +89,17 @@ export const createPet = async (req, res) => {
 };
 export const updatePet = async (req, res) => {
   try {
-    const { img, name, age, gender, user_id, species_id, breed_id } = req.body;
+    const {
+      img,
+      name,
+      age,
+      gender,
+      user_id,
+      species_id,
+      breed_id,
+      status_id,
+      health_condition,
+    } = req.body;
     const { error } = petSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -88,6 +107,7 @@ export const updatePet = async (req, res) => {
         message: errors,
       });
     }
+    const updatedHealthCondition = health_condition || "";
     await Pet.updatePet(
       req.params.id,
       img,
@@ -96,7 +116,9 @@ export const updatePet = async (req, res) => {
       gender,
       user_id,
       species_id,
-      breed_id
+      breed_id,
+      status_id,
+      updatedHealthCondition
     );
     res.json({ message: "Cập nhập thông tin thú cưng thành công" });
   } catch (err) {
@@ -120,7 +142,7 @@ export const userPet = async (req, res) => {
       return Pet.getUserPet(item.pet_id);
     });
     const pets = await Promise.all(petPromises);
-    const notFoundPets = pets.filter(pet => !pet);
+    const notFoundPets = pets.filter((pet) => !pet);
     if (notFoundPets.length > 0) {
       res.status(404).json({ error: "Không tìm thấy thú cưng" });
     } else {
