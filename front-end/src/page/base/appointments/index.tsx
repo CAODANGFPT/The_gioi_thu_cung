@@ -66,9 +66,8 @@ const Appointment: React.FC = () => {
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
   const [appointmentData] = useState<any>(
-    location.state?.appointmentData || undefined
+    location.state?.appointmentData
   );
-  console.log(appointmentData);
 
   useEffect(() => {
     const fetchData = async () => {
