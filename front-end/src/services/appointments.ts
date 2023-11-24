@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AppointmentResponse,
   TAppointment,
+  TAppointmentUpdateSchema,
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
@@ -98,6 +99,18 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+
+      updateAppointment: builder.mutation<
+        TAppointmentUpdateSchema,
+        Partial<TAppointmentUpdateSchema>
+      >({
+        query: (appointments) => ({
+          url: `/appointment/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
       getAppointmentTime: builder.mutation<
         TGetAppointmentTime[],
         Partial<TGetAppointmentTimeRequest>
@@ -132,6 +145,7 @@ export const {
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
   useGetAppointmentTimeMutation,
 } = appointmentApi;

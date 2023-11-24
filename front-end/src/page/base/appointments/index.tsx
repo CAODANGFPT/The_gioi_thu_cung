@@ -12,6 +12,7 @@ import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentMutation,
   useGetAppointmentTimeMutation,
+  useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -45,7 +46,6 @@ const Appointment: React.FC = () => {
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
-  const [timeServices, setTimeServices] = useState<number>(0);
   const [idServices, setIdServices] = useState<number[]>([]);
   const [total, setTotal] = useState<number | undefined>(0);
   const [totalServices, setTotalServices] = useState<number | undefined>(0);
@@ -61,6 +61,8 @@ const Appointment: React.FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
+  const [updateAppointment] = useUpdateAppointmentMutation();
+
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
@@ -140,13 +142,14 @@ const Appointment: React.FC = () => {
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
       message.success(resAppointment.data.message);
-      navigate("/cart");
+      navigate("/account/wait-for-confirmation-appointment");
     }
   };
 
   const handleUpdate = async () => {
     const newValue = form.getFieldsValue();
     const newData = {
+      id: appointmentData.id,
       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
       pethouse_id: newValue.petHouse_id,
       pet: newValue.pet,
@@ -155,12 +158,11 @@ const Appointment: React.FC = () => {
       start_time: dayjs(newValue.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
-      status_id: 1,
     };
-    const resAppointment = await createAppointment(newData);
+    const resAppointment = await updateAppointment(newData);
     if ("data" in resAppointment) {
-      message.success(resAppointment.data.message);
-      navigate("/cart");
+      message.success("Sửa lịch thành công");
+      navigate("/account/wait-for-confirmation-appointment");
     }
   };
 

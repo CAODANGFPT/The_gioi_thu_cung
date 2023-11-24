@@ -30,6 +30,32 @@ export const AppointmentSchema = yup.object().shape({
     )
     .required(),
 });
+
+export const AppointmentUpdateSchema = yup.object().shape({
+  id: yup.number(),
+  pethouse_id: yup.number(),
+  start_time: yup.string(),
+  end_time: yup.string(),
+  total: yup.number(),
+  services: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        name: yup.string().required(),
+      })
+    )
+    .required(),
+  pets: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        name: yup.string().required(),
+      })
+    )
+    .required(),
+}).required();
 export const AppointmentSchemaRes = yup.object().shape({
   id: yup.number(),
   day: yup.string(),
@@ -79,6 +105,8 @@ export const AppointmentResponseSchema = yup.object().shape({
 export const AppointmentErrorSchema = yup.object({});
 
 export type TAppointment = yup.InferType<typeof AppointmentSchema>;
+export type TAppointmentUpdateSchema = yup.InferType<typeof AppointmentUpdateSchema>;
+
 export type TSearchAppointment = yup.InferType<typeof searchAppointmentSchema>;
 
 export type TAppointmentSchemaRes = yup.InferType<typeof AppointmentSchemaRes>;
