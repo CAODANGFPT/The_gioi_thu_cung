@@ -27,7 +27,19 @@ const Home: React.FC = () => {
               <div className="top-title">Giảm giá tới 50%</div>
             </div>
             <div className="bottom">
-              <button onClick={() => navigator("/appointment")}>
+              <button
+                onClick={() =>
+                  navigator("/appointment", {
+                    state: {
+                      appointmentData: {
+                        pets: [],
+                        services: [],
+                        type: 1,
+                      },
+                    },
+                  })
+                }
+              >
                 <div>Khám phá ngay</div> <ArrowRightIcon />
               </button>
             </div>

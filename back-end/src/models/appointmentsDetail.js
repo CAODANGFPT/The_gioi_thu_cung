@@ -18,6 +18,39 @@ export default class AppointmentsDetail {
       );
     });
   }
+
+  static removeAppointmentsServices(
+    appointment_id,
+  ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM appointmentServices WHERE appointment_id = ?",
+        [
+          appointment_id,
+        ],  
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+  static removeAppointmentsPet(
+    appointment_id,
+  ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM appointmentPets WHERE appointment_id = ?",
+        [
+          appointment_id,
+        ],  
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static createAppointmentsPet(
     appointment_id,
     pet_id

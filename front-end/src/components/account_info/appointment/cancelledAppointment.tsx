@@ -9,7 +9,14 @@ const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
   const navigate = useNavigate();
   const redirectToAppointment = (item: any) => {
-    navigate("/appointment", { state: { appointmentData: item } });
+    navigate("/appointment", {
+      state: {
+        appointmentData: {
+          ...item,
+          type: 2,
+        },
+      },
+    });
   };
   return (
     <>
@@ -68,7 +75,7 @@ const CancelledAppointment: FC = () => {
                         <td style={{ textAlign: "center" }}>
                           {item.status_name}
                         </td>
-                        <td className="action">
+                        <td className="action" style={{ width: "150px" }}>
                           <div
                             className="btn"
                             onClick={() => redirectToAppointment(item)}

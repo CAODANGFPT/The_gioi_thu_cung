@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import {
   useGetAppointmentUserStatusQuery,
@@ -8,7 +8,9 @@ import {
 } from "../../../services/appointments";
 import "../../../assets/scss/page/account/appointment.scss";
 import { Popconfirm } from "antd";
+
 const WaitForConfirmation: FC = () => {
+  const navigate = useNavigate();
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(1);
   const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
   const confirm = async (id: number | undefined) => {
@@ -16,6 +18,18 @@ const WaitForConfirmation: FC = () => {
       await updateStatusAppointment({ id: id, status_id: 5 });
     } catch (error) {}
   };
+
+  const editAppointment = async (item: any) => {
+    navigate("/appointment", {
+      state: {
+        appointmentData: {
+          ...item,
+          type: 3,
+        },
+      },
+    });
+  };
+
   return (
     <>
       {listAppointment?.length ? (
@@ -81,6 +95,12 @@ const WaitForConfirmation: FC = () => {
                           >
                             <div className="btn">Hủy</div>
                           </Popconfirm>
+                          <div
+                            onClick={() => editAppointment(item)}
+                            className="btn"
+                          >
+                            Sửa
+                          </div>
                           <Link to={""} className="chitiet" onClick={() => {}}>
                             Chi tiết
                           </Link>

@@ -12,6 +12,7 @@ import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentMutation,
   useGetAppointmentTimeMutation,
+  useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -45,7 +46,6 @@ const Appointment: React.FC = () => {
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
-  const [timeServices, setTimeServices] = useState<number>(0);
   const [idServices, setIdServices] = useState<number[]>([]);
   const [total, setTotal] = useState<number | undefined>(0);
   const [totalServices, setTotalServices] = useState<number | undefined>(0);
@@ -61,27 +61,44 @@ const Appointment: React.FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [createAppointment] = useAddAppointmentMutation();
+  const [updateAppointment] = useUpdateAppointmentMutation();
+
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
   const [appointmentData] = useState<any>(
-    location.state?.appointmentData || undefined
+    location.state?.appointmentData
   );
+
   useEffect(() => {
     const fetchData = async () => {
       if (appointmentData) {
-        const petIds = appointmentData.pets.map(
+        const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id
         );
         const serviceId = appointmentData.services.map(
           (item: { id: number }) => item.id
         );
-        form.setFieldsValue({
-          services: serviceId,
-          pet: petIds,
-          petHouse_id: appointmentData.pethouse_id,
-        });
+        if (appointmentData.type === 1) {
+          form.setFieldsValue({
+            services: serviceId,
+          });
+        } else if (appointmentData.type === 2) {
+          form.setFieldsValue({
+            services: serviceId,
+            pet: petIds,
+            petHouse_id: appointmentData.pethouse_id,
+          });
+        } else if (appointmentData.type === 3) {
+          form.setFieldsValue({
+            services: serviceId,
+            pet: petIds,
+            petHouse_id: appointmentData.pethouse_id,
+            start_time: dayjs(appointmentData.start_time),
+          });
+          setEndTime(dayjs(appointmentData.end_time));
+        }
         listPets(petIds);
         setDefaultValue(petIds);
         setIdServices(serviceId);
@@ -91,6 +108,7 @@ const Appointment: React.FC = () => {
     };
     fetchData();
   }, [appointmentData, form, services]);
+
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
     label: item.name,
@@ -108,6 +126,7 @@ const Appointment: React.FC = () => {
     label: item.name,
     disabled: item.id === namePet,
   }));
+
   const onFinish = async (values: TFinish) => {
     const newData = {
       day: dayjs().format("YYYY-MM-DD HH:mm:00"),
@@ -123,7 +142,27 @@ const Appointment: React.FC = () => {
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
       message.success(resAppointment.data.message);
-      navigate("/cart");
+      navigate("/account/wait-for-confirmation-appointment");
+    }
+  };
+
+  const handleUpdate = async () => {
+    const newValue = form.getFieldsValue();
+    const newData = {
+      id: appointmentData.id,
+      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
+      pethouse_id: newValue.petHouse_id,
+      pet: newValue.pet,
+      user_id: user?.id,
+      services: newValue.services,
+      start_time: dayjs(newValue.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      total: total,
+    };
+    const resAppointment = await updateAppointment(newData);
+    if ("data" in resAppointment) {
+      message.success("Sửa lịch thành công");
+      navigate("/account/wait-for-confirmation-appointment");
     }
   };
 
@@ -538,9 +577,15 @@ const Appointment: React.FC = () => {
             </Form.Item>
             <Form.Item>
               <Space>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                {appointmentData.type === 3 ? (
+                  <Button type="primary" onClick={() => handleUpdate()}>
+                    Sửa
+                  </Button>
+                ) : (
+                  <Button type="primary" htmlType="submit">
+                    Đăng ký
+                  </Button>
+                )}
               </Space>
             </Form.Item>
           </div>
