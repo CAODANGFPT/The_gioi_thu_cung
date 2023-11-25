@@ -9,7 +9,6 @@ import {
   updateAppointmentStatusSchema,
 } from "../schemas/appointments";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
 import Pet from "../models/pet";
 
 export const list = async (req, res) => {

@@ -14,15 +14,13 @@ const WaitForConfirmation: FC = () => {
   const confirm = async (id: number | undefined) => {
     try {
       await updateStatusAppointment({ id: id, status_id: 5 });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
   return (
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt chờ xác nhận</h4>
+          <h4>Lịch đặt Đã Hủy</h4>
           <div className="table-scroll">
             <table>
               <thead>

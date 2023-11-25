@@ -6,7 +6,8 @@ import { useGetAppointmentUserStatusQuery } from "../../../services/appointments
 import "../../../assets/scss/page/account/appointment.scss";
 
 const ConfirmedAppointment: FC = () => {
-  const { data: listAppointment } = useGetAppointmentUserStatusQuery(3);
+  const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
+
   return (
     <>
       {listAppointment?.length ? (

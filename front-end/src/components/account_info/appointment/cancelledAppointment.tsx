@@ -7,9 +7,9 @@ import imageNot from "../../../assets/image/notAppoiment.png";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const redirectToAppointment = (item: any) => {
-    navigate('/appointment', { state: { appointmentData: item } });
+    navigate("/appointment", { state: { appointmentData: item } });
   };
   return (
     <>
@@ -69,7 +69,12 @@ const CancelledAppointment: FC = () => {
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn" onClick={() => redirectToAppointment(item)}>Đặt lại</div>
+                          <div
+                            className="btn"
+                            onClick={() => redirectToAppointment(item)}
+                          >
+                            Đặt lại
+                          </div>
                           <Link to={""} className="chitiet" onClick={() => {}}>
                             Chi tiết
                           </Link>
