@@ -74,7 +74,7 @@ const HeaderBase = () => {
         <div className="menu" onClick={() => setOpenMenu(!openMenu)}>
           <MenuIcon />
         </div>
-        <Link className="logo" to={""}>
+        <Link className="logo" to="">
           <img className="logo-image" src={logo} alt="Logo" />
         </Link>
         <form className="frame31">

@@ -134,8 +134,7 @@ const EditService = () => {
           </Form.Item>
           <Form.Item
             label={<span className="">Ảnh dịch vụ</span>}
-            name="img"
-            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+            name="img"    
           >
             <Upload
               name="file"
