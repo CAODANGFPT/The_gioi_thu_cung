@@ -219,7 +219,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
-        <Route path="payment" element={<PaymentPage />} />
+        <Route path="payment/:total" element={<PaymentPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

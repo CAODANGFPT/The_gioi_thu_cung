@@ -34,7 +34,7 @@ const WaitForConfirmation: FC = () => {
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt chờ xác nhận</h4>
+          <h4>Lịch đặt Đã Hủy</h4>
           <div className="table-scroll">
             <table>
               <thead>

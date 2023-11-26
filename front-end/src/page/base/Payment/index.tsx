@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
+import { useParams } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
-const API_URL = "http://127.0.0.1:8080/api";
+const API_URL = "http://localhost:8080/api";
 const PaymentPage = () => {
+  const { total } = useParams();
+  console.log("tiền nhận", total);
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
@@ -13,7 +17,7 @@ const PaymentPage = () => {
   }, []);
   const handlePayment = () => {
     axios
-      .post(`${API_URL}/create-payment`, { amount: 100000 })
+      .post(`${API_URL}/create-payment`, { amount: total })
       .then((response) => {
         window.location.href = response.data.paymentUrl;
       })
