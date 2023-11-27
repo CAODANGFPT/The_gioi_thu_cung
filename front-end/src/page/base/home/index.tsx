@@ -24,7 +24,6 @@ const Home: React.FC = () => {
           <div className="home-banner-text">
             <div className="top">
               <p>Dịch vụ chăm sóc</p>
-              <div className="top-title">Giảm giá tới 50%</div>
             </div>
             <div className="bottom">
               <button

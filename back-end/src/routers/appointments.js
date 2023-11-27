@@ -12,9 +12,11 @@ import {
   searchAppointmentsAdmin,
   show,
   update,
+  updateAdmin,
   updateAppointmentStatus,
   updateStatusCancelAppointment,
 } from "../controllers/appointments";
+import { checkPermission } from "../middlewares/checkPermission";
 
 const router = Router();
 
@@ -27,6 +29,7 @@ router.post("/searchAppointmentsAdmin", searchAppointmentsAdmin);
 
 
 
+router.patch("/updateAdmin/:id", checkPermission, updateAdmin);
 router.post("/appointment", create);
 router.patch("/appointment/:id", update);
 router.put("/appointmentStatus/:id", updateAppointmentStatus);

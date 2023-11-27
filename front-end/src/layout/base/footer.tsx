@@ -1,5 +1,5 @@
 import "../../assets/scss/layout/base/footerBase.scss";
-import logo from "../../assets/image/logo2.png";
+import logo from "../../assets/image/logo.png";
 import appStore from "../../assets/image/appStore.png";
 import FacebookIcon from "../../assets/svg/facebookIcon";
 import InstagramIcon from "../../assets/svg/instagramIcon";

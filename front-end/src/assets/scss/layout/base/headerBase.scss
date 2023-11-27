@@ -91,8 +91,9 @@
     }
 
     .logo {
+      width: 200px;
       &-image {
-        width: auto;
+        width: 100%;
         height: auto;
 
         @include max-screen($md) {
@@ -289,8 +290,9 @@
         @include Flex(flex, center, center);
         margin-top: 20px;
 
+        width: 50px;
         &-image {
-          width: auto;
+          width: 100%;
           height: auto;
 
           @include max-screen($md) {

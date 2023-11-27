@@ -81,6 +81,7 @@ import UnpaidAppointment from "./components/account_info/appointment/unpaid";
 import PetUser from "./components/account_info/pet";
 import EditPetPage from "./components/account_info/editpet";
 import AddPetPage from "./components/account_info/addpet";
+import AppointmenEdit from "./page/admin/appointments/edit";
 import CallbackVNPAY from "./page/base/callback";
 
 function App() {
@@ -135,7 +136,10 @@ function App() {
             <Route path="add" element={<AddStatusAdmin />} />
             <Route path="edit/:id" element={<EditStatus />} />
           </Route>
-          <Route path="appointment" element={<AppointmentsAdmin />} />
+          <Route path="appointment">
+            <Route index element={<AppointmentsAdmin />} />
+            <Route path="edit" element={<AppointmenEdit />} />
+          </Route>
 
           <Route path="about">
             <Route index element={<AboutAdmin />} />

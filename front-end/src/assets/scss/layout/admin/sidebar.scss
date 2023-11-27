@@ -25,6 +25,9 @@
   .user-info {
     @include Flex(flex, flex-start, center);
     @include Gap(16px, 0);
+    img{
+      width: 150px;
+    }
   }
 
   .nav {
