@@ -62,15 +62,6 @@ const PaymentPage = () => {
             className="payment-image"
           />{" "}
         </div>{" "}
-        <div className="payment-padding btn-f bg-with">
-          {" "}
-          <h3 className="">Thanh Toán Online MoMo</h3>{" "}
-          <img
-            src="https://i.imgur.com/1CPJVhy.jpg"
-            alt="MoMo"
-            className="payment-image"
-          />{" "}
-        </div>{" "}
       </div>{" "}
     </div>
   );
