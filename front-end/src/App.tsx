@@ -9,7 +9,7 @@ import LayoutBase from "./layout/base";
 import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signup";
+import SignUp from "./page/base/signUp";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -220,7 +220,7 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
-        <Route path="payment/:total" element={<PaymentPage />} />
+        <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
