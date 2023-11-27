@@ -2,7 +2,23 @@ import { format } from "date-fns";
 import qs from "qs";
 import crypto from "crypto";
 import { Buffer } from "buffer";
+import connection from "../db";
 
+export const updateAppointmentStatusPayment = (appointmentID) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "UPDATE appointments SET status_payment = 2 WHERE id = ?",
+      [appointmentID],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      }
+    );
+  });
+};
 export const createPaymentUrl = (req) => {
   let date = new Date();
   let createDate = format(date, "yyyyMMddHHmmss");
@@ -16,10 +32,10 @@ export const createPaymentUrl = (req) => {
   let tmnCode = "6DZB8UJI";
   let secretKey = "WGKMVOVSQGJHRFGIGXNGXMEANKJBMRTH";
   let vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-  let returnUrl = "http://localhost:8080/order/duchoang";
+  let returnUrl = "http://localhost:3000/callback";
   let orderId = format(date, "ddHHmmss");
   let amount = req.body.amount;
-
+  let appointmentId = req.body.appointmentId;
   let currCode = "VND";
   let vnp_Params = {};
   vnp_Params["vnp_Version"] = "2.1.0";
@@ -28,14 +44,13 @@ export const createPaymentUrl = (req) => {
   vnp_Params["vnp_Locale"] = "vn";
   vnp_Params["vnp_CurrCode"] = currCode;
   vnp_Params["vnp_TxnRef"] = orderId;
-  vnp_Params["vnp_OrderInfo"] = "Thanh toan cho ma GD:" + orderId;
+  vnp_Params["vnp_OrderInfo"] = appointmentId;
   vnp_Params["vnp_OrderType"] = "other";
   vnp_Params["vnp_Amount"] = amount * 100;
   vnp_Params["vnp_ReturnUrl"] = returnUrl;
   vnp_Params["vnp_IpAddr"] = ipAddr;
   vnp_Params["vnp_CreateDate"] = createDate;
   vnp_Params = sortObject(vnp_Params);
-
   let signData = qs.stringify(vnp_Params, { encode: false });
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
@@ -44,7 +59,27 @@ export const createPaymentUrl = (req) => {
 
   return vnpUrl;
 };
+export const validateVnPayResponse = (vnp_Params) => {
+  const { vnp_SecureHash, ...restParams } = vnp_Params;
 
+  const sortedParams = sortObject(restParams);
+
+  const secretKey = "WGKMVOVSQGJHRFGIGXNGXMEANKJBMRTH";
+
+  const signData = qs.stringify(sortedParams, { encode: false });
+  const hmac = crypto.createHmac("sha512", secretKey);
+  const signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
+
+  if (vnp_SecureHash === signed) {
+    return {
+      isValid: true,
+      vnp_ResponseCode: restParams.vnp_ResponseCode,
+      vnp_TxnRef: restParams.vnp_TxnRef,
+    };
+  } else {
+    return { isValid: false, error: "Invalid secure hash" };
+  }
+};
 function sortObject(obj) {
   let sorted = {};
   let str = [];

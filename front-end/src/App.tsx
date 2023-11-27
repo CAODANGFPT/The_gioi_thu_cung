@@ -82,6 +82,7 @@ import PetUser from "./components/account_info/pet";
 import EditPetPage from "./components/account_info/editpet";
 import AddPetPage from "./components/account_info/addpet";
 import AppointmenEdit from "./page/admin/appointments/edit";
+import CallbackVNPAY from "./page/base/callback";
 
 function App() {
   return (
@@ -223,7 +224,8 @@ function App() {
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
         </Route>
-        <Route path="payment/:total" element={<PaymentPage />} />
+        <Route path="payment/:id/:total" element={<PaymentPage />} />
+        <Route path="callback" element={<CallbackVNPAY />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

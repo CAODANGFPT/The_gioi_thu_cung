@@ -10,10 +10,9 @@ const UnpaidAppointment: FC = () => {
   console.log("data", listAppointment);
   const navigate = useNavigate();
 
-  const handlePayment = (total: number) => {
+  const handlePayment = (id: number | undefined, total: number | undefined) => {
     if (total !== undefined) {
-      console.log("Số tiền cần thanh toán:", total);
-      navigate(`/payment/${total}`);
+      navigate(`/payment/${id}/${total}`);
     } else {
       console.error("Không có thông tin thanh toán");
     }
@@ -77,10 +76,13 @@ const UnpaidAppointment: FC = () => {
                         </td>
                         <td className="action">
                           <div className="btn">
-                            {item.total !== undefined ? (
+                            {typeof item.total === "number" &&
+                            typeof item.id === "number" ? (
                               <Link
-                                to={`/payment/${item.total}`}
-                                onClick={() => handlePayment(item.total || 0)}
+                                to={`/payment/${item.id}/${item.total}`}
+                                onClick={() =>
+                                  handlePayment(item.id, item.total)
+                                }
                               >
                                 <p>Thanh toán</p>
                               </Link>
