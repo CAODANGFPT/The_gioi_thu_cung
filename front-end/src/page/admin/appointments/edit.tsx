@@ -1,18 +1,18 @@
 import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
+import TextArea from "antd/es/input/TextArea";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
-import "../../../assets/scss/page/appointment.scss";
+import "../../../assets/scss/admin/appointments.scss";
 import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import {
-  useAddAppointmentMutation,
   useGetAppointmentTimeMutation,
-  useUpdateAppointmentMutation,
+  useUpdateAppointmentAdminMutation
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -22,8 +22,12 @@ import {
 } from "../../../services/pets";
 import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
+import {
+  useStatusPaymentQuery,
+  useStatusQuery,
+} from "../../../services/status_appointment";
 import { useGetUserQuery } from "../../../services/user";
-import ModalAddPet from "./modalAddPet";
+import ModalAddPet from "../../base/appointments/modalAddPet";
 
 type TFinish = {
   petHouse_id: number;
@@ -37,9 +41,12 @@ type TFinish = {
   gender: string;
   name: string;
   species_id: number;
+  animalCondition: string;
+  status_payment: string;
+  status_id: string;
 };
 
-const Appointment: React.FC = () => {
+const AppointmenEdit: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
@@ -57,22 +64,24 @@ const Appointment: React.FC = () => {
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseQuery();
   const { data: services } = useServicesQuery();
+  const { data: statusPayment } = useStatusPaymentQuery();
+  const { data: statusAppointment } = useStatusQuery();
+
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
-  const [createAppointment] = useAddAppointmentMutation();
-  const [updateAppointment] = useUpdateAppointmentMutation();
+  const [updateAppointment] = useUpdateAppointmentAdminMutation();
 
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
-  const [appointmentData] = useState<any>(
-    location.state?.appointmentData
-  );
+  const [appointmentData] = useState<any>(location.state?.appointmentData);
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(appointmentData);
+      
       if (appointmentData) {
         const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id
@@ -80,25 +89,15 @@ const Appointment: React.FC = () => {
         const serviceId = appointmentData.services.map(
           (item: { id: number }) => item.id
         );
-        if (appointmentData.type === 1) {
-          form.setFieldsValue({
-            services: serviceId,
-          });
-        } else if (appointmentData.type === 2) {
-          form.setFieldsValue({
-            services: serviceId,
-            pet: petIds,
-            petHouse_id: appointmentData.pethouse_id,
-          });
-        } else if (appointmentData.type === 3) {
-          form.setFieldsValue({
-            services: serviceId,
-            pet: petIds,
-            petHouse_id: appointmentData.pethouse_id,
-            start_time: dayjs(appointmentData.start_time),
-          });
-          setEndTime(dayjs(appointmentData.end_time));
-        }
+        form.setFieldsValue({
+          services: serviceId,
+          pet: petIds,
+          petHouse_id: appointmentData.pethouse_id,
+          status_payment: appointmentData.statusPaymentId,
+          start_time: dayjs(appointmentData.start_time),
+          status_id: appointmentData.status_id,
+        });
+        setEndTime(dayjs(appointmentData.end_time));
         listPets(petIds);
         setDefaultValue(petIds);
         setIdServices(serviceId);
@@ -117,10 +116,16 @@ const Appointment: React.FC = () => {
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
     value: item.id,
-    label: item.name,
-    disabled: item.status_id === 1,
+    label: item.name
   }));
-
+  const optionsStatusAppointment = statusAppointment?.map((item: any) => ({
+    value: item.id,
+    label: item.name,
+  }));
+  const optionsStatusPayment = statusPayment?.map((item: any) => ({
+    value: item.id,
+    label: item.name,
+  }));
   const optionsPet = listPet?.map((item: TUserPets) => ({
     value: item.id,
     label: item.name,
@@ -129,40 +134,21 @@ const Appointment: React.FC = () => {
 
   const onFinish = async (values: TFinish) => {
     const newData = {
-      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
+      id: appointmentData.id,
       pethouse_id: values.petHouse_id,
       pet: values.pet,
-      user_id: user?.id,
       services: values.services,
       start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
-      status_id: 1,
-    };
-    const resAppointment = await createAppointment(newData);
-    if ("data" in resAppointment) {
-      message.success(resAppointment.data.message);
-      navigate("/account/wait-for-confirmation-appointment");
-    }
-  };
-
-  const handleUpdate = async () => {
-    const newValue = form.getFieldsValue();
-    const newData = {
-      id: appointmentData.id,
-      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
-      pethouse_id: newValue.petHouse_id,
-      pet: newValue.pet,
-      user_id: user?.id,
-      services: newValue.services,
-      start_time: dayjs(newValue.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-      total: total,
+      animalCondition: values.animalCondition,
+      status_id: values.status_id,
+      status_payment: values.status_payment,
     };
     const resAppointment = await updateAppointment(newData);
     if ("data" in resAppointment) {
-      message.success("Sửa lịch thành công");
-      navigate("/account/wait-for-confirmation-appointment");
+      message.success("Sửa thành công");
+      navigate("/admin/appointment");
     }
   };
 
@@ -480,10 +466,10 @@ const Appointment: React.FC = () => {
     }
   };
   return (
-    <div className="appointment">
-      <h1 style={{ marginBottom: 20, color: "#00575c" }}>
-        Đặt lịch chăm sóc thú cưng
-      </h1>
+    <div className="appointment-edit">
+      <h4 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Sửa lịch đặt
+      </h4>
       <Form
         form={form}
         name="validateOnly"
@@ -567,6 +553,18 @@ const Appointment: React.FC = () => {
                 />
               </Form.Item>
             </Form.Item>
+            <Form.Item
+              label="Tình trạng thú cưng"
+              style={{ width: "100%" }}
+              name="animalCondition"
+            >
+              <TextArea
+                showCount
+                maxLength={100}
+                placeholder="disable resize"
+                style={{ height: 120, resize: "none" }}
+              />
+            </Form.Item>
             <Form.Item label="Tổng số tiền">
               <div>
                 <span style={{ fontSize: 24, color: "#00575c" }}>
@@ -575,17 +573,27 @@ const Appointment: React.FC = () => {
                 <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
               </div>
             </Form.Item>
+            <Form.Item
+              name="status_payment"
+              label="Thanh toán"
+              rules={[{ required: true, message: "Không được để trống" }]}
+            >
+              <Select
+                options={optionsStatusPayment}
+              />
+            </Form.Item>
+            <Form.Item
+              name="status_id"
+              label="Trạng thái"
+              rules={[{ required: true, message: "Không được để trống" }]}
+            >
+              <Select options={optionsStatusAppointment} />
+            </Form.Item>
             <Form.Item>
               <Space>
-                {appointmentData.type === 3 ? (
-                  <Button type="primary" onClick={() => handleUpdate()}>
-                    Sửa
-                  </Button>
-                ) : (
-                  <Button type="primary" htmlType="submit">
-                    Đăng ký
-                  </Button>
-                )}
+                <Button type="primary" htmlType="submit">
+                  Lưu
+                </Button>
               </Space>
             </Form.Item>
           </div>
@@ -643,7 +651,7 @@ const Appointment: React.FC = () => {
                   onClick={() => setOpenAddPest(!openAddPest)}
                   style={{ maxWidth: 100, color: "white" }}
                 >
-                  Thêm mới
+                  Thêm
                 </Button>
               </div>
             )}
@@ -664,4 +672,4 @@ const Appointment: React.FC = () => {
   );
 };
 
-export default Appointment;
+export default AppointmenEdit;

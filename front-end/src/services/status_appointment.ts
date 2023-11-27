@@ -25,7 +25,15 @@ const statusApi = createApi({
         },
         providesTags: ["Status"],
       }),
-
+      statusPayment: builder.query<TStatus[], void>({
+        query: () => {
+          return {
+            url: "/status_payment_appointment",
+            method: "GET",
+          };
+        },
+        providesTags: ["Status"],
+      }),
       getStatusById: builder.query<TStatus, number>({
         query: (status) => {
           return {
@@ -66,6 +74,7 @@ const statusApi = createApi({
 
 export const {
   useStatusQuery,
+  useStatusPaymentQuery,
   useCreateStatusMutation,
   useUpdateStatusMutation,
   useGetStatusByIdQuery,

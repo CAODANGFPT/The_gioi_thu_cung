@@ -1,5 +1,5 @@
 import Status from "../models/status_appointment";
-
+import StatusPayment from "../models/status_payment";
 import { statusSchema } from "../schemas/status_appointment";
 
 export const getAll = async (req, res) => {
@@ -62,6 +62,15 @@ export const remote = async (req, res) => {
   try {
     await Status.removeStatus(req.params.id);
     res.json({ message: "Xóa thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAllStatusPayment = async (req, res) => {
+  try {
+    const listStatus = await StatusPayment.getAllStatusPayment();
+    res.json(listStatus);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

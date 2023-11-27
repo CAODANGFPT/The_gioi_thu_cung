@@ -99,7 +99,17 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
-
+      updateAppointmentAdmin: builder.mutation<
+        TAppointment,
+        any
+      >({
+        query: (appointments) => ({
+          url: `/updateAdmin/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
       updateAppointment: builder.mutation<
         TAppointmentUpdateSchema,
         Partial<TAppointmentUpdateSchema>
@@ -145,6 +155,7 @@ export const {
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdateAppointmentAdminMutation,
   useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
   useGetAppointmentTimeMutation,

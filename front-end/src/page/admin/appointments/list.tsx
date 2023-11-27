@@ -13,7 +13,10 @@ import {
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
+import { Link, useNavigate } from "react-router-dom";
 const AppointmentsAdmin: React.FC = () => {
+  const navigate = useNavigate();
+
   const [dataAppoiment, setDataAppoiment] = useState<any | null>(null);
   const { data } = useGetAllappointmentDataQuery();
   useEffect(() => {
@@ -36,6 +39,14 @@ const AppointmentsAdmin: React.FC = () => {
     label: item.name,
     disabled: item.status_id === 1,
   }));
+
+  const redirectToAppointment = (item: any) => {
+    navigate("/admin/appointment/edit", {
+      state: {
+        appointmentData: item
+      },
+    });
+  };
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
       title: "STT",
@@ -119,6 +130,17 @@ const AppointmentsAdmin: React.FC = () => {
       ),
     },
     {
+      title: "Thanh toán thái",
+      dataIndex: "statusPaymentName",
+      key: "statusPaymentName",
+      width: 100,
+      render: (statusPaymentName) => (
+        <>
+          <div>{statusPaymentName}</div>
+        </>
+      ),
+    },
+    {
       title: "Trạng thái",
       dataIndex: "status_name",
       key: "status_name",
@@ -135,15 +157,17 @@ const AppointmentsAdmin: React.FC = () => {
       render: (data) => (
         <>
           <div>
-            <button>Chi tiết</button>
-            <button>Chi tiết</button>
+            <Button onClick={() => redirectToAppointment(data)} className="btn-edit" style={{ marginRight: "1rem" }}>
+              Sửa
+            </Button>
+            <button>Hủy</button>
           </div>
         </>
       ),
     },
   ];
   const onFinish = async (values: any) => {
-    if(values.start_time){
+    if (values.start_time) {
       values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
     }
     const { nameUser, pethouse_id, start_time, status_id } = values;
@@ -153,7 +177,7 @@ const AppointmentsAdmin: React.FC = () => {
       start_time: start_time,
       status_id,
     };
-   
+
     try {
       const data: any = await searchAddAppointment(servicesData).unwrap();
       setDataAppoiment(data.uniqueData);

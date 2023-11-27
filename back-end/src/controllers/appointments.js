@@ -39,6 +39,9 @@ export const listAppointmentData = async (req, res) => {
               pethouse_name: record.pethouse_name,
               pethouse_id: record.pethouse_id,
               status_name: record.status_name,
+              status_id: record.status_id,
+              statusPaymentId: record.statusPaymentId,
+              statusPaymentName: record.statusPaymentName,
             });
           } else {
             const existingPetIndex = result[existingRecordIndex].pets.findIndex(
@@ -75,7 +78,10 @@ export const listAppointmentData = async (req, res) => {
             user_name: record.user_name,
             pethouse_name: record.pethouse_name,
             pethouse_id: record.pethouse_id,
+            status_id: record.status_id,
             status_name: record.status_name,
+            statusPaymentId: record.statusPaymentId,
+            statusPaymentName: record.statusPaymentName,
           });
         }
       }
@@ -114,7 +120,6 @@ export const create = async (req, res) => {
       start_time,
       end_time,
       total,
-      status_id,
     } = req.body;
     const petNamesArray = [];
     const ServicesArray = [];
@@ -124,8 +129,7 @@ export const create = async (req, res) => {
       pethouse_id,
       start_time,
       end_time,
-      total,
-      status_id
+      total
     );
     for (const item of services) {
       await AppointmentsDetail.createAppointmentsServices(appointmentsId, item);
@@ -227,6 +231,46 @@ export const update = async (req, res) => {
       start_time,
       total,
       end_time
+    );
+    res.json({ message: "Cập nhật lịch hẹn thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateAdmin = async (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const {
+      pet,
+      services,
+      pethouse_id,
+      start_time,
+      end_time,
+      total,
+      animalCondition,
+      status_payment,
+      status_id,
+    } = req.body;
+    await AppointmentsDetail.removeAppointmentsPet(id);
+    await AppointmentsDetail.removeAppointmentsServices(id);
+
+    for (const item of services) {
+      await AppointmentsDetail.createAppointmentsServices(id, item);
+    }
+
+    for (const item of pet) {
+      await AppointmentsDetail.createAppointmentsPet(id, item);
+    }
+    await Appointments.updateAppointmentsAdmin(
+      id,
+      pethouse_id,
+      start_time,
+      total,
+      end_time,
+      animalCondition,
+      status_payment,
+      status_id
     );
     res.json({ message: "Cập nhật lịch hẹn thành công" });
   } catch (err) {

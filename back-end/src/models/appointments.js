@@ -12,7 +12,7 @@ export default class Appointments {
   static getAppointmentsById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ?",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, users.name AS user_name,pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);
@@ -24,7 +24,7 @@ export default class Appointments {
   static getAppointmentsData() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, users.name AS user_name, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName,users.name AS user_name, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name,status_appointment.id AS status_id FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -57,7 +57,7 @@ export default class Appointments {
   static getAppointmentUserStatus(id, status_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointmentServices.service_id AS serviceId, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ? AND appointments.status_id = ?",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ? AND appointments.status_id = ?",
         [id, status_id],
         (err, results) => {
           if (err) reject(err);
@@ -72,23 +72,12 @@ export default class Appointments {
     pethouse_id,
     start_time,
     end_time,
-    total,
-    status_id,
-    is_delete
+    total
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id) VALUES (?,?,?,?,?,?,1)",
-        [
-          day,
-          user_id,
-          pethouse_id,
-          start_time,
-          end_time,
-          total,
-          status_id,
-          is_delete,
-        ],
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment) VALUES (?,?,?,?,?,?,1,1)",
+        [day, user_id, pethouse_id, start_time, end_time, total],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
@@ -96,11 +85,42 @@ export default class Appointments {
       );
     });
   }
-  static updateAppointments(id, pethouse_id, start_time, total, end_time ) {
+  static updateAppointments(id, pethouse_id, start_time, total, end_time) {
     return new Promise((resolve, reject) => {
       connection.query(
         "UPDATE appointments SET pethouse_id = ?, start_time = ?,end_time = ?,total = ? WHERE id = ?",
-        [pethouse_id, start_time,end_time,total , id],
+        [pethouse_id, start_time, end_time, total, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+
+  static updateAppointmentsAdmin(
+    id,
+    pethouse_id,
+    start_time,
+    total,
+    end_time,
+    animalCondition,
+    status_payment,
+    status_id
+  ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE appointments SET pethouse_id = ?, start_time = ?,end_time = ?,total = ?, animalCondition = ?, status_payment = ?, status_id = ?  WHERE id = ?",
+        [
+          pethouse_id,
+          start_time,
+          end_time,
+          total,
+          animalCondition,
+          status_payment,
+          status_id,
+          id,
+        ],
         (err) => {
           if (err) reject(err);
           resolve();
