@@ -27,9 +27,9 @@ const items: MenuItem[] = [
   getItem(<Link to={"payment"}>Cài đặt thanh toán</Link>, "payment"),
   getItem("Lịch đã đặt", "sub1", null, [
     getItem(<Link to={"wait-for-confirmation-appointment"}>Chờ xác nhận</Link>, "5"),
-    getItem(<Link to={"confirm-appointment"}>Đã xác nhận</Link>, "6"),
-    getItem( <Link to={"unpaid-appointment"}>Chưa thanh toán</Link>, "7"),
-    getItem( <Link to={"confirm-appointment"}>Đã thanh toán</Link>, "8"),
+    getItem(<Link to={"confirmed-appointment"}>Đã xác nhận</Link>, "6"),
+    getItem( <Link to={"doing-appointment"}>Đang thực hiện</Link>, "7"),
+    getItem( <Link to={"accomplished-appointment"}>Đã Hoàn thành</Link>, "8"),
     getItem(<Link to={"cancelledAppointment"}>Đã hủy</Link>, "9"),
   ]),
 

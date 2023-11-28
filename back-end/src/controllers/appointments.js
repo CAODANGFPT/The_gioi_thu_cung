@@ -395,9 +395,13 @@ export const getAppointmentUserStatus = async (req, res) => {
                   start_time: record.start_time,
                   end_time: record.end_time,
                   user_email: record.user_email,
+                  user_name: record.user_name,
                   pethouse_name: record.pethouse_name,
                   pethouse_id: record.pethouse_id,
                   status_name: record.status_name,
+                  status_id: record.status_id,
+                  statusPaymentId: record.statusPaymentId,
+                  statusPaymentName: record.statusPaymentName,
                 });
               } else {
                 const existingPetIndex = result[
@@ -431,9 +435,13 @@ export const getAppointmentUserStatus = async (req, res) => {
                 start_time: record.start_time,
                 end_time: record.end_time,
                 user_email: record.user_email,
+                user_name: record.user_name,
                 pethouse_name: record.pethouse_name,
                 pethouse_id: record.pethouse_id,
                 status_name: record.status_name,
+                status_id: record.status_id,
+                statusPaymentId: record.statusPaymentId,
+                statusPaymentName: record.statusPaymentName,
               });
             }
           }

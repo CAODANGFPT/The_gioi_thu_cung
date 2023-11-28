@@ -1,24 +1,20 @@
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Form,
   Input,
-  InputNumber,
-  Select,
   Upload,
-  message,
+  message
 } from "antd";
 import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { useCreateBannerMutation } from "../../../services/banner";
-import { TBanner } from "../../../schema/banner";
-import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
+import { TBanner } from "../../../schema/banner";
+import { useCreateBannerMutation } from "../../../services/banner";
 
 const AddBanner = () => {
   const [img, setImage] = useState<any | null>(null);
-  const [value, setValue] = useState("");
   const [addBanner, { reset, isLoading: isAddLoading }] =
     useCreateBannerMutation();
   const navigate = useNavigate();

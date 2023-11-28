@@ -565,14 +565,6 @@ const AppointmenEdit: React.FC = () => {
                 style={{ height: 120, resize: "none" }}
               />
             </Form.Item>
-            <Form.Item label="Tổng số tiền">
-              <div>
-                <span style={{ fontSize: 24, color: "#00575c" }}>
-                  {new Intl.NumberFormat("vi-VN").format(total ?? 0)}
-                </span>
-                <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
-              </div>
-            </Form.Item>
             <Form.Item
               name="status_payment"
               label="Thanh toán"
@@ -588,7 +580,16 @@ const AppointmenEdit: React.FC = () => {
               rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select options={optionsStatusAppointment} />
+            </Form.Item>  
+            <Form.Item label="Tổng số tiền">
+              <div>
+                <span style={{ fontSize: 24, color: "#00575c" }}>
+                  {new Intl.NumberFormat("vi-VN").format(total ?? 0)}
+                </span>
+                <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
+              </div>
             </Form.Item>
+
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">

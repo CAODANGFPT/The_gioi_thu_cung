@@ -1,13 +1,20 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
-import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import "../../../assets/scss/page/account/appointment.scss";
+import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
-
+  const navigate = useNavigate();
+  const handlePayment = (id: number | undefined, total: number | undefined) => {
+    if (total !== undefined) {
+      navigate(`/payment/${id}/${total}`);
+    } else {
+      console.error("Không có thông tin thanh toán");
+    }
+  };
   return (
     <>
       {listAppointment?.length ? (
@@ -22,6 +29,7 @@ const ConfirmedAppointment: FC = () => {
                   <th>Thú cưng</th>
                   <th>Ngày giờ đặt</th>
                   <th>Phòng</th>
+                  <th>Thanh toán</th>
                   <th>Tổng tiền</th>
                   <th style={{ textAlign: "center" }}>Trạng thái</th>
                   <th></th>
@@ -61,15 +69,20 @@ const ConfirmedAppointment: FC = () => {
                           {dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}
                         </td>
                         <td>{item.pethouse_name}</td>
+                        <td>{item.statusPaymentName}</td>
                         <td>{item.total}</td>
                         <td style={{ textAlign: "center" }}>
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn">Đặt lại</div>
-                          <Link to={""} className="chitiet" onClick={() => {}}>
-                            Chi tiết
-                          </Link>
+                          {item.statusPaymentId === 1 && (
+                            <div
+                              onClick={() => handlePayment(item.id, item.total)}
+                              className="btn"
+                            >
+                              Thanh toán
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
