@@ -83,6 +83,9 @@ import EditPetPage from "./components/account_info/editpet";
 import AddPetPage from "./components/account_info/addpet";
 import AppointmenEdit from "./page/admin/appointments/edit";
 import CallbackVNPAY from "./page/base/callback";
+import BannerAdmin from "./page/admin/banner/list";
+import AddBanner from "./page/admin/banner/add";
+import EditBanner from "./page/admin/banner/edit";
 
 function App() {
   return (
@@ -219,6 +222,12 @@ function App() {
             <Route index element={<NewsAdmin />} />
             <Route path="add" element={<AddNews />} />
             <Route path="edit/:id" element={<EditNews />} />
+          </Route>
+
+          <Route path="banner">
+            <Route index element={<BannerAdmin />} />
+            <Route path="add" element={<AddBanner />} />
+            <Route path="edit/:id" element={<EditBanner />} />
           </Route>
 
           <Route path="review" element={<ReviewAdmin />} />
