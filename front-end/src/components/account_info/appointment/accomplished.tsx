@@ -1,15 +1,13 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
-import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import "../../../assets/scss/page/account/appointment.scss";
+import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
+import { useNavigate } from "react-router-dom";
 
-const UnpaidAppointment: FC = () => {
-  const { data: listAppointment } = useGetAppointmentUserStatusQuery(6);
-  console.log("data", listAppointment);
+const AccomplishedAppointment: FC = () => {
   const navigate = useNavigate();
-
+  const { data: listAppointment } = useGetAppointmentUserStatusQuery(4);
   const handlePayment = (id: number | undefined, total: number | undefined) => {
     if (total !== undefined) {
       navigate(`/payment/${id}/${total}`);
@@ -21,7 +19,7 @@ const UnpaidAppointment: FC = () => {
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt đã Chưa Thanh toán</h4>
+          <h4>Lịch đặt đã hoàn thành</h4>
           <div className="table-scroll">
             <table>
               <thead>
@@ -31,6 +29,7 @@ const UnpaidAppointment: FC = () => {
                   <th>Thú cưng</th>
                   <th>Ngày giờ đặt</th>
                   <th>Phòng</th>
+                  <th>Thanh toán</th>
                   <th>Tổng tiền</th>
                   <th style={{ textAlign: "center" }}>Trạng thái</th>
                   <th></th>
@@ -70,29 +69,21 @@ const UnpaidAppointment: FC = () => {
                           {dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}
                         </td>
                         <td>{item.pethouse_name}</td>
+                        <td>{item.statusPaymentName}</td>
                         <td>{item.total}</td>
                         <td style={{ textAlign: "center" }}>
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn">
-                            {typeof item.total === "number" &&
-                            typeof item.id === "number" ? (
-                              <Link
-                                to={`/payment/${item.id}/${item.total}`}
-                                onClick={() =>
-                                  handlePayment(item.id, item.total)
-                                }
-                              >
-                                <p>Thanh toán</p>
-                              </Link>
-                            ) : (
-                              <p>Không có thông tin thanh toán</p>
-                            )}
-                          </div>
-                          <Link to={""} className="chitiet" onClick={() => {}}>
-                            Chi tiết
-                          </Link>
+                          <div className="btn">Đặt lại</div>
+                          {item.statusPaymentId === 1 && (
+                            <div
+                              onClick={() => handlePayment(item.id, item.total)}
+                              className="btn"
+                            >
+                              Thanh toán
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
@@ -113,4 +104,4 @@ const UnpaidAppointment: FC = () => {
   );
 };
 
-export default UnpaidAppointment;
+export default AccomplishedAppointment;

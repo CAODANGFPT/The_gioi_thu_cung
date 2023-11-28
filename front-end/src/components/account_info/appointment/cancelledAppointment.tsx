@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import imageNot from "../../../assets/image/notAppoiment.png";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
@@ -22,7 +22,7 @@ const CancelledAppointment: FC = () => {
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt chờ xác nhận</h4>
+          <h4>Lịch đặt đã hủy</h4>
           <div className="table-scroll">
             <table>
               <thead>
@@ -32,6 +32,7 @@ const CancelledAppointment: FC = () => {
                   <th>Thú cưng</th>
                   <th>Ngày giờ đặt</th>
                   <th>Phòng</th>
+                  <th>Thanh toán</th>
                   <th>Tổng tiền</th>
                   <th style={{ textAlign: "center" }}>Trạng thái</th>
                   <th></th>
@@ -71,20 +72,18 @@ const CancelledAppointment: FC = () => {
                           {dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}
                         </td>
                         <td>{item.pethouse_name}</td>
+                        <td>{item.statusPaymentName}</td>
                         <td>{item.total}</td>
                         <td style={{ textAlign: "center" }}>
                           {item.status_name}
                         </td>
-                        <td className="action" style={{ width: "150px" }}>
+                        <td className="action" style={{ width: "100px" }}>
                           <div
                             className="btn"
                             onClick={() => redirectToAppointment(item)}
                           >
                             Đặt lại
                           </div>
-                          <Link to={""} className="chitiet" onClick={() => {}}>
-                            Chi tiết
-                          </Link>
                         </td>
                       </tr>
                     );

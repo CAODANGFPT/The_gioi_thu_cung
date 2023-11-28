@@ -58,31 +58,31 @@ import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
 
+import AddPetPage from "./components/account_info/addpet";
+import AccomplishedAppointment from "./components/account_info/appointment/accomplished";
+import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
+import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
+import DoingAppointment from "./components/account_info/appointment/doing";
+import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
+import EditPetPage from "./components/account_info/editpet";
+import PetUser from "./components/account_info/pet";
+import AppointmenEdit from "./page/admin/appointments/edit";
 import AddCategory from "./page/admin/category/add";
 import EditCategory from "./page/admin/category/edit";
 import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
-import PaymentPage from "./page/base/Payment";
 import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
-import ServicePage from "./page/base/servicePage";
-import ServiceDetail from "./page/base/serviceDetail";
 import ProductsAdmin from "./page/admin/products/list";
+import PaymentPage from "./page/base/Payment";
+import CallbackVNPAY from "./page/base/callback";
 import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
+import ServiceDetail from "./page/base/serviceDetail";
+import ServicePage from "./page/base/servicePage";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
-import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
-import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
-import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
-import PaidAppointment from "./components/account_info/appointment/paid";
-import UnpaidAppointment from "./components/account_info/appointment/unpaid";
-import PetUser from "./components/account_info/pet";
-import EditPetPage from "./components/account_info/editpet";
-import AddPetPage from "./components/account_info/addpet";
-import AppointmenEdit from "./page/admin/appointments/edit";
-import CallbackVNPAY from "./page/base/callback";
 
 function App() {
   return (
@@ -99,24 +99,31 @@ function App() {
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
             <Route path="follow" element={<Follow />} />
-            <Route
-              path="cancelledAppointment"
-              element={<CancelledAppointment />}
-            />
+
             <Route path="pet-user">
               <Route index element={<PetUser />} />
               <Route path="add" element={<AddPetPage />} />
               <Route path="edit/:id" element={<EditPetPage />} />
             </Route>
             <Route
+              path="cancelledAppointment"
+              element={<CancelledAppointment />}
+            />
+            <Route
               path="wait-for-confirmation-appointment"
               element={<WaitForConfirmation />}
             />
-            <Route path="unpaid-appointment" element={<UnpaidAppointment />} />
-            <Route path="paid-appointment" element={<PaidAppointment />} />
             <Route
-              path="confirm-appointment"
+              path="confirmed-appointment"
               element={<ConfirmedAppointment />}
+            />
+            <Route
+              path="doing-appointment"
+              element={<DoingAppointment />}
+            />
+            <Route
+              path="accomplished-appointment"
+              element={<AccomplishedAppointment />}
             />
           </Route>
           <Route path="cart" element={<CartPage />} />

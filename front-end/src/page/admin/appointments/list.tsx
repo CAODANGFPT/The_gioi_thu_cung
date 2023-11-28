@@ -1,21 +1,35 @@
-import "../../../assets/scss/admin/appoinments.scss";
-import { useState, useEffect } from "react";
-import { Button, DatePicker, Form, Input, Select, message } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Popconfirm,
+  Select,
+  message,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../../assets/scss/admin/appointments.scss";
 import TableAdmin from "../../../components/table";
 import { TAppointmentSchemaRes } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import {
   useGetAllappointmentDataQuery,
   useSearchAddAppointmentMutation,
+  useUpdateStatusAppointmentMutation,
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
-import { Link, useNavigate } from "react-router-dom";
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
+  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  const confirm = async (id: number) => {
+    try {
+      await updateStatusAppointment({ id: id, status_id: 5 });
+    } catch (error) {}
+  };
 
   const [dataAppoiment, setDataAppoiment] = useState<any | null>(null);
   const { data } = useGetAllappointmentDataQuery();
@@ -43,10 +57,12 @@ const AppointmentsAdmin: React.FC = () => {
   const redirectToAppointment = (item: any) => {
     navigate("/admin/appointment/edit", {
       state: {
-        appointmentData: item
+        appointmentData: item,
       },
     });
   };
+  console.log(data);
+
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
       title: "STT",
@@ -130,7 +146,7 @@ const AppointmentsAdmin: React.FC = () => {
       ),
     },
     {
-      title: "Thanh toán thái",
+      title: "Thanh toán",
       dataIndex: "statusPaymentName",
       key: "statusPaymentName",
       width: 100,
@@ -157,10 +173,22 @@ const AppointmentsAdmin: React.FC = () => {
       render: (data) => (
         <>
           <div>
-            <Button onClick={() => redirectToAppointment(data)} className="btn-edit" style={{ marginRight: "1rem" }}>
+            <Button
+              onClick={() => redirectToAppointment(data)}
+              className="btn-edit"
+              style={{ marginRight: "1rem" }}
+            >
               Sửa
             </Button>
-            <button>Hủy</button>
+            {data.status_id === 1 || data.status_id === 2 ? (
+              <Popconfirm
+                onConfirm={() => confirm(data.id)}
+                title="Hủy lịch"
+                description="Bạn có chắc chắn hủy lịch này không?"
+              >
+                <Button className="btn">Hủy</Button>
+              </Popconfirm>
+            ) : null}
           </div>
         </>
       ),
@@ -196,7 +224,6 @@ const AppointmentsAdmin: React.FC = () => {
         autoComplete="off"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
       >
         <div className="search-appointments-form">
           <Form.Item name="nameUser" label="Tên người đặt">

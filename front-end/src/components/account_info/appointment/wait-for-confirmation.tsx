@@ -1,13 +1,13 @@
+import { Popconfirm } from "antd";
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import "../../../assets/scss/page/account/appointment.scss";
 import {
   useGetAppointmentUserStatusQuery,
   useUpdateStatusAppointmentMutation,
 } from "../../../services/appointments";
-import "../../../assets/scss/page/account/appointment.scss";
-import { Popconfirm } from "antd";
 
 const WaitForConfirmation: FC = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const WaitForConfirmation: FC = () => {
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt Đã Hủy</h4>
+          <h4>Chờ xác nhận</h4>
           <div className="table-scroll">
             <table>
               <thead>
@@ -101,9 +101,6 @@ const WaitForConfirmation: FC = () => {
                           >
                             Sửa
                           </div>
-                          <Link to={""} className="chitiet" onClick={() => {}}>
-                            Chi tiết
-                          </Link>
                         </td>
                       </tr>
                     );
