@@ -28,10 +28,12 @@ import carts from "./routers/carts";
 import statusPet from "./routers/status_pet";
 import vnpayRoutes from "./routers/vnpayRoutes";
 import dashboardRoutes from "./routers/dashboard";
+import bannerRouter from "./routers/banner";
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/api", bannerRouter);
 app.use("/api", servicesRouter);
 app.use("/api", authRouter);
 app.use("/api", speciesRouter);

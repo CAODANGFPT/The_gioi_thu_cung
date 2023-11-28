@@ -1,4 +1,4 @@
-import "../../../assets/scss/admin/appoinments.scss";
+// import "../../../assets/scss/admin/appoinments.scss";
 import { useState, useEffect } from "react";
 import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -43,7 +43,7 @@ const AppointmentsAdmin: React.FC = () => {
   const redirectToAppointment = (item: any) => {
     navigate("/admin/appointment/edit", {
       state: {
-        appointmentData: item
+        appointmentData: item,
       },
     });
   };
@@ -157,7 +157,11 @@ const AppointmentsAdmin: React.FC = () => {
       render: (data) => (
         <>
           <div>
-            <Button onClick={() => redirectToAppointment(data)} className="btn-edit" style={{ marginRight: "1rem" }}>
+            <Button
+              onClick={() => redirectToAppointment(data)}
+              className="btn-edit"
+              style={{ marginRight: "1rem" }}
+            >
               Sửa
             </Button>
             <button>Hủy</button>
