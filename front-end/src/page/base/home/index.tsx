@@ -23,7 +23,10 @@ const Home: React.FC = () => {
           </div>
           <div className="home-banner-text">
             <div className="top">
-              <p>Dịch vụ chăm sóc</p>
+              <h1>PET CARE</h1>
+            </div>
+            <div>
+              <p>HẠNH PHÚC BẮT ĐẦU TỪ CHĂM SÓC</p>
             </div>
             <div className="bottom">
               <button

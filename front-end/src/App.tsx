@@ -67,6 +67,9 @@ import WaitForConfirmation from "./components/account_info/appointment/wait-for-
 import EditPetPage from "./components/account_info/editpet";
 import PetUser from "./components/account_info/pet";
 import AppointmenEdit from "./page/admin/appointments/edit";
+import AddBanner from "./page/admin/banner/add";
+import EditBanner from "./page/admin/banner/edit";
+import BannerAdmin from "./page/admin/banner/list";
 import AddCategory from "./page/admin/category/add";
 import EditCategory from "./page/admin/category/edit";
 import CategoryAdmin from "./page/admin/category/list";
@@ -226,6 +229,12 @@ function App() {
             <Route index element={<NewsAdmin />} />
             <Route path="add" element={<AddNews />} />
             <Route path="edit/:id" element={<EditNews />} />
+          </Route>
+
+          <Route path="banner">
+            <Route index element={<BannerAdmin />} />
+            <Route path="add" element={<AddBanner />} />
+            <Route path="edit/:id" element={<EditBanner />} />
           </Route>
 
           <Route path="review" element={<ReviewAdmin />} />
