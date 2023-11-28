@@ -1,4 +1,4 @@
-// import "../../../assets/scss/admin/appoinments.scss";
+import "../../../assets/scss/admin/appoinments.scss";
 import { useState, useEffect } from "react";
 import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import type { ColumnsType } from "antd/es/table";

@@ -3,6 +3,7 @@ import AboutMeIcon from "../svg/aboutMe";
 import UserIcons from "../svg/account/User";
 import AddressCardIcon from "../svg/addressCard";
 import AppoinmentIcon from "../svg/appoinmentIcon";
+import BannerIcon from "../svg/banner";
 import BreedIcon from "../svg/breed";
 import Category from "../svg/category";
 import NewIcon from "../svg/newIcon";
@@ -48,6 +49,7 @@ export const navigationLinks = [
   { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
   { id: 19, title: "News", image: NewIcon, link: "news" },
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
+  { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
 ];
 
 export const transactions = [
