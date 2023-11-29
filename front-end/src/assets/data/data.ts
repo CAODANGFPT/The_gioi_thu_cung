@@ -17,6 +17,7 @@ import SpeciesIcon from "../svg/speciesIcon";
 import StaffDo from "../svg/staffDo";
 import StatusAppoint from "../svg/statusAppoint";
 import StatusContact from "../svg/statusContact";
+import StatusPet from "../svg/statusPet";
 import { personsImgs } from "../utils/images";
 import HomeIcon from "./../svg/homeIcon";
 export const navigationLinks = [
@@ -35,6 +36,12 @@ export const navigationLinks = [
     title: "Trạng thái liên hệ",
     image: StatusContact,
     link: "status_contact",
+  },
+  {
+    id: 23,
+    title: "Trạng thái pet",
+    image: StatusPet,
+    link: "status_pet",
   },
   { id: 8, title: "Dịch Vụ", image: ServicesIcon, link: "services" },
   { id: 9, title: "Phòng", image: PethouseIcon, link: "pethouse" },

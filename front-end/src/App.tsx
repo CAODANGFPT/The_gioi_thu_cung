@@ -86,6 +86,9 @@ import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
+import StatusPetAdmin from "./page/admin/status_pet/list";
+import EditStatusPet from "./page/admin/status_pet/edit";
+import AddStatusPetAdmin from "./page/admin/status_pet/add";
 
 
 function App() {
@@ -240,6 +243,12 @@ function App() {
 
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
+
+          <Route path="status_pet">
+            <Route index element={<StatusPetAdmin />} />
+            <Route path="add" element={<AddStatusPetAdmin />} />
+            <Route path="edit/:id" element={<EditStatusPet />} />
+          </Route>
         </Route>
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
