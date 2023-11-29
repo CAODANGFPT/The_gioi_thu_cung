@@ -1,18 +1,27 @@
 import dayjs from "dayjs";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import "../../../assets/scss/page/account/appointment.scss";
 
-const PaidAppointment: FC = () => {
-  const { data: listAppointment } = useGetAppointmentUserStatusQuery(7);
+const DoingAppointment: FC = () => {
+  const { data: listAppointment } = useGetAppointmentUserStatusQuery(3);
+  console.log("data", listAppointment);
+  const navigate = useNavigate();
 
+  const handlePayment = (id: number | undefined, total: number | undefined) => {
+    if (total !== undefined) {
+      navigate(`/payment/${id}/${total}`);
+    } else {
+      console.error("Không có thông tin thanh toán");
+    }
+  };
   return (
     <>
       {listAppointment?.length ? (
         <div className="cancelledAppointment">
-          <h4>Lịch đặt đã thanh toán</h4>
+          <h4>Lịch đặt đang làm</h4>
           <div className="table-scroll">
             <table>
               <thead>
@@ -22,6 +31,7 @@ const PaidAppointment: FC = () => {
                   <th>Thú cưng</th>
                   <th>Ngày giờ đặt</th>
                   <th>Phòng</th>
+                  <th>Thanh toán</th>
                   <th>Tổng tiền</th>
                   <th style={{ textAlign: "center" }}>Trạng thái</th>
                   <th></th>
@@ -61,15 +71,27 @@ const PaidAppointment: FC = () => {
                           {dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}
                         </td>
                         <td>{item.pethouse_name}</td>
+                        <td>{item.statusPaymentName}</td>
                         <td>{item.total}</td>
                         <td style={{ textAlign: "center" }}>
                           {item.status_name}
                         </td>
                         <td className="action">
-                          <div className="btn">Đặt lại</div>
-                          <Link to={""} className="chitiet" onClick={() => {}}>
-                            Chi tiết
-                          </Link>
+                          <div className="btn">
+                            {typeof item.total === "number" &&
+                            typeof item.id === "number" ? (
+                              <Link
+                                to={`/payment/${item.id}/${item.total}`}
+                                onClick={() =>
+                                  handlePayment(item.id, item.total)
+                                }
+                              >
+                                <p>Thanh toán</p>
+                              </Link>
+                            ) : (
+                              <p>Không có thông tin thanh toán</p>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );
@@ -90,4 +112,4 @@ const PaidAppointment: FC = () => {
   );
 };
 
-export default PaidAppointment;
+export default DoingAppointment;

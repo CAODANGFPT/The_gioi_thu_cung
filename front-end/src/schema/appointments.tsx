@@ -11,6 +11,8 @@ export const AppointmentSchema = yup.object().shape({
   start_time: yup.string(),
   end_time: yup.string(),
   total: yup.number(),
+  statusPaymentName: yup.number(),
+  statusPaymentId: yup.number(),
   services: yup
     .array()
     .of(
