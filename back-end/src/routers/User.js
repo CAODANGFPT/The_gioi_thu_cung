@@ -23,8 +23,8 @@ router.post("/password/reset", resetPassword);
 router.patch("/user/block", checkPermission, updateIsDelete);
 router.patch("/user/role", checkPermission, updateRole);
 router.get("/getUser", getUser);
-router.patch("/user/updatePassword", updatePassword);
-router.put("/updateUser/:id", updateUser);
+router.patch("/user/updatePassword", checkPermission,updatePassword);
+router.put("/updateUser/:id",checkPermission, updateUser);
 router.get("/Search", searchUser);
 
 export default router;
