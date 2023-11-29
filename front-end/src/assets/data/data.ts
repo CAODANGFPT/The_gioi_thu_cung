@@ -39,7 +39,7 @@ export const navigationLinks = [
   },
   {
     id: 23,
-    title: "Trạng thái pet",
+    title: "Trạng thái thú cưng",
     image: StatusPet,
     link: "status_pet",
   },
@@ -57,6 +57,12 @@ export const navigationLinks = [
   { id: 19, title: "News", image: NewIcon, link: "news" },
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
   { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
+  {
+    id: 24,
+    title: "Trạng thái đặt hàng",
+    image: StatusPet,
+    link: "status_order",
+  },
 ];
 
 export const transactions = [
