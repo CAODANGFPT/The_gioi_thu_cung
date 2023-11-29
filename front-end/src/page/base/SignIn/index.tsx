@@ -14,17 +14,18 @@ import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 import { useLoginUserMutation } from "../../../services/auth";
 import { message } from "antd";
+import { useGetUserQuery } from "../../../services/user";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [loginForm] = useLoginUserMutation();
-  const token = localStorage.getItem("token");
+  const { data: user } = useGetUserQuery();
   useEffect(() => {
-    if(token){
-      navigate("/")
+    if (user) {
+      navigate("/");
     }
-  }, [navigate, token])
+  }, [navigate, user]);
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
@@ -37,21 +38,22 @@ const SignIn = () => {
         if ("error" in response) {
           message.error("Tài khoản mật khẩu không chính xác");
         } else {
-          if(response.data && response.data.user.role_id === 3 ){
+          if (response.data && response.data.user.role_id === 3) {
             message.error("Tải khoản bị khóa");
-          } else{
+          } else {
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {
-              response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
+              response.data.user.role_id === 1
+                ? navigate("/admin")
+                : navigate("/");
             }, 100);
-           
           }
         }
       } catch (error) {
         console.error("Lỗi", error);
       }
-      },
+    },
   });
   return (
     <div className="singIn">
@@ -101,9 +103,9 @@ const SignIn = () => {
                 {showPassword ? <EyesOpenIcon /> : <EyesCloseIcon />}
               </div>
             </div>
-          {formik.touched.password && formik.errors.password && (
-            <div className="error">{formik.errors.password}</div>
-          )}
+            {formik.touched.password && formik.errors.password && (
+              <div className="error">{formik.errors.password}</div>
+            )}
           </div>
 
           <button className="btn-f bg-submit" type="submit">
@@ -111,11 +113,14 @@ const SignIn = () => {
           </button>
 
           <div className="forgot-phone">
-            <p onClick={() => navigate("/forgotPassword")} className="text-login">
+            <p
+              onClick={() => navigate("/forgotPassword")}
+              className="text-login"
+            >
               Quên mật khẩu
             </p>
             <p onClick={() => navigate("/signup")} className="text-login">
-             Đăng ký
+              Đăng ký
             </p>
           </div>
           <br />
