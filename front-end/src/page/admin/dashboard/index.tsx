@@ -2,7 +2,7 @@ import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { Col, Row, Statistic, Card } from "antd";
 import "../../../assets/scss/admin/dashBoard.scss";
 import { Bar, Line, Pie } from "@ant-design/charts";
-import { useListQuery } from "../../../services/dashboard";
+import { useListQuery, useTotalQuery } from "../../../services/dashboard";
 
 const barData: any[] = [
   { type: "tỉa lông", value: 10, color: "blue" },
@@ -18,22 +18,8 @@ const pieData = [
 
 const DashBoard = () => {
   const { data: listDashboard } = useListQuery();
+  const { data: totalDashboard } = useTotalQuery();
   // console.log(data);
-
-  // const lineData = [
-  //   { type: "Tháng 1", value: 1000 },
-  //   { type: "Tháng 2", value: 2020 },
-  //   { type: "Tháng 3", value: 303 },
-  //   { type: "Tháng 4", value: 3022 },
-  //   { type: "Tháng 5", value: 4000 },
-  //   { type: "Tháng 6", value: 7000 },
-  //   { type: "Tháng 7", value: 2000 },
-  //   { type: "Tháng 8", value: 3000 },
-  //   { type: "Tháng 9", value: 5000 },
-  //   { type: "Tháng 10", value: 4000 },
-  //   { type: "Tháng 11", value: 6000 },
-  //   { type: "Tháng 12", value: 1200 },
-  // ];
 
   const lineData =
     listDashboard?.map((data) => ({
@@ -78,10 +64,27 @@ const DashBoard = () => {
             <Card bordered={false}>
               <Statistic
                 title="Doanh số so với tháng trước"
-                value={11.28}
+                value={
+                  totalDashboard
+                    ? totalDashboard > 0
+                      ? totalDashboard
+                      : totalDashboard * -1
+                    : totalDashboard
+                }
                 precision={2}
-                valueStyle={{ color: "#3f8600" }}
-                prefix={<ArrowUpOutlined />}
+                valueStyle={{
+                  color:
+                    totalDashboard && totalDashboard > 0
+                      ? "#3f8600"
+                      : "#cf1322",
+                }}
+                prefix={
+                  totalDashboard && totalDashboard > 0 ? (
+                    <ArrowUpOutlined />
+                  ) : (
+                    <ArrowDownOutlined />
+                  )
+                }
                 suffix="%"
               />
             </Card>

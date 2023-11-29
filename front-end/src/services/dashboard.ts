@@ -25,10 +25,19 @@ const dashboardApi = createApi({
         },
         providesTags: ["Dashboard"],
       }),
+      total: builder.query<number, void>({
+        query: () => {
+          return {
+            url: "/dashboardTotal",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
     };
   },
 });
 
-export const { useListQuery } = dashboardApi;
+export const { useListQuery, useTotalQuery } = dashboardApi;
 export const dashboardReducer = dashboardApi.reducer;
 export default dashboardApi;
