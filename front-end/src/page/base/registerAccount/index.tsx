@@ -36,7 +36,7 @@ const RegisterAccount = () => {
           toast.error("Email đã tồn tại");
           
         } else {
-          toast.success("Đăng ký thành công!");
+          alert("Đăng ký thành công!");
           navigate("/signin");
         }
       } catch (error) {

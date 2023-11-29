@@ -60,15 +60,27 @@ const HeaderBase = () => {
         <p className="frame29-title2">Chi tiết</p>
       </div>
       <div className="frame32">
-        <p className="frame32-title">Giúp đỡ</p>
-        <p className="frame32-title">Theo dõi đơn hàng</p>
-        <p className="frame32-title">Về chúng tôi</p>
-        <p className="frame32-title">Bản tin</p>
-        <p className="frame32-title">
-          <Link to="/signin" className="help">
-            Đăng nhập
-          </Link>
-        </p>
+      {user ? (
+          <>
+            <p className="frame32-title">Giúp đỡ</p>
+            <p className="frame32-title">Theo dõi đơn hàng</p>
+            <p className="frame32-title">Về chúng tôi</p>
+            <p className="frame32-title">Bản tin</p>
+            <p className="frame32-title">Xin chào: <span className="hello_login">{user.name}</span> </p>
+          </>
+        ) : (
+          <>
+            <p className="frame32-title">Giúp đỡ</p>
+            <p className="frame32-title">Theo dõi đơn hàng</p>
+            <p className="frame32-title">Về chúng tôi</p>
+            <p className="frame32-title">Bản tin</p>
+            <p className="frame32-title">
+              <Link to="/signin" className="help">
+                Đăng nhập
+              </Link>
+            </p>
+          </>
+        )}
       </div>
       <div className="nav">
         <div className="menu" onClick={() => setOpenMenu(!openMenu)}>
