@@ -48,7 +48,7 @@ const RegisterAccount = () => {
   return (
     <div className="registerAccount">
       <div className="singUp-top">
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className="signup_logo"/>
         <Link to="" className="help">
           Trợ giúp?
         </Link>
