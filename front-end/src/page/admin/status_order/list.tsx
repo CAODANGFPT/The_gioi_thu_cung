@@ -3,21 +3,21 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TStatusPet } from "../../../schema/status_pet";
+import { TStatusOrder } from "../../../schema/status_order";
 import {
-  useGetAllstatusPetQuery,
-  useRemoveStatuspetMutation
-} from "../../../services/status_pet";
+  useGetAllstatusOrderQuery,
+  useRemoveStatusOrderMutation
+} from "../../../services/status_order";
 import { PlusOutlined } from "@ant-design/icons";
 
-const StatusPetAdmin: React.FC = () => {
-  const { data } = useGetAllstatusPetQuery();
+const StatusOrderAdmin: React.FC = () => {
+  const { data } = useGetAllstatusOrderQuery();
   const navigate = useNavigate();
-  const [removePetContact] = useRemoveStatuspetMutation();
+  const [removeOrderContact] = useRemoveStatusOrderMutation();
 
   const confirm = async (id: number) => {
     try {
-      await removePetContact(id);
+      await removeOrderContact(id);
       message.success("Xóa thành công.");
     } catch (error) {
       message.success("Xóa không thành công.");
@@ -28,7 +28,7 @@ const StatusPetAdmin: React.FC = () => {
     message.error("Xóa không thành công.");
   };
 
-  const columns: ColumnsType<TStatusPet> = [
+  const columns: ColumnsType<TStatusOrder> = [
     {
       title: "STT",
       dataIndex: "id",
@@ -75,13 +75,13 @@ const StatusPetAdmin: React.FC = () => {
   ];
   return (
     <div>
-      <Link to="/admin/status_pet/add">
+      <Link to="/admin/status_order/add">
         <Button
           type="primary"
           icon={<PlusOutlined />}
           style={{ marginBottom: "1rem" }}
         >
-          THÊM TRẠNG THÁI THÚ
+          THÊM TRẠNG THÁI ĐẶT HÀNG
         </Button>
       </Link>
       <TableAdmin columns={columns} data={data} />
@@ -89,4 +89,4 @@ const StatusPetAdmin: React.FC = () => {
   );
 };
 
-export default StatusPetAdmin;
+export default StatusOrderAdmin;

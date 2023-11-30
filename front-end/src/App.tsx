@@ -80,6 +80,9 @@ import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
 import ProductsAdmin from "./page/admin/products/list";
+import AddStatusOrderAdmin from "./page/admin/status_order/add";
+import EditStatusOrder from "./page/admin/status_order/edit";
+import StatusOrderAdmin from "./page/admin/status_order/list";
 import AddStatusPetAdmin from "./page/admin/status_pet/add";
 import EditStatusPet from "./page/admin/status_pet/edit";
 import StatusPetAdmin from "./page/admin/status_pet/list";
@@ -90,8 +93,6 @@ import DetailProduct from "./page/base/detailProduct";
 import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
 import PageNotFound from "./page/pageNotFound";
-
-
 
 
 function App() {
@@ -266,6 +267,11 @@ function App() {
             <Route index element={<StatusPetAdmin />} />
             <Route path="add" element={<AddStatusPetAdmin />} />
             <Route path="edit/:id" element={<EditStatusPet />} />
+          </Route>
+          <Route path="status_order">
+            <Route index element={<StatusOrderAdmin />} />
+            <Route path="add" element={<AddStatusOrderAdmin />} />
+            <Route path="edit/:id" element={<EditStatusOrder />} />
           </Route>
         </Route>
         <Route path="payment/:id/:total" element={<PaymentPage />} />

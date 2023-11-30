@@ -41,6 +41,8 @@ import cartsApi, { cartsReducer } from "../services/shoppingCart";
 
 import statusPetApi, { statusPetReducer } from "../services/status_pet";
 import BannerApi, { bannerReducer } from "../services/banner";
+import statusOrderApi , {statusOrderReducer }from "../services/status_order";
+import dashboardApi, { dashboardReducer } from "../services/dashboard";
 const persistConfig = {
   key: "root",
   storage,
@@ -71,6 +73,8 @@ const rootReducer = combineReducers({
   [cartsApi.reducerPath]: cartsReducer,
   [statusPetApi.reducerPath]: statusPetReducer,
   [BannerApi.reducerPath]: bannerReducer,
+  [statusOrderApi.reducerPath]: statusOrderReducer,
+  [dashboardApi.reducerPath]: dashboardReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -106,7 +110,9 @@ export const store = configureStore({
       ProductsApi.middleware,
       cartsApi.middleware,
       statusPetApi.middleware,
-      BannerApi.middleware
+      BannerApi.middleware,
+      statusOrderApi.middleware,
+      dashboardApi.middleware
     ),
 });
 
