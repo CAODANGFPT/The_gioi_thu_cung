@@ -7,7 +7,7 @@ import {
 } from "../../../services/appointments";
 import { Button, Popconfirm, message } from "antd";
 import dayjs from "dayjs";
-
+import logo from "../../../assets/image/logo.png";
 const CartPage: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserQuery();
   const [CancelHistoryAppointmentMutation] =
@@ -27,7 +27,17 @@ const CartPage: FC = () => {
   const cancel = () => {
     message.error("Hủy không thành công.");
   };
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="cart">
       <h1>Thông tin lịch đặt</h1>
@@ -70,7 +80,7 @@ const CartPage: FC = () => {
                         className={
                           item.status_name === "Đang chờ xác nhận"
                             ? "btn-delete"
-                            : 'btn-disable'
+                            : "btn-disable"
                         }
                       >
                         Hủy đặt lịch
