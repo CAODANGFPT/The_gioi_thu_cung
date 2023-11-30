@@ -41,11 +41,8 @@ import cartsApi, { cartsReducer } from "../services/shoppingCart";
 
 import statusPetApi, { statusPetReducer } from "../services/status_pet";
 import BannerApi, { bannerReducer } from "../services/banner";
-<<<<<<< HEAD
 import statusOrderApi , {statusOrderReducer }from "../services/status_order";
-=======
 import dashboardApi, { dashboardReducer } from "../services/dashboard";
->>>>>>> develop
 const persistConfig = {
   key: "root",
   storage,
@@ -114,7 +111,7 @@ export const store = configureStore({
       cartsApi.middleware,
       statusPetApi.middleware,
       BannerApi.middleware,
-      statusOrderApi.middleware
+      statusOrderApi.middleware,
       dashboardApi.middleware
     ),
 });
