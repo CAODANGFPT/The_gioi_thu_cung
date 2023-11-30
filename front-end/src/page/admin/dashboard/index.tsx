@@ -92,7 +92,7 @@ const DashBoard = () => {
         </Row>
       </div>
       <div className="line">
-        <h2>Bảng doanh số theo các thàng</h2>
+        <h2>Bảng doanh số theo các tháng</h2>
         <Line {...lineConfig} />
       </div>
 
