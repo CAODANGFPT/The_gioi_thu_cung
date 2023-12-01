@@ -8,7 +8,7 @@ export const PetsSchema = yup
     name: yup.string(),
     age: yup.number(),
     gender: yup.string(),
-    nameUser: yup.number(),
+    nameUser: yup.string(),
     nameSpecies: yup.number(),
     nameBreed: yup.number(),
   })

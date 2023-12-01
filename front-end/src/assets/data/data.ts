@@ -21,7 +21,7 @@ import StatusPet from "../svg/statusPet";
 import { personsImgs } from "../utils/images";
 import HomeIcon from "./../svg/homeIcon";
 export const navigationLinks = [
-  { id: 1, title: "Bảng điều khiển", image: HomeIcon, link: "dashboard" },
+  { id: 1, title: "Bảng điều khiển", image: HomeIcon, link: "/admin" },
   { id: 3, title: "Đặt Lịch", image: AppoinmentIcon, link: "appointment" },
   { id: 4, title: "Thú Cưng", image: PetIcon, link: "pets" },
   { id: 5, title: "Liên Hệ", image: AddressCardIcon, link: "contact" },
