@@ -9,7 +9,7 @@ import LayoutBase from "./layout/base";
 import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -92,7 +92,7 @@ import AddStatusPetAdmin from "./page/admin/status_pet/add";
 import StatusOrderAdmin from "./page/admin/status_order/list";
 import AddStatusOrderAdmin from "./page/admin/status_order/add";
 import EditStatusOrder from "./page/admin/status_order/edit";
-
+import PrintInvoice from "./page/base/printInvoice";
 
 function App() {
   return (
@@ -127,10 +127,7 @@ function App() {
               path="confirmed-appointment"
               element={<ConfirmedAppointment />}
             />
-            <Route
-              path="doing-appointment"
-              element={<DoingAppointment />}
-            />
+            <Route path="doing-appointment" element={<DoingAppointment />} />
             <Route
               path="accomplished-appointment"
               element={<AccomplishedAppointment />}
@@ -260,6 +257,7 @@ function App() {
         </Route>
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
+        <Route path="print-invoice/:id" element={<PrintInvoice />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
 const API_URL = "http://localhost:8080/api";
+
 const PaymentPage = () => {
   const { id, total } = useParams();
+  const navigate = useNavigate();
   console.log("Appointment ID nhận được:", id);
   console.log("Tiền nhận được:", total);
 
@@ -26,6 +28,9 @@ const PaymentPage = () => {
         console.error("Error", error);
       });
   };
+  const handlePaymentCash = () => {
+    navigate(`/print-invoice/${id}`);
+  };
   return (
     <div className="payment-page">
       {isLoading ? (
@@ -40,7 +45,10 @@ const PaymentPage = () => {
         <h1>Chọn phương thức thanh toán</h1>
       </div>
       <div className="payment-options">
-        <div className="payment-padding btn-f bg-with">
+        <div
+          className="payment-padding btn-f bg-with"
+          onClick={handlePaymentCash}
+        >
           <h3 className="">Thanh Toán Bằng Tiền Mặt</h3>
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1vztU8IzuRgDR1QVXxz5LVwtjwOm2YW2h9w&usqp=CAU"
