@@ -7,13 +7,13 @@ import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import CarouseBlog from "../../../components/carouselBlog";
 import CarouselProduct from "../../../components/carouselProduct";
-import ServiceCard from "../../../components/serviceCard";
 import { useServicesTop8Query } from "../../../services/services";
 import { blogData, productData } from "./data";
+import CarouselSerivce from "../../../components/carouselService";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
-  const { data: listServices } = useServicesTop8Query();
+  const { data } = useServicesTop8Query();
   return (
     <div className="bg">
       <div className="home">
@@ -47,18 +47,7 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="home-listCate">
-          {listServices?.map((serviceCardData) => {
-            return (
-              <ServiceCard
-                key={serviceCardData.id}
-                id={serviceCardData.id}
-                image={serviceCardData.image}
-                name={serviceCardData.name}
-              />
-            );
-          })}
-        </div>
+        <CarouselSerivce serviceData={data} name="Dịch vụ" />
         <CarouselProduct productData={productData} name="Ưu đãi của tháng " />
         <CarouselProduct productData={productData} name="Điểm đến mới" />
         <CarouselProduct productData={productData} name="Siêu giảm giá" />

@@ -93,7 +93,6 @@ import StatusOrderAdmin from "./page/admin/status_order/list";
 import AddStatusOrderAdmin from "./page/admin/status_order/add";
 import EditStatusOrder from "./page/admin/status_order/edit";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -127,10 +126,7 @@ function App() {
               path="confirmed-appointment"
               element={<ConfirmedAppointment />}
             />
-            <Route
-              path="doing-appointment"
-              element={<DoingAppointment />}
-            />
+            <Route path="doing-appointment" element={<DoingAppointment />} />
             <Route
               path="accomplished-appointment"
               element={<AccomplishedAppointment />}
