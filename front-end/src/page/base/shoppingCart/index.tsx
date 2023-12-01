@@ -10,7 +10,7 @@ import {
 import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
 import Minus from "../../../assets/svg/minus";
-
+import logo from "../../../assets/image/logo.png";
 const ShoppingCart = () => {
   const { data } = useGetUserListCartsQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -92,6 +92,17 @@ const ShoppingCart = () => {
       removeOrder(id);
     }
   };
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="shoppingCart">
       <div className="breadcrumbs" role="presentation">
@@ -219,11 +230,9 @@ const ShoppingCart = () => {
                 ))}
             </tbody>
           </table>
-          { dataOrder.length === 0 && (
-            <div className="text">
-              Không có sản phẩm nào trong giỏ hàng
-            </div>
-            )}
+          {dataOrder.length === 0 && (
+            <div className="text">Không có sản phẩm nào trong giỏ hàng</div>
+          )}
         </div>
         <div className="shoppingCart-blog-right">
           <div className="shoppingCart-blog-right-item">
