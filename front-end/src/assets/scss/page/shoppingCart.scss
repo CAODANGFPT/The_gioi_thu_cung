@@ -1,6 +1,21 @@
 @import "../utils/functions.scss";
 @import "../utils/variables.scss";
 
+.login-now {
+  font-size: 18px;
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  img {
+    width: 100%;
+  }
+}
+
 .shoppingCart {
   background-color: $Cultured;
   font-family: $Roboto;
@@ -40,7 +55,7 @@
 
     &-left {
       flex: 1;
-      .text{
+      .text {
         text-align: center;
         margin-top: 20px;
         font-weight: 500;
@@ -71,7 +86,6 @@
               width: 55%;
 
               p {
-
                 @include max-screen(620px) {
                   display: none;
                 }
@@ -154,7 +168,7 @@
                       display: none;
                     }
                   }
-                  .quantity-rq{
+                  .quantity-rq {
                     margin: 0;
                     @include min-screen(620px) {
                       display: none;

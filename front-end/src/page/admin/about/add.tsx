@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Upload, Button, Form, Input, Space, message } from "antd";
+import { Upload, Button, Form, Space, message } from "antd";
 import { useAddAboutMutation, useAboutQuery } from "../../../services/about";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
@@ -9,27 +9,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const AddAbout: React.FC = () => {
   const [image, setImage] = useState<any | null>(null);
-
-  //   const values = Form.useWatch([], form);
-
-  //   React.useEffect(() => {
-  //     form.validateFields({ validateOnly: true }).then(
-  //       () => {
-  //         setSubmittable(true);
-  //       },
-  //       () => {
-  //         setSubmittable(false);
-  //       }
-  //     );
-  //   }, [form, values]);
-
-  //   return (
-  //     <Button type="primary" htmlType="submit" disabled={!submittable}>
-  //       Submit
-  //     </Button>
-  //   );
-  // };
-
   const [value, setValue] = useState("");
 
   const [createAbout, { isLoading: isAddLoading }] = useAddAboutMutation();
@@ -85,7 +64,7 @@ const AddAbout: React.FC = () => {
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
-        label={<span className="">Ảnh sản phẩm</span>}
+        label={<span className="">Ảnh Giới thiệu</span>}
         name="picture-card"
         rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
       >
@@ -137,7 +116,6 @@ const AddAbout: React.FC = () => {
               "Thêm sản phẩm"
             )}
           </Button>
-          <Button htmlType="reset">Reset</Button>
         </Space>
       </Form.Item>
     </Form>

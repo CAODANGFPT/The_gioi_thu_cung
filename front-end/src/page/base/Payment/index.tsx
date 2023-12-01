@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
 const API_URL = "http://localhost:8080/api";
@@ -31,6 +31,17 @@ const PaymentPage = () => {
   const handlePaymentCash = () => {
     navigate(`/print-invoice/${id}`);
   };
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="payment-page">
       {isLoading ? (
@@ -39,7 +50,7 @@ const PaymentPage = () => {
         </div>
       ) : null}
       <div className="h-payment">
-        <img src={logo} alt="logo" />
+        <img className="logo" src={logo} alt="logo" />
       </div>
       <div className="h-payment">
         <h1>Chọn phương thức thanh toán</h1>

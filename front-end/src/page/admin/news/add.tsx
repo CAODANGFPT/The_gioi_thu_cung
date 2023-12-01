@@ -1,5 +1,5 @@
 import { Button, Form, Input, message, Upload } from "antd";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { TNews } from "../../../schema/news";
 import { useAddNewsMutation } from "../../../services/news";
 import dayjs from "dayjs";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useGetUserQuery } from "../../../services/user";
 
 const Addnews = () => {
   const [value, setValue] = useState("");
@@ -27,18 +28,18 @@ const Addnews = () => {
   const cancel = () => {
     message.error("Tạo bài đăng không công.");
   };
-
-  const user = JSON.parse(localStorage.getItem("user") as string);
+  const { data: user } = useGetUserQuery();
+  console.log("user", user?.id);
 
   const handleFormSubmit = async (values: TNews) => {
-    const { title, description, created_at, user_id } = values;
+    const { title, description } = values;
 
     const dateNews = {
       title,
       img: image,
       description,
       created_at: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-      user_id: user.user.id,
+      user_id: user?.id,
     };
 
     try {
@@ -142,7 +143,7 @@ const Addnews = () => {
               <span className="text-base dark:text-white">Tên người đăng</span>
             }
           >
-            <span className="dark:text-white">{user.user.name}</span>
+            <span className="dark:text-white">{user?.name}</span>
           </Form.Item>
           <Form.Item>
             <Button

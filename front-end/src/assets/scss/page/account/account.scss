@@ -6,8 +6,22 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  box-sizing: border-box;
 }
-
+.login-now {
+  font-size: 18px;
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  img {
+    width: 100%;
+  }
+}
 .account_info {
   padding: 10px 5px 70px 5px;
   background-color: $Cultured;
@@ -51,7 +65,6 @@
     .account_info-col {
       display: flex;
       flex-direction: column;
-
     }
 
     .col_1 {
@@ -65,7 +78,7 @@
         font-weight: bold;
         border-radius: 10px;
       }
-      .ant-menu-inline .ant-menu-item{
+      .ant-menu-inline .ant-menu-item {
         padding-inline: 0;
       }
       .account_col-list {
@@ -176,8 +189,8 @@
         border: none;
         width: 100%;
       }
-      .ant-menu-light{
-        width: 100%;  
+      .ant-menu-light {
+        width: 100%;
       }
       @include max-screen($lg) {
         margin-left: 0;
@@ -617,7 +630,6 @@
     }
 
     @include max-screen($lg) {
-
       th,
       td {
         white-space: nowrap;
@@ -686,7 +698,7 @@
           display: none;
         }
 
-        tbody>tr {
+        tbody > tr {
           display: grid;
           grid-template-rows: repeat(2, auto);
           border: 1px solid #ccc;

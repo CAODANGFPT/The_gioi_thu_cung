@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, message, Upload } from "antd";
 import {
   useUpdateAboutMutation,
   useGetAboutByIdQuery,
@@ -18,6 +18,7 @@ const cancel = () => {
 
 const EditAbout = () => {
   const [value, setValue] = useState("");
+  const [image, setImage] = useState<string | null>(null);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const about = useGetAboutByIdQuery(Number(id));
@@ -31,14 +32,26 @@ const EditAbout = () => {
         image: about.data.image,
         description: about.data.description,
       });
+
+      // Kiểm tra nếu about.data.image là undefined thì gán null cho image
+      setImage(about.data.image || null);
     }
   }, [about.data, form]);
+
+  const handleImageChange = (info: any) => {
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+      setImage(info.file.response.secure_url);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
   const onFinish = async (values: { image: string; description: string }) => {
     try {
       const updatedAbout: TAbout = {
         id: Number(id),
-        image: values.image,
+        image: image || values.image,
         description: values.description,
       };
       await updateAboutMutation(updatedAbout).unwrap();
@@ -59,6 +72,14 @@ const EditAbout = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const uploadButton = (
+    <div>
+      {image ? (
+        <img src={image} alt="avatar" style={{ width: "100%" }} />
+      ) : null}
+    </div>
+  );
+
   return (
     <>
       <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
@@ -77,7 +98,19 @@ const EditAbout = () => {
             rules={[{ required: true, message: "Vui lòng nhập About" }]}
             initialValue={about.data ? about.data.image : ""}
           >
-            <Input />
+            <Upload
+              name="file"
+              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+              data={{
+                upload_preset: "wh3rdke8",
+                cloud_name: "dksgvucji",
+              }}
+              listType="picture-card"
+              showUploadList={false}
+              onChange={handleImageChange}
+            >
+              {uploadButton}
+            </Upload>
           </Form.Item>
 
           <Form.Item
