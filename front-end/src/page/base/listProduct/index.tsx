@@ -219,13 +219,18 @@ const ListProduct: React.FC = () => {
           <div className="product-list">
             {currentItems.map((productData) => {
               return (
-                <ListProductCard
+                <Link
                   key={productData.id}
-                  name={productData.name}
-                  sold={productData.sold}
-                  url={productData.imageUrl}
-                  price={productData.price}
-                />
+                  to={`/detailproduct/${productData.id}`}
+                >
+                  <ListProductCard
+                    key={productData.id}
+                    name={productData.name}
+                    sold={productData.sold}
+                    url={productData.imageUrl}
+                    price={productData.price}
+                  />
+                </Link>
               );
             })}
           </div>

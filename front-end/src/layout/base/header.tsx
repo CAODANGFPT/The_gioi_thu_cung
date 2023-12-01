@@ -27,12 +27,12 @@ const HeaderBase = () => {
     setOpenMenu(false);
   }, [location]);
   useEffect(() => {
-    if(carts){
-      setDataOrder(carts)
+    if (carts) {
+      setDataOrder(carts);
     }
   }, [carts]);
   useEffect(() => {
-    if(dataOrder){
+    if (dataOrder) {
       setCountCarts(dataOrder.length);
     }
   }, [dataOrder]);
@@ -60,13 +60,15 @@ const HeaderBase = () => {
         <p className="frame29-title2">Chi tiết</p>
       </div>
       <div className="frame32">
-      {user ? (
+        {user ? (
           <>
             <p className="frame32-title">Giúp đỡ</p>
             <p className="frame32-title">Theo dõi đơn hàng</p>
             <p className="frame32-title">Về chúng tôi</p>
             <p className="frame32-title">Bản tin</p>
-            <p className="frame32-title">Xin chào: <span className="hello_login">{user.name}</span> </p>
+            <p className="frame32-title">
+              Xin chào: <span className="hello_login">{user.name}</span>{" "}
+            </p>
           </>
         ) : (
           <>
@@ -153,18 +155,31 @@ const HeaderBase = () => {
       <div className="frame52">
         <ul className="menu">
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              PHỤ KIỆN MÈO
+            <button
+              className="title-button"
+              onClick={() =>
+                navigate("/appointment", {
+                  state: {
+                    appointmentData: {
+                      pets: [],
+                      services: [],
+                      type: 1,
+                    },
+                  },
+                })
+              }
+            >
+              <div>ĐẶT LỊCH CHĂM SÓC</div>
+            </button>
+          </li>
+          <li className="menu-title">
+            <Link className="title1" to={"/product"}>
+              SẢN PHẨM CHO THÚ CƯNG
             </Link>
           </li>
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              THỨC ĂN MÈO
-            </Link>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              NỘI THẤT MÈO
+            <Link className="title1" to={"/services"}>
+              LOẠI DỊCH VỤ
             </Link>
           </li>
           <li className="menu-title">
@@ -193,20 +208,33 @@ const HeaderBase = () => {
         </div>
         <ul className="menu">
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              PHỤ KIỆN MÈO
+            <button
+              className="title-button"
+              onClick={() =>
+                navigate("/appointment", {
+                  state: {
+                    appointmentData: {
+                      pets: [],
+                      services: [],
+                      type: 1,
+                    },
+                  },
+                })
+              }
+            >
+              <div>ĐẶT LỊCH CHĂM SÓC</div>
+            </button>
+            <RightIcon />
+          </li>
+          <li className="menu-title">
+            <Link className="title1" to={"/product"}>
+              SẢN PHẨM CHO THÚ CƯNG
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              THỨC ĂN CHO MÈO
-            </Link>
-            <RightIcon />
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              NỘI THẤT MÈO
+            <Link className="title1" to={"/services"}>
+              LOẠI DỊCH VỤ
             </Link>
             <RightIcon />
           </li>
