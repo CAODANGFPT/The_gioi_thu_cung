@@ -6,6 +6,7 @@ export const ContactSchema = yup.object().shape({
   subject: yup.string(),
   user_id: yup.number(),
   status_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const ContactRequestSchema = yup.object().shape({

@@ -1,12 +1,16 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
 import { useContactQuery } from "../../../services/contact";
+import Search from "antd/es/input/Search";
 
 const ContactAdmin: React.FC = () => {
+  const [filter, setFilter] = useState({ name: "", nameUser: "" });
+  const [listContact, setListContact] = useState<TContact[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
   const { data } = useContactQuery();
 
   const confirm = () => {
@@ -78,7 +82,55 @@ const ContactAdmin: React.FC = () => {
     },
   ];
 
-  return <TableAdmin columns={columns} data={data} />;
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
+  useEffect(() => {
+    const filteredData = data?.filter(
+      (item) =>
+        item.title?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.nameUser?.toLowerCase().includes(filter.nameUser.trim().toLowerCase())
+    );
+    setListContact(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.nameUser === "" && filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.nameUser, filter.name]);
+
+  return (
+    <>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm tiêu đề"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm kiếm tên"
+            value={filter?.nameUser}
+            onChange={(e) => handleFilterChange("nameUser", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "", nameUser: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
+      <TableAdmin columns={columns} data={listContact} />
+    </>
+  );
 };
 
 export default ContactAdmin;
