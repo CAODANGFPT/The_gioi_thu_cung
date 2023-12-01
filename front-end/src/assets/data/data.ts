@@ -54,7 +54,7 @@ export const navigationLinks = [
   { id: 16, title: "Chức năng", image: RoleIcon, link: "role" },
   { id: 17, title: "Hồ Sơ", image: ProfileIcon, link: "profile" },
   { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
-  { id: 19, title: "News", image: NewIcon, link: "news" },
+  { id: 19, title: "Bản tin", image: NewIcon, link: "news" },
   { id: 20, title: "About", image: AboutMeIcon, link: "about" },
   { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
   {
