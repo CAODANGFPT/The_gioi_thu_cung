@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatus } from "../../../schema/status";
@@ -9,11 +9,18 @@ import {
   useRemoveStatusAppointmentMutation,
   useStatusQuery,
 } from "../../../services/status_appointment";
+import Search from "antd/es/input/Search";
 
 const StatusAdmin: React.FC = () => {
   const navigator = useNavigate();
+  const [filter, setFilter] = useState({ name: "" });
+  const [listStatusAppointment, setListStatusAppointment] = useState<
+    TStatus[] | undefined
+  >([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
   const { data } = useStatusQuery();
   const [removeStatusAppointment] = useRemoveStatusAppointmentMutation();
+  
   const confirm = (id: number) => {
     removeStatusAppointment(id)
       .then((response: any) => {
@@ -76,6 +83,25 @@ const StatusAdmin: React.FC = () => {
     },
   ];
 
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListStatusAppointment(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
+
   return (
     <div>
       <Button
@@ -86,7 +112,24 @@ const StatusAdmin: React.FC = () => {
       >
         THÊM TRẠNG THÁI
       </Button>
-      <TableAdmin columns={columns} data={data} />
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm Trạng thái"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
+      <TableAdmin columns={columns} data={listStatusAppointment} />
     </div>
   );
 };
