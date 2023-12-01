@@ -1,5 +1,5 @@
-import { Button, Form, Input, message } from "antd";
-import { useState } from "react";
+import { Button, Form, Input, message, Upload } from "antd";
+import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +9,9 @@ import {
   useNewsByIdQuery,
 } from "../../../services/news";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useGetUserQuery } from "../../../services/user";
 
 const confirm = () => {
   message.success("Cập nhật tin tức thành công.");
@@ -25,35 +27,50 @@ const EditNews = () => {
   const news = useNewsByIdQuery(Number(id));
   const [form] = Form.useForm();
   const [updateNewsMutation, { reset }] = useUpdateNewsMutation();
-
   const [value, setValue] = useState("");
+  const { data: user } = useGetUserQuery();
+  const [image, setImage] = useState<string | null>(news.data?.img || null);
+  const [fileList, setFileList] = useState<any[]>([]);
 
   useEffect(() => {
     if (news.data) {
       form.setFieldsValue({
-        img: news.data.img,
         title: news.data.title,
+        img: news.data.img,
         description: news.data.description,
       });
+
+      setFileList([
+        {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: news.data.img,
+        },
+      ]);
     }
   }, [news.data, form]);
 
-  const user = JSON.parse(localStorage.getItem("user") as string);
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList.length > 0 && newFileList[0].response) {
+      setImage(newFileList[0].response.url);
+    } else {
+      setImage(null);
+    }
+    setFileList(newFileList);
+  };
 
-  const handleFormSubmit = async (values: {
-    title: string;
-    img: string;
-    description: string;
-  }) => {
+  const handleFormSubmit = async (values: TNews) => {
     try {
       const dateNews: TNews = {
         id: Number(id),
         title: values.title,
-        img: values.img,
+        img: image ?? "",
         description: values.description,
         created_at: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-        user_id: user.user.id,
+        user_id: user?.id || 0,
       };
+
       await updateNewsMutation(dateNews).unwrap();
 
       confirm();
@@ -71,6 +88,13 @@ const EditNews = () => {
   const onFinishFailed = async (values: any) => {
     console.log("Failed:", values);
   };
+
+  const uploadButton = (
+    <div>
+      {fileList.length === 0 ? <PlusOutlined /> : <LoadingOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
   return (
     <>
@@ -92,24 +116,44 @@ const EditNews = () => {
               <span className="text-base dark:text-white">Tên bài đăng</span>
             }
             name="title"
-            rules={[{ required: true, message: "Vui lòng nhập tên bài đăng!" }]}
-            initialValue={news.data ? news.data.title : ""}
+            rules={[{ required: true, message: "Vui lòng nhập tên bài đăng!" }]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300" />
           </Form.Item>
           <Form.Item
             label={<span className="text-base dark:text-white">Image</span>}
             name="img"
-            rules={[{ required: true, message: "Vui lòng nhập image!" }]}
-            initialValue={news.data ? news.data.img : ""}
+            rules={[{ required: true, message: "Vui lòng nhập image!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300" />
+            <Upload
+              name="file"
+              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+              data={{
+                upload_preset: "wh3rdke8",
+                cloud_name: "dksgvucji",
+              }}
+              listType="picture-card"
+              maxCount={1}
+              showUploadList={true}
+              className="ant-upload-wrapper ant-upload-select"
+              fileList={fileList}
+              onChange={handleImageChange}
+            >
+              {fileList.length > 0 ? (
+                <img
+                  src={fileList[0].url}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                uploadButton
+              )}
+            </Upload>
           </Form.Item>
           <Form.Item
             label={<span className="text-base dark:text-white">Mô tả</span>}
             name="description"
-            rules={[{ required: true, message: "Vui lòng nhập giá mô tả!" }]}
-            initialValue={news.data ? news.data.description : ""}
+            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
           >
             <ReactQuill
               style={{ height: 500 }}
@@ -124,7 +168,7 @@ const EditNews = () => {
               <span className="text-base dark:text-white">Tên người đăng</span>
             }
           >
-            <span className="dark:text-white">{user.user.name}</span>
+            <span className="dark:text-white">{user?.name}</span>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
