@@ -216,7 +216,7 @@ const AppointmentsAdmin: React.FC = () => {
   };
   return (
     <>
-      <h4>Tìm kiếm</h4>
+      <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"
