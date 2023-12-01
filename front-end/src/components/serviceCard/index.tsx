@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ServiceCardProps = {
-  id: number;
+  id?: number;
   image: string;
   name: string;
 };
@@ -25,7 +25,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ id, name, image }) => {
       }
     >
       <div className="top">
-        <img src={image} alt="" />
+        <img className="" src={image} alt="" />
       </div>
       <div className="bottom">
         <button>{name}</button>

@@ -6,6 +6,21 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.login-now {
+  font-size: 18px;
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  img {
+    width: 100%;
+  }
+}
 .payment-page {
   text-align: center;
   margin: 20px;
@@ -14,6 +29,9 @@
   border-radius: 30px;
   .h-payment {
     margin: 50px 0px 50px 0px;
+    .logo {
+      width: 50%;
+    }
   }
   h1 {
     color: $Cultured;

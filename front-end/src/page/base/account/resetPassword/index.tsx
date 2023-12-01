@@ -10,7 +10,10 @@ import EyesCloseIcon from "../../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../../assets/svg/eyesOpenIcon";
 import FacebookIcon from "../../../../assets/svg/facebookIcon";
 import GoogleIcon from "../../../../assets/svg/googleIcon";
-import { ResetPasswordSchema, TResetPassword } from "../../../../schema/resetPassword";
+import {
+  ResetPasswordSchema,
+  TResetPassword,
+} from "../../../../schema/resetPassword";
 import { useResetPasswordUserMutation } from "../../../../services/user";
 
 const ResetPassword = () => {
@@ -32,19 +35,18 @@ const ResetPassword = () => {
         const data = {
           ...values,
           email,
-          token
-        }
+          token,
+        };
         const response = await resetPassword(data);
         if ("error" in response) {
           alert("Đổi mật khẩu thất bại");
-
         } else {
           alert("Đổi mật khẩu Thành công");
         }
       } catch (error) {
-        navigate("/signin")
+        navigate("/signin");
       }
-      },
+    },
   });
   return (
     <div className="singIn">
@@ -93,9 +95,10 @@ const ResetPassword = () => {
                 {showPassword ? <EyesOpenIcon /> : <EyesCloseIcon />}
               </div>
             </div>
-            {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-              <div className="error">{formik.errors.confirmPassword}</div>
-            )}
+            {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword && (
+                <div className="error">{formik.errors.confirmPassword}</div>
+              )}
           </div>
 
           <button className="btn-f bg-submit" type="submit">
@@ -141,7 +144,7 @@ const ResetPassword = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ResetPassword
+export default ResetPassword;
