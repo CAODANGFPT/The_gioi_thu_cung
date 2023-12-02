@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
+import { useCreateInvoiceMutation } from "../../../services/invoice";
+import { useGetUserQuery } from "../../../services/user";
 const API_URL = "http://localhost:8080/api";
 
 const PaymentPage = () => {
   const { id, total } = useParams();
   const navigate = useNavigate();
+  const [addInvoice] = useCreateInvoiceMutation();
+  const { data: user } = useGetUserQuery();
+  const idRef = useRef(id);
+  const totalRef = useRef(total);
+
+  useEffect(() => {
+    idRef.current = id;
+    totalRef.current = total;
+  }, [id, total]);
   console.log("Appointment ID nhận được:", id);
   console.log("Tiền nhận được:", total);
 
@@ -28,8 +39,26 @@ const PaymentPage = () => {
         console.error("Error", error);
       });
   };
-  const handlePaymentCash = () => {
-    navigate(`/print-invoice/${id}`);
+  const handlePaymentCash = async () => {
+    const amount = totalRef.current
+      ? parseInt(totalRef.current, 10)
+      : undefined;
+    const appointmentId = idRef.current
+      ? parseInt(idRef.current, 10)
+      : undefined;
+    try {
+      const response = await addInvoice({
+        user_id: user?.id,
+        paymentMethod: "CASH",
+        amount: amount,
+        appointments_id: appointmentId,
+      });
+      console.log("Invoice creation response:", response);
+
+      navigate(`/print-invoice/${id}`);
+    } catch (error) {
+      console.error("Error creating invoice", error);
+    }
   };
   const token = localStorage.getItem("token");
 
