@@ -2,30 +2,29 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
 import "../../../assets/scss/page/SignIn.scss";
+import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
 
-import logo from "../../../assets/image/logo.png";
+import { message } from "antd";
 import banner from "../../../assets/image/background.png";
-import GoogleIcon from "../../../assets/svg/googleIcon";
-import FacebookIcon from "../../../assets/svg/facebookIcon";
+import logo from "../../../assets/image/logo.png";
 import AppleIcon from "../../../assets/svg/appleIcon";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
+import FacebookIcon from "../../../assets/svg/facebookIcon";
+import GoogleIcon from "../../../assets/svg/googleIcon";
 import { useLoginUserMutation } from "../../../services/auth";
-import { message } from "antd";
-import { useGetUserQuery } from "../../../services/user";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [loginForm] = useLoginUserMutation();
-  const { data: user } = useGetUserQuery();
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/");
     }
-  }, [navigate, user]);
+  }, [token]);
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
