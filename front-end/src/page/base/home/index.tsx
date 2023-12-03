@@ -7,13 +7,13 @@ import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import CarouseBlog from "../../../components/carouselBlog";
 import CarouselProduct from "../../../components/carouselProduct";
-import { useServicesTop8Query } from "../../../services/services";
+import { useServicesTop4Query } from "../../../services/services";
 import { blogData, productData } from "./data";
-import CarouselSerivce from "../../../components/carouselService";
+import ServiceCard from "../../../components/serviceCard";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
-  const { data } = useServicesTop8Query();
+  const { data: listServices } = useServicesTop4Query();
   return (
     <div className="bg">
       <div className="home">
@@ -47,11 +47,21 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-        <CarouselSerivce serviceData={data} name="Dịch vụ" />
+        <div className="home-listCate">
+          {listServices?.map((serviceCardData) => {
+            return (
+              <ServiceCard
+                key={serviceCardData.id}
+                id={serviceCardData.id}
+                image={serviceCardData.image}
+                name={serviceCardData.name}
+              />
+            );
+          })}
+        </div>
         <CarouselProduct productData={productData} name="Ưu đãi của tháng " />
         <CarouselProduct productData={productData} name="Điểm đến mới" />
         <CarouselProduct productData={productData} name="Siêu giảm giá" />
-
         <CarouseBlog blogData={blogData} />
       </div>
     </div>
