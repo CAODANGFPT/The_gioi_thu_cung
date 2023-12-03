@@ -21,7 +21,7 @@ import StatusPet from "../svg/statusPet";
 import { personsImgs } from "../utils/images";
 import HomeIcon from "./../svg/homeIcon";
 export const navigationLinks = [
-  { id: 1, title: "Bảng điều khiển", image: HomeIcon, link: "dashboard" },
+  { id: 1, title: "Bảng điều khiển", image: HomeIcon, link: "/admin" },
   { id: 3, title: "Đặt Lịch", image: AppoinmentIcon, link: "appointment" },
   { id: 4, title: "Thú Cưng", image: PetIcon, link: "pets" },
   { id: 5, title: "Liên Hệ", image: AddressCardIcon, link: "contact" },
@@ -54,8 +54,8 @@ export const navigationLinks = [
   { id: 16, title: "Chức năng", image: RoleIcon, link: "role" },
   { id: 17, title: "Hồ Sơ", image: ProfileIcon, link: "profile" },
   { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
-  { id: 19, title: "News", image: NewIcon, link: "news" },
-  { id: 20, title: "About", image: AboutMeIcon, link: "about" },
+  { id: 19, title: "Bản tin", image: NewIcon, link: "news" },
+  { id: 20, title: "về chúng tôi", image: AboutMeIcon, link: "about" },
   { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
   {
     id: 24,

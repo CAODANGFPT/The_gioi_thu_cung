@@ -1,11 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
+import { useCreateInvoiceMutation } from "../../../services/invoice";
+import { useGetUserQuery } from "../../../services/user";
 const API_URL = "http://localhost:8080/api";
+
 const PaymentPage = () => {
   const { id, total } = useParams();
+  const navigate = useNavigate();
+  const [addInvoice] = useCreateInvoiceMutation();
+  const { data: user } = useGetUserQuery();
+  const idRef = useRef(id);
+  const totalRef = useRef(total);
+
+  useEffect(() => {
+    idRef.current = id;
+    totalRef.current = total;
+  }, [id, total]);
   console.log("Appointment ID nhận được:", id);
   console.log("Tiền nhận được:", total);
 
@@ -26,6 +39,38 @@ const PaymentPage = () => {
         console.error("Error", error);
       });
   };
+  const handlePaymentCash = async () => {
+    const amount = totalRef.current
+      ? parseInt(totalRef.current, 10)
+      : undefined;
+    const appointmentId = idRef.current
+      ? parseInt(idRef.current, 10)
+      : undefined;
+    try {
+      const response = await addInvoice({
+        user_id: user?.id,
+        paymentMethod: "CASH",
+        amount: amount,
+        appointments_id: appointmentId,
+      });
+      console.log("Invoice creation response:", response);
+
+      navigate(`/print-invoice/${id}`);
+    } catch (error) {
+      console.error("Error creating invoice", error);
+    }
+  };
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="payment-page">
       {isLoading ? (
@@ -34,13 +79,16 @@ const PaymentPage = () => {
         </div>
       ) : null}
       <div className="h-payment">
-        <img src={logo} alt="logo" />
+        <img className="logo" src={logo} alt="logo" />
       </div>
       <div className="h-payment">
         <h1>Chọn phương thức thanh toán</h1>
       </div>
       <div className="payment-options">
-        <div className="payment-padding btn-f bg-with">
+        <div
+          className="payment-padding btn-f bg-with"
+          onClick={handlePaymentCash}
+        >
           <h3 className="">Thanh Toán Bằng Tiền Mặt</h3>
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1vztU8IzuRgDR1QVXxz5LVwtjwOm2YW2h9w&usqp=CAU"

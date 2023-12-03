@@ -1,4 +1,8 @@
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  MinusOutlined,
+} from "@ant-design/icons";
 import { Col, Row, Statistic, Card } from "antd";
 import "../../../assets/scss/admin/dashBoard.scss";
 import { Bar, Line, Pie } from "@ant-design/charts";
@@ -69,20 +73,30 @@ const DashBoard = () => {
                     ? totalDashboard > 0
                       ? totalDashboard
                       : totalDashboard * -1
-                    : totalDashboard
+                    : totalDashboard || 0
                 }
                 precision={2}
                 valueStyle={{
                   color:
-                    totalDashboard && totalDashboard > 0
-                      ? "#3f8600"
-                      : "#cf1322",
+                    totalDashboard !== undefined && totalDashboard !== null
+                      ? totalDashboard > 0
+                        ? "#3f8600"
+                        : totalDashboard < 0
+                        ? "#cf1322"
+                        : "#00575c"
+                      : "#00575c",
                 }}
                 prefix={
-                  totalDashboard && totalDashboard > 0 ? (
-                    <ArrowUpOutlined />
+                  totalDashboard !== undefined && totalDashboard !== null ? (
+                    totalDashboard > 0 ? (
+                      <ArrowUpOutlined />
+                    ) : totalDashboard < 0 ? (
+                      <ArrowDownOutlined />
+                    ) : (
+                      <MinusOutlined />
+                    )
                   ) : (
-                    <ArrowDownOutlined />
+                    <MinusOutlined />
                   )
                 }
                 suffix="%"
@@ -92,7 +106,7 @@ const DashBoard = () => {
         </Row>
       </div>
       <div className="line">
-        <h2>Bảng doanh số theo các thàng</h2>
+        <h2>Bảng doanh số theo các tháng</h2>
         <Line {...lineConfig} />
       </div>
 

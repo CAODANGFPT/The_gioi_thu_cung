@@ -90,10 +90,10 @@ import PaymentPage from "./page/base/Payment";
 import CallbackVNPAY from "./page/base/callback";
 import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
+import PrintInvoice from "./page/base/printInvoice";
 import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
 import PageNotFound from "./page/pageNotFound";
-
 
 function App() {
   const [dateTime] = useState(localStorage.getItem('DateTime'));
@@ -143,10 +143,7 @@ function App() {
               path="confirmed-appointment"
               element={<ConfirmedAppointment />}
             />
-            <Route
-              path="doing-appointment"
-              element={<DoingAppointment />}
-            />
+            <Route path="doing-appointment" element={<DoingAppointment />} />
             <Route
               path="accomplished-appointment"
               element={<AccomplishedAppointment />}
@@ -276,6 +273,7 @@ function App() {
         </Route>
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
+        <Route path="print-invoice/:id" element={<PrintInvoice />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

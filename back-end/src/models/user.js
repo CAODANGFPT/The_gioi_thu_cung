@@ -45,7 +45,7 @@ export default class User {
       const query = "SELECT * FROM users WHERE email = ?";
       connection.query(query, [email], (err, results) => {
         if (err) reject(err);
-        resolve(results.length > 0 ? results[0] : null);
+        resolve(results?.length > 0 ? results[0] : null);
       });
     });
   }
