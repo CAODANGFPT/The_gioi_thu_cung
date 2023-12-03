@@ -10,9 +10,9 @@ export default class Services {
     });
   }
 
-  static getTop8Services() {
+  static getTop4Services() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM services ORDER BY id LIMIT 8;", (err, results) => {
+      connection.query("SELECT * FROM services ORDER BY id LIMIT 4;", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
