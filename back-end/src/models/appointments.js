@@ -36,15 +36,7 @@ export default class Appointments {
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointments.day, appointments.start_time, appointments.end_time, appointments.is_delete, " +
-          "users.email AS user_email, " +
-          "pethouse.name AS pethouse_name, " +
-          "status_appointment.name AS status_name " +
-          "FROM appointments " +
-          "JOIN users ON appointments.user_id = users.id " +
-          "JOIN pethouse ON appointments.pethouse_id = pethouse.id " +
-          "JOIN status_appointment ON appointments.status_id = status_appointment.id " +
-          "WHERE appointments.user_id = ?",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName,users.name AS user_name, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name,status_appointment.id AS status_id FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.user_id = ?  GROUP BY appointments.id",
         [id],
         (err, results) => {
           if (err) reject(err);
@@ -144,7 +136,7 @@ export default class Appointments {
   static cancelHistoryAppointment(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE appointments SET is_delete = 1 WHERE id = ?",
+        "UPDATE appointments SET status_id = 5 WHERE id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);

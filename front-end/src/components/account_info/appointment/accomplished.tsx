@@ -4,10 +4,12 @@ import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import { useNavigate } from "react-router-dom";
+import { Button, Tag } from "antd";
 
 const AccomplishedAppointment: FC = () => {
   const navigate = useNavigate();
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(4);
+
   const handlePayment = (id: number | undefined, total: number | undefined) => {
     if (total !== undefined) {
       navigate(`/payment/${id}/${total}`);
@@ -15,6 +17,18 @@ const AccomplishedAppointment: FC = () => {
       console.error("Không có thông tin thanh toán");
     }
   };
+
+  const redirectToAppointment = (item: any) => {
+    navigate("/appointment", {
+      state: {
+        appointmentData: {
+          ...item,
+          type: 2,
+        },
+      },
+    });
+  };
+
   return (
     <>
       {listAppointment?.length ? (
@@ -70,19 +84,45 @@ const AccomplishedAppointment: FC = () => {
                         </td>
                         <td>{item.pethouse_name}</td>
                         <td>{item.statusPaymentName}</td>
-                        <td>{item.total}</td>
+                        <td>
+                          {new Intl.NumberFormat("vi-VN").format(
+                            item.total ?? 0
+                          )}{" "}
+                          VNĐ
+                        </td>
                         <td style={{ textAlign: "center" }}>
-                          {item.status_name}
+                          <Tag
+                            color={
+                              item.status_name === "Đang chờ xác nhận"
+                                ? "blue"
+                                : item.status_name === "Đã xác nhận"
+                                ? "cyan"
+                                : item.status_name === "Đang làm"
+                                ? "orange"
+                                : item.status_name === "Đã hoàn thành"
+                                ? "green"
+                                : item.status_name === "Hủy"
+                                ? "red"
+                                : ""
+                            }
+                          >
+                            {item.status_name}
+                          </Tag>
                         </td>
                         <td className="action">
-                          <div className="btn">Đặt lại</div>
+                          <Button
+                            className="btn-edit"
+                            onClick={() => redirectToAppointment(item)}
+                          >
+                            Đặt lại
+                          </Button>
                           {item.statusPaymentId === 1 && (
-                            <div
+                            <Button
                               onClick={() => handlePayment(item.id, item.total)}
-                              className="btn"
+                              className="btn-done"
                             >
                               Thanh toán
-                            </div>
+                            </Button>
                           )}
                         </td>
                       </tr>

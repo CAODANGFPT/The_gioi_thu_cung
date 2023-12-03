@@ -1,4 +1,4 @@
-import { Popconfirm } from "antd";
+import { Button, Popconfirm, Tag } from "antd";
 import dayjs from "dayjs";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -83,9 +83,30 @@ const WaitForConfirmation: FC = () => {
                           {dayjs(item.start_time).format("HH:mm DD-MM-YYYY")}
                         </td>
                         <td>{item.pethouse_name}</td>
-                        <td>{item.total}</td>
+                        <td>
+                          {new Intl.NumberFormat("vi-VN").format(
+                            item.total ?? 0
+                          )}{" "}
+                          VNĐ
+                        </td>
                         <td style={{ textAlign: "center" }}>
-                          {item.status_name}
+                          <Tag
+                            color={
+                              item.status_name === "Đang chờ xác nhận"
+                                ? "blue"
+                                : item.status_name === "Đã xác nhận"
+                                ? "cyan"
+                                : item.status_name === "Đang làm"
+                                ? "orange"
+                                : item.status_name === "Đã hoàn thành"
+                                ? "green"
+                                : item.status_name === "Hủy"
+                                ? "red"
+                                : ""
+                            }
+                          >
+                            {item.status_name}
+                          </Tag>
                         </td>
                         <td className="action">
                           <Popconfirm
@@ -93,14 +114,14 @@ const WaitForConfirmation: FC = () => {
                             title="Hủy lịch"
                             description="Bạn có chắc chắn hủy lịch này không?"
                           >
-                            <div className="btn">Hủy</div>
+                            <Button className="btn">Hủy</Button>
                           </Popconfirm>
-                          <div
+                          <Button
                             onClick={() => editAppointment(item)}
-                            className="btn"
+                            className="btn-edit"
                           >
                             Sửa
-                          </div>
+                          </Button>
                         </td>
                       </tr>
                     );

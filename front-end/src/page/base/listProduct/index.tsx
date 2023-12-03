@@ -2,7 +2,6 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Modal from "@mui/material/Modal";
 import * as React from "react";
 import "../../../assets/scss/page/listproduct.scss";
-// import Link from "@mui/material/Link";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
@@ -22,7 +21,6 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 }
 
 const ListProduct: React.FC = () => {
-  //pagination list
   const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (
     _event: any,
@@ -30,7 +28,7 @@ const ListProduct: React.FC = () => {
   ) => {
     setCurrentPage(page);
   };
-  const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
+  const itemsPerPage = 8;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
