@@ -6,16 +6,16 @@ import {
   InputNumber,
   Select,
   Upload,
-  message
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { FC, useState } from "react";
 import "../../../assets/scss/page/appointment.scss";
 import { TBreed } from "../../../schema/breed";
 import { Tspecies } from "../../../schema/species";
-import {
-  useCreatePetsMutation
-} from "../../../services/pets";
+import { useCreatePetsMutation } from "../../../services/pets";
+import { CloseOutlined } from "@ant-design/icons";
+
 type TModalAddPet = {
   setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
   species?: {
@@ -63,7 +63,7 @@ const ModalAddPet: FC<TModalAddPet> = ({
     };
     const res = await createSPets(petNew);
     if ("data" in res) {
-      if(res.data.data.id){
+      if (res.data.data.id) {
         setValueId(res.data.data.id);
       }
       setOpenAddPest(false);
@@ -117,15 +117,32 @@ const ModalAddPet: FC<TModalAddPet> = ({
           >
             <div
               style={{
-                fontSize: 24,
-                fontWeight: 500,
-                color: "#00575C",
-                marginBottom: 10,
+                display: "flex",
+                justifyContent: "space-between",
+                alignContent: "center",
               }}
             >
-              Thêm mới Thú cưng
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 500,
+                  color: "#00575C",
+                  marginBottom: 10,
+                }}
+              >
+                Thêm mới Thú cưng
+              </div>
+              <div>
+                <p
+                  onClick={() => setOpenAddPest(false)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CloseOutlined className="icon-close" />
+                </p>
+              </div>
             </div>
             <Form
+              className="form-1"
               form={form}
               name="validateOnly"
               layout="vertical"

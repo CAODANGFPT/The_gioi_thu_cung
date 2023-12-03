@@ -44,13 +44,48 @@
           align-items: center;
           gap: 10px;
           .btn {
-            border-radius: 10px;
-            color: white;
-            padding: 5px 10px;
+            background-color: white;
+            padding: 5px 12px;
+            border: 1px solid #ff4d4f;
+            color: #ff4d4f;
+            border-radius: 12px;
             cursor: pointer;
-            background-color: $EagleGreen;
-            p {
-              color: white;
+            &:hover {
+              border: 1px solid #ff4d4f;
+              background-color: #ff4d4f;
+              span {
+                color: white;
+              }
+            }
+          }
+          .btn-done {
+            background-color: white;
+            padding: 5px 12px;
+            border: 1px solid #389e0d;
+            color: #389e0d;
+            border-radius: 12px;
+            cursor: pointer;
+            &:hover {
+              border: 1px solid #389e0d;
+              background-color: #389e0d;
+              span {
+                color: white;
+              }
+            }
+          }
+          .btn-edit {
+            background-color: white;
+            padding: 5px 12px;
+            border: 1px solid $EagleGreen;
+            color: $EagleGreen;
+            border-radius: 12px;
+            cursor: pointer;
+            &:hover {
+              border: 1px solid $EagleGreen;
+              background-color: $EagleGreen;
+              span {
+                color: white;
+              }
             }
           }
         }
