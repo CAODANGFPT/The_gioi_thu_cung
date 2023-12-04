@@ -40,7 +40,7 @@ const ListProduct: React.FC = () => {
 
   return (
     <div className="bg">
-      <div className="breadcrumbs" role="presentation" onClick={handleClick}>
+      {/* <div className="breadcrumbs" role="presentation" onClick={handleClick}>
         <Breadcrumbs aria-label="breadcrumb">
           <Link className="underline-hover" color="inherit" to="/">
             Trang chủ
@@ -49,7 +49,7 @@ const ListProduct: React.FC = () => {
             Danh sách sản phẩm
           </Link>
         </Breadcrumbs>
-      </div>
+      </div> */}
 
       <div className="titleProduct">
         <h2>

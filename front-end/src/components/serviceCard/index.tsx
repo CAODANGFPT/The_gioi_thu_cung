@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ServiceCardProps = {
@@ -13,7 +13,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ id, name, image }) => {
     <div
       className="home-listCate-item"
       onClick={() =>
-        navigate(`/appointment`, {
+        navigate(`/service/${id}`, {
           state: {
             appointmentData: {
               pets: [],
@@ -27,9 +27,8 @@ const ServiceCard: FC<ServiceCardProps> = ({ id, name, image }) => {
       <div className="top">
         <img src={image} alt="" />
       </div>
-      <div className="bottom">
-        <button>{name}</button>
-      </div>
+      <div className="bottom"></div>
+      <p className="title">{name}</p>
     </div>
   );
 };
