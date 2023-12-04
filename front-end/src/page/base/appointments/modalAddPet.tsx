@@ -6,18 +6,17 @@ import {
   InputNumber,
   Select,
   Upload,
-  message
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { FC, useState } from "react";
 import "../../../assets/scss/page/appointment.scss";
 import { TBreed } from "../../../schema/breed";
 import { Tspecies } from "../../../schema/species";
-import {
-  useCreatePetsMutation
-} from "../../../services/pets";
+import { useCreatePetsMutation } from "../../../services/pets";
 type TModalAddPet = {
   setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
+  userId?: number;
   species?: {
     id?: number | undefined;
     name?: string | undefined;
@@ -43,31 +42,49 @@ const ModalAddPet: FC<TModalAddPet> = ({
   setOpenAddPest,
   setNamePet,
   setValueId,
+  userId,
   user,
 }) => {
   const [openBreed, setOpenBreed] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [createSPets] = useCreatePetsMutation();
   const [form] = Form.useForm();
+  console.log(userId);
 
   const onFinish = async (values: any) => {
-    const petNew = {
-      img: values.img.file.response.secure_url,
-      name: values.name,
-      age: values.age,
-      gender: values.gender,
-      user_id: user?.id,
-      species_id: values.species_id,
-      breed_id: values.breed_id,
-      health_condition: values.health_condition,
-    };
-    const res = await createSPets(petNew);
-    if ("data" in res) {
-      if(res.data.data.id){
-        setValueId(res.data.data.id);
+    let petNew: any = undefined;
+    if (userId) {
+      petNew = {
+        img: values.img.file.response.secure_url,
+        name: values.name,
+        age: values.age,
+        gender: values.gender,
+        user_id: userId,
+        species_id: values.species_id,
+        breed_id: values.breed_id,
+        health_condition: values.health_condition,
+      };
+    } else {
+      petNew = {
+        img: values.img.file.response.secure_url,
+        name: values.name,
+        age: values.age,
+        gender: values.gender,
+        user_id: user?.id,
+        species_id: values.species_id,
+        breed_id: values.breed_id,
+        health_condition: values.health_condition,
+      };
+    }
+    if (petNew) {
+      const res = await createSPets(petNew);
+      if ("data" in res) {
+        if (res.data.data.id) {
+          setValueId(res.data.data.id);
+        }
+        setOpenAddPest(false);
+        form.resetFields();
       }
-      setOpenAddPest(false);
-      form.resetFields();
     }
   };
 

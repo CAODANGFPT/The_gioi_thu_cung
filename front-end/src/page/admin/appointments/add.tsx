@@ -1,6 +1,5 @@
 import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
-import TextArea from "antd/es/input/TextArea";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -13,13 +12,12 @@ import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
-  useUpdateAppointmentAdminMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
   useGetPetByIdPostMutation,
-  useUserPetMutation
+  useUserPetMutation,
 } from "../../../services/pets";
 import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
@@ -52,7 +50,9 @@ const AppointmentsAdd: React.FC = () => {
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
   const [petByUserId, setPetByUserId] = useState<TPetsSchemaRes[]>([]);
+  const [userId, setUserId] = useState<number|undefined>(0);
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
+  const [onChangedisabled, setOnChangedisabled] = useState<boolean>(true);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
   const [idServices, setIdServices] = useState<number[]>([]);
@@ -476,13 +476,15 @@ const AppointmentsAdd: React.FC = () => {
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const onChangeUser = async (value: number) => {
-    const data = { id: value }
+    const data = { id: value };
     try {
       const response = await getPetByUserId(data);
-  
-      if ('data' in response) {
+
+      if ("data" in response) {
         const { data: dataPet } = response;
         setPetByUserId(dataPet);
+        setOnChangedisabled(false);
+        setUserId(value)
       } else {
         console.error("No 'data' property found in the API response");
       }
@@ -532,6 +534,7 @@ const AppointmentsAdd: React.FC = () => {
                 defaultValue={defaultValue}
                 onChange={handleChangePets}
                 options={optionsPet}
+                disabled={onChangedisabled}
               />
             </Form.Item>
             <Form.Item
@@ -676,6 +679,7 @@ const AppointmentsAdd: React.FC = () => {
                 <p>Nếu bạn chưa có hoặc thêm mới ấn vào đây!</p>
                 <Button
                   onClick={() => setOpenAddPest(!openAddPest)}
+                  disabled={onChangedisabled}
                   style={{ maxWidth: 100, color: "white" }}
                 >
                   Thêm
@@ -692,6 +696,7 @@ const AppointmentsAdd: React.FC = () => {
         breed={breed}
         setOpenAddPest={setOpenAddPest}
         user={user}
+        userId={userId}
         setNamePet={setNamePet}
         setValueId={setValueId}
       />
