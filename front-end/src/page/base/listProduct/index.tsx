@@ -1,27 +1,26 @@
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Modal from "@mui/material/Modal";
-import * as React from "react";
-import "../../../assets/scss/page/listproduct.scss";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import * as React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import "../../../assets/scss/page/listproduct.scss";
 import FilterIcon from "../../../assets/svg/filterIcon";
 import ListProductCard from "../../../components/listProduct";
+import { useGetAllProductsQuery } from "../../../services/products";
 import {
   ListFilterBrandData,
   ListFilterColorData,
   ListFilterPriceData,
-  productData,
 } from "./data";
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-  event.preventDefault();
-  console.info("You clicked a breadcrumb.");
-}
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//   event.preventDefault();
+//   console.info("You clicked a breadcrumb.");
+// }
 
 const ListProduct: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { data: productsList } = useGetAllProductsQuery();
   const handlePageChange = (
     _event: any,
     page: React.SetStateAction<number>
@@ -29,10 +28,10 @@ const ListProduct: React.FC = () => {
     setCurrentPage(page);
   };
   const itemsPerPage = 8;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(productData.length / itemsPerPage);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = productsList?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil((productsList?.length || 0) / itemsPerPage);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -40,21 +39,10 @@ const ListProduct: React.FC = () => {
 
   return (
     <div className="bg">
-      {/* <div className="breadcrumbs" role="presentation" onClick={handleClick}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="underline-hover" color="inherit" to="/">
-            Trang chủ
-          </Link>
-          <Link className="underline-hover" color="inherit" to="/listproduct">
-            Danh sách sản phẩm
-          </Link>
-        </Breadcrumbs>
-      </div> */}
-
       <div className="titleProduct">
         <h2>
           Phụ kiện thú cưng
-          <span> (35)</span>
+          <span>({productsList?.length})</span>
         </h2>
 
         <div className="btn-filter" onClick={handleOpen}>
@@ -69,11 +57,9 @@ const ListProduct: React.FC = () => {
         >
           <div className="filter-onclick">
             <h3>bộ lọc</h3>
-
             <div className="brand">
               <div>
                 <h3>Thương hiệu</h3>
-
                 <ul>
                   {ListFilterBrandData.map((FilterCard) => {
                     return (
@@ -91,10 +77,8 @@ const ListProduct: React.FC = () => {
                   })}
                 </ul>
               </div>
-
               <div>
                 <h3>Giá</h3>
-
                 <ul>
                   {ListFilterPriceData.map((FilterCard) => {
                     return (
@@ -112,10 +96,8 @@ const ListProduct: React.FC = () => {
                   })}
                 </ul>
               </div>
-
               <div>
                 <h3>Màu sắc</h3>
-
                 <ul>
                   {ListFilterColorData.map((FilterCard) => {
                     return (
@@ -146,7 +128,6 @@ const ListProduct: React.FC = () => {
       <div className="product">
         <div className="filter">
           <h3>bộ lọc</h3>
-
           <div className="brand">
             <div>
               <h3>Thương hiệu</h3>
@@ -168,10 +149,8 @@ const ListProduct: React.FC = () => {
                 })}
               </ul>
             </div>
-
             <div>
               <h3>Giá</h3>
-
               <ul>
                 {ListFilterPriceData.map((FilterCard) => {
                   return (
@@ -189,10 +168,8 @@ const ListProduct: React.FC = () => {
                 })}
               </ul>
             </div>
-
             <div>
               <h3>Màu sắc</h3>
-
               <ul>
                 {ListFilterColorData.map((FilterCard) => {
                   return (
@@ -212,19 +189,10 @@ const ListProduct: React.FC = () => {
             </div>
           </div>
         </div>
-
         <div className="list-pagination">
           <div className="product-list">
-            {currentItems.map((productData) => {
-              return (
-                <ListProductCard
-                  key={productData.id}
-                  name={productData.name}
-                  sold={productData.sold}
-                  url={productData.imageUrl}
-                  price={productData.price}
-                />
-              );
+            {productsList?.map((item) => {
+              return <ListProductCard key={item.id} item={item} />;
             })}
           </div>
           <div className="pagination">

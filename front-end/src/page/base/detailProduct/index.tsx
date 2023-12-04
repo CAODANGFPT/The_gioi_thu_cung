@@ -355,7 +355,7 @@ const DetailProduct: React.FC = () => {
         />
       </div>
 
-      <div className="list-pagination">
+      {/* <div className="list-pagination">
         <h3>Sản phẩm có liên quan</h3>
         <div className="product-list">
           {currentItems.map((productData2) => {
@@ -380,7 +380,7 @@ const DetailProduct: React.FC = () => {
             />
           </Stack>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
