@@ -1,29 +1,36 @@
 import { FC } from "react";
 import Heart from "../../assets/svg/heart";
+import { TProduct } from "../../schema/products";
+import { useNavigate } from "react-router-dom";
 
 type ProductProps = {
-  name: string;
-  price: string;
-  description?: string;
-  url: string;
-  sold: string;
+  item: TProduct;
 };
 
-const ListProductCard: FC<ProductProps> = ({ name, sold, url, price }) => {
+const ListProductCard: FC<ProductProps> = ({ item }) => {
+  const navigate = useNavigate()
   return (
-    <div className="card">
+    <div className="card" onClick={() => navigate(`${item.id}`)}>
       <div className="product--image">
-        <img src={url} alt="productImage" />
+        <div style={{ width: "100%", minHeight: "16em", overflow: "none" }}>
+          <img
+            style={{ width: "100%", height: "16em" }}
+            src={item.img}
+            alt="productImage"
+          />
+        </div>
         <div className="svg">
           <Heart />
         </div>
       </div>
       <div className="card-name">
-        <div>{name}</div>
+        <div>{item.name}</div>
       </div>
       <div className="card-information">
-        <div className="price">{price}</div>
-        <div className="sold">{sold}</div>
+        <div className="price">
+          {new Intl.NumberFormat("vi-VN").format(item.price ?? 0)} VNĐ
+        </div>
+        <div className="sold">10 sold</div>
       </div>
     </div>
   );

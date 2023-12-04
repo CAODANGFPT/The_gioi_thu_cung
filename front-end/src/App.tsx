@@ -96,15 +96,15 @@ import AppointmentsAdd from "./page/admin/appointments/add";
 import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
-  const [dateTime] = useState(localStorage.getItem('DateTime'));
+  const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
     const checkTokenExpiration = () => {
       if (dateTime) {
         const currentTime = new Date().getTime();
         const loginTimestamp = parseInt(dateTime, 10);
         if (currentTime - loginTimestamp > 86400000) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('DateTime');
+          localStorage.removeItem("token");
+          localStorage.removeItem("DateTime");
         }
       }
     };
@@ -117,9 +117,10 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
+          <Route path="product/:id" element={<DetailProduct />} />
           <Route path="appointment" element={<Appointments />} />
           <Route path="appointment/:id" element={<Appointments />} />
-          <Route path="detailproduct/:id" element={<DetailProduct />} />
+          {/* <Route path="detailProduct/:id" element={<DetailProduct />} /> */}
           <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
