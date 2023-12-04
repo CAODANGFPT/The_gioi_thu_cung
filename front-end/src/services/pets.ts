@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PetsRequest, PetsResponse, TPets, TUserPet } from "../schema/pets";
+import { PetUserId, PetsRequest, PetsResponse, TPets, TUserPet } from "../schema/pets";
 
 const petsApi = createApi({
   reducerPath: "pets",
@@ -42,6 +42,16 @@ const petsApi = createApi({
           };
         },
         providesTags: ["Pets"],
+      }),
+      getPetByIdPost: builder.mutation<PetsRequest[], PetUserId>({
+        query: (user) => {
+          return {
+            url: `listPetByUserId`,
+            method: "POST",
+            body: user,
+          };
+        },
+        invalidatesTags: ["Pets"],
       }),
       createPets: builder.mutation<PetsResponse, Partial<TPets>>({
         query: (pets) => ({
@@ -90,6 +100,7 @@ export const {
   useCreatePetsMutation,
   useRemovePetsMutation,
   useUserPetMutation,
+  useGetPetByIdPostMutation,
 } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;

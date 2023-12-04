@@ -36,7 +36,15 @@ export const listUserPet = async (req, res) => {
     });
   }
 };
-
+export const listPetByUserId = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const pets = await Pet.getAllUserPet(id);
+    res.json(pets);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const showPet = async (req, res) => {
   try {
     const pet = await Pet.getPetById(req.params.id);

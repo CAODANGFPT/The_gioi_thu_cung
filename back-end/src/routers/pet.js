@@ -3,6 +3,7 @@ import {
   createPet,
   deletePet,
   listPet,
+  listPetByUserId,
   listUserPet,
   showPet,
   updatePet,
@@ -14,6 +15,7 @@ const router = Router();
 router.get("/pets", listPet);
 router.get("/ListUserPets", listUserPet);
 router.get("/pets/:id", showPet);
+router.post("/listPetByUserId", listPetByUserId);
 router.post("/pets", checkPermission,createPet);
 router.put("/pets/:id",checkPermission, updatePet);
 router.delete("/pets/:id", checkPermission,deletePet);

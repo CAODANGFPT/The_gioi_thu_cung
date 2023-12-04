@@ -61,7 +61,9 @@ const AppointmentsAdmin: React.FC = () => {
       },
     });
   };
-  console.log(data);
+  const redirectToAdd = () => {
+    navigate("/admin/appointment/add");
+  };
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
@@ -224,29 +226,32 @@ const AppointmentsAdmin: React.FC = () => {
         autoComplete="off"
         initialValues={{ remember: true }}
         onFinish={onFinish}
+        style={{marginTop: 10}}
       >
         <div className="search-appointments-form">
-          <Form.Item name="nameUser" label="Tên người đặt">
-            <Input />
+          <Form.Item name="nameUser">
+            <Input placeholder="Tên người đặt" />
           </Form.Item>
-          <Form.Item name="pethouse_id" label="Phòng">
-            <Select options={optionsPetHouse} />
+          <Form.Item name="pethouse_id" label="" >
+            <Select options={optionsPetHouse} placeholder="Phòng" />
           </Form.Item>
-          <Form.Item label="Ngày" name="start_time" style={{ width: "100%" }}>
+          <Form.Item name="start_time" style={{ width: "100%" }}>
             <DatePicker
+              placeholder="Ngày"
               style={{ width: "100%" }}
               format="YYYY-MM-DD"
               showNow={false}
             />
           </Form.Item>
-          <Form.Item name="status_id" label="Trạng thái">
-            <Select options={optionsStatus} />
+          <Form.Item name="status_id">
+            <Select options={optionsStatus} placeholder="Trạng thái"/>
           </Form.Item>
         </div>
         <div>
           <Button htmlType="submit">Tìm kiếm</Button>
         </div>
       </Form>
+      <Button style={{marginTop: 20, marginBottom:20}} className="btn"  onClick={() => redirectToAdd()}>Thêm lịch đặt</Button>
       <TableAdmin columns={columns} data={dataAppoiment} />;
     </>
   );

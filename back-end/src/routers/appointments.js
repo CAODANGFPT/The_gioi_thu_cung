@@ -4,6 +4,7 @@ import cron from "node-cron";
 import {
   cancelHistoryAppointment,
   create,
+  createAdmin,
   getAppointmentTime,
   getAppointmentUser,
   getAppointmentUserStatus,
@@ -31,6 +32,9 @@ router.post("/searchAppointmentsAdmin", searchAppointmentsAdmin);
 
 router.patch("/updateAdmin/:id", checkPermission, updateAdmin);
 router.post("/appointment", create);
+
+router.post("/appointmentAdmin",checkPermission, createAdmin);
+
 router.patch("/appointment/:id", update);
 router.put("/appointmentStatus/:id", updateAppointmentStatus);
 router.post("/appointmentTime", getAppointmentTime);

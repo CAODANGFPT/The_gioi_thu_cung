@@ -14,6 +14,16 @@ export const PetsSchema = yup
   })
   .required();
 
+export const PetsSchemaRes = yup.object().shape({
+  id: yup.number(),
+  img: yup.string(),
+  name: yup.string(),
+  age: yup.number(),
+  gender: yup.string(),
+  nameUser: yup.string(),
+  nameSpecies: yup.number(),
+  nameBreed: yup.number(),
+});
 export const PetsRequestSchema = yup.object().shape({
   id: yup.number(),
   img: yup.string().required(),
@@ -31,12 +41,21 @@ export const PetsResponseSchema = yup.object().shape({
   data: PetsSchema,
   message: yup.string(),
 });
-
+export const petUserId = yup
+  .object()
+  .shape({
+    id: yup.number().required(),
+  })
+  .required();
 export const PetsErrorSchema = yup.object({});
 
 export type TPets = yup.InferType<typeof PetsSchema>;
 
 export type PetsRequest = yup.InferType<typeof PetsRequestSchema>;
+
+export type TPetsSchemaRes = yup.InferType<typeof PetsSchemaRes>;
+
+export type PetUserId = yup.InferType<typeof petUserId>;
 
 export type PetsResponse = yup.InferType<typeof PetsResponseSchema>;
 

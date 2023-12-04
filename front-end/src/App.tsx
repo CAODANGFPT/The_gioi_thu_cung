@@ -57,8 +57,6 @@ import EditStatusContact from "./page/admin/status_contact/edit";
 import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
-
-import { ShoppingCart } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import AddPetPage from "./components/account_info/addpet";
 import AccomplishedAppointment from "./components/account_info/appointment/accomplished";
@@ -68,7 +66,7 @@ import DoingAppointment from "./components/account_info/appointment/doing";
 import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
 import EditPetPage from "./components/account_info/editpet";
 import PetUser from "./components/account_info/pet";
-import AppointmenEdit from "./page/admin/appointments/edit";
+import AppointmentEdit from "./page/admin/appointments/edit";
 import AddBanner from "./page/admin/banner/add";
 import EditBanner from "./page/admin/banner/edit";
 import BannerAdmin from "./page/admin/banner/list";
@@ -94,6 +92,8 @@ import PrintInvoice from "./page/base/printInvoice";
 import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
 import PageNotFound from "./page/pageNotFound";
+import AppointmentsAdd from "./page/admin/appointments/add";
+import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
   const [dateTime] = useState(localStorage.getItem('DateTime'));
@@ -168,7 +168,8 @@ function App() {
           </Route>
           <Route path="appointment">
             <Route index element={<AppointmentsAdmin />} />
-            <Route path="edit" element={<AppointmenEdit />} />
+            <Route path="edit" element={<AppointmentEdit />} />
+            <Route path="add" element={<AppointmentsAdd />} />
           </Route>
 
           <Route path="about">

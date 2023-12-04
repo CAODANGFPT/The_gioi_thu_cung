@@ -140,7 +140,22 @@ export const createAppointmentSchema = yup.object().shape({
   status_id: yup.number().required(),
 });
 
+export const createAppointmentAdminSchema = yup.object().shape({
+  day: yup.string().required(),
+  pet: yup.array().of(yup.number()),
+  services: yup.array().of(yup.number()),
+  user_id: yup.number(),
+  pethouse_id: yup.number().required(),
+  start_time: yup.string().required(),
+  end_time: yup.string().required(),
+  total: yup.number(),
+  status_id: yup.number().required(),
+  status_payment: yup.number().required(),
+});
+
 export type TCreateAppointment = yup.InferType<typeof createAppointmentSchema>;
+export type TCreateAppointmentAdmin = yup.InferType<typeof createAppointmentAdminSchema>;
+
 
 export const cancelHistoryAppointmentSchema = yup.object().shape({
   id: yup.number().required(),

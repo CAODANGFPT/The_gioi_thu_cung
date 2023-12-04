@@ -77,6 +77,28 @@ export default class Appointments {
       );
     });
   }
+
+  static createAppointmentsAdmin(
+    day,
+    user_id,
+    pethouse_id,
+    start_time,
+    end_time,
+    total,
+    status_id,
+    status_payment
+  ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment) VALUES (?,?,?,?,?,?,?,?)",
+        [day, user_id, pethouse_id, start_time, end_time, total, status_id, status_payment],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results.insertId);
+        }
+      );
+    });
+  }
   static updateAppointments(id, pethouse_id, start_time, total, end_time) {
     return new Promise((resolve, reject) => {
       connection.query(
