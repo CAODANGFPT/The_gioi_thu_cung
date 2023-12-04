@@ -61,7 +61,9 @@ const AppointmentsAdmin: React.FC = () => {
       },
     });
   };
-  console.log(data);
+  const redirectToAdd = () => {
+    navigate("/admin/appointment/add");
+  };
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
@@ -216,6 +218,7 @@ const AppointmentsAdmin: React.FC = () => {
   };
   return (
     <>
+      <Button className="btn"  onClick={() => redirectToAdd()}>Thêm lịch đặt</Button>
       <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"

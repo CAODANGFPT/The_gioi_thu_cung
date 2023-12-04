@@ -21,6 +21,15 @@ const userApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getAllUser: builder.query<TUser[], void>({
+        query: () => {
+          return {
+            url: "/getAllUser",
+            method: "GET",
+          };
+        },
+        providesTags: ["User"],
+      }),
       user: builder.query<TUser[], void>({
         query: () => {
           return {
@@ -108,6 +117,7 @@ const userApi = createApi({
 
 export const {
   useUserQuery,
+  useGetAllUserQuery,
   useUserByIdQuery,
   useGetUserQuery,
   useResetPasswordUserMutation,

@@ -6,6 +6,7 @@ import {
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
+  TCreateAppointmentAdmin,
   TGetAppointmentTime,
   TGetAppointmentTimeRequest,
   TSearchAppointment
@@ -69,6 +70,19 @@ const appointmentApi = createApi({
         query: (appointments) => {
           return {
             url: "/appointment",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
+      addAppointmentAdmin: builder.mutation<
+        AppointmentResponse,
+        Partial<TCreateAppointmentAdmin>
+      >({
+        query: (appointments) => {
+          return {
+            url: "/appointmentAdmin",
             method: "POST",
             body: appointments,
           };
@@ -158,6 +172,7 @@ export const {
   useUpdateAppointmentAdminMutation,
   useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
+  useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
 } = appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;

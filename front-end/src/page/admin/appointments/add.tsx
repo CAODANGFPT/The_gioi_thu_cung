@@ -8,17 +8,18 @@ import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/admin/appointments.scss";
 import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
-import { TPets, TUserPets } from "../../../schema/pets";
+import { TPets, TPetsSchemaRes, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import {
+  useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
-  useUpdateAppointmentAdminMutation
+  useUpdateAppointmentAdminMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
-  useGetAllUserPetsQuery,
-  useUserPetMutation,
+  useGetPetByIdPostMutation,
+  useUserPetMutation
 } from "../../../services/pets";
 import { useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
@@ -26,7 +27,7 @@ import {
   useStatusPaymentQuery,
   useStatusQuery,
 } from "../../../services/status_appointment";
-import { useGetUserQuery } from "../../../services/user";
+import { useGetAllUserQuery, useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "../../base/appointments/modalAddPet";
 
 type TFinish = {
@@ -42,14 +43,15 @@ type TFinish = {
   name: string;
   species_id: number;
   animalCondition: string;
-  status_payment: string;
-  status_id: string;
+  status_payment: number;
+  status_id: number;
 };
 
-const AppointmentEdit: React.FC = () => {
+const AppointmentsAdd: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
+  const [petByUserId, setPetByUserId] = useState<TPetsSchemaRes[]>([]);
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
@@ -66,12 +68,11 @@ const AppointmentEdit: React.FC = () => {
   const { data: services } = useServicesQuery();
   const { data: statusPayment } = useStatusPaymentQuery();
   const { data: statusAppointment } = useStatusQuery();
-
+  const { data: getAllUser } = useGetAllUserQuery();
   const { data: species } = useGetAllspeciesQuery();
-  const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
-  const [updateAppointment] = useUpdateAppointmentAdminMutation();
-
+  const [addAppointment] = useAddAppointmentAdminMutation();
+  const [getPetByUserId] = useGetPetByIdPostMutation();
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
@@ -81,7 +82,7 @@ const AppointmentEdit: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       console.log(appointmentData);
-      
+
       if (appointmentData) {
         const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id
@@ -116,7 +117,7 @@ const AppointmentEdit: React.FC = () => {
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
     value: item.id,
-    label: item.name
+    label: item.name,
   }));
   const optionsStatusAppointment = statusAppointment?.map((item: any) => ({
     value: item.id,
@@ -126,7 +127,11 @@ const AppointmentEdit: React.FC = () => {
     value: item.id,
     label: item.name,
   }));
-  const optionsPet = listPet?.map((item: TUserPets) => ({
+  const optionsUser = getAllUser?.map((item: any) => ({
+    value: item.id,
+    label: item.email,
+  }));
+  const optionsPet = petByUserId?.map((item: TUserPets) => ({
     value: item.id,
     label: item.name,
     disabled: item.id === namePet,
@@ -134,20 +139,20 @@ const AppointmentEdit: React.FC = () => {
 
   const onFinish = async (values: TFinish) => {
     const newData = {
-      id: appointmentData.id,
+      day: dayjs().format("YYYY-MM-DD HH:mm:00"),
       pethouse_id: values.petHouse_id,
       pet: values.pet,
+      user_id: user?.id,
       services: values.services,
       start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
-      animalCondition: values.animalCondition,
-      status_id: values.status_id,
-      status_payment: values.status_payment,
+      status_id: Number(values.status_id),
+      status_payment: Number(values.status_payment),
     };
-    const resAppointment = await updateAppointment(newData);
+    const resAppointment = await addAppointment(newData);
     if ("data" in resAppointment) {
-      message.success("Sửa thành công");
+      message.success("Thêm thành công");
       navigate("/admin/appointment");
     }
   };
@@ -465,10 +470,31 @@ const AppointmentEdit: React.FC = () => {
       setTotalServices(totalServices);
     }
   };
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const onChangeUser = async (value: number) => {
+    const data = { id: value }
+    try {
+      const response = await getPetByUserId(data);
+  
+      if ('data' in response) {
+        const { data: dataPet } = response;
+        setPetByUserId(dataPet);
+      } else {
+        console.error("No 'data' property found in the API response");
+      }
+    } catch (error) {
+      console.error("Error fetching pet data:", error);
+    }
+  };
+
   return (
     <div className="appointment-edit">
       <h4 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Sửa lịch đặt
+        Thêm lịch đặt
       </h4>
       <Form
         form={form}
@@ -481,6 +507,20 @@ const AppointmentEdit: React.FC = () => {
       >
         <div className="fromAppointment">
           <div style={{ flex: 1 }}>
+            <Form.Item
+              name="user_id"
+              label="Người dùng"
+              rules={[{ required: true, message: "Không được để trống" }]}
+            >
+              <Select
+                showSearch
+                placeholder="Select a person"
+                optionFilterProp="children"
+                filterOption={filterOption}
+                options={optionsUser}
+                onChange={onChangeUser}
+              />
+            </Form.Item>
             <Form.Item
               name="pet"
               label="Thú cưng"
@@ -554,25 +594,11 @@ const AppointmentEdit: React.FC = () => {
               </Form.Item>
             </Form.Item>
             <Form.Item
-              label="Tình trạng thú cưng"
-              style={{ width: "100%" }}
-              name="animalCondition"
-            >
-              <TextArea
-                showCount
-                maxLength={100}
-                placeholder="disable resize"
-                style={{ height: 120, resize: "none" }}
-              />
-            </Form.Item>
-            <Form.Item
               name="status_payment"
               label="Thanh toán"
               rules={[{ required: true, message: "Không được để trống" }]}
             >
-              <Select
-                options={optionsStatusPayment}
-              />
+              <Select options={optionsStatusPayment} />
             </Form.Item>
             <Form.Item
               name="status_id"
@@ -580,7 +606,7 @@ const AppointmentEdit: React.FC = () => {
               rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select options={optionsStatusAppointment} />
-            </Form.Item>  
+            </Form.Item>
             <Form.Item label="Tổng số tiền">
               <div>
                 <span style={{ fontSize: 24, color: "#00575c" }}>
@@ -593,7 +619,7 @@ const AppointmentEdit: React.FC = () => {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Lưu
+                  Thêm
                 </Button>
               </Space>
             </Form.Item>
@@ -673,4 +699,4 @@ const AppointmentEdit: React.FC = () => {
   );
 };
 
-export default AppointmentEdit;
+export default AppointmentsAdd;

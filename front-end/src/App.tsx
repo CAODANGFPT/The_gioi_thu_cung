@@ -66,7 +66,8 @@ import DoingAppointment from "./components/account_info/appointment/doing";
 import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
 import EditPetPage from "./components/account_info/editpet";
 import PetUser from "./components/account_info/pet";
-import AppointmenEdit from "./page/admin/appointments/edit";
+import AppointmentsAdd from "./page/admin/appointments/add";
+import AppointmentEdit from "./page/admin/appointments/edit";
 import AddBanner from "./page/admin/banner/add";
 import EditBanner from "./page/admin/banner/edit";
 import BannerAdmin from "./page/admin/banner/list";
@@ -78,21 +79,21 @@ import EditNews from "./page/admin/news/edit";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
 import ProductsAdmin from "./page/admin/products/list";
+import AddStatusOrderAdmin from "./page/admin/status_order/add";
+import EditStatusOrder from "./page/admin/status_order/edit";
+import StatusOrderAdmin from "./page/admin/status_order/list";
+import AddStatusPetAdmin from "./page/admin/status_pet/add";
+import EditStatusPet from "./page/admin/status_pet/edit";
+import StatusPetAdmin from "./page/admin/status_pet/list";
 import PaymentPage from "./page/base/Payment";
 import CallbackVNPAY from "./page/base/callback";
 import CartPage from "./page/base/cart";
 import DetailProduct from "./page/base/detailProduct";
+import PrintInvoice from "./page/base/printInvoice";
 import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
 import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
-import StatusPetAdmin from "./page/admin/status_pet/list";
-import EditStatusPet from "./page/admin/status_pet/edit";
-import AddStatusPetAdmin from "./page/admin/status_pet/add";
-import StatusOrderAdmin from "./page/admin/status_order/list";
-import AddStatusOrderAdmin from "./page/admin/status_order/add";
-import EditStatusOrder from "./page/admin/status_order/edit";
-import PrintInvoice from "./page/base/printInvoice";
 
 function App() {
   return (
@@ -152,7 +153,8 @@ function App() {
           </Route>
           <Route path="appointment">
             <Route index element={<AppointmentsAdmin />} />
-            <Route path="edit" element={<AppointmenEdit />} />
+            <Route path="edit" element={<AppointmentEdit />} />
+            <Route path="add" element={<AppointmentsAdd />} />
           </Route>
 
           <Route path="about">

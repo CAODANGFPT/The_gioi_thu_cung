@@ -15,7 +15,7 @@ import {
 import { resetPassword } from "../controllers/auth";
 const router = express.Router();
 
-router.get("/getAll", list);
+router.get("/getAllUser", list);
 router.get("/getAllUserRole", listUsersRole);
 router.get("/getById/:id", getById);
 router.put("/updateRole", checkPermission, updateRole);
