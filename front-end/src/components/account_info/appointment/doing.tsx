@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import "../../../assets/scss/page/account/appointment.scss";
+import { Button, Tag } from "antd";
 
 const DoingAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(3);
@@ -72,22 +73,44 @@ const DoingAppointment: FC = () => {
                         </td>
                         <td>{item.pethouse_name}</td>
                         <td>{item.statusPaymentName}</td>
-                        <td>{item.total}</td>
+                        <td>
+                          {new Intl.NumberFormat("vi-VN").format(
+                            item.total ?? 0
+                          )}{" "}
+                          VNĐ
+                        </td>
                         <td style={{ textAlign: "center" }}>
-                          {item.status_name}
+                          <Tag
+                            color={
+                              item.status_name === "Đang chờ xác nhận"
+                                ? "blue"
+                                : item.status_name === "Đã xác nhận"
+                                ? "cyan"
+                                : item.status_name === "Đang làm"
+                                ? "orange"
+                                : item.status_name === "Đã hoàn thành"
+                                ? "green"
+                                : item.status_name === "Hủy"
+                                ? "red"
+                                : ""
+                            }
+                          >
+                            {item.status_name}
+                          </Tag>
                         </td>
                         <td className="action">
-                          <div className="btn">
+                          <div>
                             {typeof item.total === "number" &&
                             typeof item.id === "number" ? (
-                              <Link
-                                to={`/payment/${item.id}/${item.total}`}
-                                onClick={() =>
-                                  handlePayment(item.id, item.total)
-                                }
+                              <Button
+                                className="btn-done"
+                                onClick={() => {
+                                  handlePayment(item.id, item.total);
+                                  navigate(`/payment/${item.id}/${item.total}`);
+                                }}
                               >
-                                <p>Thanh toán</p>
-                              </Link>
+                                Thanh toán
+                              </Button>
                             ) : (
                               <p>Không có thông tin thanh toán</p>
                             )}

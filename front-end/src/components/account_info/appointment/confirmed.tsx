@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
+import { Button, Tag } from "antd";
 
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
@@ -70,18 +71,39 @@ const ConfirmedAppointment: FC = () => {
                         </td>
                         <td>{item.pethouse_name}</td>
                         <td>{item.statusPaymentName}</td>
-                        <td>{item.total}</td>
+                        <td>
+                          {new Intl.NumberFormat("vi-VN").format(
+                            item.total ?? 0
+                          )}{" "}
+                          VNĐ
+                        </td>
                         <td style={{ textAlign: "center" }}>
-                          {item.status_name}
+                          <Tag
+                            color={
+                              item.status_name === "Đang chờ xác nhận"
+                                ? "blue"
+                                : item.status_name === "Đã xác nhận"
+                                ? "cyan"
+                                : item.status_name === "Đang làm"
+                                ? "orange"
+                                : item.status_name === "Đã hoàn thành"
+                                ? "green"
+                                : item.status_name === "Hủy"
+                                ? "red"
+                                : ""
+                            }
+                          >
+                            {item.status_name}
+                          </Tag>
                         </td>
                         <td className="action">
                           {item.statusPaymentId === 1 && (
-                            <div
+                            <Button
                               onClick={() => handlePayment(item.id, item.total)}
-                              className="btn"
+                              className="btn-done"
                             >
                               Thanh toán
-                            </div>
+                            </Button>
                           )}
                         </td>
                       </tr>

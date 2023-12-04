@@ -1,4 +1,4 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloseOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Form,
@@ -134,15 +134,32 @@ const ModalAddPet: FC<TModalAddPet> = ({
           >
             <div
               style={{
-                fontSize: 24,
-                fontWeight: 500,
-                color: "#00575C",
-                marginBottom: 10,
+                display: "flex",
+                justifyContent: "space-between",
+                alignContent: "center",
               }}
             >
-              Thêm mới Thú cưng
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 500,
+                  color: "#00575C",
+                  marginBottom: 10,
+                }}
+              >
+                Thêm mới Thú cưng
+              </div>
+              <div>
+                <p
+                  onClick={() => setOpenAddPest(false)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CloseOutlined className="icon-close" />
+                </p>
+              </div>
             </div>
             <Form
+              className="form-1"
               form={form}
               name="validateOnly"
               layout="vertical"

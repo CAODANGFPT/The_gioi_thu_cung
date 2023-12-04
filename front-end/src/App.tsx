@@ -57,7 +57,7 @@ import EditStatusContact from "./page/admin/status_contact/edit";
 import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
-
+import { useEffect, useState } from "react";
 import AddPetPage from "./components/account_info/addpet";
 import AccomplishedAppointment from "./components/account_info/appointment/accomplished";
 import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
@@ -66,7 +66,6 @@ import DoingAppointment from "./components/account_info/appointment/doing";
 import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
 import EditPetPage from "./components/account_info/editpet";
 import PetUser from "./components/account_info/pet";
-import AppointmentsAdd from "./page/admin/appointments/add";
 import AppointmentEdit from "./page/admin/appointments/edit";
 import AddBanner from "./page/admin/banner/add";
 import EditBanner from "./page/admin/banner/edit";
@@ -92,10 +91,26 @@ import DetailProduct from "./page/base/detailProduct";
 import PrintInvoice from "./page/base/printInvoice";
 import ServiceDetail from "./page/base/serviceDetail";
 import ServicePage from "./page/base/servicePage";
-import ShoppingCart from "./page/base/shoppingCart";
 import PageNotFound from "./page/pageNotFound";
+import AppointmentsAdd from "./page/admin/appointments/add";
+import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
+  const [dateTime] = useState(localStorage.getItem('DateTime'));
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (dateTime) {
+        const currentTime = new Date().getTime();
+        const loginTimestamp = parseInt(dateTime, 10);
+        if (currentTime - loginTimestamp > 86400000) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('DateTime');
+        }
+      }
+    };
+
+    checkTokenExpiration();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>

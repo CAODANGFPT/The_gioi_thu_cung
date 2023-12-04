@@ -155,6 +155,11 @@ const HeaderBase = () => {
       <div className="frame52">
         <ul className="menu">
           <li className="menu-title">
+            <button className="title-button" onClick={() => navigate("")}>
+              <div>TRANG CHỦ</div>
+            </button>
+          </li>
+          <li className="menu-title">
             <button
               className="title-button"
               onClick={() =>

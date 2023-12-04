@@ -1,8 +1,9 @@
 import { Menu, MenuProps } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "../../../../assets/scss/page/account/account.scss";
 import Breadcrumb from "../../../../components/breadcrumb";
 import logo from "../../../../assets/image/logo.png";
+import { useGetUserQuery } from "../../../../services/user";
 type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
@@ -38,14 +39,17 @@ const items: MenuItem[] = [
 ];
 
 const AccountPage = () => {
-  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const { data: user } = useGetUserQuery();
 
-  if (!token) {
+  if (!user) {
     return (
-      <div className="login-now">
-        <p>Bạn chưa đăng nhập.</p>
-        <img src={logo} alt="logo" />
-        <Link to="/SignIn">Đăng nhập ngay</Link>
+      <div style={{ width: "50%", margin: "0 auto" }}>
+        <p style={{ textAlign: "center" }}>Bạn chưa đăng nhập.</p>
+        <img style={{ width: "100%" }} src={logo} alt="logo" />
+        <p className="link" onClick={() => navigate("/SignIn")}>
+          Đăng nhập ngay tại đây!
+        </p>
       </div>
     );
   }
