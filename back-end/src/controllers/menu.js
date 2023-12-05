@@ -9,6 +9,16 @@ export const list = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const listMenuMenuType = async (req, res) => {
+    try {
+        const menu = await Menu.getMenuMenuType();
+        res.json(menu);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 export const show = async (req, res) => {
     try {
         const menuItem = await Menu.getMenuById(req.params.id);
@@ -24,7 +34,7 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const { name, link } = req.body;
+        const { name, link, menuType_id } = req.body;
         const { error } = menuSchema.validate(req.body);
         if (error) {
             const errors = error.details.map((errorItem) => errorItem.message);
@@ -32,7 +42,7 @@ export const create = async (req, res) => {
                 message: errors,
             });
         }
-        const menuId = await Menu.createMenu(name, link);
+        const menuId = await Menu.createMenu(name, link, menuType_id);
         res.json({ id: menuId, message: "Gửi thành công rồi !" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -41,7 +51,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const { name, link } = req.body;
+        const { name, link, menuType_id } = req.body;
         const { error } = menuSchema.validate(req.body);
         if (error) {
             const errors = error.details.map((errorItem) => errorItem.message);
@@ -49,7 +59,7 @@ export const update = async (req, res) => {
                 message: errors,
             });
         }
-        await Menu.updateMenu(req.params.id, name, link);
+        await Menu.updateMenu(req.params.id, name, link, menuType_id);
         res.json({ message: "Menu updated successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
