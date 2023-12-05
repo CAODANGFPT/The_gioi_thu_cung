@@ -44,6 +44,8 @@ import BannerApi, { bannerReducer } from "../services/banner";
 import statusOrderApi, { statusOrderReducer } from "../services/status_order";
 import dashboardApi, { dashboardReducer } from "../services/dashboard";
 import invoiceApi, { invoiceReducer } from "../services/invoice";
+import menuTypeApi, { menuTypeReducer } from "../services/menuType";
+import menuApi, { menuReducer } from "../services/menu";
 const persistConfig = {
   key: "root",
   storage,
@@ -77,6 +79,8 @@ const rootReducer = combineReducers({
   [statusOrderApi.reducerPath]: statusOrderReducer,
   [dashboardApi.reducerPath]: dashboardReducer,
   [invoiceApi.reducerPath]: invoiceReducer,
+  [menuTypeApi.reducerPath]: menuTypeReducer,
+  [menuApi.reducerPath]: menuReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -115,7 +119,9 @@ export const store = configureStore({
       BannerApi.middleware,
       statusOrderApi.middleware,
       dashboardApi.middleware,
-      invoiceApi.middleware
+      invoiceApi.middleware,
+      menuTypeApi.middleware,
+      menuApi.middleware
     ),
 });
 
