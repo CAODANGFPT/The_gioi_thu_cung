@@ -6,6 +6,7 @@ import AppoinmentIcon from "../svg/appoinmentIcon";
 import BannerIcon from "../svg/banner";
 import BreedIcon from "../svg/breed";
 import Category from "../svg/category";
+import MenuTypeIcon from "../svg/menuTypeIcon";
 import NewIcon from "../svg/newIcon";
 import PethouseIcon from "../svg/pethouseIcon";
 import ProductIcon from "../svg/products";
@@ -50,19 +51,20 @@ export const navigationLinks = [
   { id: 12, title: "Nhân Viên", image: StaffDo, link: "staff" },
   { id: 14, title: "Danh Mục", image: Category, link: "category" },
   { id: 21, title: "Sản Phẩm", image: ProductIcon, link: "products" },
-  { id: 15, title: "Người dùng", image: UserIcons, link: "user" },
-  { id: 16, title: "Chức năng", image: RoleIcon, link: "role" },
-  { id: 17, title: "Hồ Sơ", image: ProfileIcon, link: "profile" },
-  { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
-  { id: 19, title: "Bản tin", image: NewIcon, link: "news" },
-  { id: 20, title: "về chúng tôi", image: AboutMeIcon, link: "about" },
-  { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
   {
     id: 24,
     title: "Trạng thái đặt hàng",
     image: StatusPet,
     link: "status_order",
   },
+  { id: 15, title: "Người dùng", image: UserIcons, link: "user" },
+  { id: 16, title: "Vai trò", image: RoleIcon, link: "role" },
+  { id: 17, title: "Hồ Sơ", image: ProfileIcon, link: "profile" },
+  { id: 18, title: "Đánh giá", image: ReviewIcon, link: "review" },
+  { id: 19, title: "Bản tin", image: NewIcon, link: "news" },
+  { id: 20, title: "về chúng tôi", image: AboutMeIcon, link: "about" },
+  { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
+  { id: 25, title: "Kiểu Menu", image: MenuTypeIcon, link: "menutype" },
 ];
 
 export const transactions = [
