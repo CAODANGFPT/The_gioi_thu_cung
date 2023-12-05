@@ -33,12 +33,14 @@ const PaymentPage = () => {
     axios
       .post(`${API_URL}/create-payment`, { amount: total })
       .then((response) => {
+        localStorage.setItem("paymentInfo", JSON.stringify({ id, total }));
         window.location.href = response.data.paymentUrl;
       })
       .catch((error) => {
         console.error("Error", error);
       });
   };
+
   const handlePaymentCash = async () => {
     const amount = totalRef.current
       ? parseInt(totalRef.current, 10)
