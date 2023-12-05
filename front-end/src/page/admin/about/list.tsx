@@ -10,8 +10,6 @@ import { PlusOutlined } from "@ant-design/icons";
 const AboutAdmin: React.FC = () => {
   const { data } = useAboutQuery();
 
-  const navigate = useNavigate();
-
   const [removeAbout] = useRemoveAboutMutation();
   function createMarkup(description: any) {
     return { __html: description };
