@@ -9,6 +9,14 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const getTop8 = async (req, res) => {
+  try {
+    const product = await Products.getTop8Products();
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const show = async (req, res) => {
   try {
     const product = await Products.getProductById(req.params.id);
