@@ -349,10 +349,10 @@ const DetailProduct: React.FC = () => {
       </div>
 
       <div className="combo">
-        <CarouselProduct
+        {/* <CarouselProduct
           productData={productData}
           name="Combo Chăm Sóc Thú Cưng"
-        />
+        /> */}
       </div>
 
       {/* <div className="list-pagination">

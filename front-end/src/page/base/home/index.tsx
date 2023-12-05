@@ -10,10 +10,12 @@ import CarouselProduct from "../../../components/carouselProduct";
 import { useServicesTop4Query } from "../../../services/services";
 import { blogData, productData } from "./data";
 import ServiceCard from "../../../components/serviceCard";
+import { useGetTop8ProductsQuery } from "../../../services/products";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
   const { data: listServices } = useServicesTop4Query();
+  const { data: listTop8Products } = useGetTop8ProductsQuery();
   return (
     <div className="bg">
       <div className="home">
@@ -59,10 +61,13 @@ const Home: React.FC = () => {
             );
           })}
         </div>
-        <CarouselProduct productData={productData} name="Ưu đãi của tháng " />
-        <CarouselProduct productData={productData} name="Điểm đến mới" />
-        <CarouselProduct productData={productData} name="Siêu giảm giá" />
-        <CarouseBlog blogData={blogData} />
+        <CarouselProduct
+          productData={listTop8Products || []}
+          name="Sản phẩm mới nhất "
+        />
+        {/* <CarouselProduct productData={productData} name="Điểm đến mới" />
+        <CarouselProduct productData={productData} name="Siêu giảm giá" /> */}
+        {/* <CarouseBlog blogData={blogData} /> */}
       </div>
     </div>
   );
