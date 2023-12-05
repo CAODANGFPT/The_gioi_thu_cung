@@ -60,16 +60,16 @@ const Appointment: React.FC = () => {
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
-  const [createAppointment] = useAddAppointmentMutation();
-  const [updateAppointment] = useUpdateAppointmentMutation();
+  const [createAppointment, { isLoading: loadingCreate }] =
+    useAddAppointmentMutation();
+  const [updateAppointment, { isLoading: loadingUpdate }] =
+    useUpdateAppointmentMutation();
 
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
-  const [appointmentData] = useState<any>(
-    location.state?.appointmentData
-  );
+  const [appointmentData] = useState<any>(location.state?.appointmentData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -578,11 +578,11 @@ const Appointment: React.FC = () => {
             <Form.Item>
               <Space>
                 {appointmentData.type === 3 ? (
-                  <Button type="primary" onClick={() => handleUpdate()}>
+                  <Button type="primary" onClick={() => handleUpdate()} disabled={loadingUpdate} loading={loadingUpdate}>
                     Sửa
                   </Button>
                 ) : (
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" disabled={loadingCreate} loading={loadingCreate}>
                     Đăng ký
                   </Button>
                 )}

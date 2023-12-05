@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import { Tag } from "antd";
+import { Button, Tag } from "antd";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
@@ -91,7 +91,7 @@ const CancelledAppointment: FC = () => {
                                 ? "orange"
                                 : item.status_name === "Đã hoàn thành"
                                 ? "green"
-                                : item.status_name === "Hủy"
+                                : item.status_name === "Đã hủy"
                                 ? "red"
                                 : ""
                             }
@@ -100,12 +100,12 @@ const CancelledAppointment: FC = () => {
                           </Tag>
                         </td>
                         <td className="action" style={{ width: "100px" }}>
-                          <div
+                          <Button
                             className="btn"
                             onClick={() => redirectToAppointment(item)}
                           >
                             Đặt lại
-                          </div>
+                          </Button>
                         </td>
                       </tr>
                     );

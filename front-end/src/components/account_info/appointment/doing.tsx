@@ -90,7 +90,7 @@ const DoingAppointment: FC = () => {
                                 ? "orange"
                                 : item.status_name === "Đã hoàn thành"
                                 ? "green"
-                                : item.status_name === "Hủy"
+                                : item.status_name === "Đã hủy"
                                 ? "red"
                                 : ""
                             }

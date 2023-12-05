@@ -11,53 +11,31 @@ import product10 from "../../../assets/image/project10.png";
 import product11 from "../../../assets/image/project11.png";
 import product12 from "../../../assets/image/project12.png";
 
-export const ListFilterBrandData = [
-  {
-    id: 1,
-    name: "PetKit",
-  },
-  {
-    id: 2,
-    name: "Doggy Man",
-  },
-  {
-    id: 3,
-    name: "LMD",
-  },
-  {
-    id: 4,
-    name: "Catty Man",
-  },
-  {
-    id: 5,
-    name: "Pawsee",
-  }
-];
 
 export const ListFilterPriceData = [
   {
     id: 1,
-    name: "Under $10",
+    name: "Dưới 100.000 VNĐ",
   },
   {
     id: 2,
-    name: "$10 - $50",
+    name: "Từ 100.000 - 200.000 VNĐ",
   },
   {
     id: 3,
-    name: "$50 - $100",
+    name: "Từ 200.000 - 500.000 VNĐ",
   },
   {
     id: 4,
-    name: "$100 - $200",
+    name: "Từ 500.000 - 1.000.000 VNĐ",
   },
   {
     id: 5,
-    name: "$200 - $300",
+    name: "Từ 1.000.000 - 5.000.000 VNĐ",
   }
 ];
 
-export const ListFilterColorData = [
+export const ListFilterCategoryData = [
   {
     id: 1,
     name: "Màu đỏ",
