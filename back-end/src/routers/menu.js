@@ -7,6 +7,6 @@ router.get("/menu", list);
 router.get("/getMenuMenuType", listMenuMenuType);
 router.get("/menu/:id", show);
 router.post("/menu", checkPermission, create);
-router.put("/edit/:id", checkPermission, update);
+router.put("/menu/:id", checkPermission, update);
 router.delete("/menu/:id", destroy);
 export default router;

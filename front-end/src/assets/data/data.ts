@@ -6,6 +6,7 @@ import AppoinmentIcon from "../svg/appoinmentIcon";
 import BannerIcon from "../svg/banner";
 import BreedIcon from "../svg/breed";
 import Category from "../svg/category";
+import MenuIcon2 from "../svg/menuIcon2";
 import MenuTypeIcon from "../svg/menuTypeIcon";
 import NewIcon from "../svg/newIcon";
 import PethouseIcon from "../svg/pethouseIcon";
@@ -65,6 +66,7 @@ export const navigationLinks = [
   { id: 20, title: "về chúng tôi", image: AboutMeIcon, link: "about" },
   { id: 22, title: "Banner", image: BannerIcon, link: "banner" },
   { id: 25, title: "Kiểu Menu", image: MenuTypeIcon, link: "menutype" },
+  { id: 26, title: "Menu", image: MenuIcon2, link: "menu" },
 ];
 
 export const transactions = [
