@@ -2,13 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
-import Account from "./page/base/account/account/account";
 import Follow from "./components/account_info/follow";
-import History from "./components/account_info/history";
-import Historyfollow from "./components/account_info/history_follow";
 import Pay from "./components/account_info/pay";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
+import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
 import SignUp from "./page/base/signUp";
@@ -46,9 +44,6 @@ import RoleAdmin from "./page/admin/role/list";
 import AddService from "./page/admin/services/add";
 import EditService from "./page/admin/services/edit";
 import ServicesAdmin from "./page/admin/services/list";
-import AddSetTime from "./page/admin/setTime/add";
-import EditSetTime from "./page/admin/setTime/edit";
-import SetTimeAdmin from "./page/admin/setTime/list";
 import AddSpecies from "./page/admin/species/add";
 import EditSpecies from "./page/admin/species/edit";
 import SpeciesAdmin from "./page/admin/species/list";
@@ -62,34 +57,102 @@ import EditStatusContact from "./page/admin/status_contact/edit";
 import StatusContactAdmin from "./page/admin/status_contact/list";
 import EditUser from "./page/admin/user/edit";
 import UserAdmin from "./page/admin/user/list";
-
+import { useEffect, useState } from "react";
+import AddPetPage from "./components/account_info/addpet";
+import AccomplishedAppointment from "./components/account_info/appointment/accomplished";
+import CancelledAppointment from "./components/account_info/appointment/cancelledAppointment";
+import ConfirmedAppointment from "./components/account_info/appointment/confirmed";
+import DoingAppointment from "./components/account_info/appointment/doing";
+import WaitForConfirmation from "./components/account_info/appointment/wait-for-confirmation";
+import EditPetPage from "./components/account_info/editpet";
+import PetUser from "./components/account_info/pet";
+import AppointmentEdit from "./page/admin/appointments/edit";
+import AddBanner from "./page/admin/banner/add";
+import EditBanner from "./page/admin/banner/edit";
+import BannerAdmin from "./page/admin/banner/list";
+import AddCategory from "./page/admin/category/add";
+import EditCategory from "./page/admin/category/edit";
+import CategoryAdmin from "./page/admin/category/list";
 import EditContact from "./page/admin/contact/edit";
 import EditNews from "./page/admin/news/edit";
-import CartPage from "./page/base/cart";
-import PageNotFound from "./page/pageNotFound";
-import CategoryAdmin from "./page/admin/category/list";
-import EditCategory from "./page/admin/category/edit";
-import AddCategory from "./page/admin/category/add";
-import ProductsAdmin from "./page/admin/products/list";
 import AddProduct from "./page/admin/products/add";
 import EditProduct from "./page/admin/products/edit";
+import ProductsAdmin from "./page/admin/products/list";
+import AddStatusOrderAdmin from "./page/admin/status_order/add";
+import EditStatusOrder from "./page/admin/status_order/edit";
+import StatusOrderAdmin from "./page/admin/status_order/list";
+import AddStatusPetAdmin from "./page/admin/status_pet/add";
+import EditStatusPet from "./page/admin/status_pet/edit";
+import StatusPetAdmin from "./page/admin/status_pet/list";
+import PaymentPage from "./page/base/Payment";
+import CallbackVNPAY from "./page/base/callback";
+import CartPage from "./page/base/cart";
+import DetailProduct from "./page/base/detailProduct";
+import PrintInvoice from "./page/base/printInvoice";
+import ServiceDetail from "./page/base/serviceDetail";
+import ServicePage from "./page/base/servicePage";
+import PageNotFound from "./page/pageNotFound";
+import AppointmentsAdd from "./page/admin/appointments/add";
+import ShoppingCart from "./page/base/shoppingCart";
 
 function App() {
+  const [dateTime] = useState(localStorage.getItem("DateTime"));
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (dateTime) {
+        const currentTime = new Date().getTime();
+        const loginTimestamp = parseInt(dateTime, 10);
+        if (currentTime - loginTimestamp > 86400000) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("DateTime");
+        }
+      }
+    };
+
+    checkTokenExpiration();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="product" element={<ListProduct />} />
+          <Route path="product/:id" element={<DetailProduct />} />
           <Route path="appointment" element={<Appointments />} />
+          <Route path="appointment/:id" element={<Appointments />} />
+          {/* <Route path="detailProduct/:id" element={<DetailProduct />} /> */}
+          <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
-            <Route path="history_follow" element={<Historyfollow />} />
-            <Route path="history" element={<History />} />
             <Route path="follow" element={<Follow />} />
+
+            <Route path="pet-user">
+              <Route index element={<PetUser />} />
+              <Route path="add" element={<AddPetPage />} />
+              <Route path="edit/:id" element={<EditPetPage />} />
+            </Route>
+            <Route
+              path="cancelledAppointment"
+              element={<CancelledAppointment />}
+            />
+            <Route
+              path="wait-for-confirmation-appointment"
+              element={<WaitForConfirmation />}
+            />
+            <Route
+              path="confirmed-appointment"
+              element={<ConfirmedAppointment />}
+            />
+            <Route path="doing-appointment" element={<DoingAppointment />} />
+            <Route
+              path="accomplished-appointment"
+              element={<AccomplishedAppointment />}
+            />
           </Route>
           <Route path="cart" element={<CartPage />} />
+          <Route path="services" element={<ServicePage />} />
+          <Route path="service/:id" element={<ServiceDetail />} />
         </Route>
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -104,7 +167,11 @@ function App() {
             <Route path="add" element={<AddStatusAdmin />} />
             <Route path="edit/:id" element={<EditStatus />} />
           </Route>
-          <Route path="appointment" element={<AppointmentsAdmin />} />
+          <Route path="appointment">
+            <Route index element={<AppointmentsAdmin />} />
+            <Route path="edit" element={<AppointmentEdit />} />
+            <Route path="add" element={<AppointmentsAdd />} />
+          </Route>
 
           <Route path="about">
             <Route index element={<AboutAdmin />} />
@@ -139,12 +206,6 @@ function App() {
             <Route index element={<RoleAdmin />} />
             <Route path="add" element={<AddRoleAdmin />} />
             <Route path="edit/:id" element={<EditRole />} />
-          </Route>
-
-          <Route path="settime">
-            <Route index element={<SetTimeAdmin />} />
-            <Route path="add" element={<AddSetTime />} />
-            <Route path="edit/:id" element={<EditSetTime />} />
           </Route>
           <Route path="pethouse">
             <Route index element={<PethouseAdmin />} />
@@ -192,9 +253,29 @@ function App() {
             <Route path="edit/:id" element={<EditNews />} />
           </Route>
 
+          <Route path="banner">
+            <Route index element={<BannerAdmin />} />
+            <Route path="add" element={<AddBanner />} />
+            <Route path="edit/:id" element={<EditBanner />} />
+          </Route>
+
           <Route path="review" element={<ReviewAdmin />} />
           <Route path="pets" element={<PetsAdmin />} />
+
+          <Route path="status_pet">
+            <Route index element={<StatusPetAdmin />} />
+            <Route path="add" element={<AddStatusPetAdmin />} />
+            <Route path="edit/:id" element={<EditStatusPet />} />
+          </Route>
+          <Route path="status_order">
+            <Route index element={<StatusOrderAdmin />} />
+            <Route path="add" element={<AddStatusOrderAdmin />} />
+            <Route path="edit/:id" element={<EditStatusOrder />} />
+          </Route>
         </Route>
+        <Route path="payment/:id/:total" element={<PaymentPage />} />
+        <Route path="callback" element={<CallbackVNPAY />} />
+        <Route path="print-invoice/:id" element={<PrintInvoice />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PetsResponse, TPets } from "../schema/pets";
+import { PetUserId, PetsRequest, PetsResponse, TPets, TUserPet } from "../schema/pets";
 
 const petsApi = createApi({
   reducerPath: "pets",
@@ -34,6 +34,25 @@ const petsApi = createApi({
         },
         providesTags: ["Pets"],
       }),
+      getPetById: builder.query<PetsRequest, number>({
+        query: (id) => {
+          return {
+            url: `/pets/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Pets"],
+      }),
+      getPetByIdPost: builder.mutation<PetsRequest[], PetUserId>({
+        query: (user) => {
+          return {
+            url: `listPetByUserId`,
+            method: "POST",
+            body: user,
+          };
+        },
+        invalidatesTags: ["Pets"],
+      }),
       createPets: builder.mutation<PetsResponse, Partial<TPets>>({
         query: (pets) => ({
           url: "/pets",
@@ -42,7 +61,25 @@ const petsApi = createApi({
         }),
         invalidatesTags: ["Pets"],
       }),
-       removePets: builder.mutation<TPets, number>({
+      updatePets: builder.mutation<PetsRequest, Partial<PetsRequest>>({
+        query: (pets) => {
+          return {
+            url: `/pets/${pets.id}`,
+            method: "PUT",
+            body: pets,
+          };
+        },
+        invalidatesTags: ["Pets"],
+      }),
+      userPet: builder.mutation<TPets[], Partial<TUserPet>>({
+        query: (pets) => ({
+          url: "/userPet",
+          method: "PATCH",
+          body: pets,
+        }),
+        invalidatesTags: ["Pets"],
+      }),
+      removePets: builder.mutation<TPets, number>({
         query: (id) => {
           return {
             url: `/pets/${id}`,
@@ -58,7 +95,12 @@ const petsApi = createApi({
 export const {
   useGetAllPetsQuery,
   useGetAllUserPetsQuery,
-  useCreatePetsMutation, useRemovePetsMutation
+  useGetPetByIdQuery,
+  useUpdatePetsMutation,
+  useCreatePetsMutation,
+  useRemovePetsMutation,
+  useUserPetMutation,
+  useGetPetByIdPostMutation,
 } = petsApi;
 export const petsReducer = petsApi.reducer;
 export default petsApi;

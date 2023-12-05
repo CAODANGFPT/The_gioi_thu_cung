@@ -8,6 +8,8 @@ import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 import { RegisterAccountSchema, TRegisterAccount } from "../../../schema/registerAccount";
 import { useRegisterUserMutation } from "../../../services/auth";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const RegisterAccount = () => {
@@ -31,9 +33,11 @@ const RegisterAccount = () => {
         const response = await registerForm(values);
         if ("error" in response) {
           formik.setFieldError("email", "Email đã tồn tại");
+          toast.error("Email đã tồn tại");
+          
         } else {
           alert("Đăng ký thành công!");
-          navigate("/");
+          navigate("/signin");
         }
       } catch (error) {
         console.error("Lỗi", error);
@@ -44,7 +48,7 @@ const RegisterAccount = () => {
   return (
     <div className="registerAccount">
       <div className="singUp-top">
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className="signup_logo"/>
         <Link to="" className="help">
           Trợ giúp?
         </Link>
@@ -143,6 +147,7 @@ const RegisterAccount = () => {
           </p>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

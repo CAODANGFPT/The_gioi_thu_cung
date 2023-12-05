@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Form, Input, Select, message } from "antd";
@@ -75,7 +74,7 @@ const EditUser = () => {
             {user.data?.role_id && (
               <Select defaultValue={user.data?.role_id}>
                 {roles.data?.map((item: TRole) => (
-                  <Select.Option key={item.id} value={item.name}>
+                  <Select.Option key={item.id} value={item.id}>
                     {item.name}
                   </Select.Option>
                 ))}

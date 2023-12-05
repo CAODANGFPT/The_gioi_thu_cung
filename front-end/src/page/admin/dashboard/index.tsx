@@ -1,7 +1,12 @@
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  MinusOutlined,
+} from "@ant-design/icons";
 import { Col, Row, Statistic, Card } from "antd";
 import "../../../assets/scss/admin/dashBoard.scss";
 import { Bar, Line, Pie } from "@ant-design/charts";
+import { useListQuery, useTotalQuery } from "../../../services/dashboard";
 
 const barData: any[] = [
   { type: "tỉa lông", value: 10, color: "blue" },
@@ -15,22 +20,17 @@ const pieData = [
   { type: "quần áo", value: 30 },
 ];
 
-const lineData = [
-  { type: "Tháng 1", value: 1000 },
-  { type: "Tháng 2", value: 2020 },
-  { type: "Tháng 3", value: 303 },
-  { type: "Tháng 4", value: 3022 },
-  { type: "Tháng 5", value: 4000 },
-  { type: "Tháng 6", value: 7000 },
-  { type: "Tháng 7", value: 2000 },
-  { type: "Tháng 8", value: 3000 },
-  { type: "Tháng 9", value: 5000 },
-  { type: "Tháng 10", value: 4000 },
-  { type: "Tháng 11", value: 6000 },
-  { type: "Tháng 12", value: 1200 },
-];
-
 const DashBoard = () => {
+  const { data: listDashboard } = useListQuery();
+  const { data: totalDashboard } = useTotalQuery();
+  // console.log(data);
+
+  const lineData =
+    listDashboard?.map((data) => ({
+      type: `Tháng ${data?.month} / ${data?.year}`,
+      total: data.total_revenue ? +data.total_revenue : 0,
+    })) ?? [];
+
   const pieConfig = {
     data: pieData,
     angleField: "value",
@@ -44,10 +44,11 @@ const DashBoard = () => {
     color: (datum: any, defaultColor: string) =>
       barData.find((item) => item.type === datum.type)?.color || defaultColor,
   };
+
   const lineConfig = {
     data: lineData,
     xField: "type",
-    yField: "value",
+    yField: "total",
     point: {
       size: 4,
       shape: "circle",
@@ -58,28 +59,54 @@ const DashBoard = () => {
       },
     },
   };
+
   return (
     <div className="dashBoard">
       <div className="col-2">
-        <div>
-          <Row gutter={36}>
-            <Col span={24}>
-              <Card bordered={false}>
-                <Statistic
-                  title="Doanh số theo các tháng"
-                  value={11.28}
-                  precision={2}
-                  valueStyle={{ color: "#3f8600" }}
-                  prefix={<ArrowUpOutlined />}
-                  suffix="%"
-                />
-              </Card>
-            </Col>
-          </Row>
-        </div>
+        <Row gutter={36}>
+          <Col span={24}>
+            <Card bordered={false}>
+              <Statistic
+                title="Doanh số so với tháng trước"
+                value={
+                  totalDashboard
+                    ? totalDashboard > 0
+                      ? totalDashboard
+                      : totalDashboard * -1
+                    : totalDashboard || 0
+                }
+                precision={2}
+                valueStyle={{
+                  color:
+                    totalDashboard !== undefined && totalDashboard !== null
+                      ? totalDashboard > 0
+                        ? "#3f8600"
+                        : totalDashboard < 0
+                        ? "#cf1322"
+                        : "#00575c"
+                      : "#00575c",
+                }}
+                prefix={
+                  totalDashboard !== undefined && totalDashboard !== null ? (
+                    totalDashboard > 0 ? (
+                      <ArrowUpOutlined />
+                    ) : totalDashboard < 0 ? (
+                      <ArrowDownOutlined />
+                    ) : (
+                      <MinusOutlined />
+                    )
+                  ) : (
+                    <MinusOutlined />
+                  )
+                }
+                suffix="%"
+              />
+            </Card>
+          </Col>
+        </Row>
       </div>
       <div className="line">
-        <h2>Bảng doanh số theo các thàng</h2>
+        <h2>Bảng doanh số theo các tháng</h2>
         <Line {...lineConfig} />
       </div>
 

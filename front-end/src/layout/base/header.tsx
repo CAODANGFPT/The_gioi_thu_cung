@@ -1,16 +1,16 @@
-import "../../assets/scss/layout/base/headerBase.scss";
-import logo from "../../assets/image/logo.png";
-import SearchIcon from "../../assets/svg/searchIcon";
-import UserIcon from "../../assets/svg/userIcon";
-import HeartIcon from "../../assets/svg/heartIcon";
-import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import MenuIcon from "../../assets/svg/menuIcon";
-import { useEffect, useState } from "react";
-import RightIcon from "../../assets/svg/rightIcon";
-import { useGetUserQuery } from "../../services/user";
-import User from "../../assets/image/user.png";
 import { Dropdown } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../assets/image/logo.png";
+import User from "../../assets/image/user.png";
+import "../../assets/scss/layout/base/headerBase.scss";
+import CalendarIcon from "../../assets/svg/calendar";
+import MenuIcon from "../../assets/svg/menuIcon";
+import RightIcon from "../../assets/svg/rightIcon";
+import SearchIcon from "../../assets/svg/searchIcon";
+import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
+import { useGetUserListCartsQuery } from "../../services/shoppingCart";
+import { useGetUserQuery } from "../../services/user";
 import ModalUser from "./modal";
 
 const HeaderBase = () => {
@@ -18,12 +18,24 @@ const HeaderBase = () => {
   const location = useLocation();
   const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
+  const [dataOrder, setDataOrder] = useState<any>([]);
+  const { data: carts } = useGetUserListCartsQuery();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
-
+  useEffect(() => {
+    if (carts) {
+      setDataOrder(carts);
+    }
+  }, [carts]);
+  useEffect(() => {
+    if (dataOrder) {
+      setCountCarts(dataOrder.length);
+    }
+  }, [dataOrder]);
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -48,21 +60,35 @@ const HeaderBase = () => {
         <p className="frame29-title2">Chi tiết</p>
       </div>
       <div className="frame32">
-        <p className="frame32-title">Giúp đỡ</p>
-        <p className="frame32-title">Theo dõi đơn hàng</p>
-        <p className="frame32-title">Về chúng tôi</p>
-        <p className="frame32-title">Bản tin</p>
-        <p className="frame32-title">
-          <Link to="/signin" className="help">
-            Đăng nhập
-          </Link>
-        </p>
+        {user ? (
+          <>
+            <p className="frame32-title">Giúp đỡ</p>
+            <p className="frame32-title">Theo dõi đơn hàng</p>
+            <p className="frame32-title">Về chúng tôi</p>
+            <p className="frame32-title">Bản tin</p>
+            <p className="frame32-title">
+              Xin chào: <span className="hello_login">{user.name}</span>{" "}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="frame32-title">Giúp đỡ</p>
+            <p className="frame32-title">Theo dõi đơn hàng</p>
+            <p className="frame32-title">Về chúng tôi</p>
+            <p className="frame32-title">Bản tin</p>
+            <p className="frame32-title">
+              <Link to="/signin" className="help">
+                Đăng nhập
+              </Link>
+            </p>
+          </>
+        )}
       </div>
       <div className="nav">
         <div className="menu" onClick={() => setOpenMenu(!openMenu)}>
           <MenuIcon />
         </div>
-        <Link className="logo" to={""}>
+        <Link className="logo" to="">
           <img className="logo-image" src={logo} alt="Logo" />
         </Link>
         <form className="frame31">
@@ -116,12 +142,12 @@ const HeaderBase = () => {
               )}
             </div>
           </Dropdown>
-          <div className="frame5">
-            <HeartIcon />
-            <div className="group13">0</div>
+          <div className="frame5" onClick={() => navigate("shoppingCart")}>
+            <ShoppingCartIcon />
+            <div className="group13">{countCarts}</div>
           </div>
           <div className="frame5" onClick={() => navigate("cart")}>
-            <ShoppingCartIcon />
+            <CalendarIcon />
             <div className="group13">0</div>
           </div>
         </div>
@@ -129,18 +155,36 @@ const HeaderBase = () => {
       <div className="frame52">
         <ul className="menu">
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              PHỤ KIỆN MÈO
+            <button className="title-button" onClick={() => navigate("")}>
+              <div>TRANG CHỦ</div>
+            </button>
+          </li>
+          <li className="menu-title">
+            <button
+              className="title-button"
+              onClick={() =>
+                navigate("/appointment", {
+                  state: {
+                    appointmentData: {
+                      pets: [],
+                      services: [],
+                      type: 1,
+                    },
+                  },
+                })
+              }
+            >
+              <div>ĐẶT LỊCH CHĂM SÓC</div>
+            </button>
+          </li>
+          <li className="menu-title">
+            <Link className="title1" to={"/product"}>
+              SẢN PHẨM CHO THÚ CƯNG
             </Link>
           </li>
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              THỨC ĂN MÈO
-            </Link>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              NỘI THẤT MÈO
+            <Link className="title1" to={"/services"}>
+              LOẠI DỊCH VỤ
             </Link>
           </li>
           <li className="menu-title">
@@ -169,20 +213,33 @@ const HeaderBase = () => {
         </div>
         <ul className="menu">
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              PHỤ KIỆN MÈO
+            <button
+              className="title-button"
+              onClick={() =>
+                navigate("/appointment", {
+                  state: {
+                    appointmentData: {
+                      pets: [],
+                      services: [],
+                      type: 1,
+                    },
+                  },
+                })
+              }
+            >
+              <div>ĐẶT LỊCH CHĂM SÓC</div>
+            </button>
+            <RightIcon />
+          </li>
+          <li className="menu-title">
+            <Link className="title1" to={"/product"}>
+              SẢN PHẨM CHO THÚ CƯNG
             </Link>
             <RightIcon />
           </li>
           <li className="menu-title">
-            <Link className="title1" to={""}>
-              THỨC ĂN CHO MÈO
-            </Link>
-            <RightIcon />
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              NỘI THẤT MÈO
+            <Link className="title1" to={"/services"}>
+              LOẠI DỊCH VỤ
             </Link>
             <RightIcon />
           </li>

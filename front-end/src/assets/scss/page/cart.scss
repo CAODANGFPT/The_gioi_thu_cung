@@ -6,7 +6,20 @@
   margin: 0;
   box-sizing: border-box;
 }
-
+.login-now {
+  font-size: 18px;
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  img {
+    width: 100%;
+  }
+}
 .cart {
   max-width: $xl;
   padding: 0 40px;
@@ -28,6 +41,18 @@
         padding: 8px;
       }
       tbody {
+        .action {
+          @include Flex(flex, center, center);
+          @include Gap(10px, 0);
+        }
+        .chitiet {
+          color: $EagleGreen;
+          border-bottom: 1px solid transparent;
+          cursor: pointer;
+          &:hover {
+            border-bottom: 1px solid $EagleGreen;
+          }
+        }
         button {
           background-color: white;
           padding: 5px 12px;
@@ -36,13 +61,48 @@
           border-radius: 12px;
           cursor: pointer;
         }
-        button:hover {
-          background-color: #ff4d4f;
-          color: white;
+        .btn-edit-disable {
+          background-color: rgba(0, 0, 0, 0.04);
+          border: 1px solid rgba(0, 0, 0, 0.25);
+          cursor: not-allowed;
+          span {
+            color: rgba(0, 0, 0, 0.25);
+          }
+          &:hover {
+            span {
+              color: rgba(0, 0, 0, 0.25);
+            }
+          }
         }
         .btn-delete {
           &:hover {
-            color: white;
+            background-color: #ff4d4f;
+            span {
+              color: white;
+            }
+          }
+        }
+        .btn-edit {
+          background-color: white;
+          padding: 5px 12px;
+          border: 1px solid $EagleGreen;
+          color: $EagleGreen;
+          border-radius: 12px;
+          cursor: pointer;
+          &:hover {
+            border: 1px solid $EagleGreen;
+            background-color: $EagleGreen;
+            span {
+              color: white;
+            }
+          }
+        }
+        .btn-disable {
+          background-color: rgba(0, 0, 0, 0.04);
+          &:hover {
+            span {
+              color: rgba(0, 0, 0, 0.25);
+            }
           }
         }
       }
@@ -56,5 +116,11 @@
         }
       }
     }
+  }
+  .modal-1 {
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    border-radius: 24px;
+    padding: 20px;
+    height: 85%;
   }
 }

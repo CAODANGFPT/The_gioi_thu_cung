@@ -19,12 +19,15 @@
   font-family: $Roboto;
   background-color: #030f39;
   width: 260px;
-  padding: 36px 20px;
+  padding: 36px 0px 36px 20px;
   transition: all 300ms ease-in-out;
 
   .user-info {
     @include Flex(flex, flex-start, center);
     @include Gap(16px, 0);
+    img{
+      width: 150px;
+    }
   }
 
   .nav {

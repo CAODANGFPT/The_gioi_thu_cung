@@ -1,8 +1,12 @@
 import React from "react";
 import type { FormInstance } from "antd";
-import { Button, Form, Input, Space, message } from "antd";
-import { useCreatePetHouseMutation, useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { Button, Form, Input, InputNumber, Space, message } from "antd";
+import {
+  useCreatePetHouseMutation,
+  useGetAllpetHouseQuery,
+} from "../../../services/pethouse";
 import { useNavigate } from "react-router-dom";
+import { TpetHouse } from "../../../schema/pethouse";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
   const [submittable, setSubmittable] = React.useState(false);
@@ -29,23 +33,27 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
 
 const AddPetHouse: React.FC = () => {
   const [form] = Form.useForm();
-
   const [createPethouse] = useCreatePetHouseMutation();
-
   const navigate = useNavigate();
-
   const { refetch } = useGetAllpetHouseQuery();
 
-  const handleFormSubmit = async (values: any) => {
+  const handleFormSubmit = async (values: {
+    name: string;
+    price: number;
+    status_id: number;
+  }) => {
     try {
-      await createPethouse(values);
+      const updatedPethouse: TpetHouse = {
+        name: values.name,
+        price: values.price,
+        status_id: values.status_id,
+      };
+      await createPethouse(updatedPethouse).unwrap();
       message.success("Thêm phòng thành công");
-
       refetch();
-
       navigate("/admin/pethouse");
-    } catch (error: any) {
-      message.error("Thêm phòng thất bại : " + error.message);
+    } catch (error) {
+      message.error("Thêm phòng thất bại : " + error);
     }
   };
 
@@ -61,6 +69,16 @@ const AddPetHouse: React.FC = () => {
         <Input />
       </Form.Item>
 
+      <Form.Item
+        label={<span className="text-base dark:text-white">Giá phòng </span>}
+        name="price"
+        rules={[{ required: true, message: "Vui lòng nhập giá phòng!" }]}
+      >
+        <InputNumber
+          min={1}
+          className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
+        />
+      </Form.Item>
       <Form.Item>
         <Space>
           <SubmitButton form={form} />

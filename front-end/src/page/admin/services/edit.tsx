@@ -63,13 +63,11 @@ const EditService = () => {
     servicesById.data?.description,
   ]);
 
-  const handleImageChange = (info: any) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      setImage(info.file.response.url);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList[0].response) {
+      setImage(newFileList[0].response.secure_url);
     }
+    setFileList(newFileList);
   };
 
   const onFinish = async (values: TServicesRequest) => {
@@ -82,12 +80,10 @@ const EditService = () => {
       description,
     };
     try {
-      console.log(servicesData);
       await updateServices(servicesData).unwrap();
       message.success(" Update services successfully");
       reset();
       navigate("/admin/services");
-      console.log(servicesData);
     } catch (error) {
       message.error("Failed to update product");
     }
@@ -137,9 +133,8 @@ const EditService = () => {
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
           </Form.Item>
           <Form.Item
-            label={<span className="">Ảnh danh mục</span>}
-            name="image"
-            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+            label={<span className="">Ảnh dịch vụ</span>}
+            name="img"    
           >
             <Upload
               name="file"
@@ -150,20 +145,12 @@ const EditService = () => {
               }}
               listType="picture-card"
               maxCount={1}
-              fileList={fileList}
               showUploadList={true}
               className="ant-upload-wrapper ant-upload-select"
               onChange={handleImageChange}
+              fileList={fileList}
             >
-              {/* {image ? (
-                <img
-                  src={image}
-                  alt="avatar"
-                  style={{ width: "100%", height: "auto" }}
-                />
-              ) : ( */}
               {uploadButton}
-              {/* )} */}
             </Upload>
           </Form.Item>
           <Form.Item

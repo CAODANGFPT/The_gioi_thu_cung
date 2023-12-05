@@ -1,29 +1,58 @@
-import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import "../../../../assets/scss/page/account.scss";
-import AddressCard from "../../../../assets/svg/account/AddressCard";
-import Order from "../../../../assets/svg/account/Order";
-import Payment from "../../../../assets/svg/account/Payment";
-import Puchase from "../../../../assets/svg/account/Puchase";
-import UserIcons from "../../../../assets/svg/account/User";
+import { Menu, MenuProps } from "antd";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import "../../../../assets/scss/page/account/account.scss";
 import Breadcrumb from "../../../../components/breadcrumb";
-import { navigationLinksAccount } from "../../../../assets/data/data";
+import logo from "../../../../assets/image/logo.png";
+import { useGetUserQuery } from "../../../../services/user";
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: "group"
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem;
+}
+
+const items: MenuItem[] = [
+  getItem(<Link to={"/account"}>Thông tin</Link>, "account"),
+  getItem(<Link to={"pet-user"}>Thú cưng</Link>, "pet-user"),
+  getItem(<Link to={"payment"}>Cài đặt thanh toán</Link>, "payment"),
+  getItem("Lịch đã đặt", "sub1", null, [
+    getItem(
+      <Link to={"wait-for-confirmation-appointment"}>Chờ xác nhận</Link>,
+      "5"
+    ),
+    getItem(<Link to={"confirmed-appointment"}>Đã xác nhận</Link>, "6"),
+    getItem(<Link to={"doing-appointment"}>Đang thực hiện</Link>, "7"),
+    getItem(<Link to={"accomplished-appointment"}>Đã Hoàn thành</Link>, "8"),
+    getItem(<Link to={"cancelledAppointment"}>Đã hủy</Link>, "9"),
+  ]),
+];
 
 const AccountPage = () => {
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
+  const navigate = useNavigate();
+  const { data: user } = useGetUserQuery();
 
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    const order = navigationLinksAccount.find(
-      (item) => item.link === pathname.split("/")[2]
+  if (!user) {
+    return (
+      <div style={{ width: "50%", margin: "0 auto" }}>
+        <p style={{ textAlign: "center" }}>Bạn chưa đăng nhập.</p>
+        <img style={{ width: "100%" }} src={logo} alt="logo" />
+        <p className="link" onClick={() => navigate("/SignIn")}>
+          Đăng nhập ngay tại đây!
+        </p>
+      </div>
     );
-    setActiveTab(order?.id || 1);
-  }, [pathname]);
-
+  }
   return (
     <div className="account_info">
       <div className="account_info-row">
@@ -34,49 +63,7 @@ const AccountPage = () => {
       </div>
       <div className="account_info-row">
         <div className="account_info-col col_1">
-          <ul className="account_col-list">
-            {navigationLinksAccount.map((item) => (
-              <li className="account_col-item">
-                <Link
-                  to={item.link}
-                  className={`account_col-link ${
-                    activeTab === item.id ? "active" : ""
-                  }`}
-                  onClick={() => handleTabClick(item.id)}
-                >
-                  <div className="icon">
-                    <UserIcons />
-                  </div>
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-            {/* <li className="account_col-item">
-              <Link
-                to="/account/payment"
-                className={`account_col-link ${
-                  activeTab === 2 ? "active" : ""
-                }`}
-                onClick={() => handleTabClick(2)}
-              >
-                <div className="icon">
-                  <Payment />
-                </div>
-                Cài đặt thanh toán
-              </Link>
-            </li>
-            <li className="account_col-item">
-              <Link
-                to="/account/history_follow"
-                className={`account_col-link his_track ${
-                  activeTab === 3 ? "active" : ""
-                }`}
-                onClick={() => handleTabClick(3)}
-              >
-                Lịch sử mua hàng & theo dõi đơn hàng
-              </Link>
-            </li> */}
-          </ul>
+          <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
         </div>
         <div className="account_info-col col_2">
           <Outlet />

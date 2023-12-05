@@ -6,7 +6,8 @@ import {
   useGetAppointmentUserQuery,
 } from "../../../services/appointments";
 import { Button, Popconfirm, message } from "antd";
-
+import dayjs from "dayjs";
+import logo from "../../../assets/image/logo.png";
 const CartPage: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserQuery();
   const [CancelHistoryAppointmentMutation] =
@@ -26,7 +27,17 @@ const CartPage: FC = () => {
   const cancel = () => {
     message.error("Hủy không thành công.");
   };
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="cart">
       <h1>Thông tin lịch đặt</h1>
@@ -36,8 +47,7 @@ const CartPage: FC = () => {
             <tr>
               <th>STT</th>
               <th>Thông tin người đặt</th>
-              <th>Loại thú cưng</th>
-              <th>Nhân viên thực hiện</th>
+              <th>Ngày giờ đặt</th>
               <th>Phòng</th>
               <th>Trạng thái</th>
               <th>Thao tác</th>
@@ -46,15 +56,13 @@ const CartPage: FC = () => {
           </thead>
           <tbody>
             {listAppointment?.map((item, index) => {
-              if (item.is_delete) {
-                return null;
-              }
               return (
                 <tr key={item.id}>
                   <td>{index}</td>
                   <td>{item.user_email}</td>
-                  <td>{item.pet_name}</td>
-                  <td></td>
+                  <td>
+                    {dayjs(item.start_time).format("DD-MM-YYYY (HH:mm:ss")}
+                  </td>
                   <td>{item.pethouse_name}</td>
                   <td>{item.status_name}</td>
                   <td>
@@ -69,7 +77,11 @@ const CartPage: FC = () => {
                       <Button
                         disabled={item.status_name !== "Đang chờ xác nhận"}
                         danger
-                        className="btn-delete"
+                        className={
+                          item.status_name === "Đang chờ xác nhận"
+                            ? "btn-delete"
+                            : "btn-disable"
+                        }
                       >
                         Hủy đặt lịch
                       </Button>

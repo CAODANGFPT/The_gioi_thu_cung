@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, InputNumber, message } from "antd";
 import {
   useUpdatePetHouseMutation,
   usePetHouseByIdQuery,
@@ -26,16 +26,23 @@ const EditPetHouse = () => {
   useEffect(() => {
     if (pethouse.data) {
       form.setFieldsValue({
+        id: pethouse.data.id,
         name: pethouse.data.name,
+        price: pethouse.data.price,
       });
     }
   }, [pethouse.data, form]);
 
-  const onFinish = async (values: { name: string }) => {
+  const onFinish = async (values: {
+    id: number;
+    name: string;
+    price: number;
+  }) => {
     try {
       const updatedPetHouse: TpetHouse = {
         id: Number(id),
         name: values.name,
+        price: values.price,
       };
       await updatePetHouseMutation(updatedPetHouse).unwrap();
       confirm();
@@ -74,6 +81,16 @@ const EditPetHouse = () => {
             initialValue={pethouse.data ? pethouse.data.name : ""}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            label={<span className="text-base dark:text-white">Giá phòng</span>}
+            name="price"
+            rules={[{ required: true, message: "Vui lòng nhập giá phòng!" }]}
+          >
+            <InputNumber
+              min={1}
+              className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">

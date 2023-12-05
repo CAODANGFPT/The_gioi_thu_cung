@@ -1,28 +1,51 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import Carousel from "react-multi-carousel";
 import ArrowLeft from "../../assets/svg/arrow-left";
 import ArrowRight from "../../assets/svg/arrow-right";
 import { responsive } from "../../page/base/home/data";
 import Product from "../product";
+import { TProduct } from "../../schema/products";
 
 type Props = {
-  productData: any;
+  productData: TProduct[];
   name: string;
 };
 
 const CarouselProduct: FC<Props> = ({ productData, name }) => {
   const carouselRef = useRef<Carousel | null>(null);
+
   const handleNext = () => {
     if (carouselRef.current) {
-      carouselRef.current.next(1);
+      const { currentSlide, slidesToShow } = carouselRef.current.state;
+      if (currentSlide === slidesToShow) {
+        carouselRef.current.goToSlide(0);
+      } else {
+        carouselRef.current.next(1);
+      }
     }
   };
 
   const handlePrev = () => {
     if (carouselRef.current) {
-      carouselRef.current.previous(1);
+      const { currentSlide, slidesToShow } = carouselRef.current.state;
+
+      if (currentSlide === 0) {
+        carouselRef.current.goToSlide(slidesToShow);
+      } else {
+        carouselRef.current.previous(1);
+      }
     }
   };
+  const autoNext = () => {
+    handleNext(); 
+    setTimeout(autoNext, 4000);
+  };
+
+  useEffect(() => {
+    const timerId = setTimeout(autoNext, 4000);
+    return () => clearTimeout(timerId);
+  }, []);
+
   return (
     <div className="home-product">
       <Carousel
@@ -35,25 +58,9 @@ const CarouselProduct: FC<Props> = ({ productData, name }) => {
         showDots={true}
         draggable={false}
       >
-        {productData.map(
-          (item: {
-            id: number,
-            name: string;
-            imageUrl: string;
-            price: string;
-            description?: string;
-            sold: string;
-
-          },) => (
-            <Product
-              key={item.id}
-              name={item.name}
-              url={item.imageUrl}
-              price={item.price}
-              sold={item.sold}
-            />
-          )
-        )}
+        {productData.map((item) => (
+          <Product key={item.id} item={item} />
+        ))}
       </Carousel>
       <button className="home-product-prev button" onClick={handlePrev}>
         <ArrowLeft />

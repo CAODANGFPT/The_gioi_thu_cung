@@ -26,10 +26,18 @@ import category from "./routers/category";
 import products from "./routers/products";
 import carts from "./routers/carts";
 import order from "./routers/order";
+import statusPet from "./routers/status_pet";
+import vnpayRoutes from "./routers/vnpayRoutes";
+import dashboardRoutes from "./routers/dashboard";
+import bannerRouter from "./routers/banner";
+import PrintInvoice from "./routers/PrintInvoice";
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/api", bannerRouter);
 app.use("/api", servicesRouter);
 app.use("/api", authRouter);
 app.use("/api", speciesRouter);
@@ -56,5 +64,9 @@ app.use("/api", category);
 app.use("/api", products);
 app.use("/api", carts);
 app.use("/api", order);
+app.use("/api", statusPet);
+app.use("/api", vnpayRoutes);
+app.use("/api", dashboardRoutes);
+app.use("/api", PrintInvoice);
 
 export const viteNodeApp = app;

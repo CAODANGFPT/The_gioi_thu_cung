@@ -1,24 +1,30 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
 import "../../../assets/scss/page/SignIn.scss";
+import { SignInRequestSchema, TSignIn } from "../../../schema/signIn";
 
-import logo from "../../../assets/image/logo.png";
+import { message } from "antd";
 import banner from "../../../assets/image/background.png";
-import GoogleIcon from "../../../assets/svg/googleIcon";
-import FacebookIcon from "../../../assets/svg/facebookIcon";
+import logo from "../../../assets/image/logo.png";
 import AppleIcon from "../../../assets/svg/appleIcon";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
+import FacebookIcon from "../../../assets/svg/facebookIcon";
+import GoogleIcon from "../../../assets/svg/googleIcon";
 import { useLoginUserMutation } from "../../../services/auth";
-import { message } from "antd";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [loginForm] = useLoginUserMutation();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
@@ -31,21 +37,22 @@ const SignIn = () => {
         if ("error" in response) {
           message.error("Tài khoản mật khẩu không chính xác");
         } else {
-          if(response.data && response.data.user.role_id === 3 ){
+          if (response.data && response.data.user.role_id === 3) {
             message.error("Tải khoản bị khóa");
-          } else{
+          } else {
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {
-              response.data.user.role_id === 1 ? navigate("/admin") : navigate("/");
+              response.data.user.role_id === 1
+                ? navigate("/admin")
+                : navigate("/");
             }, 100);
-           
           }
         }
       } catch (error) {
         console.error("Lỗi", error);
       }
-      },
+    },
   });
   return (
     <div className="singIn">
@@ -95,9 +102,9 @@ const SignIn = () => {
                 {showPassword ? <EyesOpenIcon /> : <EyesCloseIcon />}
               </div>
             </div>
-          {formik.touched.password && formik.errors.password && (
-            <div className="error">{formik.errors.password}</div>
-          )}
+            {formik.touched.password && formik.errors.password && (
+              <div className="error">{formik.errors.password}</div>
+            )}
           </div>
 
           <button className="btn-f bg-submit" type="submit">
@@ -105,12 +112,15 @@ const SignIn = () => {
           </button>
 
           <div className="forgot-phone">
-            <Link to="" className="text-login">
+            <p
+              onClick={() => navigate("/forgotPassword")}
+              className="text-login"
+            >
               Quên mật khẩu
-            </Link>
-            <Link to="" className="text-login">
-              Login with phone number
-            </Link>
+            </p>
+            <p onClick={() => navigate("/signup")} className="text-login">
+              Đăng ký
+            </p>
           </div>
           <br />
 

@@ -1,6 +1,6 @@
 import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TPets } from "../../../schema/pets";
@@ -8,9 +8,20 @@ import {
   useGetAllPetsQuery,
   useRemovePetsMutation,
 } from "../../../services/pets";
+import Search from "antd/es/input/Search";
+
 const PetsAdmin: React.FC = () => {
+  const [filter, setFilter] = useState({ name: "", nameUser: "" });
+  const [listPet, setListPet] = useState<TPets[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
   const { data } = useGetAllPetsQuery();
   const [removePet] = useRemovePetsMutation();
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
   const confirm = (id: number) => {
     removePet(id)
       .then((response: any) => {
@@ -39,44 +50,44 @@ const PetsAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "IMG",
+      title: "Ảnh",
       dataIndex: "img",
       key: "img",
       width: 150,
       render: (logo) => <Image width={100} src={logo} />,
     },
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
-      title: "Age",
+      title: "Tuổi",
       dataIndex: "age",
       key: "age",
       width: 50,
     },
     {
-      title: "Gender",
+      title: "Giới tính",
       dataIndex: "gender",
       key: "gender",
       width: 100,
     },
     {
-      title: "User_id",
+      title: "ID người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,
     },
     {
-      title: "Species_id",
+      title: "ID Loài",
       dataIndex: "nameSpecies",
       key: "nameSpecies",
       width: 150,
     },
     {
-      title: "Breed_id",
+      title: "ID Giống",
       dataIndex: "nameBreed",
       key: "nameBreed",
       width: 150,
@@ -111,7 +122,51 @@ const PetsAdmin: React.FC = () => {
     },
   ];
 
-  return <TableAdmin columns={columns} data={data} />;
+  useEffect(() => {
+    const filteredData = data?.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.nameUser?.toLowerCase().includes(filter.nameUser.trim().toLowerCase())
+    );
+    setListPet(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.nameUser === "" && filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.nameUser, filter.name]);
+
+  return (
+    <>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm tên"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm kiếm tên chủ"
+            value={filter?.nameUser}
+            onChange={(e) => handleFilterChange("nameUser", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "", nameUser: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
+      <TableAdmin columns={columns} data={listPet} />
+    </>
+  );
 };
 
 export default PetsAdmin;

@@ -69,13 +69,11 @@ const EditProduct = () => {
     productById.data?.category_id,
   ]);
 
-  const handleImageChange = (info: any) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      setImage(info.file.response.url);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList[0].response) {
+      setImage(newFileList[0].response.secure_url);
     }
+    setFileList(newFileList);
   };
 
   const onFinish = async (values: TProduct) => {
@@ -93,7 +91,6 @@ const EditProduct = () => {
       message.success(" Update successfully");
       reset();
       navigate("/admin/products");
-      console.log(productData);
     } catch (error) {
       message.error("Failed to update product");
     }

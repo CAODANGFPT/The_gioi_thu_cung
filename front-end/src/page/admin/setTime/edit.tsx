@@ -49,7 +49,6 @@ const EditSetTime = () => {
         start_time: dayjs(values.time[0]).format("HH:mm:00.000[Z]"),
         end_time: dayjs(values.time[1]).format("HH:mm:00.000[Z]"),
       };
-      console.log(updatedSetTime);
       await updateSetTimeMutation(updatedSetTime).unwrap();
       confirm();
       reset();

@@ -23,6 +23,9 @@
     @include max-screen($xl) {
       margin: 0 50px;
     }
+    .signup_logo{
+      width: 200px;
+    }
 
     .help {
       text-decoration: none;

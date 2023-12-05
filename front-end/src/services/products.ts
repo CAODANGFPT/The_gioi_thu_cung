@@ -25,7 +25,16 @@ const ProductsApi = createApi({
         },
         providesTags: ["Products"],
       }),
-     getProductById: builder.query<TProduct, number>({
+      getTop8Products: builder.query<TProduct[], void>({
+        query: () => {
+          return {
+            url: "/productsTop8",
+            method: "GET",
+          };
+        },
+        providesTags: ["Products"],
+      }),
+      getProductById: builder.query<TProduct, number>({
         query: (id) => {
           return {
             url: `/product/${id}`,
@@ -34,7 +43,7 @@ const ProductsApi = createApi({
         },
         providesTags: ["Products"],
       }),
-        updateProduct: builder.mutation<TProduct[], TProduct>({
+      updateProduct: builder.mutation<TProduct[], TProduct>({
         query: (products) => {
           return {
             url: `/product/${products.id}`,
@@ -44,7 +53,10 @@ const ProductsApi = createApi({
         },
         invalidatesTags: ["Products"],
       }),
-      createProducts: builder.mutation<ProductResponseSchema, Partial<TProduct>>({
+      createProducts: builder.mutation<
+        ProductResponseSchema,
+        Partial<TProduct>
+      >({
         query: (products) => ({
           url: "/products",
           method: "POST",
@@ -52,7 +64,7 @@ const ProductsApi = createApi({
         }),
         invalidatesTags: ["Products"],
       }),
-       removeProduct: builder.mutation<TProduct, number>({
+      removeProduct: builder.mutation<TProduct, number>({
         query: (id) => {
           return {
             url: `/product/${id}`,
@@ -66,7 +78,12 @@ const ProductsApi = createApi({
 });
 
 export const {
-useGetAllProductsQuery, useCreateProductsMutation , useRemoveProductMutation, useGetProductByIdQuery, useUpdateProductMutation
+  useGetAllProductsQuery,
+  useGetTop8ProductsQuery,
+  useCreateProductsMutation,
+  useRemoveProductMutation,
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
 } = ProductsApi;
 export const productsReducer = ProductsApi.reducer;
 export default ProductsApi;

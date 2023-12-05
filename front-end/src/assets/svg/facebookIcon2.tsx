@@ -1,3 +1,5 @@
+import React from "react";
+
 const FacebookIcon2 = () => (
   <svg
     width="25"
@@ -25,4 +27,4 @@ const FacebookIcon2 = () => (
     </defs>
   </svg>
 );
-export default FacebookIcon2
+export default FacebookIcon2;

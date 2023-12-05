@@ -2,9 +2,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AppointmentResponse,
   TAppointment,
+  TAppointmentUpdateSchema,
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
+  TCreateAppointmentAdmin,
+  TGetAppointmentTime,
+  TGetAppointmentTimeRequest,
+  TSearchAppointment
 } from "../schema/appointments";
 
 const appointmentApi = createApi({
@@ -40,6 +45,24 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+      getAppointmentUserStatus: builder.query<TAppointment[], number>({
+        query: (status_id) => {
+          return {
+            url: `/getAppointmentUserStatus/${status_id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
+      showAppointment: builder.query<TAppointment[], number>({
+        query: (id) => {
+          return {
+            url: `/appointment/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
       addAppointment: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointment>
@@ -53,6 +76,32 @@ const appointmentApi = createApi({
         },
         invalidatesTags: ["Appointment"],
       }),
+      addAppointmentAdmin: builder.mutation<
+        AppointmentResponse,
+        Partial<TCreateAppointmentAdmin>
+      >({
+        query: (appointments) => {
+          return {
+            url: "/appointmentAdmin",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
+      searchAddAppointment: builder.mutation<
+      TAppointment,
+        TSearchAppointment
+      >({
+        query: (appointments) => {
+          return {
+            url: "/searchAppointmentsAdmin",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
       updateStatusAppointment: builder.mutation<
         TAppointment,
         Partial<TAupdateStatusAppointment>
@@ -60,6 +109,39 @@ const appointmentApi = createApi({
         query: (appointments) => ({
           url: `/appointmentStatus/${appointments.id}`,
           method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
+      updateAppointmentAdmin: builder.mutation<
+        TAppointment,
+        any
+      >({
+        query: (appointments) => ({
+          url: `/updateAdmin/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
+      updateAppointment: builder.mutation<
+        TAppointmentUpdateSchema,
+        Partial<TAppointmentUpdateSchema>
+      >({
+        query: (appointments) => ({
+          url: `/appointment/${appointments.id}`,
+          method: "PATCH",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
+      getAppointmentTime: builder.mutation<
+        TGetAppointmentTime[],
+        Partial<TGetAppointmentTimeRequest>
+      >({
+        query: (appointments) => ({
+          url: `/appointmentTime`,
+          method: "POST",
           body: appointments,
         }),
         invalidatesTags: ["Appointment"],
@@ -81,10 +163,17 @@ const appointmentApi = createApi({
 
 export const {
   useGetAllappointmentDataQuery,
+  useGetAppointmentUserStatusQuery,
+  useShowAppointmentQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
+  useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdateAppointmentAdminMutation,
+  useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
+  useAddAppointmentAdminMutation,
+  useGetAppointmentTimeMutation,
 } = appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;

@@ -16,13 +16,10 @@ const LayoutAdmin: FC<Props> = (props) => {
       const token = await localStorage.getItem("token");
       if (!token) {
         navigate("/signin");
-        console.log("1");
       } else if (!isLoading) {
         if (!user) {
           navigate("/signin");
-          console.log("2");
         } else if (Number(user?.role_id) !== 1) {
-          console.log("3");
           navigate("/");
         }
       }

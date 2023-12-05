@@ -1,4 +1,4 @@
-import "../../../../assets/scss/page/account.scss";
+import "../../../../assets/scss/page/account/account.scss";
 import EditProfile from "../../../../components/account_info/editprofile";
 import { TAccountEdit } from "../../../../schema/accountSchema";
 import { useGetUserQuery } from "../../../../services/user";
@@ -31,7 +31,7 @@ export const Account: FC = () => {
   }, [user]);
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
-  const showModal = () => {
+  const showModal = () => { 
     setIsModalOpen(true);
   };
 

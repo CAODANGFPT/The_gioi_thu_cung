@@ -10,6 +10,26 @@ export default class Services {
     });
   }
 
+  static getTop4Services() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM services ORDER BY id LIMIT 4;", (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
+  static getNameServicesById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM services WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getServicesById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
