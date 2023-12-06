@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumbs } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TrashAlt from "../../../assets/svg/trash-alt";
 import {
   useGetUserListCartsQuery,
@@ -11,6 +11,7 @@ import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
 import Minus from "../../../assets/svg/minus";
 import logo from "../../../assets/image/logo.png";
+import { message } from "antd";
 const ShoppingCart = () => {
   const { data } = useGetUserListCartsQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -19,6 +20,7 @@ const ShoppingCart = () => {
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
   const [removeOrder] = useRemoveCartsByIdMutation();
   const shippingCost: number = 12312;
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDataOrder(data);
@@ -92,6 +94,45 @@ const ShoppingCart = () => {
       removeOrder(id);
     }
   };
+
+  const order = () => {
+    if (checkedItems.length > 0) {
+      console.log(dataOrder);
+
+      const selectedProducts = dataOrder.filter((item: any) =>
+        checkedItems.includes(item.productsId)
+      );
+
+      const data = {
+        products: selectedProducts.map(
+          (product: {
+            productsId: any;
+            productCart: any;
+            imgCart: any;
+            quantity: any;
+            priceCart: any;
+          }) => ({
+            id: product.productsId,
+            name: product.productCart,
+            img: product.imgCart,
+            quantity: product.quantity,
+            price: product.priceCart,
+          })
+        ),
+        total: calculateTotalAmount() + shippingCost,
+      };
+      navigate("/orderPay", {
+        state: {
+          data: {
+            ...data,
+          },
+        },
+      });
+      console.log(data);
+    } else {
+      message.error("Bạn chưa chọn sản phẩm nào để mua");
+    }
+  };
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -110,8 +151,12 @@ const ShoppingCart = () => {
           <Link className="underline-hover" color="inherit" to="/">
             Trang chủ
           </Link>
-          <Link className="underline-hover" color="inherit" to="/listproduct">
-            Danh sách sản phẩm
+          <Link
+            className="underline-hover"
+            color="inherit"
+            to="  /shoppingCart"
+          >
+            Giỏ hàng
           </Link>
         </Breadcrumbs>
       </div>
@@ -143,8 +188,10 @@ const ShoppingCart = () => {
                     <td className="checkbox">
                       <input
                         type="checkbox"
-                        checked={selectAll || checkedItems.includes(data.id)}
-                        onChange={() => handleCheckboxChange(data.id)}
+                        checked={
+                          selectAll || checkedItems.includes(data.productsId)
+                        }
+                        onChange={() => handleCheckboxChange(data.productsId)}
                       />
                     </td>
                     <td className="product">
@@ -269,7 +316,12 @@ const ShoppingCart = () => {
               <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
             </p>
           </div>
-          <div className="shoppingCart-blog-right-checkOut">CHECK OUT</div>
+          <div
+            className="shoppingCart-blog-right-checkOut"
+            onClick={() => order()}
+          >
+            Mua hàng
+          </div>
         </div>
       </div>
     </div>

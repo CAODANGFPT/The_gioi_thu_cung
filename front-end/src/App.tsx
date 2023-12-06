@@ -100,6 +100,7 @@ import EditMenuType from "./page/admin/menuType/edit";
 import MenuAdmin from "./page/admin/menu/list";
 import AddMenuAdmin from "./page/admin/menu/add";
 import EditMenuAdmin from "./page/admin/menu/edit";
+import OrderPay from "./page/base/orderPay";
 
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
@@ -126,8 +127,10 @@ function App() {
           <Route path="product/:id" element={<DetailProduct />} />
           <Route path="appointment" element={<Appointments />} />
           <Route path="appointment/:id" element={<Appointments />} />
-          {/* <Route path="detailProduct/:id" element={<DetailProduct />} /> */}
+          <Route path="detailProduct/:id" element={<DetailProduct />} />
           <Route path="ShoppingCart" element={<ShoppingCart />} />
+          <Route path="orderPay" element={<OrderPay />} />
+
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />
