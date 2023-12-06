@@ -1,29 +1,22 @@
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link, useParams } from "react-router-dom";
+import { Rate, message } from "antd";
 import * as React from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { FacebookShareButton, TwitterShareButton } from "react-share";
 import "../../../assets/scss/page/detailProduct.scss";
-import imageDetail from "../../../assets/image/blog3.png";
-import userImg from "../../../assets/image/user.png";
 import FacebookIcon from "../../../assets/svg/facebook";
-import MessageIcon from "../../../assets/svg/mesageIcon2";
-import TwitterIcon from "../../../assets/svg/twitterIcon";
-import StartIcon from "../../../assets/svg/startIcon";
 import ShoppingCartIcon from "../../../assets/svg/shoppingCartIcon";
-import HeartIcon from "../../../assets/svg/heartIcon";
+import TwitterIcon from "../../../assets/svg/twitterIcon";
 import CarouselProduct from "../../../components/carouselProduct";
-import { productData, productData2 } from "./data";
-import ListProductCard from "../../../components/listProduct";
-import { Pagination, Stack } from "@mui/material";
-import { useState, useEffect } from "react";
-import product10 from "../../../assets/image/project10.png";
-import Minus from "../../../assets/svg/minus";
-import AddIcon from "../../../assets/svg/add";
+import {
+  useGetProductByIdQuery,
+  useGetProductCateQuery,
+} from "../../../services/products";
 import {
   useAddToCartsMutation,
   useGetUserListCartsQuery,
   useUpdateQuantityCartsMutation,
 } from "../../../services/shoppingCart";
-import { message } from "antd";
 import { useGetUserQuery } from "../../../services/user";
 
 const DetailProduct: React.FC = () => {
@@ -36,37 +29,32 @@ const DetailProduct: React.FC = () => {
   const { data } = useGetUserListCartsQuery();
   const { data: user } = useGetUserQuery();
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
-  function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info("You clicked a breadcrumb.");
-  }
+
+  const { data: product } = useGetProductByIdQuery(Number(id) || 0);
+  const { data: productCate } = useGetProductCateQuery(
+    product?.category_id || 0
+  );
+
   useEffect(() => {
     if (data) {
       setDataOrder(data);
     }
   }, [data]);
+
   const Cong = () => {
-    setQuantity(quantity + 1);
+    if (!(product?.quantity === quantity)) {
+      setQuantity(quantity + 1);
+    }
   };
+
   const Tru = () => {
-    if (quantity >= 2) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     } else {
       setQuantity(quantity);
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (
-    _event: any,
-    page: React.SetStateAction<number>
-  ) => {
-    setCurrentPage(page);
-  };
-  const itemsPerPage = 8;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = productData2.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(productData2.length / itemsPerPage);
+
   useEffect(() => {
     if (dataOrder) {
       const orderItem = dataOrder.find(
@@ -74,11 +62,12 @@ const DetailProduct: React.FC = () => {
       );
       if (orderItem) {
         const { id, quantity } = orderItem;
-        setQuantityCarts(quantity)
+        setQuantityCarts(quantity);
         setIdOrder(id);
       }
     }
   }, [id, dataOrder]);
+
   const addToCart = async () => {
     const isProductInCart = dataOrder?.some(
       (item: { productsId: number }) => item.productsId === Number(id)
@@ -93,110 +82,45 @@ const DetailProduct: React.FC = () => {
         };
         try {
           await AddToCart(cartItem).unwrap();
-          message.success("Add to cart  successfully");
+          message.success("Thêm vào giỏ hàng thành công");
           reset();
         } catch (error) {
-          message.error("Failed add to cart product");
+          message.error("Thêm vào giở hàng thất bại");
         }
       }
     } else {
       try {
         const dataQuantity = quantity + quantityCarts;
-        await updateOrderMutation({ id: idOrder, quantity:dataQuantity });
-        message.success("Add to cart  successfully");
+        await updateOrderMutation({ id: idOrder, quantity: dataQuantity });
+        message.success("Thêm vào giỏ hàng thành công");
         reset();
       } catch (error) {
-        message.error("Failed add to cart product");
+        message.error("Thêm vào giở hàng thất bại");
       }
     }
   };
+
   return (
     <div className="bg">
-      <div className="breadcrumbs" role="presentation" onClick={handleClick}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="underline-hover" color="inherit" to="/">
-            Trang chủ
-          </Link>
-          <Link className="underline-hover" color="inherit" to="/listproduct">
-            Sản phẩm 1
-          </Link>
-        </Breadcrumbs>
-      </div>
-
       <div>
         <div className="detail">
           <div className="detail-left">
+            <h2 className="name">{product?.name}</h2>
+            <p className="view">
+              <span className="view-title">20,000 đã mua</span>
+              <span style={{ border: "none" }}>4.5</span>
+              <Rate
+                style={{ marginLeft: 5 }}
+                allowHalf
+                disabled
+                defaultValue={4.5}
+              />
+            </p>
             <div className="img">
-              <img src={imageDetail} alt="" />
-
-              <div className="share">
-                Share:
-                <Link
-                  className="underline-hover icon-share"
-                  color="inherit"
-                  to="/"
-                >
-                  <FacebookIcon />
-                </Link>
-                <Link
-                  className="underline-hover icon-share"
-                  color="inherit"
-                  to="/"
-                >
-                  <MessageIcon />
-                </Link>
-                <Link
-                  className="underline-hover icon-share"
-                  color="inherit"
-                  to="/"
-                >
-                  <TwitterIcon />
-                </Link>
-              </div>
+              <img src={product?.img} alt="anh" />
             </div>
 
-            <h3>Product ratings</h3>
-            <div className="product-rating">
-              <div className="star">
-                <span>5</span> out of 5
-                <div>
-                  <StartIcon />
-                  <StartIcon />
-                  <StartIcon />
-                  <StartIcon />
-                  <StartIcon />
-                </div>
-              </div>
-
-              <div className="list-view">
-                <div>
-                  <p>All </p>
-                  <span>( 17.5k )</span>
-                </div>
-                <div>
-                  <p>5 star </p>
-                  <span>( 17.5k )</span>
-                </div>
-                <div>
-                  <p>4 star </p>
-                  <span>( 17.5k )</span>
-                </div>
-                <div>
-                  <p>3 star </p>
-                  <span>( 17.5k )</span>
-                </div>
-                <div>
-                  <p>2 star </p>
-                  <span>( 17.5k )</span>
-                </div>
-                <div>
-                  <p>1 star </p>
-                  <span>( 17.5k )</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="feedback">
+            {/* <div className="feedback">
               <div className="userName">
                 <div className="avt">
                   <img src={userImg} alt="" />
@@ -252,138 +176,110 @@ const DetailProduct: React.FC = () => {
 
                 <img src={product10} alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="detail-right">
-            <h2>Name Product</h2>
-
+            <h2 className="name">{product?.name}</h2>
             <p className="view">
-              <span>20,000 đã mua</span>
-              <span>
-                4.5 <StartIcon />
-              </span>
-              <span style={{ border: "none" }}>( 15.123 đánh giá )</span>
+              <span className="view-title">20,000 đã mua</span>
+              <span style={{ border: "none" }}>4.5</span>
+              <Rate
+                style={{ marginLeft: 5 }}
+                allowHalf
+                disabled
+                defaultValue={4.5}
+              />
             </p>
-
-            <h1>200.000 VNĐ</h1>
-
-            <div className="type-color">
-              <label htmlFor="">Màu sắc:</label>
-
-              <select name="color" id="">
-                <option value="red">Đỏ</option>
-                <option value="green">Xanh</option>
-                <option value="violet">Hồng</option>
-                <option value="blue">Xanh dương</option>
-              </select>
-            </div>
-
+            <h1>
+              {new Intl.NumberFormat("vi-VN").format(product?.price ?? 0)} VNĐ
+            </h1>
             <div className="quantity">
               <label htmlFor="">Số lượng: </label>
               <div className="quantity-input">
-                <button className="" onClick={() => Tru()}>
-                  <Minus />
+                <button
+                  className="tru"
+                  style={
+                    quantity > 1
+                      ? { cursor: "pointer" }
+                      : { cursor: "not-allowed" }
+                  }
+                  onClick={() => Tru()}
+                >
+                  -
                 </button>
-                <input type="text" className="" value={quantity} readOnly />
-                <button className="" onClick={() => Cong()}>
-                  <AddIcon />
+                <input type="text" value={quantity} readOnly />
+                <button
+                  style={
+                    product?.quantity === quantity
+                      ? { cursor: "not-allowed" }
+                      : { cursor: "pointer" }
+                  }
+                  className="cong"
+                  onClick={() => Cong()}
+                >
+                  +
                 </button>
               </div>
             </div>
-
-            <div className="add-to-cart" onClick={() => addToCart()}>
+            <div
+              className="add-to-cart"
+              style={{ marginBottom: 10 }}
+              onClick={() => addToCart()}
+            >
               <button>
-                <div>
-                  <ShoppingCartIcon />
-                </div>
-                Thêm vào giỏ hàng
+                <ShoppingCartIcon />
+                <p>Thêm vào giỏ hàng</p>
               </button>
-
-              <div className="heart-icon">
-                <HeartIcon />
-              </div>
             </div>
-
-            <button className="buy-now">
-              <Link
-                className="underline-hover"
-                color="white"
-                style={{ color: "white" }}
-                to="/"
+            <div className="share">
+              Chia sẻ:
+              <FacebookShareButton
+                url={`https://www.facebook.com/photo?fbid=637381223871648&set=a.437741090502330`}
+                hashtag={"#PetCare"}
               >
-                Mua ngay
-              </Link>
-            </button>
-
-            <div className="desc">
-              <h3>Chi tiết</h3>
-              <p>
-                - Color: yellow, dark blue, pink, dark green, light green. -
-                Brand:Coolrunner. - Fabric: Type AC resin, alloy. - Material: AC
-                resin, Alloy. - Pattern: Retro. - Size: Frame width about
-                8cm/3.15in
-              </p>
+                <FacebookIcon />
+              </FacebookShareButton>
+              <TwitterShareButton
+                title={"PetCare"}
+                url={
+                  "https://x.com/AMAZlNGNATURE/status/1732214306660331685?s=20"
+                }
+                hashtags={["PetCare", "ThuCung"]}
+              >
+                <TwitterIcon />
+              </TwitterShareButton>
             </div>
-
             <div className="desc">
               <h3>Mô tả</h3>
-              <p>
-                Your pets will looks fashion and cool with our sunglasses. The
-                lenses are made of AC resin, spectacles frame using stainless
-                steel, durable, lightweight, comfortable, easy to wear, fit for
-                pet cat or dog as daily wear photo props or show Our glasses are
-                available in a variety of colors and the are suitable for cats
-                or small dogssuch as Chihuahua, Pomeranian, Small Poodle,
-                Yorkshire, Shorthair, Persian, Puppet, etc. Suitable for small
-                dogs or cats such as Chihuahua, Pomeranian, Small Poodle,
-                Yorkshire, Shorthair, Persian, Puppet, etc. No clear lenses,
-                your pets will looks fashion and cool with our punk rock
-                sunglasses. The lenses are made of AC resin, spectacles frame
-                using alloy metal, let the glasses looks very texture. Legs of
-                glasses are made of spring, more comfortable to wear.
-              </p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: product?.description || "",
+                }}
+              />
             </div>
+            {/* <button className="buy-now">
+              <p className="underline-hover">Mua ngay</p>
+            </button> */}
           </div>
         </div>
       </div>
 
-      <div className="combo">
-        {/* <CarouselProduct
+      {/* <div className="combo">
+        <CarouselProduct
           productData={productData}
           name="Combo Chăm Sóc Thú Cưng"
-        /> */}
-      </div>
-
-      {/* <div className="list-pagination">
-        <h3>Sản phẩm có liên quan</h3>
-        <div className="product-list">
-          {currentItems.map((productData2) => {
-            return (
-              <ListProductCard
-                key={productData2.id}
-                name={productData2.name}
-                sold={productData2.sold}
-                url={productData2.imageUrl}
-                price={productData2.price}
-              />
-            );
-          })}
-        </div>
-        <div className="pagination">
-          <Stack direction="row" spacing={2}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              variant="outlined"
-              onChange={handlePageChange}
-            />
-          </Stack>
-        </div>
+        />
       </div> */}
+
+      <div className="list-pagination">
+        <CarouselProduct
+          productData={productCate || []}
+          name="Sản phẩm liên quan"
+        />
+      </div>
     </div>
   );
 };
 
 export default DetailProduct;
-

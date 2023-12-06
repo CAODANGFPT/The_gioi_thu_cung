@@ -16,8 +16,10 @@ const CarouselProduct: FC<Props> = ({ productData, name }) => {
 
   const handleNext = () => {
     if (carouselRef.current) {
-      const { currentSlide, slidesToShow } = carouselRef.current.state;
-      if (currentSlide === slidesToShow) {
+      const { currentSlide, totalItems } = carouselRef.current.state;
+      console.log(carouselRef.current.state);
+
+      if (currentSlide === totalItems - 4) {
         carouselRef.current.goToSlide(0);
       } else {
         carouselRef.current.next(1);
@@ -27,17 +29,17 @@ const CarouselProduct: FC<Props> = ({ productData, name }) => {
 
   const handlePrev = () => {
     if (carouselRef.current) {
-      const { currentSlide, slidesToShow } = carouselRef.current.state;
+      const { currentSlide, totalItems } = carouselRef.current.state;
 
       if (currentSlide === 0) {
-        carouselRef.current.goToSlide(slidesToShow);
+        carouselRef.current.goToSlide(totalItems);
       } else {
         carouselRef.current.previous(1);
       }
     }
   };
   const autoNext = () => {
-    handleNext(); 
+    handleNext();
     setTimeout(autoNext, 4000);
   };
 

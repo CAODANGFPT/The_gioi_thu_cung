@@ -34,6 +34,15 @@ const ProductsApi = createApi({
         },
         providesTags: ["Products"],
       }),
+      getProductCate: builder.query<TProduct[], number>({
+        query: (category_id) => {
+          return {
+            url: `/productCate/${category_id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Products"],
+      }),
       getProductById: builder.query<TProduct, number>({
         query: (id) => {
           return {
@@ -80,6 +89,7 @@ const ProductsApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetTop8ProductsQuery,
+  useGetProductCateQuery,
   useCreateProductsMutation,
   useRemoveProductMutation,
   useGetProductByIdQuery,
