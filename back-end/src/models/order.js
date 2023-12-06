@@ -43,4 +43,17 @@ export default class Order {
       });
     });
   }
+
+  static updateStatusOrder(id, status_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE orders SET status_id = ? WHERE id = ?",
+        [status_id, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
 }

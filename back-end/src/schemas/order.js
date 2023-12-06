@@ -3,14 +3,12 @@ import joi from "joi";
 export const orderSchema = joi.object({
   id: joi.number(),
   cart_id: joi.number(),
-  // product_id: joi.number(),
-  // quantityOrder: joi.number(),
   products: joi.array(),
   user_id: joi.number().required().messages({
     "String.empty": "user_id không được để trống",
     "any.required": "Trường user_id là bắt buộc",
   }),
-  totalOrders: joi.number().required().messages({
+  total: joi.number().required().messages({
     "String.empty": "totalOrders không được để trống",
     "any.required": "Trường totalOrders là bắt buộc",
   }),

@@ -187,3 +187,13 @@ export const createOrderUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateStatusOrder = async (req, res) => {
+  try {
+    const { id, status_id } = req.body;
+    const orderId = await Orders.updateStatusOrder(id, status_id);
+    res.json({ id: orderId, message: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
