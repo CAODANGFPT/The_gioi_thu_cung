@@ -14,17 +14,18 @@ import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
 import FacebookIcon from "../../../assets/svg/facebookIcon";
 import GoogleIcon from "../../../assets/svg/googleIcon";
 import { useLoginUserMutation } from "../../../services/auth";
+import { useGetUserQuery } from "../../../services/user";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [loginForm] = useLoginUserMutation();
-  const token = localStorage.getItem("token");
+  const { data: user } = useGetUserQuery();
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, user]);
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
