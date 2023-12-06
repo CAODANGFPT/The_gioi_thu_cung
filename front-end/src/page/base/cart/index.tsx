@@ -8,8 +8,10 @@ import {
 import { Button, Popconfirm, message } from "antd";
 import dayjs from "dayjs";
 import logo from "../../../assets/image/logo.png";
+import { useGetUserQuery } from "../../../services/user";
 const CartPage: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserQuery();
+  const {data: user} = useGetUserQuery();
   const [CancelHistoryAppointmentMutation] =
     useCancelHistoryAppointmentMutation();
 
@@ -27,9 +29,8 @@ const CartPage: FC = () => {
   const cancel = () => {
     message.error("Hủy không thành công.");
   };
-  const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (!user) {
     return (
       <div className="login-now">
         <p>Bạn chưa đăng nhập.</p>

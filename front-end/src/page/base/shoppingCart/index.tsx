@@ -1,19 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Breadcrumbs } from "@mui/material";
+import { Button, Popconfirm, message } from "antd";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../../../assets/image/logo.png";
+import "../../../assets/scss/page/shoppingCart.scss";
+import AddIcon from "../../../assets/svg/add";
+import Minus from "../../../assets/svg/minus";
 import TrashAlt from "../../../assets/svg/trash-alt";
 import {
   useGetUserListCartsQuery,
   useRemoveCartsByIdMutation,
   useUpdateQuantityCartsMutation,
 } from "../../../services/shoppingCart";
-import "../../../assets/scss/page/shoppingCart.scss";
-import AddIcon from "../../../assets/svg/add";
-import Minus from "../../../assets/svg/minus";
-import logo from "../../../assets/image/logo.png";
-import { Button, Popconfirm, message } from "antd";
+import { useGetUserQuery } from "../../../services/user";
+
 const ShoppingCart = () => {
   const { data } = useGetUserListCartsQuery();
+  const { data: user } = useGetUserQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [dataOrder, setDataOrder] = useState<any>([]);
@@ -102,13 +104,12 @@ const ShoppingCart = () => {
       message.success("Xóa sản phẩm thành công");
     }
   };
-  
+
   const cancel = () => {
     message.error("Xóa sản phẩm thất bại");
   };
-  const token = localStorage.getItem("token");
-  
-  if (!token) {
+
+  if (!user) {
     return (
       <div className="login-now">
         <p>Bạn chưa đăng nhập.</p>
