@@ -57,6 +57,7 @@ const EditProduct = () => {
       price: productById.data?.price,
       img: productById.data?.img,
       description: productById.data?.description,
+      quantity: productById.data?.quantity,
       category_id: productById.data?.category_id,
     });
   }, [
@@ -66,6 +67,7 @@ const EditProduct = () => {
     productById.data?.price,
     productById.data?.img,
     productById.data?.description,
+    productById.data?.quantity,
     productById.data?.category_id,
   ]);
 
@@ -77,13 +79,14 @@ const EditProduct = () => {
   };
 
   const onFinish = async (values: TProduct) => {
-    const { id, name, price, description, category_id } = values;
+    const { id, name, price, description, quantity, category_id } = values;
     const productData = {
       id,
       name,
       price,
       img: image,
       description,
+      quantity,
       category_id,
     };
     try {
@@ -183,6 +186,15 @@ const EditProduct = () => {
               onChange={setValue}
             />
           </Form.Item>
+
+          <Form.Item
+            label={<span className="">Số lượng</span>}
+            name="quantity"
+            rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
+          >
+            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+          </Form.Item>
+
           <Form.Item label="Category" name="category_id">
             {productById.data && productById.data?.category_id && (
               <Select defaultValue={productById.data?.category_id}>

@@ -33,16 +33,16 @@ const AddProduct = () => {
     }
   };
   const onFinish = async (values: TProduct) => {
-    const { name, price, description, category_id } = values;
+    const { name, price, description, quantity, category_id } = values;
     const productsData = {
       name,
       price,
       img: image,
       description,
+      quantity,
       category_id,
     };
     try {
-
       await addProducts(productsData).unwrap();
       message.success("Product added successfully");
       reset();
@@ -132,6 +132,17 @@ const AddProduct = () => {
               onChange={setValue}
             />
           </Form.Item>
+
+          <Form.Item
+            label={<span className="">Số lượng</span>}
+            name="quantity"
+            rules={[
+              { required: true, message: "Vui lòng nhập số lượng sản phẩm!" },
+            ]}
+          >
+            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+          </Form.Item>
+
           <Form.Item
             name="category_id"
             label="Cate"
