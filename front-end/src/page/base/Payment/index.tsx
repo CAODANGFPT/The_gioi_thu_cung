@@ -62,9 +62,8 @@ const PaymentPage = () => {
       console.error("Error creating invoice", error);
     }
   };
-  const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (!user) {
     return (
       <div className="login-now">
         <p>Bạn chưa đăng nhập.</p>
