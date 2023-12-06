@@ -21,13 +21,15 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { data: user } = useGetUserQuery();
   const [loginForm] = useLoginUserMutation();
-  
+
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/");
     }
-  }, [navigate, user]);
-  
+  }, [navigate, token]);
+
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
