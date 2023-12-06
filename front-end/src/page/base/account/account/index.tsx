@@ -55,9 +55,9 @@ const AccountPage = () => {
   }
   return (
     <div className="account_info">
-      <div className="account_info-row">
+      {/* <div className="account_info-row">
         <Breadcrumb name="Tài khoản" />
-      </div>
+      </div> */}
       <div className="account_info-row">
         <h4 className="account_info-heading">Tài Khoản</h4>
       </div>

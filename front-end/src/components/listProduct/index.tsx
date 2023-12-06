@@ -1,14 +1,13 @@
 import { FC } from "react";
-import Heart from "../../assets/svg/heart";
-import { TProduct } from "../../schema/products";
 import { useNavigate } from "react-router-dom";
+import { TProduct } from "../../schema/products";
 
 type ProductProps = {
   item: TProduct;
 };
 
 const ListProductCard: FC<ProductProps> = ({ item }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="card" onClick={() => navigate(`${item.id}`)}>
       <div className="product--image">
@@ -19,9 +18,9 @@ const ListProductCard: FC<ProductProps> = ({ item }) => {
             alt="productImage"
           />
         </div>
-        <div className="svg">
+        {/* <div className="svg">
           <Heart />
-        </div>
+        </div> */}
       </div>
       <div className="card-name">
         <div>{item.name}</div>

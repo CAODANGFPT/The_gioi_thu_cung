@@ -1,4 +1,8 @@
-import { CloseOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Form,
@@ -47,9 +51,9 @@ const ModalAddPet: FC<TModalAddPet> = ({
 }) => {
   const [openBreed, setOpenBreed] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-  const [createSPets] = useCreatePetsMutation();
+  const [createSPets, { isLoading }] = useCreatePetsMutation();
   const [form] = Form.useForm();
-  console.log(userId);
+  console.log(isLoading);
 
   const onFinish = async (values: any) => {
     let petNew: any = undefined;
@@ -244,7 +248,7 @@ const ModalAddPet: FC<TModalAddPet> = ({
               <Form.Item name="health_condition" label="Tình trạng sức khỏe">
                 <TextArea rows={4} />
               </Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
                 Submit
               </Button>
             </Form>
