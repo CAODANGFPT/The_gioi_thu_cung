@@ -3,19 +3,21 @@ import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TAbout } from "../../../schema/about";
-import { useAboutQuery, useRemoveAboutMutation } from "../../../services/about";
-import { PlusOutlined } from "@ant-design/icons";
+import { TLogo } from "../../../schema/logo";
+import {
+  useGetAllLogoQuery,
+  useRemoveLogoMutation,
+} from "../../../services/logo";
 
-const AboutAdmin: React.FC = () => {
-  const { data } = useAboutQuery();
+const LogoAdmin: React.FC = () => {
+  const navigate = useNavigate();
 
-  const [removeAbout] = useRemoveAboutMutation();
-  function createMarkup(description: any) {
-    return { __html: description };
-  }
+  const { data } = useGetAllLogoQuery();
+
+  const [removeLogo] = useRemoveLogoMutation();
+
   const confirm = (id: number) => {
-    removeAbout(id)
+    removeLogo(id)
       .then((response: any) => {
         if (response.error) {
           message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
@@ -32,7 +34,7 @@ const AboutAdmin: React.FC = () => {
     message.error("Xóa không thành công.");
   };
 
-  const columns: ColumnsType<TAbout> = [
+  const columns: ColumnsType<TLogo> = [
     {
       title: "STT",
       dataIndex: "id",
@@ -42,37 +44,28 @@ const AboutAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
+      title: "Logo",
+      dataIndex: "img",
+      key: "img",
       width: 150,
-      render: (image) => <Image width={100} src={image} />,
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "description",
-      key: "description",
-      width: 150,
-      render: (description) => (
-        <div dangerouslySetInnerHTML={createMarkup(description)} />
-      ),
+      render: (logo) => <Image width={100} src={logo} />,
     },
     {
       title: "Thao tác",
       key: "action",
       width: 150,
-      render: (about: TAbout) => (
+      render: (logo: TLogo) => (
         <div>
-          <Link to={`edit/${about.id}`}>
+          <Link to={`edit/${logo.id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
           </Link>
           <Popconfirm
-            title="Xóa about."
+            title="Xóa logo."
             description="Bạn có muốn xóa không?"
             onConfirm={() =>
-              about.id !== undefined ? confirm(about.id) : undefined
+              logo.id !== undefined ? confirm(logo.id) : undefined
             }
             onCancel={cancel}
             okText="Đồng ý"
@@ -88,19 +81,17 @@ const AboutAdmin: React.FC = () => {
   ];
 
   return (
-    <div>
-      <Link to="/admin/about/add">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
-        >
-          THÊM ABOUT
-        </Button>
-      </Link>
+    <>
+      <Button
+        onClick={() => navigate("add")}
+        type="primary"
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM LOGO
+      </Button>
       <TableAdmin columns={columns} data={data} />
-    </div>
+    </>
   );
 };
 
-export default AboutAdmin;
+export default LogoAdmin;
