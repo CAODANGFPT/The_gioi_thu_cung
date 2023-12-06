@@ -9,6 +9,7 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const getTop8 = async (req, res) => {
   try {
     const product = await Products.getTop8Products();
@@ -17,6 +18,16 @@ export const getTop8 = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getProductsCate = async (req, res) => {
+  try {
+    const product = await Products.getProductsCate(req.params.id);
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const show = async (req, res) => {
   try {
     const product = await Products.getProductById(req.params.id);
@@ -32,7 +43,7 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { name, description, price, img, category_id } = req.body;
+    const { name, description, price, img, quantity, category_id } = req.body;
     const { error } = productsSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -45,6 +56,7 @@ export const create = async (req, res) => {
       description,
       price,
       img,
+      quantity,
       category_id
     );
     res.json({ id: productId, message: "thêm product thành công" });
@@ -55,7 +67,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { name, description, price, img, category_id } = req.body;
+    const { name, description, price, img, quantity, category_id } = req.body;
     const { error } = productsSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -69,6 +81,7 @@ export const update = async (req, res) => {
       description,
       price,
       img,
+      quantity,
       category_id
     );
     res.json({ message: "Update product thành công" });

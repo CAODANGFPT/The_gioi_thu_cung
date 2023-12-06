@@ -146,10 +146,10 @@ const HeaderBase = () => {
             <ShoppingCartIcon />
             <div className="group13">{countCarts}</div>
           </div>
-          <div className="frame5" onClick={() => navigate("cart")}>
+          {/* <div className="frame5" onClick={() => navigate("cart")}>
             <CalendarIcon />
             <div className="group13">0</div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="frame52">
@@ -185,16 +185,6 @@ const HeaderBase = () => {
           <li className="menu-title">
             <Link className="title1" to={"/services"}>
               LOẠI DỊCH VỤ
-            </Link>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              NHÀ CHO MÈO
-            </Link>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={""}>
-              MÁY ĂN CHO MÈO
             </Link>
           </li>
         </ul>

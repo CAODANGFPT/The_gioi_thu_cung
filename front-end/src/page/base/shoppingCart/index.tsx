@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import TrashAlt from "../../../assets/svg/trash-alt";
@@ -11,6 +11,7 @@ import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
 import Minus from "../../../assets/svg/minus";
 import logo from "../../../assets/image/logo.png";
+import { Button, Popconfirm, message } from "antd";
 const ShoppingCart = () => {
   const { data } = useGetUserListCartsQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -18,7 +19,8 @@ const ShoppingCart = () => {
   const [dataOrder, setDataOrder] = useState<any>([]);
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
   const [removeOrder] = useRemoveCartsByIdMutation();
-  const shippingCost: number = 12312;
+  const [shippingCost, setShippingCost] = useState<number>(0);
+
   useEffect(() => {
     if (data) {
       setDataOrder(data);
@@ -33,7 +35,7 @@ const ShoppingCart = () => {
     );
   };
 
-  const calculateTotalAmount = () => {
+  const calculateTotalAmount = useCallback(() => {
     let totalAmount = 0;
     dataOrder.forEach(
       (item: { id: number; priceCart: number; quantity: number }) => {
@@ -43,7 +45,15 @@ const ShoppingCart = () => {
       }
     );
     return totalAmount;
-  };
+  }, [checkedItems, dataOrder]);
+
+  useEffect(() => {
+    if (calculateTotalAmount() !== 0) {
+      setShippingCost(12312);
+    } else {
+      setShippingCost(0);
+    }
+  }, [calculateTotalAmount]);
 
   const handleSelectAll = (e: any) => {
     setSelectAll(!selectAll);
@@ -64,7 +74,7 @@ const ShoppingCart = () => {
     });
   };
 
-  const handleIncreaseQuantity = (id: number) => {
+  const handleIncreaseQuantity = async (id: number) => {
     const cart = dataOrder.map((cartItem: { id: number; quantity: number }) =>
       cartItem.id === id && cartItem.quantity !== 0
         ? { ...cartItem, quantity: cartItem.quantity - 1 }
@@ -80,20 +90,24 @@ const ShoppingCart = () => {
       });
       setDataOrder(cart);
     } else {
-      const confirm = window.confirm("Bạn có muốn xóa");
-      if (confirm) {
-        removeOrder(id);
+      const res = await removeOrder(id);
+      if ("data" in res) {
+        message.success("Xóa sản phẩm thành công");
       }
     }
   };
-  const remove = (id: number) => {
-    const confirm = window.confirm("Bạn có muốn xóa");
-    if (confirm) {
-      removeOrder(id);
+  const remove = async (id: number) => {
+    const res = await removeOrder(id);
+    if ("data" in res) {
+      message.success("Xóa sản phẩm thành công");
     }
   };
+  
+  const cancel = () => {
+    message.error("Xóa sản phẩm thất bại");
+  };
   const token = localStorage.getItem("token");
-
+  
   if (!token) {
     return (
       <div className="login-now">
@@ -105,16 +119,6 @@ const ShoppingCart = () => {
   }
   return (
     <div className="shoppingCart">
-      <div className="breadcrumbs" role="presentation">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="underline-hover" color="inherit" to="/">
-            Trang chủ
-          </Link>
-          <Link className="underline-hover" color="inherit" to="/listproduct">
-            Danh sách sản phẩm
-          </Link>
-        </Breadcrumbs>
-      </div>
       <div className="shoppingCart-blog">
         <div className="shoppingCart-blog-left">
           <table className="shoppingCart-blog-left-table">
@@ -156,12 +160,18 @@ const ShoppingCart = () => {
                           <div className="product-item-text-title">
                             {data.productCart}
                           </div>
-                          <div
-                            className="remove"
-                            onClick={() => remove(data.id)}
+                          <Popconfirm
+                            title="Xóa"
+                            description="Bạn có muốn xóa không?"
+                            onConfirm={() => remove(data.id)}
+                            onCancel={cancel}
+                            okText="Đồng ý"
+                            cancelText="Không"
                           >
-                            <TrashAlt />
-                          </div>
+                            <div className="remove">
+                              <TrashAlt />
+                            </div>
+                          </Popconfirm>
                           <div className="price">
                             {(data.priceCart * data.quantity).toLocaleString(
                               "vi-VN",
@@ -196,28 +206,44 @@ const ShoppingCart = () => {
                     </td>
                     <td className="quantity">
                       <div className="quantity-blog">
-                        <button
+                        <Button
+                          style={data.quantity === 1 ? { display: "none" } : {}}
                           className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8"
                           onClick={() => handleIncreaseQuantity(data.id)}
                         >
-                          <Minus />
-                        </button>
+                          -
+                        </Button>
+                        <Popconfirm
+                          title="Xóa"
+                          description="Bạn có muốn xóa không?"
+                          onConfirm={() => handleIncreaseQuantity(data.id)}
+                          onCancel={cancel}
+                          okText="Đồng ý"
+                          cancelText="Không"
+                        >
+                          <Button
+                            style={
+                              data.quantity !== 1 ? { display: "none" } : {}
+                            }
+                          >
+                            -
+                          </Button>
+                        </Popconfirm>
                         <input
                           type="text"
                           readOnly
                           className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8 text-center"
                           value={data.quantity}
                         />
-                        <button
+                        <Button
                           className="border border-slate-200 h-6 w-6 lg:h-8 lg:w-8"
                           onClick={() => handleDecreaseQuantity(data.id)}
                         >
-                          <AddIcon />
-                        </button>
+                          +
+                        </Button>
                       </div>
                     </td>
                     <td className="sum">
-                      {" "}
                       {(data.priceCart * data.quantity).toLocaleString(
                         "vi-VN",
                         {
@@ -269,7 +295,7 @@ const ShoppingCart = () => {
               <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
             </p>
           </div>
-          <div className="shoppingCart-blog-right-checkOut">CHECK OUT</div>
+          <div className="shoppingCart-blog-right-checkOut">ĐẶT HÀNG</div>
         </div>
       </div>
     </div>

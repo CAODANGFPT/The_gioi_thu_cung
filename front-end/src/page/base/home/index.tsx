@@ -5,12 +5,10 @@ import ArrowRightIcon from "../../../assets/svg/arrowRightIcon";
 
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
-import CarouseBlog from "../../../components/carouselBlog";
 import CarouselProduct from "../../../components/carouselProduct";
-import { useServicesTop4Query } from "../../../services/services";
-import { blogData, productData } from "./data";
 import ServiceCard from "../../../components/serviceCard";
 import { useGetTop8ProductsQuery } from "../../../services/products";
+import { useServicesTop4Query } from "../../../services/services";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();

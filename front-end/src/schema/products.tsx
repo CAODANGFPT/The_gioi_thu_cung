@@ -6,6 +6,7 @@ export const ProductSchema = yup.object().shape({
   name: yup.string(),
   description: yup.string(),
   price: yup.number(),
+  quantity: yup.number(),
   nameCategory: yup.number(),
   category_id: yup.number(),
 });
@@ -16,6 +17,7 @@ export const ProductRequestSchema = yup.object().shape({
   name: yup.string(),
   description: yup.string(),
   price: yup.number(),
+  quantity: yup.number(),
   nameCategory: yup.number(),
   category_id: yup.number(),
 });
