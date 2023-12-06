@@ -3,7 +3,7 @@ export default class Order {
   static getOrderUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT orders.id, products.name AS orderName, products.price AS orderPrice, products.img AS orderIMG, detailOrder.quantity as quantity, detailOrder.price as priceProduct ,orders.total, orders.contact_information, orders.time, orders.note, status_order.name AS status_name FROM orders JOIN detailOrder ON orders.id = detailOrder.orderId JOIN products ON detailOrder.productId = products.id JOIN status_order ON orders.status_id = status_order.id WHERE orders.user_id = ?;",
+        "SELECT orders.id, users.id as userId,users.name as userName,products.id AS productId, products.name AS productsName, detailOrder.price AS productPrice, products.img AS productImg, detailOrder.quantity as quantity,orders.total, orders.contact_information, orders.time, orders.note, status_order.name AS status_name FROM orders JOIN detailOrder ON orders.id = detailOrder.orderId JOIN products ON detailOrder.productId = products.id JOIN status_order ON orders.status_id = status_order.id JOIN users ON orders.user_id = users.id WHERE orders.user_id = ?;",
         [id],
         (err, results) => {
           if (err) reject(err);
@@ -15,7 +15,7 @@ export default class Order {
   static getAllOrder(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT orders.id, products.name AS orderName, products.price AS orderPrice, products.img AS orderIMG, detailOrder.quantity as quantity, detailOrder.price as priceProduct ,orders.total, orders.contact_information, orders.time, orders.note, status_order.name AS status_name FROM orders JOIN detailOrder ON orders.id = detailOrder.orderId JOIN products ON detailOrder.productId = products.id JOIN status_order ON orders.status_id = status_order.id",
+        "SELECT orders.id, users.id as userId,users.name as userName,products.id AS productId, products.name AS productsName, detailOrder.price AS productPrice, products.img AS productImg, detailOrder.quantity as quantity,orders.total, orders.contact_information, orders.time, orders.note, status_order.name AS status_name FROM orders JOIN detailOrder ON orders.id = detailOrder.orderId JOIN products ON detailOrder.productId = products.id JOIN status_order ON orders.status_id = status_order.id JOIN users ON orders.user_id = users.id",
         [id],
         (err, results) => {
           if (err) reject(err);

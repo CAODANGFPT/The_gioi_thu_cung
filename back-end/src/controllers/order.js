@@ -18,7 +18,70 @@ export const getOrderUser = async (req, res) => {
     } else {
       try {
         const Order = await Orders.getOrderUser(user?.id);
-        res.json(Order);
+        const uniqueData = Order.reduce((result, record) => {
+          if (record && record.id !== undefined) {
+            if (Array.isArray(result) && result.length > 0) {
+              const existingRecordIndex = result.findIndex(
+                (r) => r.id === record.id
+              );
+              if (existingRecordIndex === -1) {
+                result.push({
+                  id: record.id,
+                  userId: record.userId,
+                  userName: record.userName,
+                  products: [
+                    {
+                      id: record.productId,
+                      name: record.productName,
+                      price: record.productPrice,
+                      quantity: record.quantity,
+                    },
+                  ],
+                  total: record.total,
+                  contact_information: record.contact_information,
+                  time: record.time,
+                  note: record.note,
+                  status_name: record.status_name,
+                });
+              } else {
+                const existingProductIndex = result[
+                  existingRecordIndex
+                ].products.findIndex(
+                  (products) => products.id === record.productId
+                );
+                if (existingProductIndex === -1) {
+                  result[existingRecordIndex].products.push({
+                    id: record.productId,
+                    name: record.productName,
+                    price: record.productPrice,
+                    quantity: record.quantity,
+                  });
+                }
+              }
+            } else {
+              result.push({
+                id: record.id,
+                userId: record.userId,
+                userName: record.userName,
+                products: [
+                  {
+                    id: record.productId,
+                    name: record.productName,
+                    price: record.productPrice,
+                    quantity: record.quantity,
+                  },
+                ],
+                total: record.total,
+                contact_information: record.contact_information,
+                time: record.time,
+                note: record.note,
+                status_name: record.status_name,
+              });
+            }
+          }
+          return result;
+        }, []);
+        res.json(uniqueData);
       } catch (err) {
         res.status(500).json({ error: err.message });
       }
@@ -41,51 +104,55 @@ export const getAllOrder = async (req, res) => {
           if (existingRecordIndex === -1) {
             result.push({
               id: record.id,
-              day: record.day,
-              services: [{ id: record.serviceId, name: record.serviceName }],
-              pets: [{ id: record.petId, name: record.petName }],
+              userId: record.userId,
+              userName: record.userName,
+              products: [
+                {
+                  id: record.productId,
+                  name: record.productName,
+                  price: record.productPrice,
+                  quantity: record.quantity,
+                },
+              ],
               total: record.total,
-              start_time: record.start_time,
-              end_time: record.end_time,
-              user_email: record.user_email,
-              user_name: record.user_name,
-              pethouse_name: record.pethouse_name,
-              pethouse_id: record.pethouse_id,
+              contact_information: record.contact_information,
+              time: record.time,
+              note: record.note,
               status_name: record.status_name,
-              status_id: record.status_id,
-              statusPaymentId: record.statusPaymentId,
-              statusPaymentName: record.statusPaymentName,
             });
           } else {
             const existingProductIndex = result[
               existingRecordIndex
             ].products.findIndex(
-              (services) => services.id === record.serviceId
+              (products) => products.id === record.productId
             );
             if (existingProductIndex === -1) {
-              result[existingRecordIndex].services.push({
-                id: record.serviceId,
-                name: record.serviceName,
+              result[existingRecordIndex].products.push({
+                id: record.productId,
+                name: record.productName,
+                price: record.productPrice,
+                quantity: record.quantity,
               });
             }
           }
         } else {
           result.push({
             id: record.id,
-            day: record.day,
-            services: [{ id: record.serviceId, name: record.serviceName }],
-            pets: [{ id: record.petId, name: record.petName }],
+            userId: record.userId,
+            userName: record.userName,
+            products: [
+              {
+                id: record.productId,
+                name: record.productName,
+                price: record.productPrice,
+                quantity: record.quantity,
+              },
+            ],
             total: record.total,
-            start_time: record.start_time,
-            end_time: record.end_time,
-            user_email: record.user_email,
-            user_name: record.user_name,
-            pethouse_name: record.pethouse_name,
-            pethouse_id: record.pethouse_id,
-            status_id: record.status_id,
+            contact_information: record.contact_information,
+            time: record.time,
+            note: record.note,
             status_name: record.status_name,
-            statusPaymentId: record.statusPaymentId,
-            statusPaymentName: record.statusPaymentName,
           });
         }
       }
