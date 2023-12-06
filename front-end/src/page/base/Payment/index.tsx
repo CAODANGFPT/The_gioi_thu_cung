@@ -3,7 +3,10 @@ import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
-import { useCreateInvoiceMutation } from "../../../services/invoice";
+import {
+  useCreateInvoiceMutation,
+  useUpdateStatusCashMutation,
+} from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
 const API_URL = "http://localhost:8080/api";
 
@@ -11,6 +14,7 @@ const PaymentPage = () => {
   const { id, total } = useParams();
   const navigate = useNavigate();
   const [addInvoice] = useCreateInvoiceMutation();
+  const [UpdateStatusCash] = useUpdateStatusCashMutation();
   const { data: user } = useGetUserQuery();
   const idRef = useRef(id);
   const totalRef = useRef(total);
@@ -49,6 +53,9 @@ const PaymentPage = () => {
       ? parseInt(idRef.current, 10)
       : undefined;
     try {
+      await UpdateStatusCash({
+        appointments_id: appointmentId,
+      });
       const response = await addInvoice({
         user_id: user?.id,
         paymentMethod: "CASH",
