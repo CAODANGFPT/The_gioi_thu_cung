@@ -11,8 +11,10 @@ import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
 import Minus from "../../../assets/svg/minus";
 import logo from "../../../assets/image/logo.png";
+import { useGetUserQuery } from "../../../services/user";
 const ShoppingCart = () => {
   const { data } = useGetUserListCartsQuery();
+  const { data: user } = useGetUserQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [dataOrder, setDataOrder] = useState<any>([]);
@@ -92,9 +94,8 @@ const ShoppingCart = () => {
       removeOrder(id);
     }
   };
-  const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (!user) {
     return (
       <div className="login-now">
         <p>Bạn chưa đăng nhập.</p>

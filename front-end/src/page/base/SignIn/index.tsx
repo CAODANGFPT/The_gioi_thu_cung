@@ -17,15 +17,17 @@ import { useLoginUserMutation } from "../../../services/auth";
 import { useGetUserQuery } from "../../../services/user";
 
 const SignIn = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [loginForm] = useLoginUserMutation();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { data: user } = useGetUserQuery();
+  const [loginForm] = useLoginUserMutation();
+  
   useEffect(() => {
     if (user) {
       navigate("/");
     }
   }, [navigate, user]);
+  
   const formik = useFormik<TSignIn>({
     initialValues: {
       email: "",
