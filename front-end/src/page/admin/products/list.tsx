@@ -65,6 +65,12 @@ const ProductsAdmin: React.FC = () => {
       width: 150,
     },
     {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+      width: 150,
+    },
+    {
       title: "Danh mục",
       dataIndex: "nameCategory",
       key: "nameCategory",
