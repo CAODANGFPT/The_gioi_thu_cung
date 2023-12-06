@@ -27,7 +27,7 @@ const PrintInvoice = () => {
       try {
         setTimeout(async () => {
           const response = await axios.get(
-            `http://127.0.0.1:8080/api/invoices/${id}`
+            `http://localhost:8080/api/invoices/${id}`
           );
 
           setInvoices(response.data.printInvoice);

@@ -1,6 +1,4 @@
 import { FC } from "react";
-import React from "react";
-import Heart from "../../assets/svg/heart";
 import { TProduct } from "../../schema/products";
 
 type ProductProps = {
@@ -12,9 +10,9 @@ const Product: FC<ProductProps> = ({ item }) => {
     <div className="card">
       <div className="product--image">
         <img src={item.img} alt="productImage" />
-        <div className="svg">
+        {/* <div className="svg">
           <Heart />
-        </div>
+        </div> */}
       </div>
       <div className="card-name">
         <div>{item.name}</div>

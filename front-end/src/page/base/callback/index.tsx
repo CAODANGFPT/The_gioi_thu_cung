@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Result, Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useGetUserQuery } from "../../../services/user";
+import { useCreateInvoiceMutation } from "../../../services/invoice";
 
 interface PaymentResultProps {
   isSuccess: boolean;
@@ -44,12 +46,14 @@ const PaymentResult: React.FC<PaymentResultProps> = ({
 const CallbackVNPAY: React.FC = () => {
   const [vnpResponse, setVnpResponse] = useState<any>(null);
   const navigate = useNavigate();
+  const [addInvoice] = useCreateInvoiceMutation();
+  const { data: user } = useGetUserQuery();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search);
-        const apiUrl = "http://127.0.0.1:8080/api/vnpay_return";
+        const apiUrl = "http://localhost:8080/api/vnpay_return";
         const apiResponse = await axios.get(apiUrl, {
           params: Object.fromEntries(urlParams),
         });
@@ -60,6 +64,9 @@ const CallbackVNPAY: React.FC = () => {
         const vnp_OrderInfo = urlParams.get("vnp_OrderInfo");
 
         if (apiResponse.data.responseCode === "00") {
+          if (user?.id) {
+            await addInvoiceVNPAY();
+          }
           sendCallbackInfo({
             vnp_ResponseCode: apiResponse.data.responseCode,
             vnp_TxnRef,
@@ -73,7 +80,7 @@ const CallbackVNPAY: React.FC = () => {
 
     const sendCallbackInfo = async (callbackInfo: any) => {
       try {
-        const callbackApiUrl = "http://127.0.0.1:8080/api/callbackVNPAY";
+        const callbackApiUrl = "http://localhost:8080/api/callbackVNPAY";
         await axios.post(callbackApiUrl, callbackInfo);
         console.log("Callback success!");
       } catch (error) {
@@ -81,8 +88,32 @@ const CallbackVNPAY: React.FC = () => {
       }
     };
 
+    const addInvoiceVNPAY = async () => {
+      const paymentInfo = JSON.parse(
+        localStorage.getItem("paymentInfo") || "{}"
+      );
+      console.log("paymentInfo", paymentInfo);
+
+      try {
+        const amount = parseInt(paymentInfo.total, 10);
+        const appointmentId = parseInt(paymentInfo.id, 10);
+        console.log("userid", user?.id);
+        console.log("giá", amount);
+        console.log("appointmenid", appointmentId);
+
+        await addInvoice({
+          user_id: user?.id,
+          paymentMethod: "VNPAY",
+          amount: amount,
+          appointments_id: appointmentId,
+        });
+      } catch (error) {
+        console.error("Error adding invoice", error);
+      }
+    };
+
     fetchData();
-  }, []);
+  }, [addInvoice, user, user?.id]);
 
   const handleContinue = () => {
     navigate("/account/confirm-appointment");

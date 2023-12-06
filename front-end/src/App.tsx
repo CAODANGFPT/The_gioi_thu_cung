@@ -84,6 +84,7 @@ import StatusOrderAdmin from "./page/admin/status_order/list";
 import AddStatusPetAdmin from "./page/admin/status_pet/add";
 import EditStatusPet from "./page/admin/status_pet/edit";
 import StatusPetAdmin from "./page/admin/status_pet/list";
+import MenuTypeAdmin from "./page/admin/menuType/list";
 import PaymentPage from "./page/base/Payment";
 import CallbackVNPAY from "./page/base/callback";
 import CartPage from "./page/base/cart";
@@ -94,6 +95,11 @@ import ServicePage from "./page/base/servicePage";
 import PageNotFound from "./page/pageNotFound";
 import AppointmentsAdd from "./page/admin/appointments/add";
 import ShoppingCart from "./page/base/shoppingCart";
+import AddMenuTypeAdmin from "./page/admin/menuType/add";
+import EditMenuType from "./page/admin/menuType/edit";
+import MenuAdmin from "./page/admin/menu/list";
+import AddMenuAdmin from "./page/admin/menu/add";
+import EditMenuAdmin from "./page/admin/menu/edit";
 
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
@@ -267,6 +273,19 @@ function App() {
             <Route path="add" element={<AddStatusPetAdmin />} />
             <Route path="edit/:id" element={<EditStatusPet />} />
           </Route>
+
+          <Route path="menutype">
+            <Route index element={<MenuTypeAdmin />} />
+            <Route path="add" element={<AddMenuTypeAdmin />} />
+            <Route path="edit/:id" element={<EditMenuType />} />
+          </Route>
+
+          <Route path="menu">
+            <Route index element={<MenuAdmin />} />
+            <Route path="add" element={<AddMenuAdmin />} />
+            <Route path="edit/:id" element={<EditMenuAdmin />} />
+          </Route>
+
           <Route path="status_order">
             <Route index element={<StatusOrderAdmin />} />
             <Route path="add" element={<AddStatusOrderAdmin />} />
