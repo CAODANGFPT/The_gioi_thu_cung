@@ -9,7 +9,6 @@ import pethouseRouter from "./routers/pethouse";
 import roleRouter from "./routers/role";
 import statusRouter from "./routers/status_appointment";
 import contactRouter from "./routers/contact";
-import profileRouter from "./routers/profile";
 import aboutRouter from "./routers/about";
 import newsRouter from "./routers/news";
 import reviewRouter from "./routers/reviews";
@@ -32,7 +31,8 @@ import dashboardRoutes from "./routers/dashboard";
 import bannerRouter from "./routers/banner";
 import PrintInvoice from "./routers/PrintInvoice";
 import menuTypeRoutes from "./routers/menuTYpe";
-import logoRoutes from "./routers/logo";
+import websiteInformationRoutes from "./routers/websiteInformation";
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -47,7 +47,6 @@ app.use("/api", pethouseRouter);
 app.use("/api", roleRouter);
 app.use("/api", statusRouter);
 app.use("/api", contactRouter);
-app.use("/api", profileRouter);
 app.use("/api", aboutRouter);
 app.use("/api", newsRouter);
 app.use("/api", reviewRouter);
@@ -69,6 +68,7 @@ app.use("/api", vnpayRoutes);
 app.use("/api", dashboardRoutes);
 app.use("/api", PrintInvoice);
 app.use("/api", menuTypeRoutes);
-app.use("/api", logoRoutes);
+app.use("/api", websiteInformationRoutes);
+
 
 export const viteNodeApp = app;

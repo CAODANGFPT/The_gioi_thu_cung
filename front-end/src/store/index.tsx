@@ -27,7 +27,7 @@ import speciesApi, { speciesReducer } from "../services/species";
 import appointmentApi, { appointmentReducer } from "../services/appointments";
 import breedApi, { breedReducer } from "../services/breed";
 import contactApi, { contactReducer } from "../services/contact";
-import profileApi, { profileReducer } from "../services/profile";
+
 import newsApi, { newsReducer } from "../services/news";
 import reviewApi, { reviewReducer } from "../services/review";
 import petsApi, { petsReducer } from "../services/pets";
@@ -46,7 +46,7 @@ import dashboardApi, { dashboardReducer } from "../services/dashboard";
 import invoiceApi, { invoiceReducer } from "../services/invoice";
 import menuTypeApi, { menuTypeReducer } from "../services/menuType";
 import menuApi, { menuReducer } from "../services/menu";
-import LogoApi, { logoReducer } from "../services/logo";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -66,7 +66,7 @@ const rootReducer = combineReducers({
   [appointmentApi.reducerPath]: appointmentReducer,
   [breedApi.reducerPath]: breedReducer,
   [contactApi.reducerPath]: contactReducer,
-  [profileApi.reducerPath]: profileReducer,
+
   [newsApi.reducerPath]: newsReducer,
   [reviewApi.reducerPath]: reviewReducer,
   [petsApi.reducerPath]: petsReducer,
@@ -82,7 +82,7 @@ const rootReducer = combineReducers({
   [invoiceApi.reducerPath]: invoiceReducer,
   [menuTypeApi.reducerPath]: menuTypeReducer,
   [menuApi.reducerPath]: menuReducer,
-  [LogoApi.reducerPath]: logoReducer,
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -108,7 +108,7 @@ export const store = configureStore({
       appointmentApi.middleware,
       breedApi.middleware,
       contactApi.middleware,
-      profileApi.middleware,
+
       newsApi.middleware,
       reviewApi.middleware,
       petsApi.middleware,
@@ -124,7 +124,7 @@ export const store = configureStore({
       invoiceApi.middleware,
       menuTypeApi.middleware,
       menuApi.middleware,
-      LogoApi.middleware
+   
     ),
 });
 
