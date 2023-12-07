@@ -100,6 +100,7 @@ import EditMenuType from "./page/admin/menuType/edit";
 import MenuAdmin from "./page/admin/menu/list";
 import AddMenuAdmin from "./page/admin/menu/add";
 import EditMenuAdmin from "./page/admin/menu/edit";
+import WebsiteInformationAdmin from "./page/admin/websiteInformation/list";
 
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
@@ -259,6 +260,12 @@ function App() {
 
           <Route path="banner">
             <Route index element={<BannerAdmin />} />
+            <Route path="add" element={<AddBanner />} />
+            <Route path="edit/:id" element={<EditBanner />} />
+          </Route>
+
+          <Route path="websiteinformation">
+            <Route index element={<WebsiteInformationAdmin />} />
             <Route path="add" element={<AddBanner />} />
             <Route path="edit/:id" element={<EditBanner />} />
           </Route>

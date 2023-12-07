@@ -27,7 +27,6 @@ import speciesApi, { speciesReducer } from "../services/species";
 import appointmentApi, { appointmentReducer } from "../services/appointments";
 import breedApi, { breedReducer } from "../services/breed";
 import contactApi, { contactReducer } from "../services/contact";
-
 import newsApi, { newsReducer } from "../services/news";
 import reviewApi, { reviewReducer } from "../services/review";
 import petsApi, { petsReducer } from "../services/pets";
@@ -38,7 +37,6 @@ import statusContactApi, {
 import aboutApi, { aboutReducer } from "../services/about";
 import ProductsApi, { productsReducer } from "../services/products";
 import cartsApi, { cartsReducer } from "../services/shoppingCart";
-
 import statusPetApi, { statusPetReducer } from "../services/status_pet";
 import BannerApi, { bannerReducer } from "../services/banner";
 import statusOrderApi, { statusOrderReducer } from "../services/status_order";
@@ -46,6 +44,9 @@ import dashboardApi, { dashboardReducer } from "../services/dashboard";
 import invoiceApi, { invoiceReducer } from "../services/invoice";
 import menuTypeApi, { menuTypeReducer } from "../services/menuType";
 import menuApi, { menuReducer } from "../services/menu";
+import WebsiteInformationApi, {
+  websiteinformationReducer,
+} from "../services/websiteInformation";
 
 const persistConfig = {
   key: "root",
@@ -82,7 +83,7 @@ const rootReducer = combineReducers({
   [invoiceApi.reducerPath]: invoiceReducer,
   [menuTypeApi.reducerPath]: menuTypeReducer,
   [menuApi.reducerPath]: menuReducer,
-
+  [WebsiteInformationApi.reducerPath]: websiteinformationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -108,7 +109,6 @@ export const store = configureStore({
       appointmentApi.middleware,
       breedApi.middleware,
       contactApi.middleware,
-
       newsApi.middleware,
       reviewApi.middleware,
       petsApi.middleware,
@@ -124,7 +124,7 @@ export const store = configureStore({
       invoiceApi.middleware,
       menuTypeApi.middleware,
       menuApi.middleware,
-   
+      WebsiteInformationApi.middleware
     ),
 });
 
