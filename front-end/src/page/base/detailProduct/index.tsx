@@ -69,6 +69,10 @@ const DetailProduct: React.FC = () => {
   }, [id, dataOrder]);
 
   const addToCart = async () => {
+    if (!user) {
+      message.info("Vui lòng đăng nhập để thêm vào giỏ hàng");
+      return;
+    }
     const isProductInCart = dataOrder?.some(
       (item: { productsId: number }) => item.productsId === Number(id)
     );
