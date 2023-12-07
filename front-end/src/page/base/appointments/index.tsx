@@ -80,6 +80,8 @@ const Appointment: React.FC = () => {
         const serviceId = appointmentData.services.map(
           (item: { id: number }) => item.id
         );
+        console.log(serviceId);
+
         if (appointmentData.type === 1) {
           form.setFieldsValue({
             services: serviceId,
@@ -108,6 +110,7 @@ const Appointment: React.FC = () => {
     };
     fetchData();
   }, [appointmentData, form, services]);
+  console.log(form.getFieldValue("services"));
 
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
@@ -578,11 +581,21 @@ const Appointment: React.FC = () => {
             <Form.Item>
               <Space>
                 {appointmentData.type === 3 ? (
-                  <Button type="primary" onClick={() => handleUpdate()} disabled={loadingUpdate} loading={loadingUpdate}>
+                  <Button
+                    type="primary"
+                    onClick={() => handleUpdate()}
+                    disabled={loadingUpdate}
+                    loading={loadingUpdate}
+                  >
                     Sửa
                   </Button>
                 ) : (
-                  <Button type="primary" htmlType="submit" disabled={loadingCreate} loading={loadingCreate}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={loadingCreate}
+                    loading={loadingCreate}
+                  >
                     Đăng ký
                   </Button>
                 )}

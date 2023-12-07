@@ -1,18 +1,17 @@
 import { FC } from "react";
 import { TProduct } from "../../schema/products";
+import { useNavigate } from "react-router-dom";
 
 type ProductProps = {
   item: TProduct;
 };
 
 const Product: FC<ProductProps> = ({ item }) => {
+  const navigate = useNavigate();
   return (
-    <div className="card">
+    <div className="card" onClick={() => navigate(`/product/${item.id}`)}>
       <div className="product--image">
         <img src={item.img} alt="productImage" />
-        {/* <div className="svg">
-          <Heart />
-        </div> */}
       </div>
       <div className="card-name">
         <div>{item.name}</div>

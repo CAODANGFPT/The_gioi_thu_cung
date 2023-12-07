@@ -9,15 +9,16 @@ type Props = {};
 
 const LayoutAdmin: FC<Props> = () => {
   const navigate = useNavigate();
-  const { data: user } = useGetUserQuery();
-
+  const { data: user, isLoading } = useGetUserQuery();
   useEffect(() => {
-    if (!user) {
-      navigate("/signin");
-    } else if (Number(user?.role_id) !== 1) {
-      navigate("/");
+    if (!isLoading) {
+      if (!user) {
+        navigate("/signin");
+      } else if (user.role_id !== 1) {
+        navigate("/");
+      }
     }
-  }, [user, navigate]);
+  }, [user, navigate, isLoading]);
 
   return (
     <div>
