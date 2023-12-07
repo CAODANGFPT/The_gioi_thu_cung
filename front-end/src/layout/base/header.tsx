@@ -21,21 +21,12 @@ const HeaderBase = () => {
   const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [dataOrder, setDataOrder] = useState<any>([]);
-  const { data: carts } = useGetUserListCartsQuery();
-  const token = localStorage.getItem("token");
-  useEffect(() => {
-    if(token){
-      setUser(userCall)
-    }
-  }, [token]);
+  const { data: carts, isLoading } = useGetUserListCartsQuery();
+
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
-  useEffect(() => {
-    if (carts) {
-      setDataOrder(carts);
-    }
-  }, [carts]);
+
   useEffect(() => {
     if (dataOrder) {
       setCountCarts(dataOrder.length);
@@ -72,7 +63,7 @@ const HeaderBase = () => {
             <p className="frame32-title">Về chúng tôi</p>
             <p className="frame32-title">Bản tin</p>
             <p className="frame32-title">
-              Xin chào: <span className="hello_login">{user.name}</span>{" "}
+              Xin chào: <span className="hello_login">{user.name}</span>
             </p>
           </>
         ) : (
@@ -149,7 +140,7 @@ const HeaderBase = () => {
           </Dropdown>
           <div className="frame5" onClick={() => navigate("shoppingCart")}>
             <ShoppingCartIcon />
-            <div className="group13">{countCarts}</div>
+            <div className="group13">{carts?.length || 0}</div>
           </div>
           {/* <div className="frame5" onClick={() => navigate("cart")}>
             <CalendarIcon />

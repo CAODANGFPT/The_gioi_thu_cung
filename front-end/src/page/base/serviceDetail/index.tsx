@@ -1,29 +1,14 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-
-import Breadcrumb from "../../../components/breadcrumb";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useServicesByIdQuery } from "../../../services/services";
-
-const formatCurrency = (price?: number) => {
-  return price
-    ? price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
-    : "0 VNĐ";
-};
+import "../../../assets/scss/page/detailServices.scss";
 
 const ServiceDetail = () => {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const { data: serviceDetails } = useServicesByIdQuery(Number(id));
 
   return (
-    <div className="backg">
-      <div className="">
-        <Breadcrumb
-          nameLink="dịch vụ"
-          link="/services"
-          name={serviceDetails?.name}
-        />
-      </div>
+    <div className="detailServices">
       <div className="serviceContent">
         <div className="content-left">
           <img src={serviceDetails?.image} alt="ảnh dịch vụ" />
@@ -37,16 +22,29 @@ const ServiceDetail = () => {
             <div className="title-name-2">Giá dịch vụ:</div>
             <div className="price-flex">
               <div className="list-price">
-                {formatCurrency(serviceDetails?.price)}
+                {new Intl.NumberFormat("vi-VN").format(
+                  serviceDetails?.price ?? 0
+                )}
+                VNĐ
               </div>
-              <div className="list-price-sale">100đ</div>
             </div>
           </div>
           <div className="flex-btn">
-            <button className="btn-router">
-              <Link to="/appointment">
-                <p>Đến đặt lịch</p>
-              </Link>
+            <button
+              className="btn-router"
+              onClick={() =>
+                navigate(`/appointment`, {
+                  state: {
+                    appointmentData: {
+                      pets: [],
+                      services: [{ id, name: serviceDetails?.name }],
+                      type: 1,
+                    },
+                  },
+                })
+              }
+            >
+              <p>Đến đặt lịch</p>
             </button>
             <button className="btn-router">
               <Link to="/services">

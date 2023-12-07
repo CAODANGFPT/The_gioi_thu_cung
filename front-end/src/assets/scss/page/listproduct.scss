@@ -198,7 +198,12 @@
           flex-direction: column;
           background-color: white;
           height: auto;
-
+          cursor: pointer;
+          &:hover {
+            .card-name {
+              color: $EagleGreen;
+            }
+          }
           .product--image {
             position: relative;
 
@@ -257,6 +262,11 @@
             padding: 0 10px;
             color: black;
             flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }

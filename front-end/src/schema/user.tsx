@@ -8,7 +8,7 @@ export const UserSchema = yup.object().shape({
   password: yup.string().required(),
   phone: yup.string().required(),
   address: yup.string().required(),
-  role_id: yup.string().required(),
+  role_id: yup.number().required(),
   nameRole: yup.string().required(),
   gender: yup.number().required(),
   is_delete: yup.boolean().required(),

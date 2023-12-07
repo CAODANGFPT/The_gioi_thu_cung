@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { Rate } from "antd";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import banner from "../../../assets/image/banner.png";
 import "../../../assets/scss/page/servicesPage.scss";
-import { Link, useLocation } from "react-router-dom";
-import Breadcrumb from "../../../components/breadcrumb";
 import { TServices } from "../../../schema/services";
 import { useServicesQuery } from "../../../services/services";
-import banner from "../../../assets/image/banner.png";
-const formatCurrency = (price: number) => {
-  return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-};
+
 const ServicePage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState<TServices[]>();
   const { data: listService } = useServicesQuery();
+
   useEffect(() => {
     if (location.pathname !== "/service") {
       setData(listService);
     }
   }, [listService, location.pathname]);
+
   return (
     <div className="backg">
-      <div className="">
-        <Breadcrumb name={"dịch vụ"} />
-      </div>
       <div className="service_info-row">
         <h4 className="service_info-heading">Dịch vụ</h4>
       </div>
@@ -42,16 +40,19 @@ const ServicePage = () => {
         <div className="serviceCard">
           <div className="content">
             {data?.map((item) => (
-              <div key={item.id}>
-                <Link to={`/service/${item.id}`}>
-                  <img src={item.image} alt="" />
-                  <div className="nameService">{item.name}</div>
-                </Link>
+              <div
+                key={item.id}
+                style={{cursor: 'pointer'}}
+                className="card"
+                onClick={() => navigate(`/service/${item.id}`)}
+              >
+                <img src={item.image} alt="" />
+                <Rate disabled allowHalf defaultValue={2.5} />
+                <div className="nameService">{item.name}</div>
                 <div className="sold-flex">
                   <div className="priceService">
-                    {formatCurrency(item.price)}
+                    {new Intl.NumberFormat("vi-VN").format(item.price ?? 0)} VNĐ
                   </div>
-                  <div className="sold">20 sold</div>
                 </div>
               </div>
             ))}

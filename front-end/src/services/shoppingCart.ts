@@ -15,7 +15,7 @@ const cartsApi = createApi({
   }),
   endpoints(builder) {
     return {
-      getUserListCarts: builder.query<void, void>({
+      getUserListCarts: builder.query<any, void>({
         query: () => {
           return {
             url: "/getUserListCarts",

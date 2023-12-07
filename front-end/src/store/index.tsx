@@ -52,7 +52,7 @@ import orderApi, { orderReducer } from "../services/order";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cat"],
+  whitelist: [],
 };
 
 const rootReducer = combineReducers({
