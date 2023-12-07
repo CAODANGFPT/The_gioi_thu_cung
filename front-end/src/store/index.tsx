@@ -50,7 +50,7 @@ import LogoApi, { logoReducer } from "../services/logo";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cat"],
+  whitelist: [],
 };
 
 const rootReducer = combineReducers({

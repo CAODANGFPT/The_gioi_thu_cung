@@ -41,6 +41,14 @@ const DetailProduct: React.FC = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (product) {
+      window.scrollTo({
+        top: 0,
+      });
+    }
+  }, [product]);
+
   const Cong = () => {
     if (!(product?.quantity === quantity)) {
       setQuantity(quantity + 1);
