@@ -1,32 +1,24 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../assets/scss/layout/admin/index.scss";
 import "../../assets/scss/layout/admin/sidebar.scss";
-import { FC } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import { useGetUserQuery } from "../../services/user";
 import Sidebar from "./Sidebar";
 import Content from "./content";
 type Props = {};
 
-const LayoutAdmin: FC<Props> = (props) => {
+const LayoutAdmin: FC<Props> = () => {
   const navigate = useNavigate();
-  const { data: user, isLoading } = useGetUserQuery();
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      const token = await localStorage.getItem("token");
-      if (!token) {
-        navigate("/signin");
-      } else if (!isLoading) {
-        if (!user) {
-          navigate("/signin");
-        } else if (Number(user?.role_id) !== 1) {
-          navigate("/");
-        }
-      }
-    };
+  const { data: user } = useGetUserQuery();
 
-    checkAuthentication();
-  }, [isLoading, user, navigate]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/signin");
+    } else if (Number(user?.role_id) !== 1) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <div>
       <div className="app">

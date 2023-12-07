@@ -30,4 +30,17 @@ export default class PrintInvoice {
       );
     });
   }
+
+  static updateStatusCash(appointments_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE appointments SET status_payment = 2 WHERE id = ?",
+        [appointments_id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
 }

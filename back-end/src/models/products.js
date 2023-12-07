@@ -4,7 +4,7 @@ export default class Products {
   static getAllProducts() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT products.id, products.name,products.description,products.price, products.img ,category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ",
+        "SELECT products.id, products.name,products.description,products.price, products.img ,products.quantity ,category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -16,6 +16,19 @@ export default class Products {
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT products.id, products.name, products.description, products.price, products.img, category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ORDER BY products.id DESC LIMIT 8",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static getProductsCate(id_cate) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM products WHERE category_id = ?",
+        [id_cate],
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -37,11 +50,11 @@ export default class Products {
     });
   }
 
-  static addProducts(name, description, price, img, category_id) {
+  static addProducts(name, description, price, img, quantity, category_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO products (name, description, price, img, category_id) VALUES (?, ?, ?, ?, ?)",
-        [name, description, price, img, category_id],
+        "INSERT INTO products (name, description, price, img, quantity,category_id) VALUES (?, ?, ?, ?, ?, ?)",
+        [name, description, price, img, quantity, category_id],
         (err, results) => {
           if (err) {
             console.error("Error inserting :", err);
@@ -53,11 +66,19 @@ export default class Products {
       );
     });
   }
-  static updateProduct(id, name, description, price, img, category_id) {
+  static updateProduct(
+    id,
+    name,
+    description,
+    price,
+    img,
+    quantity,
+    category_id
+  ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE products SET name = ?,description = ?,price = ?,img = ?,category_id = ? WHERE id = ?",
-        [name, description, price, img, category_id, id],
+        "UPDATE products SET name = ?,description = ?,price = ?,img = ?,quantity = ?,category_id = ? WHERE id = ?",
+        [name, description, price, img, quantity, category_id, id],
         (err) => {
           if (err) reject(err);
           resolve();

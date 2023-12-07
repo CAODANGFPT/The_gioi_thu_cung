@@ -101,7 +101,9 @@ import MenuAdmin from "./page/admin/menu/list";
 import AddMenuAdmin from "./page/admin/menu/add";
 import EditMenuAdmin from "./page/admin/menu/edit";
 import OrderPay from "./page/base/orderPay";
-
+import LogoAdmin from "./page/admin/logo/list";
+import AddLogoAdmin from "./page/admin/logo/add";
+import EditLogoAdmin from "./page/admin/logo/edit"
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -287,6 +289,12 @@ function App() {
             <Route index element={<MenuAdmin />} />
             <Route path="add" element={<AddMenuAdmin />} />
             <Route path="edit/:id" element={<EditMenuAdmin />} />
+          </Route>
+
+          <Route path="logo">
+            <Route index element={<LogoAdmin />} />
+            <Route path="add" element={<AddLogoAdmin />} />
+            <Route path="edit/:id" element={<EditLogoAdmin />} />
           </Route>
 
           <Route path="status_order">

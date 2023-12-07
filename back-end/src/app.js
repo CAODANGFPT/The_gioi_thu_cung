@@ -32,6 +32,7 @@ import dashboardRoutes from "./routers/dashboard";
 import bannerRouter from "./routers/banner";
 import PrintInvoice from "./routers/PrintInvoice";
 import menuTypeRoutes from "./routers/menuTYpe";
+import logoRoutes from "./routers/logo";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -68,5 +69,6 @@ app.use("/api", vnpayRoutes);
 app.use("/api", dashboardRoutes);
 app.use("/api", PrintInvoice);
 app.use("/api", menuTypeRoutes);
+app.use("/api", logoRoutes);
 
 export const viteNodeApp = app;

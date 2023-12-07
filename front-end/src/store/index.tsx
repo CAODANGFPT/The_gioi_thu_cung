@@ -46,6 +46,7 @@ import dashboardApi, { dashboardReducer } from "../services/dashboard";
 import invoiceApi, { invoiceReducer } from "../services/invoice";
 import menuTypeApi, { menuTypeReducer } from "../services/menuType";
 import menuApi, { menuReducer } from "../services/menu";
+import LogoApi, { logoReducer } from "../services/logo";
 const persistConfig = {
   key: "root",
   storage,
@@ -81,6 +82,7 @@ const rootReducer = combineReducers({
   [invoiceApi.reducerPath]: invoiceReducer,
   [menuTypeApi.reducerPath]: menuTypeReducer,
   [menuApi.reducerPath]: menuReducer,
+  [LogoApi.reducerPath]: logoReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -121,7 +123,8 @@ export const store = configureStore({
       dashboardApi.middleware,
       invoiceApi.middleware,
       menuTypeApi.middleware,
-      menuApi.middleware
+      menuApi.middleware,
+      LogoApi.middleware
     ),
 });
 

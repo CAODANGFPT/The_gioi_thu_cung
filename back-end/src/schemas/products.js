@@ -18,6 +18,10 @@ export const productsSchema = joi.object({
     "String.empty": " img không được để trống",
     "any.required": "img là trường bắt buộc",
   }),
+  quantity: joi.number().required().messages({
+    "Number.empty": " quantity không được để trống",
+    "any.required": "quantity là trường bắt buộc",
+  }),
   category_id: joi.number().required().messages({
     "String.empty": "category_id không được để trống",
     "any.required": "Trường category_id là bắt buộc",
