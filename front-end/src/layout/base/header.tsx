@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
 import User from "../../assets/image/user.png";
 import "../../assets/scss/layout/base/headerBase.scss";
-import CalendarIcon from "../../assets/svg/calendar";
 import MenuIcon from "../../assets/svg/menuIcon";
 import RightIcon from "../../assets/svg/rightIcon";
 import SearchIcon from "../../assets/svg/searchIcon";
@@ -16,13 +15,19 @@ import ModalUser from "./modal";
 const HeaderBase = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: user } = useGetUserQuery();
+  const { data: userCall } = useGetUserQuery();
+  const [user, setUser] = useState<any>();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [dataOrder, setDataOrder] = useState<any>([]);
   const { data: carts } = useGetUserListCartsQuery();
-
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if(token){
+      setUser(userCall)
+    }
+  }, [token]);
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);

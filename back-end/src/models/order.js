@@ -24,7 +24,15 @@ export default class Order {
       );
     });
   }
-  static createOrder(user_id, total, contact_information, note) {
+  static createOrder(
+    user_id,
+    total,
+    note,
+    paymentMethods_id,
+    status_payment,
+    address_id,
+    status_id
+  ) {
     const currentTime = new Date();
     return new Promise((resolve, reject) => {
       connection.beginTransaction((err) => {
@@ -33,8 +41,17 @@ export default class Order {
           return;
         }
         connection.query(
-          "INSERT INTO orders (user_id, total, contact_information, time, note, status_id) VALUES (?,?,?,?,?,1)",
-          [user_id, total, contact_information, currentTime, note],
+          "INSERT INTO orders (user_id, total, time, note, status_id,paymentMethods_id,status_payment, address_id) VALUES (?,?,?,?,?,?,?,?)",
+          [
+            user_id,
+            total,
+            currentTime,
+            note,
+            paymentMethods_id,
+            status_payment,
+            address_id,
+            status_id
+          ],
           (err, results) => {
             if (err) reject(err);
             resolve(results.insertId);

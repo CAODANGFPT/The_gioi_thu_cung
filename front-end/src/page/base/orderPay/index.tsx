@@ -1,18 +1,25 @@
-import "../../../assets/scss/page/orderPay.scss";
-import { Breadcrumbs } from "@mui/material";
+import { message } from "antd";
 import { FC, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../../../assets/scss/page/orderPay.scss";
 import Location from "../../../assets/svg/loaction";
+import { useCreateOrderMutation } from "../../../services/order";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
 
 type Props = {};
 
 const OrderPay: FC<Props> = () => {
   const shippingCost: number = 10000;
   const [total, setTotal] = useState<number>();
+  const [status_id, setStatusId] = useState<number>();
+
+  const [paymentMethods_id, setPaymentMethods_id] = useState<number>();
+  const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
+  const [createOrder] = useCreateOrderMutation();
+  const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
   const [data] = useState<any>(location.state?.data);
-  console.log(data);
   useEffect(() => {
     if (!data) {
       navigate("/shoppingCart");
@@ -27,24 +34,51 @@ const OrderPay: FC<Props> = () => {
     );
     return totalAmount;
   };
+  const setPaymentMethodsId = (id: number) => {
+    setPaymentMethods_id(id);
+  };
+  const onSubmit = async () => {
+    if( paymentMethods_id === 1){
+      setStatusId(2);
+    } else{
+      setStatusId(1);
+    }
+    const dataSubmit = {
+      user_id: data.userId,
+      products: [
+        ...data.products.map(
+          (product: { id: any; quantity: any; price: any }) => ({
+            id: product.id,
+            quantity: product.quantity,
+            price: product.price,
+          })
+        ),
+      ],
+      total: calculateTotalAmount() + shippingCost,
+      note: note,
+      paymentMethods_id: paymentMethods_id,
+      status_payment: 1,
+      address_id: 1,
+      status_id: status_id
+    };
+    console.log(dataSubmit);
+    try {
+      await createOrder(dataSubmit);
+      message.success("Đặt hàng thành công");
+      if(paymentMethods_id === 1){
+
+      } else{
+        
+      }
+    } catch (error) {
+      message.error("Đặt thất bại");
+      
+    }
+  };
   return (
     <>
       <div className="container-order">
         <div className="orderPay">
-          <div className="breadcrumbs" role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link className="underline-hover" color="inherit" to="/">
-                Trang chủ
-              </Link>
-              <Link
-                className="underline-hover"
-                color="inherit"
-                to="  /shoppingCart"
-              >
-                Thanh toán
-              </Link>
-            </Breadcrumbs>
-          </div>
           <h3>Thông tin thanh toán </h3>
           <div className="orderPay-address">
             <div className="orderPay-address-border"></div>
@@ -112,6 +146,16 @@ const OrderPay: FC<Props> = () => {
                   ))}
               </tbody>
             </table>
+            <div className="orderPay-product-node">
+              <form action="" className="orderPay-product-node-form">
+                <div>Lời nhắn:</div>
+                <input
+                  type="text"
+                  placeholder="Lưu ý cho cửa hàng"
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </form>
+            </div>
             <div className="orderPay-product-total">
               <p>Tổng số tiền ({data.products.length} sản phẩm): </p>
               <div>
@@ -125,20 +169,22 @@ const OrderPay: FC<Props> = () => {
             <div className="orderPay-paymentMethods-title">
               <div>Phương thức thanh toán:</div>
               <div className="orderPay-paymentMethods-title-item">
-                <button className="orderPay-paymentMethods-title-item-box">
-                  VNPAY
-                </button>
-                <button className="orderPay-paymentMethods-title-item-box">
-                  Chuyển khoản ngân hàng
-                </button>
-                <button className="orderPay-paymentMethods-title-item-box">
-                  Thanh toán khi nhận hàng
-                </button>
+                {getAllPaymentMethods &&
+                  getAllPaymentMethods.map((item) => (
+                    <button
+                      onClick={() => setPaymentMethodsId(item.id)}
+                      className="orderPay-paymentMethods-title-item-box"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
               </div>
             </div>
             <div className="orderPay-paymentMethods-money">
               <div className="orderPay-paymentMethods-money-item">
-                <div className="orderPay-paymentMethods-money-item-text">Tổng tiền hàng</div>
+                <div className="orderPay-paymentMethods-money-item-text">
+                  Tổng tiền hàng
+                </div>
                 <div className="orderPay-paymentMethods-money-item-price">
                   {new Intl.NumberFormat("vi-VN").format(
                     calculateTotalAmount()
@@ -146,17 +192,19 @@ const OrderPay: FC<Props> = () => {
                   <span style={{ fontSize: 16, color: "#00575c" }}> VNĐ</span>
                 </div>
               </div>
-              <div  className="orderPay-paymentMethods-money-item">
-                <div className="orderPay-paymentMethods-money-item-text">Phí vận chuyển</div>
+              <div className="orderPay-paymentMethods-money-item">
+                <div className="orderPay-paymentMethods-money-item-text">
+                  Phí vận chuyển
+                </div>
                 <div className="orderPay-paymentMethods-money-item-price">
-                  {new Intl.NumberFormat("vi-VN").format(
-                    shippingCost
-                  )}
+                  {new Intl.NumberFormat("vi-VN").format(shippingCost)}
                   <span style={{ fontSize: 16, color: "#00575c" }}> VNĐ</span>
                 </div>
               </div>
               <div className="orderPay-paymentMethods-money-item">
-                <div className="orderPay-paymentMethods-money-item-text">Tổng thanh toán</div>
+                <div className="orderPay-paymentMethods-money-item-text">
+                  Tổng thanh toán
+                </div>
                 <div className="orderPay-paymentMethods-money-item-price">
                   <span style={{ fontSize: 24, color: "#00575c" }}>
                     {new Intl.NumberFormat("vi-VN").format(
@@ -164,6 +212,18 @@ const OrderPay: FC<Props> = () => {
                     )}
                   </span>
                   <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="orderPay-paymentMethods-submit">
+              <div className="orderPay-paymentMethods-submit-item">
+                <div className="orderPay-paymentMethods-submit-item-text">
+                  Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều
+                  khoản cửa hàng
+                </div>
+                <div className="orderPay-paymentMethods-submit-item-btn">
+                  <button onClick={() => onSubmit()}>Đặt hàng</button>
                 </div>
               </div>
             </div>

@@ -9,7 +9,7 @@ const pethouseApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -33,26 +33,24 @@ const pethouseApi = createApi({
           };
         },
         providesTags: ["PetHouse"],
-
       }),
       createPetHouse: builder.mutation<TpetHouse, TpetHouse>({
         query: (pethouse) => ({
-            url: `/pethouse`,
-            method: "POST",
-            body: pethouse
+          url: `/pethouse`,
+          method: "POST",
+          body: pethouse,
         }),
         invalidatesTags: ["PetHouse"],
-
-    }),
+      }),
       updatePetHouse: builder.mutation<TpetHouse, TpetHouse>({
         query: (updatedPethouse) => ({
-            url: `/pethouse/${updatedPethouse.id}`,
-            method: "PUT",
-            body: updatedPethouse
+          url: `/pethouse/${updatedPethouse.id}`,
+          method: "PUT",
+          body: updatedPethouse,
         }),
         invalidatesTags: ["PetHouse"],
-    }),
-     removePetHouse: builder.mutation<TpetHouse, number>({
+      }),
+      removePetHouse: builder.mutation<TpetHouse, number>({
         query: (id) => {
           return {
             url: `/pethouse/${id}`,
@@ -65,6 +63,12 @@ const pethouseApi = createApi({
   },
 });
 
-export const { useGetAllpetHouseQuery , usePetHouseByIdQuery , useUpdatePetHouseMutation , useCreatePetHouseMutation, useRemovePetHouseMutation}  = pethouseApi;
+export const {
+  useGetAllpetHouseQuery,
+  usePetHouseByIdQuery,
+  useUpdatePetHouseMutation,
+  useCreatePetHouseMutation,
+  useRemovePetHouseMutation,
+} = pethouseApi;
 export const pethouseReducer = pethouseApi.reducer;
 export default pethouseApi;

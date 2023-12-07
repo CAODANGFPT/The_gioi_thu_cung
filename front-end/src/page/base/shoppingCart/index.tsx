@@ -1,4 +1,3 @@
-import { Breadcrumbs } from "@mui/material";
 import { Button, Popconfirm, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,8 +5,6 @@ import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
 import Minus from "../../../assets/svg/minus";
-
-import "../../../assets/scss/page/shoppingCart.scss";
 import TrashAlt from "../../../assets/svg/trash-alt";
 import {
   useGetUserListCartsQuery,
@@ -16,6 +13,7 @@ import {
 } from "../../../services/shoppingCart";
 import { useGetUserQuery } from "../../../services/user";
 const ShoppingCart = () => {
+  const navigate = useNavigate();
   const { data } = useGetUserListCartsQuery();
   const { data: user } = useGetUserQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -23,8 +21,8 @@ const ShoppingCart = () => {
   const [dataOrder, setDataOrder] = useState<any>([]);
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
   const [removeOrder] = useRemoveCartsByIdMutation();
-  const navigate = useNavigate();
   const [shippingCost, setShippingCost] = useState<number>(0);
+
   useEffect(() => {
     if (data) {
       setDataOrder(data);
@@ -34,16 +32,18 @@ const ShoppingCart = () => {
   const handleCheckboxChange = (itemId: number) => {
     setCheckedItems((prevItems) =>
       prevItems.includes(itemId)
-        ? prevItems.filter((id) => id !== itemId)
+        ? prevItems.filter((productsId) => productsId !== itemId)
         : [...prevItems, itemId]
     );
   };
 
   const calculateTotalAmount = useCallback(() => {
+    console.log(dataOrder);
+    
     let totalAmount = 0;
     dataOrder.forEach(
-      (item: { id: number; priceCart: number; quantity: number }) => {
-        if (checkedItems.includes(item.id)) {
+      (item: { productsId: number; priceCart: number; quantity: number; }) => {
+        if (checkedItems.includes(item.productsId)) {
           totalAmount += item.priceCart * item.quantity;
         }
       }
@@ -61,7 +61,7 @@ const ShoppingCart = () => {
 
   const handleSelectAll = (e: any) => {
     setSelectAll(!selectAll);
-    const allItemIds = dataOrder.map((item: { id: any }) => item.id);
+    const allItemIds = dataOrder.map((item: { productsId: any }) => item.productsId);
     setCheckedItems(selectAll ? [] : allItemIds);
   };
 
@@ -131,12 +131,13 @@ const ShoppingCart = () => {
             price: product.priceCart,
           })
         ),
-        total: calculateTotalAmount() + shippingCost,
+        // total:,
       };
       navigate("/orderPay", {
         state: {
           data: {
             ...data,
+            userId: user?.id
           },
         },
       });
@@ -145,7 +146,6 @@ const ShoppingCart = () => {
       message.error("Bạn chưa chọn sản phẩm nào để mua");
     }
   };
-  const token = localStorage.getItem("token");
 
   const cancel = () => {
     message.error("Xóa sản phẩm thất bại");
@@ -162,20 +162,6 @@ const ShoppingCart = () => {
   }
   return (
     <div className="shoppingCart">
-      <div className="breadcrumbs" role="presentation">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="underline-hover" color="inherit" to="/">
-            Trang chủ
-          </Link>
-          <Link
-            className="underline-hover"
-            color="inherit"
-            to="  /shoppingCart"
-          >
-            Giỏ hàng
-          </Link>
-        </Breadcrumbs>
-      </div>
       <div className="shoppingCart-blog">
         <div className="shoppingCart-blog-left">
           <table className="shoppingCart-blog-left-table">

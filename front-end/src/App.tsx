@@ -103,21 +103,20 @@ import EditMenuAdmin from "./page/admin/menu/edit";
 import OrderPay from "./page/base/orderPay";
 import LogoAdmin from "./page/admin/logo/list";
 import AddLogoAdmin from "./page/admin/logo/add";
-import EditLogoAdmin from "./page/admin/logo/edit"
+import EditLogoAdmin from "./page/admin/logo/edit";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
-    const checkTokenExpiration = () => {
+    const checkTokenExpiration = async () => {
       if (dateTime) {
         const currentTime = new Date().getTime();
         const loginTimestamp = parseInt(dateTime, 10);
         if (currentTime - loginTimestamp > 86400000) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("DateTime");
-        }
+          await localStorage.removeItem("token");
+          await localStorage.removeItem("DateTime");
+        } 
       }
     };
-
     checkTokenExpiration();
   }, []);
   return (
