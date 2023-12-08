@@ -13,7 +13,8 @@ const ModalUser = (props: Props) => {
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/signin");
-  }
+    window.location.reload();
+  };
   return (
     <div className="model-user">
       <div className="model-user-title">
@@ -39,7 +40,12 @@ const ModalUser = (props: Props) => {
         </div>
       </div>
       <hr />
-      <div className="model-user-logout" onClick={() => {logout()}}>
+      <div
+        className="model-user-logout"
+        onClick={() => {
+          logout();
+        }}
+      >
         <div>
           <LogoutIcon />
         </div>

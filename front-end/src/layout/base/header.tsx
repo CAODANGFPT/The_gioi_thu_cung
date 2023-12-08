@@ -26,7 +26,13 @@ const HeaderBase = () => {
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
-
+  useEffect(() => {
+    if (userCall) {
+      setUser(userCall);
+    } else {
+      setUser(null);
+    }
+  }, [userCall]);
   useEffect(() => {
     if (dataOrder) {
       setCountCarts(dataOrder.length);
