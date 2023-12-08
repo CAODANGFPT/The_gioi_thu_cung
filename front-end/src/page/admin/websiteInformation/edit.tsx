@@ -5,26 +5,27 @@ import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { TBanner } from "../../../schema/banner";
+import { TWebsiteInformation } from "../../../schema/websiteInformation";
 import {
-  useGetBannerByIdQuery,
-  useUpdateBannerMutation,
-} from "../../../services/banner";
-const EditBanner = () => {
+  useGetWebsiteInformationByIdQuery,
+  useUpdateWebsiteInformationMutation,
+} from "../../../services/websiteInformation";
+const EditWebsiteInformationAdmin = () => {
   const { id } = useParams<{ id: string }>();
-  const bannerById = useGetBannerByIdQuery(Number(id));
-  const [img, setImage] = useState<string | undefined>();
+  const websiteInformationById = useGetWebsiteInformationByIdQuery(Number(id));
+  const [logo, setLogo] = useState<string | undefined>();
+
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
-      name: "img.png",
+      name: "logo.png",
       status: "done",
-      url: img,
+      url: logo,
     },
   ]);
 
-  const [updateBanner, { reset, isLoading: isAddLoading }] =
-    useUpdateBannerMutation();
+  const [updateWebsiteInformation, { reset, isLoading: isAddLoading }] =
+    useUpdateWebsiteInformationMutation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -32,51 +33,58 @@ const EditBanner = () => {
     setFileList([
       {
         uid: "-1",
-        name: "img.png",
+        name: "logo.png",
         status: "done",
-        url: bannerById.data?.img,
+        url: websiteInformationById.data?.logo,
       },
     ]);
-    setImage(bannerById.data?.img);
+
+    setLogo(websiteInformationById.data?.logo);
+
     form.setFieldsValue({
-      id: bannerById.data?.id,
-      img: bannerById.data?.img,
-      title: bannerById.data?.title,
-      slogan: bannerById.data?.slogan,
-      link: bannerById.data?.link,
+      id: websiteInformationById.data?.id,
+      logo: websiteInformationById.data?.logo,
+      email: websiteInformationById.data?.email,
+      phone: websiteInformationById.data?.phone,
+      logo_res: websiteInformationById.data?.logo_res,
+      fb: websiteInformationById.data?.fb,
+      zalo: websiteInformationById.data?.zalo,
     });
   }, [
     form,
-    bannerById.data?.id,
-    bannerById.data?.img,
-    bannerById.data?.title,
-    bannerById.data?.slogan,
-    bannerById.data?.link,
+    websiteInformationById.data?.id,
+    websiteInformationById.data?.logo,
+    websiteInformationById.data?.email,
+    websiteInformationById.data?.phone,
+    websiteInformationById.data?.logo_res,
+    websiteInformationById.data?.fb,
+    websiteInformationById.data?.zalo,
   ]);
 
   const handleImageChange = ({ fileList: newFileList }: any) => {
     if (newFileList[0].response) {
-      setImage(newFileList[0].response.secure_url);
+      setLogo(newFileList[0].response.secure_url);
     }
     setFileList(newFileList);
   };
 
-  const onFinish = async (values: TBanner) => {
-    const { id, title, slogan, link } = values;
-    const bannerData = {
+  const onFinish = async (values: TWebsiteInformation) => {
+    const { id, email, phone, fb, zalo } = values;
+    const websiteInformationData = {
       id,
-      img: img,
-      title,
-      slogan,
-      link,
+      logo: logo,
+      email,
+      phone,
+      fb,
+      zalo,
     };
     try {
-      await updateBanner(bannerData).unwrap();
+      await updateWebsiteInformation(websiteInformationData).unwrap();
       message.success(" Update successfully");
       reset();
-      navigate("/admin/banner");
+      navigate("/admin/websiteinformation");
     } catch (error) {
-      message.error("Failed to update banner");
+      message.error("Failed to update website information");
     }
   };
 
@@ -94,7 +102,7 @@ const EditBanner = () => {
   return (
     <>
       <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật banner
+        Cập nhật website information
       </h1>
       <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
         <Form
@@ -117,7 +125,10 @@ const EditBanner = () => {
             />
           </Form.Item>
 
-          <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
+          <Form.Item
+            label={<span className="">Logo Pet Care</span>}
+            name="logo"
+          >
             <Upload
               name="file"
               action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
@@ -137,29 +148,39 @@ const EditBanner = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="">Tiêu đề</span>}
-            name="title"
+            label={<span className="">Email</span>}
+            name="email"
             rules={[
-              { required: true, message: "Vui lòng nhập tiêu đề banner!" },
+              { required: true, message: "Vui lòng nhập tiêu đề email!" },
             ]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
           </Form.Item>
 
           <Form.Item
-            label={<span className="">Slogan</span>}
-            name="slogan"
+            label={<span className="">Phone</span>}
+            name="phone"
             rules={[
-              { required: true, message: "Vui lòng nhập slogan banner!" },
+              { required: true, message: "Vui lòng nhập số điện thoại!" },
             ]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
           </Form.Item>
 
           <Form.Item
-            label={<span className="">Link</span>}
-            name="link"
-            rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
+            label={<span className="">Link Facebook</span>}
+            name="fb"
+            rules={[
+              { required: true, message: "Vui lòng nhập link facebook!" },
+            ]}
+          >
+            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+          </Form.Item>
+
+          <Form.Item
+            label={<span className="">Link Zalo</span>}
+            name="zalo"
+            rules={[{ required: true, message: "Vui lòng nhập link zalo!" }]}
           >
             <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
           </Form.Item>
@@ -174,7 +195,7 @@ const EditBanner = () => {
               {isAddLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                "Sửa Banner"
+                "Sửa WebsiteInformation"
               )}
             </Button>
           </Form.Item>
@@ -184,4 +205,4 @@ const EditBanner = () => {
   );
 };
 
-export default EditBanner;
+export default EditWebsiteInformationAdmin;

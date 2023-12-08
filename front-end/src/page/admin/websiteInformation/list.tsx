@@ -1,15 +1,15 @@
 import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TWebsiteInformation } from "../../../schema/websiteInformation";
 import {
   useGetAllWebsiteInformationQuery,
   useRemoveWebsiteInformationMutation,
 } from "../../../services/websiteInformation";
+
 const WebsiteInformationAdmin: React.FC = () => {
-  const navigate = useNavigate();
   const { data } = useGetAllWebsiteInformationQuery();
   const [removeWebsiteInformation] = useRemoveWebsiteInformationMutation();
   const confirm = (id: number) => {
@@ -59,13 +59,6 @@ const WebsiteInformationAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "Logo",
-      dataIndex: "logo_res",
-      key: "logo_res",
-      width: 150,
-      render: (logo_res) => <Image width={100} src={logo_res} />,
-    },
-    {
       title: "Link FB",
       dataIndex: "fb",
       key: "fb",
@@ -100,7 +93,7 @@ const WebsiteInformationAdmin: React.FC = () => {
             okText="Đồng ý"
             cancelText="Không"
           >
-            <Button danger className="btn-delete">
+            <Button danger className="btn-delete" disabled>
               Xóa
             </Button>
           </Popconfirm>
@@ -111,13 +104,6 @@ const WebsiteInformationAdmin: React.FC = () => {
 
   return (
     <>
-      <Button
-        onClick={() => navigate("add")}
-        type="primary"
-        style={{ marginBottom: "1rem" }}
-      >
-        THÊM WEBSITE INFORMATION
-      </Button>
       <TableAdmin columns={columns} data={data} />
     </>
   );
