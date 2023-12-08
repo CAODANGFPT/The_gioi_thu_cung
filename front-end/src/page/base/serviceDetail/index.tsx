@@ -37,7 +37,7 @@ const ServiceDetail = () => {
                   state: {
                     appointmentData: {
                       pets: [],
-                      services: [{ id, name: serviceDetails?.name }],
+                      services: [{ id: Number(id) }],
                       type: 1,
                     },
                   },

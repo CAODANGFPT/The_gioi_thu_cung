@@ -80,13 +80,14 @@ const Appointment: React.FC = () => {
         const serviceId = appointmentData.services.map(
           (item: { id: number }) => item.id
         );
-        console.log(serviceId);
-
         if (appointmentData.type === 1) {
-          form.setFieldsValue({
-            services: serviceId,
-          });
+          if(services){
+            form.setFieldsValue({
+              services: serviceId,
+            });
+          }
         } else if (appointmentData.type === 2) {
+          setServicesOpenTime(true);
           form.setFieldsValue({
             services: serviceId,
             pet: petIds,
@@ -105,7 +106,6 @@ const Appointment: React.FC = () => {
         setDefaultValue(petIds);
         setIdServices(serviceId);
         totalService(serviceId);
-        setServicesOpenTime(true);
       }
     };
     fetchData();
@@ -174,6 +174,7 @@ const Appointment: React.FC = () => {
   };
 
   const onChangePetHouse = async (value: number) => {
+    setServicesOpenTime(true);
     form.setFieldValue("start_time", null);
     setEndTime(null);
     const res = await getAppointmentTime({ pethouse_id: value });
@@ -582,7 +583,6 @@ const Appointment: React.FC = () => {
               <Space>
                 {appointmentData.type === 3 ? (
                   <Button
-                    type="primary"
                     onClick={() => handleUpdate()}
                     disabled={loadingUpdate}
                     loading={loadingUpdate}
@@ -591,7 +591,6 @@ const Appointment: React.FC = () => {
                   </Button>
                 ) : (
                   <Button
-                    type="primary"
                     htmlType="submit"
                     disabled={loadingCreate}
                     loading={loadingCreate}
