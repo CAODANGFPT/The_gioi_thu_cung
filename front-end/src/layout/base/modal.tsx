@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import User from "../../assets/image/user.png";
 import "../../assets/scss/layout/admin/modal.scss";
 import LogoutIcon from "../../assets/svg/logOut";
@@ -9,9 +10,13 @@ import { Login } from "@mui/icons-material";
 type Props = {};
 
 const ModalUser = (props: Props) => {
-  const { data: user } = useGetUserQuery();
+  const { data: userCall } = useGetUserQuery();
+  const [user, setUser] = useState<any>();
+  const token = localStorage.getItem("token");
+
   const navigate = useNavigate();
   const logout = async () => {
+    localStorage.removeItem('DateTime');
     localStorage.removeItem("token");
     await new Promise(resolve => setTimeout(resolve, 0));
   };
@@ -19,7 +24,11 @@ const ModalUser = (props: Props) => {
     await logout();
     navigate("signin");
   };
-  
+  useEffect(() => {
+    if(token){
+      setUser(userCall)
+    }
+  }, [token]);
   return (
     <div className="model-user">
       {user ? (

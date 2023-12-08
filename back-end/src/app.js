@@ -33,6 +33,8 @@ import bannerRouter from "./routers/banner";
 import PrintInvoice from "./routers/PrintInvoice";
 import menuTypeRoutes from "./routers/menuTYpe";
 import logoRoutes from "./routers/logo";
+import paymentMethodsRoutes from "./routers/paymentMethods";
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -70,5 +72,5 @@ app.use("/api", dashboardRoutes);
 app.use("/api", PrintInvoice);
 app.use("/api", menuTypeRoutes);
 app.use("/api", logoRoutes);
-
+app.use("/api", paymentMethodsRoutes);
 export const viteNodeApp = app;

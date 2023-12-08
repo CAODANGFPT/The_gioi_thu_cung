@@ -1,6 +1,6 @@
 import { Button, Popconfirm, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
@@ -12,8 +12,8 @@ import {
   useUpdateQuantityCartsMutation,
 } from "../../../services/shoppingCart";
 import { useGetUserQuery } from "../../../services/user";
-
 const ShoppingCart = () => {
+  const navigate = useNavigate();
   const { data } = useGetUserListCartsQuery();
   const { data: user } = useGetUserQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -32,16 +32,18 @@ const ShoppingCart = () => {
   const handleCheckboxChange = (itemId: number) => {
     setCheckedItems((prevItems) =>
       prevItems.includes(itemId)
-        ? prevItems.filter((id) => id !== itemId)
+        ? prevItems.filter((productsId) => productsId !== itemId)
         : [...prevItems, itemId]
     );
   };
 
   const calculateTotalAmount = useCallback(() => {
+    console.log(dataOrder);
+    
     let totalAmount = 0;
     dataOrder.forEach(
-      (item: { id: number; priceCart: number; quantity: number }) => {
-        if (checkedItems.includes(item.id)) {
+      (item: { productsId: number; priceCart: number; quantity: number; }) => {
+        if (checkedItems.includes(item.productsId)) {
           totalAmount += item.priceCart * item.quantity;
         }
       }
@@ -59,7 +61,7 @@ const ShoppingCart = () => {
 
   const handleSelectAll = (e: any) => {
     setSelectAll(!selectAll);
-    const allItemIds = dataOrder.map((item: { id: any }) => item.id);
+    const allItemIds = dataOrder.map((item: { productsId: any }) => item.productsId);
     setCheckedItems(selectAll ? [] : allItemIds);
   };
 
@@ -102,6 +104,46 @@ const ShoppingCart = () => {
     const res = await removeOrder(id);
     if ("data" in res) {
       message.success("Xóa sản phẩm thành công");
+    }
+  };
+
+  const order = () => {
+    if (checkedItems.length > 0) {
+      console.log(dataOrder);
+
+      const selectedProducts = dataOrder.filter((item: any) =>
+        checkedItems.includes(item.productsId)
+      );
+
+      const data = {
+        products: selectedProducts.map(
+          (product: {
+            productsId: any;
+            productCart: any;
+            imgCart: any;
+            quantity: any;
+            priceCart: any;
+          }) => ({
+            id: product.productsId,
+            name: product.productCart,
+            img: product.imgCart,
+            quantity: product.quantity,
+            price: product.priceCart,
+          })
+        ),
+        // total:,
+      };
+      navigate("/orderPay", {
+        state: {
+          data: {
+            ...data,
+            userId: user?.id
+          },
+        },
+      });
+      console.log(data);
+    } else {
+      message.error("Bạn chưa chọn sản phẩm nào để mua");
     }
   };
 
@@ -148,8 +190,10 @@ const ShoppingCart = () => {
                     <td className="checkbox">
                       <input
                         type="checkbox"
-                        checked={selectAll || checkedItems.includes(data.id)}
-                        onChange={() => handleCheckboxChange(data.id)}
+                        checked={
+                          selectAll || checkedItems.includes(data.productsId)
+                        }
+                        onChange={() => handleCheckboxChange(data.productsId)}
                       />
                     </td>
                     <td className="product">
@@ -296,7 +340,12 @@ const ShoppingCart = () => {
               <span style={{ fontSize: 16, color: "#00575c" }}>VNĐ</span>
             </p>
           </div>
-          <div className="shoppingCart-blog-right-checkOut">ĐẶT HÀNG</div>
+          <div
+            className="shoppingCart-blog-right-checkOut"
+            onClick={() => order()}
+          >
+            Mua hàng
+          </div>
         </div>
       </div>
     </div>
