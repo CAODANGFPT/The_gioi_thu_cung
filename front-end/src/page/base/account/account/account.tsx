@@ -3,6 +3,7 @@ import EditProfile from "../../../../components/account_info/editprofile";
 import { TAccountEdit } from "../../../../schema/accountSchema";
 import { useGetUserQuery } from "../../../../services/user";
 import { FC, useState, useEffect } from "react";
+import User from "../../../../assets/image/user.png";
 import ModalResetPassword from "../../../../components/modal/resetPassword";
 
 export const Account: FC = () => {
@@ -31,7 +32,7 @@ export const Account: FC = () => {
   }, [user]);
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
-  const showModal = () => { 
+  const showModal = () => {
     setIsModalOpen(true);
   };
 
@@ -47,7 +48,7 @@ export const Account: FC = () => {
       <div className="profile">
         <div className="profile-tile">
           <div className="avatar-container">
-            <img src={user?.img && user.img} className="avatar" alt="user" />
+            <img src={user?.img ?? User} className="avatar" alt="user" />
             <i className="fa fa-2x fa-camera img-upload" aria-hidden="true"></i>
           </div>
 

@@ -53,7 +53,7 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     if (calculateTotalAmount() !== 0) {
-      setShippingCost(12312);
+      setShippingCost(10000);
     } else {
       setShippingCost(0);
     }
@@ -160,6 +160,7 @@ const ShoppingCart = () => {
       </div>
     );
   }
+  
   return (
     <div className="shoppingCart">
       <div className="shoppingCart-blog">

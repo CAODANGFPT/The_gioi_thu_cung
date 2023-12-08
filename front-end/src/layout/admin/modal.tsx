@@ -10,10 +10,11 @@ type Props = {};
 const ModalUser = (props: Props) => {
   const { data: user } = useGetUserQuery();
   const navigate = useNavigate();
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/signin");
-  }
+  const logout = async () => {
+    await localStorage.removeItem("token");
+    window.location.reload();
+    // navigate("/signin");
+  };
   return (
     <div className="model-user">
       <div className="model-user-title">
@@ -39,7 +40,12 @@ const ModalUser = (props: Props) => {
         </div>
       </div>
       <hr />
-      <div className="model-user-logout" onClick={() => {logout()}}>
+      <div
+        className="model-user-logout"
+        onClick={() => {
+          logout();
+        }}
+      >
         <div>
           <LogoutIcon />
         </div>

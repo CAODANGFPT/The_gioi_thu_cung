@@ -54,7 +54,7 @@ export default class Order {
           ],
           (err, results) => {
             if (err) reject(err);
-            resolve(results.insertId);
+            resolve(results?.insertId);
           }
         );
       });
