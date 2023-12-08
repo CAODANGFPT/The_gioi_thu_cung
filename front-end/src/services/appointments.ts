@@ -9,7 +9,8 @@ import {
   TCreateAppointmentAdmin,
   TGetAppointmentTime,
   TGetAppointmentTimeRequest,
-  TSearchAppointment
+  TGetStatusPaymentSchema,
+  TSearchAppointment,
 } from "../schema/appointments";
 
 const appointmentApi = createApi({
@@ -63,6 +64,15 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+      showStatusPayment: builder.query<TGetStatusPaymentSchema, number>({
+        query: (id) => {
+          return {
+            url: `/appointment/${id}/status_payment`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
       addAppointment: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointment>
@@ -89,10 +99,7 @@ const appointmentApi = createApi({
         },
         invalidatesTags: ["Appointment"],
       }),
-      searchAddAppointment: builder.mutation<
-      TAppointment,
-        TSearchAppointment
-      >({
+      searchAddAppointment: builder.mutation<TAppointment, TSearchAppointment>({
         query: (appointments) => {
           return {
             url: "/searchAppointmentsAdmin",
@@ -113,10 +120,7 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
-      updateAppointmentAdmin: builder.mutation<
-        TAppointment,
-        any
-      >({
+      updateAppointmentAdmin: builder.mutation<TAppointment, any>({
         query: (appointments) => ({
           url: `/updateAdmin/${appointments.id}`,
           method: "PATCH",
@@ -165,6 +169,7 @@ export const {
   useGetAllappointmentDataQuery,
   useGetAppointmentUserStatusQuery,
   useShowAppointmentQuery,
+  useShowStatusPaymentQuery,
   useGetAppointmentUserQuery,
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,

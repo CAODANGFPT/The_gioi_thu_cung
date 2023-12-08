@@ -21,6 +21,19 @@ export default class Appointments {
       );
     });
   }
+
+  static getStatusPaymentById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT status_payment FROM appointments WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results[0]?.status_payment);
+        }
+      );
+    });
+  }
   static getAppointmentsData() {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -91,7 +104,16 @@ export default class Appointments {
     return new Promise((resolve, reject) => {
       connection.query(
         "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment) VALUES (?,?,?,?,?,?,?,?)",
-        [day, user_id, pethouse_id, start_time, end_time, total, status_id, status_payment],
+        [
+          day,
+          user_id,
+          pethouse_id,
+          start_time,
+          end_time,
+          total,
+          status_id,
+          status_payment,
+        ],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);
