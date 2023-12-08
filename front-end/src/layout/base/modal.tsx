@@ -11,24 +11,28 @@ type Props = {};
 
 const ModalUser = (props: Props) => {
   const { data: userCall } = useGetUserQuery();
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<any>(null);
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
   const logout = async () => {
-    localStorage.removeItem('DateTime');
+    localStorage.removeItem("DateTime");
     localStorage.removeItem("token");
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   };
   const someFunction = async () => {
     await logout();
     navigate("signin");
+    window.location.reload();
   };
+
   useEffect(() => {
-    if(token){
-      setUser(userCall)
+    if (token) {
+      setUser(userCall);
+    } else {
+      setUser(null);
     }
-  }, [token]);
+  }, [token, userCall]);
+
   return (
     <div className="model-user">
       {user ? (
@@ -36,7 +40,7 @@ const ModalUser = (props: Props) => {
           <div className="model-user-title">
             <div className="model-user-title-image">
               {user?.img ? (
-                <img src={user?.img} alt="user" />
+                <img src={user.img} alt="user" />
               ) : (
                 <img src={User} alt="user" />
               )}
