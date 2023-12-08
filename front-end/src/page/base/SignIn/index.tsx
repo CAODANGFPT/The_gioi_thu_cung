@@ -20,13 +20,23 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginForm] = useLoginUserMutation();
-  const token = localStorage.getItem("token");
+  const { data: user, isLoading, isError, isSuccess } = useGetUserQuery();
   const currentTime = new Date().getTime();
+  console.log(isLoading);
+  console.log(isError);
+  console.log(user);
+
   useEffect(() => {
-    if (token) {
-      navigate("/");
+    if (!isLoading) {
+      if (isSuccess) {
+        if (user?.role_id === 1) {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      }
     }
-  }, [navigate, token]);
+  }, [isError, isLoading, isSuccess, navigate, user?.role_id]);
 
   const formik = useFormik<TSignIn>({
     initialValues: {
@@ -43,7 +53,7 @@ const SignIn = () => {
           if (response.data && response.data.user.role_id === 3) {
             message.error("Tải khoản bị khóa");
           } else {
-            localStorage.setItem('DateTime', String(currentTime));
+            localStorage.setItem("DateTime", String(currentTime));
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {

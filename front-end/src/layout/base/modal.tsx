@@ -22,13 +22,14 @@ const ModalUser = (props: Props) => {
   };
   const someFunction = async () => {
     await logout();
-    navigate("signin");
+    window.location.reload();
+    // navigate("signin");
   };
   useEffect(() => {
     if(token){
       setUser(userCall)
     }
-  }, [token]);
+  }, [token, userCall]);
   return (
     <div className="model-user">
       {user ? (
