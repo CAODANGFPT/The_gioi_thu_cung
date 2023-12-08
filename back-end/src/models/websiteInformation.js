@@ -1,26 +1,26 @@
 import connection from "../db";
-export default class Logo {
-    static getAllLogo() {
+export default class WebsiteInformation {
+    static getAllWebsiteInformation() {
         return new Promise((resolve, reject) => {
-            connection.query("SELECT * FROM logo", (err, results) => {
+            connection.query("SELECT * FROM website_information", (err, results) => {
                 if (err) reject(err);
                 resolve(results);
             });
         });
     }
-    static getLogoById(id) {
+    static getWebsiteInformationById(id) {
         return new Promise((resolve, reject) => {
-            connection.query("SELECT * FROM logo WHERE id = ?", [id], (err, results) => {
+            connection.query("SELECT * FROM website_information WHERE id = ?", [id], (err, results) => {
                 if (err) reject(err);
                 resolve(results[0]);
             });
         });
     }
-    static createLogo(img) {
+    static createWebsiteInformation(logo, email, phone, fb, zalo) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO logo (img) VALUES (?)",
-                [img],
+                "INSERT INTO website_information ( logo, email, phone, fb, zalo) VALUES (?,?,?,?,?)",
+                [logo, email, phone, fb, zalo],
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results.insertId);
@@ -28,11 +28,11 @@ export default class Logo {
             );
         });
     }
-    static updateLogo(id, img) {
+    static updateWebsiteInformation(id, logo, email, phone, fb, zalo) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "UPDATE logo SET img = ? WHERE id = ?",
-                [img, id],
+                "UPDATE website_information SET logo = ?, email = ?, phone = ?,  fb = ?, zalo = ? WHERE id = ?",
+                [logo, email, phone, fb, zalo, id],
                 (err) => {
                     if (err) reject(err);
                     resolve();
@@ -40,9 +40,9 @@ export default class Logo {
             );
         });
     }
-    static deleteLogo(id) {
+    static deleteWebsiteInformation(id) {
         return new Promise((resolve, reject) => {
-            connection.query("DELETE FROM logo WHERE id = ?", [id], (err, results) => {
+            connection.query("DELETE FROM website_information WHERE id = ?", [id], (err, results) => {
                 if (err) reject(err);
                 resolve(results);
             });

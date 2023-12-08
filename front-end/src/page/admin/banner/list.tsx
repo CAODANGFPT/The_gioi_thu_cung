@@ -8,6 +8,8 @@ import {
   useGetAllBannerQuery,
   useRemoveBannerMutation,
 } from "../../../services/banner";
+import { PlusOutlined } from "@ant-design/icons";
+
 const BannerAdmin: React.FC = () => {
   const navigate = useNavigate();
   const { data } = useGetAllBannerQuery();
@@ -99,6 +101,7 @@ const BannerAdmin: React.FC = () => {
       <Button
         onClick={() => navigate("add")}
         type="primary"
+        icon={<PlusOutlined />}
         style={{ marginBottom: "1rem" }}
       >
         THÊM BANNER
