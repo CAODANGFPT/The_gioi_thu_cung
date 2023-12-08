@@ -210,7 +210,6 @@ export const create = async (req, res) => {
   }
 };
 
-
 export const createAdmin = async (req, res) => {
   try {
     const {
@@ -223,7 +222,7 @@ export const createAdmin = async (req, res) => {
       end_time,
       total,
       status_id,
-      status_payment
+      status_payment,
     } = req.body;
     const petNamesArray = [];
     const ServicesArray = [];
@@ -734,6 +733,21 @@ export const searchAppointmentsAdmin = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+export const status_payment = async (req, res) => {
+  try {
+    const statusPayment = await Appointments.getStatusPaymentById(
+      req.params.id
+    );
+
+    if (!statusPayment) {
+      res.status(404).json({ error: "Không tìm thấy mục lịch hẹn" });
+    } else {
+      res.json({ status_payment: statusPayment });
+    }
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

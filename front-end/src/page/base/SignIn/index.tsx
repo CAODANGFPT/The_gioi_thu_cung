@@ -19,11 +19,9 @@ import { useGetUserQuery } from "../../../services/user";
 const SignIn = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { data: user } = useGetUserQuery();
   const [loginForm] = useLoginUserMutation();
-
   const token = localStorage.getItem("token");
-
+  const currentTime = new Date().getTime();
   useEffect(() => {
     if (token) {
       navigate("/");
@@ -45,6 +43,7 @@ const SignIn = () => {
           if (response.data && response.data.user.role_id === 3) {
             message.error("Tải khoản bị khóa");
           } else {
+            localStorage.setItem('DateTime', String(currentTime));
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {

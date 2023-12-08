@@ -102,21 +102,20 @@ import AddMenuAdmin from "./page/admin/menu/add";
 import EditMenuAdmin from "./page/admin/menu/edit";
 import WebsiteInformationAdmin from "./page/admin/websiteInformation/list";
 import EditWebsiteInformationAdmin from "./page/admin/websiteInformation/edit";
-
+import OrderPay from "./page/base/orderPay";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
-    const checkTokenExpiration = () => {
+    const checkTokenExpiration = async () => {
       if (dateTime) {
         const currentTime = new Date().getTime();
         const loginTimestamp = parseInt(dateTime, 10);
         if (currentTime - loginTimestamp > 86400000) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("DateTime");
-        }
+          await localStorage.removeItem("token");
+          await localStorage.removeItem("DateTime");
+        } 
       }
     };
-
     checkTokenExpiration();
   }, []);
   return (
@@ -128,8 +127,10 @@ function App() {
           <Route path="product/:id" element={<DetailProduct />} />
           <Route path="appointment" element={<Appointments />} />
           <Route path="appointment/:id" element={<Appointments />} />
-          {/* <Route path="detailProduct/:id" element={<DetailProduct />} /> */}
+          <Route path="detailProduct/:id" element={<DetailProduct />} />
           <Route path="ShoppingCart" element={<ShoppingCart />} />
+          <Route path="orderPay" element={<OrderPay />} />
+
           <Route path="account" element={<AccountPage />}>
             <Route index element={<Account />} />
             <Route path="payment" element={<Pay />} />

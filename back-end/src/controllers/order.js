@@ -165,12 +165,24 @@ export const getAllOrder = async (req, res) => {
 };
 export const createOrderUser = async (req, res) => {
   try {
-    const { user_id, products, total, contact_information, note } = req.body;
+    const {
+      user_id,
+      products,
+      total,
+      note,
+      paymentMethods_id,
+      status_payment,
+      address_id,
+      status_id
+    } = req.body;
     const orderId = await Orders.createOrder(
       user_id,
       total,
-      contact_information,
-      note
+      note,
+      paymentMethods_id,
+      status_payment,
+      address_id,
+      status_id
     );
     for (const item of products) {
       await Carts.deleteCartsByProductId(user_id, item.id);

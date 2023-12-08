@@ -8,6 +8,8 @@ import {
   useUpdateStatusCashMutation,
 } from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
+import { useShowStatusPaymentQuery } from "../../../services/appointments";
+
 const API_URL = "http://localhost:8080/api";
 
 const PaymentPage = () => {
@@ -16,6 +18,9 @@ const PaymentPage = () => {
   const [addInvoice] = useCreateInvoiceMutation();
   const [UpdateStatusCash] = useUpdateStatusCashMutation();
   const { data: user } = useGetUserQuery();
+  const appointmentshow = id ? parseInt(id, 10) : 0;
+  const { data: statuspayment } = useShowStatusPaymentQuery(appointmentshow);
+  console.log("statuspayment", statuspayment?.status_payment);
   const idRef = useRef(id);
   const totalRef = useRef(total);
 
@@ -23,9 +28,6 @@ const PaymentPage = () => {
     idRef.current = id;
     totalRef.current = total;
   }, [id, total]);
-  console.log("Appointment ID nhận được:", id);
-  console.log("Tiền nhận được:", total);
-
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
@@ -52,18 +54,30 @@ const PaymentPage = () => {
     const appointmentId = idRef.current
       ? parseInt(idRef.current, 10)
       : undefined;
+
     try {
+      if (statuspayment && statuspayment.status_payment === 2) {
+        console.log("Invoice already created for this appointment.");
+        navigate(`/print-invoice/${id}`);
+        return;
+      } else {
+        console.log(
+          "statuspayment is undefined or statuspayment.id is not equal to 2"
+        );
+      }
+
       await UpdateStatusCash({
         appointments_id: appointmentId,
       });
+
       const response = await addInvoice({
         user_id: user?.id,
         paymentMethod: "CASH",
         amount: amount,
         appointments_id: appointmentId,
       });
-      console.log("Invoice creation response:", response);
 
+      console.log("Invoice creation response:", response);
       navigate(`/print-invoice/${id}`);
     } catch (error) {
       console.error("Error creating invoice", error);
