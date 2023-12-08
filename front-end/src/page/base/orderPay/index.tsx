@@ -1,30 +1,34 @@
-import { message } from "antd";
-import { FC, useEffect, useState } from "react";
+import { Card, Col, Form, Image, Radio, Row, message } from "antd";
+import React, { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/orderPay.scss";
 import Location from "../../../assets/svg/loaction";
 import { useCreateOrderMutation } from "../../../services/order";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import { CheckCircleFilled } from "@ant-design/icons";
+import vnpay from "../../../assets/image/logoVNPAY.jpeg";
+import axios from "axios";
 
 type Props = {};
 
 const OrderPay: FC<Props> = () => {
   const shippingCost: number = 10000;
-  const [total, setTotal] = useState<number>();
   const [status_id, setStatusId] = useState<number>();
 
-  const [paymentMethods_id, setPaymentMethods_id] = useState<number>();
+  const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
   const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
   const [createOrder] = useCreateOrderMutation();
   const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
   const [data] = useState<any>(location.state?.data);
+
   useEffect(() => {
     if (!data) {
       navigate("/shoppingCart");
     }
-  }, [data]);
+  }, [data, navigate]);
+
   const calculateTotalAmount = () => {
     let totalAmount = 0;
     data.products.forEach(
@@ -34,15 +38,15 @@ const OrderPay: FC<Props> = () => {
     );
     return totalAmount;
   };
-  const setPaymentMethodsId = (id: number) => {
-    setPaymentMethods_id(id);
-  };
-  const onSubmit = async () => {
-    if( paymentMethods_id === 1){
+  useEffect(() => {
+    if (paymentMethods_id === 1) {
       setStatusId(2);
-    } else{
+    } else {
       setStatusId(1);
     }
+  }, [paymentMethods_id]);
+
+  const onSubmit = async () => {
     const dataSubmit = {
       user_id: data.userId,
       products: [
@@ -59,21 +63,27 @@ const OrderPay: FC<Props> = () => {
       paymentMethods_id: paymentMethods_id,
       status_payment: 1,
       address_id: 1,
-      status_id: status_id
+      status_id: status_id,
     };
     console.log(dataSubmit);
     try {
-      await createOrder(dataSubmit);
-      message.success("Đặt hàng thành công");
-      if(paymentMethods_id === 1){
+      const res = await createOrder(dataSubmit);
 
-      } else{
-        
+      if ("data" in res) {
+        message.success("Đặt hàng thành công");
+        if (paymentMethods_id === 1) {
+        } else {
+        }
+      } else {
+        message.error("Đặt thất bại");
       }
     } catch (error) {
       message.error("Đặt thất bại");
-      
     }
+  };
+
+  const onChange = (e: any) => {
+    setPaymentMethods_id(e.target.value);
   };
   return (
     <>
@@ -150,6 +160,7 @@ const OrderPay: FC<Props> = () => {
               <form action="" className="orderPay-product-node-form">
                 <div>Lời nhắn:</div>
                 <input
+                  style={{ width: 300 }}
                   type="text"
                   placeholder="Lưu ý cho cửa hàng"
                   onChange={(e) => setNote(e.target.value)}
@@ -168,17 +179,57 @@ const OrderPay: FC<Props> = () => {
           <div className="orderPay-paymentMethods">
             <div className="orderPay-paymentMethods-title">
               <div>Phương thức thanh toán:</div>
-              <div className="orderPay-paymentMethods-title-item">
+              <Radio.Group
+                onChange={onChange}
+                value={paymentMethods_id}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  columnGap: 10,
+                  marginTop: 30,
+                }}
+              >
                 {getAllPaymentMethods &&
                   getAllPaymentMethods.map((item) => (
-                    <button
-                      onClick={() => setPaymentMethodsId(item.id)}
-                      className="orderPay-paymentMethods-title-item-box"
+                    <Radio
+                      value={item.id}
+                      style={{
+                        width: 252,
+                        height: 172,
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "relative",
+                        border: "1px solid #00575c",
+                      }}
                     >
-                      {item.name}
-                    </button>
+                      <img
+                        style={{
+                          width: 250,
+                          height: 170,
+                          overflow: "hidden",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
+                        src={item.image}
+                        alt="ảnh"
+                      />
+                      <p
+                        style={{
+                          zIndex: 10,
+                          position: "absolute",
+                          top: 7,
+                          left: 40,
+                          color: "#00575c",
+                          textShadow:
+                            "0 0 0.2em white, 0 0 0.2em white, 0 0 0.2em white",
+                        }}
+                      >
+                        {item.name}
+                      </p>
+                    </Radio>
                   ))}
-              </div>
+              </Radio.Group>
             </div>
             <div className="orderPay-paymentMethods-money">
               <div className="orderPay-paymentMethods-money-item">
@@ -215,7 +266,6 @@ const OrderPay: FC<Props> = () => {
                 </div>
               </div>
             </div>
-
             <div className="orderPay-paymentMethods-submit">
               <div className="orderPay-paymentMethods-submit-item">
                 <div className="orderPay-paymentMethods-submit-item-text">

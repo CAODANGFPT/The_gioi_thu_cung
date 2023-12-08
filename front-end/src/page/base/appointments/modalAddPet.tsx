@@ -53,7 +53,6 @@ const ModalAddPet: FC<TModalAddPet> = ({
   const [loading, setLoading] = useState(false);
   const [createSPets, { isLoading }] = useCreatePetsMutation();
   const [form] = Form.useForm();
-  console.log(isLoading);
 
   const onFinish = async (values: any) => {
     let petNew: any = undefined;

@@ -15,8 +15,7 @@ import ModalUser from "./modal";
 const HeaderBase = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: userCall } = useGetUserQuery();
-  const [user, setUser] = useState<any>();
+  const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
@@ -56,28 +55,20 @@ const HeaderBase = () => {
         <p className="frame29-title2">Chi tiết</p>
       </div>
       <div className="frame32">
+        <p className="frame32-title">Giúp đỡ</p>
+        <p className="frame32-title">Theo dõi đơn hàng</p>
+        <p className="frame32-title">Về chúng tôi</p>
+        <p className="frame32-title">Bản tin</p>
         {user ? (
-          <>
-            <p className="frame32-title">Giúp đỡ</p>
-            <p className="frame32-title">Theo dõi đơn hàng</p>
-            <p className="frame32-title">Về chúng tôi</p>
-            <p className="frame32-title">Bản tin</p>
-            <p className="frame32-title">
-              Xin chào: <span className="hello_login">{user.name}</span>
-            </p>
-          </>
+          <p className="frame32-title">
+            Xin chào: <span className="hello_login">{user.name}</span>
+          </p>
         ) : (
-          <>
-            <p className="frame32-title">Giúp đỡ</p>
-            <p className="frame32-title">Theo dõi đơn hàng</p>
-            <p className="frame32-title">Về chúng tôi</p>
-            <p className="frame32-title">Bản tin</p>
-            <p className="frame32-title">
-              <Link to="/signin" className="help">
-                Đăng nhập
-              </Link>
-            </p>
-          </>
+          <p>
+            <Link to="/signin" className="help">
+              Đăng nhập
+            </Link>
+          </p>
         )}
       </div>
       <div className="nav">
