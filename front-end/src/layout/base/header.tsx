@@ -17,20 +17,13 @@ const HeaderBase = () => {
   const location = useLocation();
   const { data: user } = useGetUserQuery();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
-  const [countCarts, setCountCarts] = useState<number>(0);
   const [isWideScreen, setIsWideScreen] = useState(false);
-  const [dataOrder, setDataOrder] = useState<any>([]);
-  const { data: carts, isLoading } = useGetUserListCartsQuery();
+  const { data: carts } = useGetUserListCartsQuery();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [location]);
 
-  useEffect(() => {
-    if (dataOrder) {
-      setCountCarts(dataOrder.length);
-    }
-  }, [dataOrder]);
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
