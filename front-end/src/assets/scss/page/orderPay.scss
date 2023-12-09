@@ -71,17 +71,26 @@
         }
 
         &-item {
-          margin-top: 10px;
+          margin: 10px 0;
           display: flex;
           align-items: center;
 
           &-user {
+            flex: 1;
             font-weight: 500;
+          }
+        }
+        .address {
+          cursor: pointer;
+          margin-top: 10px;
+          font-weight: 500;
+          color: $EagleGreen;
+          &:hover {
+            opacity: 0.8;
           }
         }
       }
     }
-
     &-product {
       margin-top: 20px;
       background-color: white;
@@ -262,15 +271,20 @@
           justify-content: space-between;
 
           &-btn {
-            button {
+            .button {
               cursor: pointer;
-              padding: 15px 50px;
+              width: 150px;
+              height: 50px;
               border: none;
               border-radius: 10px;
               background-color: $EagleGreen;
               color: white;
               font-size: 18px;
               font-weight: 500;
+              &:hover {
+                color: white;
+                opacity: 0.8;
+              }
             }
           }
         }

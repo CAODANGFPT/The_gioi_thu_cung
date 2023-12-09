@@ -33,6 +33,7 @@ import PrintInvoice from "./routers/PrintInvoice";
 import menuTypeRoutes from "./routers/menuTYpe";
 import websiteInformationRoutes from "./routers/websiteInformation";
 import paymentMethodsRoutes from "./routers/paymentMethods";
+import deliveryAddressRoutes from "./routers/deliveryAddress"
 
 const app = express();
 app.use(express.json());
@@ -71,4 +72,5 @@ app.use("/api", PrintInvoice);
 app.use("/api", menuTypeRoutes);
 app.use("/api", websiteInformationRoutes);
 app.use("/api", paymentMethodsRoutes);
+app.use("/api", deliveryAddressRoutes);
 export const viteNodeApp = app;
