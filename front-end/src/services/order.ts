@@ -8,7 +8,7 @@ const orderApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -28,9 +28,6 @@ const orderApi = createApi({
   },
 });
 
-export const {
-  useCreateOrderMutation,
-
-} = orderApi;
+export const { useCreateOrderMutation } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;
