@@ -29,15 +29,21 @@ const RegisterAccount = () => {
     },
     validationSchema: RegisterAccountSchema,
     onSubmit: async (values) => {
+      if (!values.address) {
+        formik.setFieldError("address", "Vui lòng nhập địa chỉ");
+        toast.error("Vui lòng nhập địa chỉ");
+        return;
+      }
       try {
         const response = await registerForm(values);
         if ("error" in response) {
           formik.setFieldError("email", "Email đã tồn tại");
           toast.error("Email đã tồn tại");
-          
         } else {
-          alert("Đăng ký thành công!");
-          navigate("/signin");
+          toast.success("Đăng ký thành công");
+          setTimeout(() => {
+            navigate("/signin");
+          }, 2000);
         }
       } catch (error) {
         console.error("Lỗi", error);

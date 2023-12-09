@@ -1,30 +1,53 @@
-import { message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal, Radio, message } from "antd";
+import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/orderPay.scss";
 import Location from "../../../assets/svg/loaction";
+import { TDeliveryAddress } from "../../../schema/deliveryAddress";
+import {
+  useCreateDeliveryAddressMutation,
+  useListDeliveryAddressQuery,
+} from "../../../services/deliveryAddress";
 import { useCreateOrderMutation } from "../../../services/order";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import { useGetUserQuery } from "../../../services/user";
 
+const API_URL = "http://localhost:8080/api";
 type Props = {};
 
 const OrderPay: FC<Props> = () => {
+  const [form] = Form.useForm();
   const shippingCost: number = 10000;
-  const [total, setTotal] = useState<number>();
   const [status_id, setStatusId] = useState<number>();
-
-  const [paymentMethods_id, setPaymentMethods_id] = useState<number>();
-  const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
-  const [createOrder] = useCreateOrderMutation();
+  const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
+  const [open, setOpen] = useState(false);
   const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
   const [data] = useState<any>(location.state?.data);
+  const [address, setAddress] = useState<TDeliveryAddress>();
+  const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
+  const { data: user } = useGetUserQuery();
+  const { data: deliveryAddress } = useListDeliveryAddressQuery(user?.id || 0);
+  const [value, setValue] = useState<number>(0);
+  const [openAddAddress, setOpenAddAddress] = useState<boolean>(false);
+  const [createOrder, { isLoading: isLoadingOrder }] = useCreateOrderMutation();
+  const [addDeliveryAddress, { isLoading }] =
+    useCreateDeliveryAddressMutation();
+
+  useEffect(() => {
+    setAddress(deliveryAddress && deliveryAddress[0]);
+    setValue((deliveryAddress && deliveryAddress[0].id) ?? 0);
+  }, [deliveryAddress]);
+
   useEffect(() => {
     if (!data) {
       navigate("/shoppingCart");
     }
-  }, [data]);
+  }, [data, navigate]);
+
   const calculateTotalAmount = () => {
     let totalAmount = 0;
     data.products.forEach(
@@ -34,15 +57,15 @@ const OrderPay: FC<Props> = () => {
     );
     return totalAmount;
   };
-  const setPaymentMethodsId = (id: number) => {
-    setPaymentMethods_id(id);
-  };
-  const onSubmit = async () => {
-    if( paymentMethods_id === 1){
+  useEffect(() => {
+    if (paymentMethods_id === 1) {
       setStatusId(2);
-    } else{
+    } else {
       setStatusId(1);
     }
+  }, [paymentMethods_id]);
+
+  const onSubmit = async () => {
     const dataSubmit = {
       user_id: data.userId,
       products: [
@@ -58,23 +81,74 @@ const OrderPay: FC<Props> = () => {
       note: note,
       paymentMethods_id: paymentMethods_id,
       status_payment: 1,
-      address_id: 1,
-      status_id: status_id
+      address_id: address?.id,
+      status_id: status_id,
     };
-    console.log(dataSubmit);
     try {
-      await createOrder(dataSubmit);
-      message.success("Đặt hàng thành công");
-      if(paymentMethods_id === 1){
-
-      } else{
-        
+      const res = await createOrder(dataSubmit);
+      if ("data" in res) {
+        const orderId = res.data.id;
+        const totalAmount = calculateTotalAmount() + shippingCost;
+        message.success("Đặt hàng thành công");
+        if (paymentMethods_id === 1) {
+          axios
+            .post(`${API_URL}/create-payment`, {
+              OrderID: orderId,
+              amount: totalAmount,
+            })
+            .then((response) => {
+              localStorage.setItem(
+                "paymentInfo",
+                JSON.stringify({ orderId, totalAmount })
+              );
+              window.location.href = response.data.paymentUrl;
+            })
+            .catch((error) => {
+              console.error("Error", error);
+            });
+        } else {
+        }
+      } else {
+        message.error("Đặt thất bại");
       }
     } catch (error) {
       message.error("Đặt thất bại");
-      
     }
   };
+
+  const onChange = (e: any) => {
+    setPaymentMethods_id(e.target.value);
+  };
+
+  const onChangeAddress = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const onFinish = async (values: any) => {
+    console.log("Success:", values);
+    const data = {
+      name: values.name,
+      phone: values.phone,
+      address: values.address,
+      user_id: user?.id,
+    };
+    const res = await addDeliveryAddress(data);
+    if ("data" in res) {
+      await setOpenAddAddress(false);
+      await setOpen(true);
+    }
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const OkModal = () => {
+    const addressId = deliveryAddress?.find((address) => address.id === value);
+    setAddress(addressId);
+    setOpen(false);
+  };
+
   return (
     <>
       <div className="container-order">
@@ -88,12 +162,17 @@ const OrderPay: FC<Props> = () => {
               </div>
               <div className="orderPay-address-title-item">
                 <div className="orderPay-address-title-item-user">
-                  Nguyễn Văn Hải (+84) 971397545
+                  Họ và tên: {address?.name}
                 </div>
-                <div>
-                  140 vũ trọng phụng, Phường Minh Khai, Thành Phố Hưng Yên, Hưng
-                  Yên
+                <div className="orderPay-address-title-item-user">
+                  Số điện thoại: {address?.phone}
                 </div>
+              </div>
+              <div className="orderPay-address-title-item-user">
+                Điạ chỉ: {address?.address}
+              </div>
+              <div className="address" onClick={() => setOpen(true)}>
+                Thay đổi điạ chỉ
               </div>
             </div>
           </div>
@@ -150,6 +229,7 @@ const OrderPay: FC<Props> = () => {
               <form action="" className="orderPay-product-node-form">
                 <div>Lời nhắn:</div>
                 <input
+                  style={{ width: 300 }}
                   type="text"
                   placeholder="Lưu ý cho cửa hàng"
                   onChange={(e) => setNote(e.target.value)}
@@ -168,17 +248,57 @@ const OrderPay: FC<Props> = () => {
           <div className="orderPay-paymentMethods">
             <div className="orderPay-paymentMethods-title">
               <div>Phương thức thanh toán:</div>
-              <div className="orderPay-paymentMethods-title-item">
+              <Radio.Group
+                onChange={onChange}
+                value={paymentMethods_id}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  columnGap: 10,
+                  marginTop: 30,
+                }}
+              >
                 {getAllPaymentMethods &&
                   getAllPaymentMethods.map((item) => (
-                    <button
-                      onClick={() => setPaymentMethodsId(item.id)}
-                      className="orderPay-paymentMethods-title-item-box"
+                    <Radio
+                      value={item.id}
+                      style={{
+                        width: 252,
+                        height: 172,
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "relative",
+                        border: "1px solid #00575c",
+                      }}
                     >
-                      {item.name}
-                    </button>
+                      <img
+                        style={{
+                          width: 250,
+                          height: 170,
+                          overflow: "hidden",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
+                        src={item.image}
+                        alt="ảnh"
+                      />
+                      <p
+                        style={{
+                          zIndex: 10,
+                          position: "absolute",
+                          top: 7,
+                          left: 40,
+                          color: "#00575c",
+                          textShadow:
+                            "0 0 0.2em white, 0 0 0.2em white, 0 0 0.2em white",
+                        }}
+                      >
+                        {item.name}
+                      </p>
+                    </Radio>
                   ))}
-              </div>
+              </Radio.Group>
             </div>
             <div className="orderPay-paymentMethods-money">
               <div className="orderPay-paymentMethods-money-item">
@@ -215,7 +335,6 @@ const OrderPay: FC<Props> = () => {
                 </div>
               </div>
             </div>
-
             <div className="orderPay-paymentMethods-submit">
               <div className="orderPay-paymentMethods-submit-item">
                 <div className="orderPay-paymentMethods-submit-item-text">
@@ -223,13 +342,128 @@ const OrderPay: FC<Props> = () => {
                   khoản cửa hàng
                 </div>
                 <div className="orderPay-paymentMethods-submit-item-btn">
-                  <button onClick={() => onSubmit()}>Đặt hàng</button>
+                  <Button
+                    className="button"
+                    loading={isLoadingOrder}
+                    onClick={() => onSubmit()}
+                  >
+                    Đặt hàng
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Modal
+        open={open}
+        title="Địa chỉ của tôi"
+        okText="Xác nhận"
+        onOk={OkModal}
+        onCancel={() => {
+          setOpen(false);
+          setOpenAddAddress(false);
+        }}
+        footer={(_, { OkBtn }) => <OkBtn />}
+      >
+        <Radio.Group
+          onChange={onChangeAddress}
+          value={value}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          {deliveryAddress?.map((item) => (
+            <div key={item.id}>
+              <div
+                style={{
+                  width: "100%",
+                  height: 1,
+                  backgroundColor: "#e0e0e0",
+                  marginTop: 10,
+                }}
+              />
+              <Radio value={item.id} style={{ margin: 10 }}>
+                <div className="orderPay-address-title-item">
+                  <div className="orderPay-address-title-item-user">
+                    Họ và tên: {item.name}
+                  </div>
+                  <div className="orderPay-address-title-item-user">
+                    Số điện thoại: {item.phone}
+                  </div>
+                </div>
+                <div className="orderPay-address-title-item-user">
+                  Điạ chỉ: {item.address}
+                </div>
+              </Radio>
+            </div>
+          ))}
+        </Radio.Group>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            setOpenAddAddress(true);
+          }}
+        >
+          <PlusOutlined />
+          Thêm địa chỉ mới
+        </Button>
+      </Modal>
+      <Modal
+        open={openAddAddress}
+        title="Thêm Địa chỉ của tôi"
+        onCancel={() => {
+          form.resetFields();
+          setOpen(false);
+          setOpenAddAddress(false);
+        }}
+        footer=""
+      >
+        <Form
+          form={form}
+          name="validateOnly"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Họ và Tên"
+            name="name"
+            rules={[
+              { required: true, message: "Vui lòng nhập tên người nhận!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Phone"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập số điên thoại người nhận!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Địa chỉ"
+            name="address"
+            rules={[
+              { required: true, message: "Vui lòng nhập địa chỉ người nhận!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button loading={isLoading} type="primary" htmlType="submit">
+              Thêm mới
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

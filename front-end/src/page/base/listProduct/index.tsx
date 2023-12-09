@@ -122,7 +122,7 @@ const ListProduct: React.FC = () => {
               <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
                 <Col>
                   {categories?.map((FilterCard) => (
-                    <Col>
+                    <Col key={FilterCard.id}>
                       <Checkbox value={FilterCard.id}>
                         {FilterCard.name}
                       </Checkbox>

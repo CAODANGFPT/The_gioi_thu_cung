@@ -42,7 +42,12 @@
   .ant-btn {
     background-color: $EagleGreen;
     border: 1px solid $EagleGreen;
+    color: white;
+    &:hover{
+      color: white !important;  
+    }
   }
+
   :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(
       :disabled
     ):not(.ant-btn-disabled):hover {
@@ -64,7 +69,7 @@
     height: 85%;
   }
   .form-1 {
-    overflow: scroll;
+    overflow-x: hidden;
     height: calc(100% - 38px);
     width: 100%;
   }

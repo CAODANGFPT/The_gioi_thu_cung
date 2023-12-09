@@ -45,7 +45,17 @@
         width: 100%;
         background-position-x: -30px;
         background-size: 116px 3px;
-        background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+        background-image: repeating-linear-gradient(
+          45deg,
+          #6fa6d6,
+          #6fa6d6 33px,
+          transparent 0,
+          transparent 41px,
+          #f18d9b 0,
+          #f18d9b 74px,
+          transparent 0,
+          transparent 82px
+        );
       }
 
       &-title {
@@ -61,17 +71,26 @@
         }
 
         &-item {
-          margin-top: 10px;
+          margin: 10px 0;
           display: flex;
           align-items: center;
 
           &-user {
+            flex: 1;
             font-weight: 500;
+          }
+        }
+        .address {
+          cursor: pointer;
+          margin-top: 10px;
+          font-weight: 500;
+          color: $EagleGreen;
+          &:hover {
+            opacity: 0.8;
           }
         }
       }
     }
-
     &-product {
       margin-top: 20px;
       background-color: white;
@@ -156,9 +175,9 @@
 
       &-node {
         margin-top: 20px;
-        border-top: 1px dashed rgba(0, 0, 0, .09);
+        border-top: 1px dashed rgba(0, 0, 0, 0.09);
         padding: 20px 30px;
-        color: rgba(0, 0, 0, .54);
+        color: rgba(0, 0, 0, 0.54);
 
         &-form {
           display: flex;
@@ -167,9 +186,8 @@
           align-items: center;
 
           input {
-
             box-sizing: border-box;
-            border: 1px solid rgba(0, 0, 0, .14);
+            border: 1px solid rgba(0, 0, 0, 0.14);
             border-radius: 2px;
             outline: none;
             padding: 10px 12px;
@@ -178,12 +196,12 @@
       }
 
       &-total {
-        border-top: 1px dashed rgba(0, 0, 0, .09);
+        border-top: 1px dashed rgba(0, 0, 0, 0.09);
         padding: 20px 30px;
         display: flex;
         gap: 40px;
         justify-content: end;
-        color: rgba(0, 0, 0, .54);
+        color: rgba(0, 0, 0, 0.54);
       }
 
       .tbody {
@@ -198,8 +216,8 @@
       &-title {
         padding: 20px 30px 20px 30px;
 
-        display: flex;
-        align-items: center;
+        // display: flex;
+        // align-items: center;
         gap: 10px;
 
         &-item {
@@ -209,8 +227,7 @@
 
           &-box {
             cursor: pointer;
-            border: 1px solid rgba(0, 0, 0, .09);
-            ;
+            border: 1px solid rgba(0, 0, 0, 0.09);
             font-weight: 500;
             border-radius: 2px;
             padding: 0.25rem 0.75rem;
@@ -241,8 +258,44 @@
             flex: 1;
           }
         }
+        &-box{
+          &-item {
+            padding: 5px 30px;
+  
+            display: flex;
+            align-items: center;
+  
+            &-text {
+              width: 150px;
+            }
+  
+            &-price {
+              flex: 1;
+            }
+          }
+          &-pay{
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            button{
+              padding: 10px 25px;
+              color: white;
+              border-radius: 5px;
+              border: none;
+              text-transform: uppercase;
+            }
+           
+          }
+        }
       }
-
+      &-admin{
+        padding: 10px 0;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+      }
       &-submit {
         border-top: 1px solid #f1f0ed;
         padding: 10px 0;
@@ -254,19 +307,44 @@
           justify-content: space-between;
 
           &-btn {
-            button {
+            .button {
               cursor: pointer;
-              padding: 15px 50px;
+              width: 150px;
+              height: 50px;
               border: none;
               border-radius: 10px;
               background-color: $EagleGreen;
               color: white;
               font-size: 18px;
               font-weight: 500;
+              &:hover {
+                color: white;
+                opacity: 0.8;
+              }
             }
           }
         }
       }
     }
   }
+  .ant-radio {
+    z-index: 100;
+    left: -40%;
+    top: 10px;
+  }
+  :where(.css-dev-only-do-not-override-2q8sxy).ant-radio-wrapper
+    .ant-radio-checked
+    .ant-radio-inner {
+    background-color: $EagleGreen;
+    border-color: $EagleGreen;
+    &:hover {
+      background-color: red;
+    }
+  }
+}
+.true{
+  background-color: $SeaSerpent;
+}
+.close{
+  background-color: firebrick;
 }

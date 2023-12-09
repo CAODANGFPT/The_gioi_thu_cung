@@ -30,7 +30,7 @@ const PaymentResult: React.FC<PaymentResultProps> = ({
         isSuccess
           ? [
               <Button type="primary" key="back" onClick={handle}>
-                Xem Lịch Hẹn Ngay
+                Về Trang Chủ
               </Button>,
             ]
           : [
@@ -116,7 +116,7 @@ const CallbackVNPAY: React.FC = () => {
   }, [addInvoice, user, user?.id]);
 
   const handleContinue = () => {
-    navigate("/account/confirm-appointment");
+    navigate("/");
   };
 
   return (

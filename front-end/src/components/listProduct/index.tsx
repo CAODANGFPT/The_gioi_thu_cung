@@ -18,9 +18,6 @@ const ListProductCard: FC<ProductProps> = ({ item }) => {
             alt="productImage"
           />
         </div>
-        {/* <div className="svg">
-          <Heart />
-        </div> */}
       </div>
       <div className="card-name">
         <div>{item.name}</div>

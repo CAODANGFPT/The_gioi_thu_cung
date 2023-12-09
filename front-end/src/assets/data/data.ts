@@ -10,6 +10,7 @@ import LogoIcon from "../svg/logoIcon";
 import MenuIcon2 from "../svg/menuIcon2";
 import MenuTypeIcon from "../svg/menuTypeIcon";
 import NewIcon from "../svg/newIcon";
+import OrderIcon from "../svg/order";
 import PethouseIcon from "../svg/pethouseIcon";
 import ProductIcon from "../svg/products";
 import ProfileIcon from "../svg/profileIcon";
@@ -26,6 +27,8 @@ import HomeIcon from "./../svg/homeIcon";
 export const navigationLinks = [
   { id: 1, title: "Bảng điều khiển", image: HomeIcon, link: "/admin" },
   { id: 3, title: "Đặt Lịch", image: AppoinmentIcon, link: "appointment" },
+  { id: 2, title: "Đơn hàng", image: OrderIcon, link: "order" },
+
   { id: 4, title: "Thú Cưng", image: PetIcon, link: "pets" },
   { id: 5, title: "Liên Hệ", image: AddressCardIcon, link: "contact" },
   {
