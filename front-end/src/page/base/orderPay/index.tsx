@@ -1,20 +1,19 @@
-import { Card, Col, Form, Image, Radio, Row, message } from "antd";
+import { Radio, message } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/orderPay.scss";
 import Location from "../../../assets/svg/loaction";
 import { useCreateOrderMutation } from "../../../services/order";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
-import { CheckCircleFilled } from "@ant-design/icons";
-import vnpay from "../../../assets/image/logoVNPAY.jpeg";
+// import { CheckCircleFilled } from "@ant-design/icons";
+// import vnpay from "../../../assets/image/logoVNPAY.jpeg";
 import axios from "axios";
-
+const API_URL = "http://localhost:8080/api";
 type Props = {};
 
 const OrderPay: FC<Props> = () => {
   const shippingCost: number = 10000;
   const [status_id, setStatusId] = useState<number>();
-
   const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
   const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
   const [createOrder] = useCreateOrderMutation();
@@ -62,16 +61,32 @@ const OrderPay: FC<Props> = () => {
       note: note,
       paymentMethods_id: paymentMethods_id,
       status_payment: 1,
-      address_id: 1,
+      address_id: 2,
       status_id: status_id,
     };
     console.log(dataSubmit);
     try {
       const res = await createOrder(dataSubmit);
-
       if ("data" in res) {
+        const orderId = res.data.id;
+        const totalAmount = calculateTotalAmount() + shippingCost;
         message.success("Đặt hàng thành công");
         if (paymentMethods_id === 1) {
+          axios
+            .post(`${API_URL}/create-payment`, {
+              OrderID: orderId,
+              amount: totalAmount,
+            })
+            .then((response) => {
+              localStorage.setItem(
+                "paymentInfo",
+                JSON.stringify({ orderId, totalAmount })
+              );
+              window.location.href = response.data.paymentUrl;
+            })
+            .catch((error) => {
+              console.error("Error", error);
+            });
         } else {
         }
       } else {
