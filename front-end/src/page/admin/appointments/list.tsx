@@ -38,6 +38,7 @@ const AppointmentsAdmin: React.FC = () => {
       setDataAppoiment(data);
     }
   }, [data]);
+
   const { data: petHouse } = useGetAllpetHouseQuery();
   const [searchAddAppointment] = useSearchAddAppointmentMutation();
 
@@ -64,6 +65,11 @@ const AppointmentsAdmin: React.FC = () => {
   const redirectToAdd = () => {
     navigate("/admin/appointment/add");
   };
+
+  const { data: status_appointment } = useStatusQuery<any>();
+
+  const [selectedStatusId, setSelectedStatusId] = useState<"all" | number>();
+  const [fillterStatus, setFillterStatus] = useState<any>();
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
@@ -201,6 +207,9 @@ const AppointmentsAdmin: React.FC = () => {
       values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
     }
     const { nameUser, pethouse_id, start_time, status_id } = values;
+
+    console.log(values);
+
     const servicesData = {
       nameUser,
       pethouse_id,
@@ -216,6 +225,28 @@ const AppointmentsAdmin: React.FC = () => {
       message.error("Không tìm thấy bài nào phù hợp");
     }
   };
+
+  const handleStatusButtonClick = async (statusId: "all" | number) => {
+    setSelectedStatusId(statusId);
+    try {
+      setFillterStatus(statusId === "all" ? null : statusId);
+    } catch (error) {
+      console.error("Error filtering data by status:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      const filteredData = fillterStatus
+        ? data.filter((item) => {
+            return "status_id" in item && item.status_id === fillterStatus;
+          })
+        : data;
+
+      setDataAppoiment(filteredData);
+    }
+  }, [data, fillterStatus]);
+
   return (
     <>
       <h2>Tìm kiếm</h2>
@@ -226,13 +257,13 @@ const AppointmentsAdmin: React.FC = () => {
         autoComplete="off"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        style={{marginTop: 10}}
+        style={{ marginTop: 10 }}
       >
         <div className="search-appointments-form">
           <Form.Item name="nameUser">
             <Input placeholder="Tên người đặt" />
           </Form.Item>
-          <Form.Item name="pethouse_id" label="" >
+          <Form.Item name="pethouse_id" label="">
             <Select options={optionsPetHouse} placeholder="Phòng" />
           </Form.Item>
           <Form.Item name="start_time" style={{ width: "100%" }}>
@@ -244,14 +275,45 @@ const AppointmentsAdmin: React.FC = () => {
             />
           </Form.Item>
           <Form.Item name="status_id">
-            <Select options={optionsStatus} placeholder="Trạng thái"/>
+            <Select options={optionsStatus} placeholder="Trạng thái" />
           </Form.Item>
         </div>
         <div>
           <Button htmlType="submit">Tìm kiếm</Button>
         </div>
       </Form>
-      <Button style={{marginTop: 20, marginBottom:20}} className="btn"  onClick={() => redirectToAdd()}>Thêm lịch đặt</Button>
+      <Button
+        style={{ marginTop: 20, marginBottom: 20 }}
+        className="btn"
+        onClick={() => redirectToAdd()}
+      >
+        Thêm lịch đặt
+      </Button>
+      <div className="btn-status-appointment">
+        <li>
+          <Button
+            type="primary"
+            style={{ marginBottom: 20 }}
+            onClick={() => handleStatusButtonClick("all")}
+            className={selectedStatusId === "all" ? "selected" : ""}
+          >
+            Tất cả
+          </Button>
+        </li>
+        {status_appointment?.map((FilterCard: any) => (
+          <li>
+            <Button
+              type="primary"
+              style={{ marginBottom: 20 }}
+              onClick={() => handleStatusButtonClick(FilterCard.id)}
+              className={selectedStatusId === FilterCard.id ? "selected" : ""}
+              value={FilterCard.id}
+            >
+              {FilterCard.name}
+            </Button>
+          </li>
+        ))}
+      </div>
       <TableAdmin columns={columns} data={dataAppoiment} />;
     </>
   );
