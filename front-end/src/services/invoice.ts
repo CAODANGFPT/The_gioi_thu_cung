@@ -45,11 +45,22 @@ const invoiceApi = createApi({
         },
         invalidatesTags: ["Invoice"],
       }),
+      getInvoiceByAppointmentID: builder.query<TInvoice[], number>({
+        query: (appointments_id) => ({
+          url: `/getInvoiceByAppointmentID/${appointments_id}`,
+          method: "GET",
+        }),
+        providesTags: ["Invoice"],
+      }),
     };
-    
   },
 });
 
-export const { useGetInvoicesQuery, useCreateInvoiceMutation, useUpdateStatusCashMutation } = invoiceApi;
+export const {
+  useGetInvoicesQuery,
+  useCreateInvoiceMutation,
+  useUpdateStatusCashMutation,
+  useGetInvoiceByAppointmentIDQuery,
+} = invoiceApi;
 export const invoiceReducer = invoiceApi.reducer;
 export default invoiceApi;

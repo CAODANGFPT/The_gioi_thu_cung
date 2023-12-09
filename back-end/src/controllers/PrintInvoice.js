@@ -35,3 +35,12 @@ export const updateStatusCash = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const getInvoiceByAppointmentID = async (req, res) => {
+  try {
+    const { appointmentID } = req.params;
+    const invoices = await IDInvoice.getInvoiceByAppointmentID(appointmentID);
+    res.json({ invoices });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

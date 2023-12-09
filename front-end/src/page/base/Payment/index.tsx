@@ -5,10 +5,10 @@ import logo from "../../../assets/image/logo.png";
 import axios from "axios";
 import {
   useCreateInvoiceMutation,
+  useGetInvoiceByAppointmentIDQuery,
   useUpdateStatusCashMutation,
 } from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
-import { useShowStatusPaymentQuery } from "../../../services/appointments";
 
 const API_URL = "http://localhost:8080/api";
 
@@ -18,9 +18,6 @@ const PaymentPage = () => {
   const [addInvoice] = useCreateInvoiceMutation();
   const [UpdateStatusCash] = useUpdateStatusCashMutation();
   const { data: user } = useGetUserQuery();
-  const appointmentshow = id ? parseInt(id, 10) : 0;
-  const { data: statuspayment } = useShowStatusPaymentQuery(appointmentshow);
-  console.log("statuspayment", statuspayment?.status_payment);
   const idRef = useRef(id);
   const totalRef = useRef(total);
 
@@ -29,12 +26,21 @@ const PaymentPage = () => {
     totalRef.current = total;
   }, [id, total]);
   const [isLoading, setIsLoading] = useState(true);
+  const appointmentId = idRef.current ? parseInt(idRef.current, 10) : undefined;
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(loadingTimeout);
   }, []);
+
+  const { data: existingInvoice } = useGetInvoiceByAppointmentIDQuery(
+    appointmentId as number
+  );
+  console.log(appointmentId);
+
+  console.log("datainvoice", existingInvoice);
+
   const handlePayment = () => {
     axios
       .post(`${API_URL}/create-payment`, { appointmentID: id, amount: total })
@@ -51,19 +57,14 @@ const PaymentPage = () => {
     const amount = totalRef.current
       ? parseInt(totalRef.current, 10)
       : undefined;
-    const appointmentId = idRef.current
-      ? parseInt(idRef.current, 10)
-      : undefined;
 
     try {
-      if (statuspayment && statuspayment.status_payment === 2) {
+      if (existingInvoice && existingInvoice.length > 0) {
         console.log("Invoice already created for this appointment.");
         navigate(`/print-invoice/${id}`);
         return;
       } else {
-        console.log(
-          "statuspayment is undefined or statuspayment.id is not equal to 2"
-        );
+        console.log("No existing invoice found for this appointment.");
       }
 
       await UpdateStatusCash({

@@ -43,4 +43,16 @@ export default class PrintInvoice {
       );
     });
   }
+  static getInvoiceByAppointmentID(appointments_id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT id, user_id, date, amount, paymentMethod, appointments_id FROM Invoice WHERE appointments_id = ?",
+        [appointments_id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
 }
