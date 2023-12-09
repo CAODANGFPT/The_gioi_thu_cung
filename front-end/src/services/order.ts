@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TOrderAdminSchema } from "../schema/order";
 
 const orderApi = createApi({
   reducerPath: "order",
@@ -24,10 +25,22 @@ const orderApi = createApi({
         }),
         invalidatesTags: ["order"],
       }),
+      getAllOrderUser: builder.query<TOrderAdminSchema[], void>({
+        query: () => {
+          return {
+            url: "/getAllOrderUser",
+            method: "GET",
+          };
+        },
+        providesTags: ["order"],
+      }),
     };
   },
 });
 
-export const { useCreateOrderMutation } = orderApi;
+export const {
+  useCreateOrderMutation,
+  useGetAllOrderUserQuery
+} = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;

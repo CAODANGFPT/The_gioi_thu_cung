@@ -131,7 +131,6 @@ const ShoppingCart = () => {
             price: product.priceCart,
           })
         ),
-        // total:,
       };
       navigate("/orderPay", {
         state: {
