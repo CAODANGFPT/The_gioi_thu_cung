@@ -33,15 +33,33 @@ export const getOrderUser = async (req, res) => {
                     {
                       id: record.productId,
                       name: record.productName,
+                      img: record.productImg,
                       price: record.productPrice,
                       quantity: record.quantity,
                     },
                   ],
+                  address: {
+                    id: record.addressId,
+                    name: record.addressName,
+                    phone: record.addressPhone,
+                    address: record.address,
+                  },
                   total: record.total,
-                  contact_information: record.contact_information,
                   time: record.time,
                   note: record.note,
-                  status_name: record.status_name,
+                  status: {
+                    id: record.status_id,
+                    name: record.status_name,
+                  },
+                  paymentMethods: {
+                    id: record.paymentMethods_id,
+                    name: record.paymentMethods_name,
+                    image: record.paymentMethods_image
+                  },
+                  statusPayment: {
+                    id: record.status_payment_id,
+                    name: record.status_payment_name,
+                  },
                 });
               } else {
                 const existingProductIndex = result[
@@ -53,6 +71,7 @@ export const getOrderUser = async (req, res) => {
                   result[existingRecordIndex].products.push({
                     id: record.productId,
                     name: record.productName,
+                    img: record.productImg,
                     price: record.productPrice,
                     quantity: record.quantity,
                   });
@@ -67,15 +86,33 @@ export const getOrderUser = async (req, res) => {
                   {
                     id: record.productId,
                     name: record.productName,
+                    img: record.productImg,
                     price: record.productPrice,
                     quantity: record.quantity,
                   },
                 ],
+                address: {
+                  id: record.addressId,
+                  name: record.addressName,
+                  phone: record.addressPhone,
+                  address: record.address,
+                },
                 total: record.total,
-                contact_information: record.contact_information,
                 time: record.time,
                 note: record.note,
-                status_name: record.status_name,
+                status: {
+                  id: record.status_id,
+                  name: record.status_name,
+                },
+                paymentMethods: {
+                  id: record.paymentMethods_id,
+                  name: record.paymentMethods_name,
+                  image: record.paymentMethods_image
+                },
+                statusPayment: {
+                  id: record.status_payment_id,
+                  name: record.status_payment_name,
+                },
               });
             }
           }
@@ -110,15 +147,33 @@ export const getAllOrder = async (req, res) => {
                 {
                   id: record.productId,
                   name: record.productName,
+                  img: record.productImg,
                   price: record.productPrice,
                   quantity: record.quantity,
                 },
               ],
+              address: {
+                id: record.addressId,
+                name: record.addressName,
+                phone: record.addressPhone,
+                address: record.address,
+              },
               total: record.total,
-              contact_information: record.contact_information,
               time: record.time,
               note: record.note,
-              status_name: record.status_name,
+              status: {
+                id: record.status_id,
+                name: record.status_name,
+              },
+              paymentMethods: {
+                id: record.paymentMethods_id,
+                name: record.paymentMethods_name,
+                image: record.paymentMethods_image
+              },
+              statusPayment: {
+                id: record.status_payment_id,
+                name: record.status_payment_name,
+              },
             });
           } else {
             const existingProductIndex = result[
@@ -130,6 +185,7 @@ export const getAllOrder = async (req, res) => {
               result[existingRecordIndex].products.push({
                 id: record.productId,
                 name: record.productName,
+                img: record.productImg,
                 price: record.productPrice,
                 quantity: record.quantity,
               });
@@ -144,15 +200,34 @@ export const getAllOrder = async (req, res) => {
               {
                 id: record.productId,
                 name: record.productName,
+                img: record.productImg,
                 price: record.productPrice,
                 quantity: record.quantity,
               },
             ],
+            address: {
+              id: record.addressId,
+              name: record.addressName,
+              phone: record.addressPhone,
+              address: record.address,
+            },
             total: record.total,
-            contact_information: record.contact_information,
             time: record.time,
             note: record.note,
-            status_name: record.status_name,
+            status: {
+              id: record.status_id,
+              name: record.status_name,
+            },
+            paymentMethods: {
+              id: record.paymentMethods_id,
+              name: record.paymentMethods_name,
+              image: record.paymentMethods_image
+
+            },
+            statusPayment: {
+              id: record.status_payment_id,
+              name: record.status_payment_name,
+            },
           });
         }
       }
@@ -173,7 +248,7 @@ export const createOrderUser = async (req, res) => {
       paymentMethods_id,
       status_payment,
       address_id,
-      status_id
+      status_id,
     } = req.body;
     const orderId = await Orders.createOrder(
       user_id,

@@ -249,8 +249,44 @@
             flex: 1;
           }
         }
+        &-box{
+          &-item {
+            padding: 5px 30px;
+  
+            display: flex;
+            align-items: center;
+  
+            &-text {
+              width: 150px;
+            }
+  
+            &-price {
+              flex: 1;
+            }
+          }
+          &-pay{
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            button{
+              padding: 10px 25px;
+              color: white;
+              border-radius: 5px;
+              border: none;
+              text-transform: uppercase;
+            }
+           
+          }
+        }
       }
-
+      &-admin{
+        padding: 10px 0;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+      }
       &-submit {
         border-top: 1px solid #f1f0ed;
         padding: 10px 0;
@@ -291,4 +327,10 @@
       background-color: red;
     }
   }
+}
+.true{
+  background-color: $SeaSerpent;
+}
+.close{
+  background-color: firebrick;
 }
