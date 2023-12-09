@@ -4,11 +4,26 @@ import crypto from "crypto";
 import { Buffer } from "buffer";
 import connection from "../db";
 
-export const updateAppointmentStatusPayment = (appointmentID) => {
+export const updateAppointmentStatusPayment = (onlyID) => {
   return new Promise((resolve, reject) => {
     connection.query(
       "UPDATE appointments SET status_payment = 2 WHERE id = ?",
-      [appointmentID],
+      [onlyID],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      }
+    );
+  });
+};
+export const updateOrderStatusPayment = (onlyID) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "UPDATE orders SET status_payment = 2 WHERE id = ?",
+      [onlyID],
       (err) => {
         if (err) {
           reject(err);
@@ -35,7 +50,12 @@ export const createPaymentUrl = (req) => {
   let returnUrl = "http://localhost:3000/callback";
   let orderId = format(date, "ddHHmmss");
   let amount = req.body.amount;
-  let appointmentId = req.body.appointmentId;
+  let reqID;
+  if (req.body.appointmentID) {
+    reqID = "AP" + req.body.appointmentID;
+  } else if (req.body.OrderID) {
+    reqID = "OD" + req.body.OrderID;
+  }
   let currCode = "VND";
   let vnp_Params = {};
   vnp_Params["vnp_Version"] = "2.1.0";
@@ -44,7 +64,7 @@ export const createPaymentUrl = (req) => {
   vnp_Params["vnp_Locale"] = "vn";
   vnp_Params["vnp_CurrCode"] = currCode;
   vnp_Params["vnp_TxnRef"] = orderId;
-  vnp_Params["vnp_OrderInfo"] = appointmentId;
+  vnp_Params["vnp_OrderInfo"] = reqID;
   vnp_Params["vnp_OrderType"] = "other";
   vnp_Params["vnp_Amount"] = amount * 100;
   vnp_Params["vnp_ReturnUrl"] = returnUrl;

@@ -1,6 +1,7 @@
 import {
   createPaymentUrl,
   updateAppointmentStatusPayment,
+  updateOrderStatusPayment,
 } from "./../models/vnpayModel";
 import qs from "qs";
 import crypto from "crypto";
@@ -22,10 +23,20 @@ export const handleVnPayCallback = async (req, res) => {
     console.log("vnp_TxnRef:", vnp_TxnRef);
     console.log("vnp_OrderInfo:", vnp_OrderInfo);
     if (vnp_ResponseCode == "00") {
-      const appointmentID = vnp_OrderInfo;
+      const reqID = vnp_OrderInfo;
+      let onlyID;
 
-      await updateAppointmentStatusPayment(appointmentID);
-      console.log("Appointment status success");
+      if (reqID.startsWith("AP")) {
+        onlyID = reqID.substr(2);
+        console.log(onlyID);
+        await updateAppointmentStatusPayment(onlyID);
+        console.log("Appointment status updated success");
+      } else if (reqID.startsWith("OD")) {
+        onlyID = reqID.substr(2);
+        console.log(onlyID);
+        await updateOrderStatusPayment(onlyID);
+        console.log("Order status updated success");
+      }
     }
     res.status(200).json({
       vnp_ResponseCode: vnp_ResponseCode,

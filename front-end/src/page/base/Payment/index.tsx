@@ -37,7 +37,7 @@ const PaymentPage = () => {
   }, []);
   const handlePayment = () => {
     axios
-      .post(`${API_URL}/create-payment`, { amount: total })
+      .post(`${API_URL}/create-payment`, { appointmentID: id, amount: total })
       .then((response) => {
         localStorage.setItem("paymentInfo", JSON.stringify({ id, total }));
         window.location.href = response.data.paymentUrl;
