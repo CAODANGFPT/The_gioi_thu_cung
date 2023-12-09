@@ -3,10 +3,7 @@ import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
-import {
-  useCreateInvoiceMutation,
-  useUpdateStatusCashMutation,
-} from "../../../services/invoice";
+import { useCreateInvoiceMutation } from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
 import { useShowStatusPaymentQuery } from "../../../services/appointments";
 
@@ -16,7 +13,7 @@ const PaymentPage = () => {
   const { id, total } = useParams();
   const navigate = useNavigate();
   const [addInvoice] = useCreateInvoiceMutation();
-  const [UpdateStatusCash] = useUpdateStatusCashMutation();
+
   const { data: user } = useGetUserQuery();
   const appointmentshow = id ? parseInt(id, 10) : 0;
   const { data: statuspayment } = useShowStatusPaymentQuery(appointmentshow);
@@ -65,10 +62,6 @@ const PaymentPage = () => {
           "statuspayment is undefined or statuspayment.id is not equal to 2"
         );
       }
-
-      await UpdateStatusCash({
-        appointments_id: appointmentId,
-      });
 
       const response = await addInvoice({
         user_id: user?.id,

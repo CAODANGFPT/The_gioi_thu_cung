@@ -9,7 +9,7 @@ import LayoutBase from "./layout/base";
 import Account from "./page/base/account/account/account";
 
 import Home from "./page/base/home";
-import SignUp from "./page/base/signUp";
+import SignUp from "./page/base/signup";
 
 import DashBoard from "./page/admin/dashboard";
 import StatusAdmin from "./page/admin/status_appointment/list";
@@ -115,7 +115,7 @@ function App() {
         if (currentTime - loginTimestamp > 86400000) {
           await localStorage.removeItem("token");
           await localStorage.removeItem("DateTime");
-        } 
+        }
       }
     };
     checkTokenExpiration();
@@ -198,7 +198,6 @@ function App() {
           <Route path="order">
             <Route index element={<OrderAdmin />} />
             <Route path="detail" element={<DetailOrderAdmin />} />
-
           </Route>
           <Route path="products">
             <Route index element={<ProductsAdmin />} />
