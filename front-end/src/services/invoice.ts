@@ -35,21 +35,12 @@ const invoiceApi = createApi({
         invalidatesTags: ["Invoice"],
       }),
 
-      updateStatusCash: builder.mutation<TInvoice[], TInvoice>({
-        query: (appointments_id) => {
-          return {
-            url: `/updateStatusCash/${appointments_id}`,
-            method: "PUT",
-            body: appointments_id,
-          };
-        },
-        invalidatesTags: ["Invoice"],
-      }),
+     
     };
     
   },
 });
 
-export const { useGetInvoicesQuery, useCreateInvoiceMutation, useUpdateStatusCashMutation } = invoiceApi;
+export const { useGetInvoicesQuery, useCreateInvoiceMutation } = invoiceApi;
 export const invoiceReducer = invoiceApi.reducer;
 export default invoiceApi;
