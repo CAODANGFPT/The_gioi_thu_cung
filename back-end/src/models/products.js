@@ -4,7 +4,7 @@ export default class Products {
   static getAllProducts() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT products.id, products.name,products.description,products.price, products.img ,products.quantity ,category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ",
+        "SELECT products.id, products.name,products.description,products.price, products.img ,products.quantity , products.category_id , category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -98,4 +98,28 @@ export default class Products {
       );
     });
   }
+  static searchProducts(category_id) {
+    let query =
+      "SELECT products.id , category.name AS category_name  FROM products JOIN category ON products.category_id = category.id WHERE  ";
+    const conditions = [];
+    if (category_id) {
+      conditions.push(`products.category_id = '${category_id}'`);
+    }
+
+    if (conditions.length === 0) {
+      return Promise.reject({
+        error: "At least one search parameter is required.",
+      });
+    }
+
+    query += conditions.join(" AND ");
+
+    return new Promise((resolve, reject) => {
+      connection.query(query, (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
+
 }

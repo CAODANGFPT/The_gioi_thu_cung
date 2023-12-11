@@ -5,6 +5,7 @@ import {
   getTop8,
   list,
   remote,
+  searchProductsAdmin,
   show,
   update,
 } from "../controllers/products";
@@ -19,4 +20,6 @@ router.get("/productCate/:id", getProductsCate);
 router.post("/products", checkPermission, create);
 router.put("/product/:id", checkPermission, update);
 router.delete("/product/:id", checkPermission, remote);
+router.post("/searchProductsAdmin", searchProductsAdmin);
+
 export default router;
