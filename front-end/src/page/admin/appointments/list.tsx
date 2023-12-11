@@ -239,6 +239,7 @@ const AppointmentsAdmin: React.FC = () => {
     if (data) {
       const filteredData = fillterStatus
         ? data.filter((item) => {
+          console.log(item);
             return "status_id" in item && item.status_id === fillterStatus;
           })
         : data;

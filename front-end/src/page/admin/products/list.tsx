@@ -1,17 +1,35 @@
-import { Button, Popconfirm, message, Image } from "antd";
+import { Button, Popconfirm, message, Image, Form, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TProduct } from "../../../schema/products";
 import {
   useGetAllProductsQuery,
   useRemoveProductMutation,
+  useSearchAddProductMutation,
 } from "../../../services/products";
+import { useGetAllcategoryQuery } from "../../../services/category";
+import Search from "antd/es/input/Search";
+import { Tcategory } from "../../../schema/category";
 const ProductsAdmin: React.FC = () => {
   const navigate = useNavigate();
-  const { data } = useGetAllProductsQuery();
   const [removeProduct] = useRemoveProductMutation();
+
+  const [dataProduct, setDataProduct] = useState<any | null>(null);
+  const { data } = useGetAllProductsQuery();
+  useEffect(() => {
+    if (data) {
+      setDataProduct(data);
+    }
+  }, [data]);
+
+  const [filter, setFilter] = useState({ name: "" });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
   const confirm = (id: number) => {
     removeProduct(id)
       .then((response: any) => {
@@ -29,6 +47,26 @@ const ProductsAdmin: React.FC = () => {
   const cancel = () => {
     message.error("Xóa không thành công.");
   };
+
+  const { data: category } = useGetAllcategoryQuery();
+
+  const optionsCategory = category?.map((item: TProduct) => ({
+    value: item.id,
+    label: item.name,
+    disabled: item.category_id === 1,
+  }));
+
+  const { data: categoryData } = useGetAllcategoryQuery<any | null>(); // Fetch categories data
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (categoryData) {
+      setCategories(categoryData); // Set categories state when data is available
+    }
+  }, [categoryData]);
+
+  const [searchAddProduct] = useSearchAddProductMutation();
 
   const columns: ColumnsType<TProduct> = [
     {
@@ -107,8 +145,87 @@ const ProductsAdmin: React.FC = () => {
     },
   ];
 
+  const [selectedCategory, setSelectedCategory] = useState<"all" | number>(
+    "all"
+  );
+
+  const handleCateButtonClick = async (cateId: "all" | number) => {
+    setSelectedCategory(cateId);
+    if (cateId === "all") {
+      setDataProduct(data);
+    } else {
+      const filteredProducts = data?.filter(
+        (product) => product.category_id === cateId
+      );
+      setDataProduct(filteredProducts);
+    }
+  };
+
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setDataProduct(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
+
+  const onFinish = async (values: any) => {
+    const {status_id } = values;
+
+    console.log(values);
+
+    const productDataz = {
+      status_id,
+    };
+
+    try {
+      const data: any = await searchAddProduct(productDataz).unwrap();
+      setDataProduct(data);
+    } catch (error) {
+      console.log(error);
+      message.error("Không tìm thấy sản phẩm nào phù hợp");
+    }
+  };
   return (
     <>
+      <Form
+        name="validateOnly"
+        className="search-appointments"
+        layout="vertical"
+        autoComplete="off"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={{ marginTop: 10 }}
+      >
+        <div
+          className="btn-table"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <div style={{ display: "flex", columnGap: 20 }}>
+            <Search
+              placeholder="Tìm kiếm tên"
+              value={filter?.name}
+              onChange={(e) => handleFilterChange("name", e.target.value)}
+              style={{ width: 200, marginBottom: 10 }}
+            />
+            <Button
+              onClick={() => setFilter({ name: "" })}
+              danger
+              disabled={!openReset}
+            >
+              Cài lại
+            </Button>
+          </div>
+        </div>
+      </Form>
+      <div></div>
       <Button
         onClick={() => navigate("add")}
         type="primary"
@@ -116,7 +233,32 @@ const ProductsAdmin: React.FC = () => {
       >
         THÊM PRODUCTS
       </Button>
-      <TableAdmin columns={columns} data={data} />
+      <div className="btn-status-appointment">
+        <li>
+          <Button
+            type="primary"
+            style={{ marginBottom: 20 }}
+            onClick={() => handleCateButtonClick("all")}
+            className={selectedCategory === "all" ? "selected" : ""}
+          >
+            Tất cả
+          </Button>
+        </li>
+        {categories?.map((FilterCard: any) => (
+          <li>
+            <Button
+              type="primary"
+              style={{ marginBottom: 20 }}
+              onClick={() => handleCateButtonClick(FilterCard.id)}
+              className={selectedCategory === FilterCard.id ? "selected" : ""}
+              value={FilterCard.id}
+            >
+              {FilterCard.name}
+            </Button>
+          </li>
+        ))}
+      </div>
+      <TableAdmin columns={columns} data={dataProduct} />
     </>
   );
 };
