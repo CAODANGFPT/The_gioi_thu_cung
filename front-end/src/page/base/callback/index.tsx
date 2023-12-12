@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Result, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ const CallbackVNPAY: React.FC = () => {
   const navigate = useNavigate();
   const [addInvoice] = useCreateInvoiceMutation();
   const { data: user } = useGetUserQuery();
-
+  const isCallbackSent = useRef(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,11 +67,14 @@ const CallbackVNPAY: React.FC = () => {
           if (user?.id) {
             await addInvoiceVNPAY();
           }
-          sendCallbackInfo({
-            vnp_ResponseCode: apiResponse.data.responseCode,
-            vnp_TxnRef,
-            vnp_OrderInfo,
-          });
+          if (!isCallbackSent.current) {
+            sendCallbackInfo({
+              vnp_ResponseCode: apiResponse.data.responseCode,
+              vnp_TxnRef,
+              vnp_OrderInfo,
+            });
+            isCallbackSent.current = true;
+          }
         }
       } catch (error) {
         console.error("Error", error);
