@@ -1,14 +1,26 @@
 import { Button, Popconfirm, message, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
 import { useNewsQuery, useRemoveNewsMutation } from "../../../services/news";
 import { TNews } from "../../../schema/news";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 const NewsAdmin: React.FC = () => {
   const [removeNews] = useRemoveNewsMutation();
+
+  const { data } = useNewsQuery();
+  console.log(data);
+  const [filter, setFilter] = useState({ name: "" });
+  const [listNews, setListNews] = useState<TNews[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
   const confirm = (id: number) => {
     removeNews(id)
       .then((response: any) => {
@@ -61,7 +73,7 @@ const NewsAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "ID người dùng",
+      title: "Người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,
@@ -95,11 +107,41 @@ const NewsAdmin: React.FC = () => {
       ),
     },
   ];
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.nameUser?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListNews(filteredData);
+    console.log(data)
+    console.log("filter" , filteredData);
+  }, [data, filter]);
 
-  const { data } = useNewsQuery();
-
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <div>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm Trạng Thái "
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/news/add">
         <Button
           type="primary"
@@ -109,7 +151,7 @@ const NewsAdmin: React.FC = () => {
           THÊM BÀI ĐĂNG
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={listNews} />
     </div>
   );
 };

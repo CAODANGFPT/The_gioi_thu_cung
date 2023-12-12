@@ -8,6 +8,7 @@ export const ReviewSchema = yup.object().shape({
   created_at: yup.string(),
   services: yup.number(),
   is_delete: yup.boolean(),
+  user_name: yup.string(),
 });
 
 export const ReviewRequestSchema = yup.object().shape({
@@ -18,6 +19,7 @@ export const ReviewRequestSchema = yup.object().shape({
   created_at: yup.string(),
   services: yup.number(),
   is_delete: yup.boolean(),
+  user_name: yup.string(),
 });
 
 export const ReviewResponseSchema = yup.object().shape({
@@ -28,6 +30,7 @@ export const ReviewResponseSchema = yup.object().shape({
   created_at: yup.string(),
   services: yup.number(),
   is_delete: yup.boolean(),
+  user_name: yup.string(),
 });
 
 export const ReviewErrorSchema = yup.object({});

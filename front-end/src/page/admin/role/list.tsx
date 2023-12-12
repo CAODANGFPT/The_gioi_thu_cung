@@ -1,15 +1,25 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TRole } from "../../../schema/role";
 import { useRemoveRoleMutation, useRoleQuery } from "../../../services/role";
+import Search from "antd/es/input/Search";
 
 const RoleAdmin: React.FC = () => {
   const { data } = useRoleQuery();
   const [removeRole] = useRemoveRoleMutation();
+
+  const [filter, setFilter] = useState({ name: "" });
+  const [listRole, setListRole] = useState<TRole[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
 
   const confirm = (id: number) => {
     removeRole(id);
@@ -30,7 +40,7 @@ const RoleAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Trạng thái",
+      title: "Tên vai trò",
       dataIndex: "name",
       key: "name",
       width: 150,
@@ -62,8 +72,39 @@ const RoleAdmin: React.FC = () => {
       ),
     },
   ];
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListRole(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <div>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm vai trò "
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/role/add">
         <Button
           type="primary"
@@ -73,7 +114,7 @@ const RoleAdmin: React.FC = () => {
           THÊM VAI TRÒ
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={listRole} />
     </div>
   );
 };
