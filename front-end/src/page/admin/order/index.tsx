@@ -1,24 +1,25 @@
-import {
-  Button, DatePicker,
-  Form,
-  Input, Select, message
-} from "antd";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { useGetAllOrderUserQuery, useSearchOrderAdminMutation } from "../../../services/order";
+import {
+  useGetAllOrderUserQuery,
+  useSearchOrderAdminMutation,
+} from "../../../services/order";
 import { useGetAllStatusOrderQuery } from "../../../services/status_order";
 import { TStatusOrder } from "../../../schema/status_order";
 import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import * as XLSX from "xlsx";
+
 const OrderAdmin: React.FC = () => {
   const { data: orderData } = useGetAllOrderUserQuery();
   const { data: statusOrder } = useGetAllStatusOrderQuery();
   const { data: statusPayment } = useGetAllStatusPaymentQuery();
   const { data: paymentMethods } = useGetAllPaymentMethodsQuery();
-  const [ SearchOrderAdmin ] = useSearchOrderAdminMutation();
+  const [SearchOrderAdmin] = useSearchOrderAdminMutation();
   const [dataOrder, setDataOrder] = useState<any | null>(null);
   useEffect(() => {
     if (orderData) {
@@ -26,6 +27,13 @@ const OrderAdmin: React.FC = () => {
     }
   }, [orderData]);
   const navigate = useNavigate();
+  const orderNameFile: string = "Đơn hàng";
+  const { data } = useGetAllOrderUserQuery();
+  useEffect(() => {
+    if (data) {
+      setDataOrder(data);
+    }
+  }, [data]);
   const detailOrder = (item: any) => {
     navigate("detail", {
       state: {
@@ -35,16 +43,43 @@ const OrderAdmin: React.FC = () => {
   };
   const optionsStatusOrder = statusOrder?.map((item: TStatusOrder) => ({
     value: item.id,
-    label: item.name
+    label: item.name,
   }));
   const optionStatusPayment = statusPayment?.map((item: TStatusOrder) => ({
     value: item.id,
-    label: item.name
+    label: item.name,
   }));
   const optionPaymentMethods = paymentMethods?.map((item: TStatusOrder) => ({
     value: item.id,
-    label: item.name
+    label: item.name,
   }));
+  const exportToExcel = () => {
+    const flattenData = dataOrder
+      ? dataOrder.map((item: any) => ({
+          Id: item.id,
+          "Tên tài khoản": item.userName,
+          "Tên người đặt hàng": item.address.name,
+          "Sản phẩm":
+            item.products && item.products.length > 0
+              ? item.products
+                  .map((products: { name: string }) => products.name)
+                  .join(", ")
+              : "",
+          "Thời gian": dayjs(item.time).format("DD-MM-YYYY HH:mm"),
+          "Địa chỉ": item.address.address,
+          "Số điện thoại": item.address.phone,
+          "Thành tiền": item.total,
+          "Phương thức thanh toán": item.paymentMethods.name,
+          "Trạng thái đơn hàng": item.status.name,
+          "Trạng thái thanh toán": item.statusPayment.name,
+          "Ghi chú": item.note,
+        }))
+      : [];
+    const ws = XLSX.utils.json_to_sheet(flattenData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Đơn hàng");
+    XLSX.writeFile(wb, `${orderNameFile}.xlsx`);
+  };
   const columns: ColumnsType<any> = [
     {
       title: "STT",
@@ -128,7 +163,8 @@ const OrderAdmin: React.FC = () => {
     if (values.time) {
       values.time = dayjs(values.time).format("YYYY-MM-DD");
     }
-    const { nameUser, paymentMethods_id, time, status_id, status_payment } = values;
+    const { nameUser, paymentMethods_id, time, status_id, status_payment } =
+      values;
 
     console.log(values);
 
@@ -137,7 +173,7 @@ const OrderAdmin: React.FC = () => {
       paymentMethods_id,
       time: time,
       status_id,
-      status_payment
+      status_payment,
     };
 
     try {
@@ -163,7 +199,7 @@ const OrderAdmin: React.FC = () => {
           <Form.Item name="nameUser">
             <Input placeholder="Tên người đặt" />
           </Form.Item>
-         
+
           <Form.Item name="time" style={{ width: "100%" }}>
             <DatePicker
               placeholder="Ngày"
@@ -176,14 +212,23 @@ const OrderAdmin: React.FC = () => {
             <Select options={optionsStatusOrder} placeholder="Trạng thái" />
           </Form.Item>
           <Form.Item name="paymentMethods_id">
-            <Select options={optionPaymentMethods} placeholder="Phương thức thanh toán" />
+            <Select
+              options={optionPaymentMethods}
+              placeholder="Phương thức thanh toán"
+            />
           </Form.Item>
           <Form.Item name="status_payment" label="">
-            <Select options={optionStatusPayment} placeholder="Trạng thái thanh toán" />
+            <Select
+              options={optionStatusPayment}
+              placeholder="Trạng thái thanh toán"
+            />
           </Form.Item>
         </div>
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <Button htmlType="submit">Tìm kiếm</Button>
+          <Button className="btn" onClick={() => exportToExcel()}>
+            Xuất excel
+          </Button>
         </div>
       </Form>
       <TableAdmin columns={columns} data={dataOrder} />;

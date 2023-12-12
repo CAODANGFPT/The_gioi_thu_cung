@@ -1,6 +1,6 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { Tcategory } from "../../../schema/category";
@@ -9,9 +9,24 @@ import {
   useRemoveCategoryMutation,
 } from "../../../services/category";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 
 const CategoryAdmin: React.FC = () => {
   const [removePetHouse] = useRemoveCategoryMutation();
+  const [dataCategory, setDataCategory] = useState<any | null>(null);
+  const { data } = useGetAllcategoryQuery();
+  useEffect(() => {
+    if (data) {
+      setDataCategory(data);
+    }
+  }, [data]);
+
+  const [filter, setFilter] = useState({ name: ""});
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
   const confirm = (id: number) => {
     removePetHouse(id)
       .then((response: any) => {
@@ -75,9 +90,44 @@ const CategoryAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useGetAllcategoryQuery();
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setDataCategory(filteredData);
+  }, [data, filter]);
+  
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <div>
+      <div
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm tên phòng"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          
+          <Button
+            onClick={() => setFilter({ name: ""})}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/category/add">
         <Button
           type="primary"
@@ -87,7 +137,7 @@ const CategoryAdmin: React.FC = () => {
           THÊM DANH MỤC
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={dataCategory} />
     </div>
   );
 };
