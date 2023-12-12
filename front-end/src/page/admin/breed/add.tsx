@@ -84,13 +84,6 @@ const AddBreed: React.FC = () => {
           autoComplete="off"
           onFinish={handleFormSubmit}
         >
-          <Form.Item
-            name="name"
-            label="Tên"
-            rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-          >
-            <Input />
-          </Form.Item>
           <Form.Item name="species_id" label="Species">
             <Select>
               {species.data?.map((item: Tspecies) => (
@@ -99,6 +92,13 @@ const AddBreed: React.FC = () => {
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="name"
+            label="Tên"
+            rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
+          >
+            <Input />
           </Form.Item>
           <Form.Item>
             <Space>
