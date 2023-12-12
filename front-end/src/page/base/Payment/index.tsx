@@ -13,24 +13,24 @@ const PaymentPage = () => {
   const { id, total } = useParams();
   const navigate = useNavigate();
   const [addInvoice] = useCreateInvoiceMutation();
-
-  const { data: user } = useGetUserQuery();
-  const appointmentshow = id ? parseInt(id, 10) : 0;
-  const { data: statuspayment } = useShowStatusPaymentQuery(appointmentshow);
   const idRef = useRef(id);
   const totalRef = useRef(total);
-
   useEffect(() => {
     idRef.current = id;
     totalRef.current = total;
   }, [id, total]);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(loadingTimeout);
   }, []);
+
+  const { data: user } = useGetUserQuery();
+  const { data: status_payment } = useShowStatusPaymentQuery(Number(id));
+
   const handlePayment = () => {
     axios
       .post(`${API_URL}/create-payment`, { appointmentID: id, amount: total })
@@ -50,29 +50,31 @@ const PaymentPage = () => {
     const appointmentId = idRef.current
       ? parseInt(idRef.current, 10)
       : undefined;
-
     try {
-      if (statuspayment && statuspayment.status_payment === 2) {
-        navigate(`/print-invoice/${id}`);
-        return;
-      } else {
-        console.log(
-          "statuspayment is undefined or statuspayment.id is not equal to 2"
-        );
-      }
+      if (status_payment && status_payment.status_payment !== undefined) {
+        if (status_payment.status_payment === 1) {
+          const response = await addInvoice({
+            user_id: user?.id,
+            paymentMethod: "CASH",
+            amount: amount,
+            appointments_id: appointmentId,
+          });
 
-      const response = await addInvoice({
-        user_id: user?.id,
-        paymentMethod: "CASH",
-        amount: amount,
-        appointments_id: appointmentId,
-      });
-      navigate(`/print-invoice/${id}`);
+          console.log("Invoice creation response:", response);
+          navigate(`/pay-cash`);
+        } else if (status_payment.status_payment === 2) {
+          console.log("Invoice has already been printed for this appointment.");
+          navigate(`/pay-cash`);
+        } else {
+          console.log("Invalid status_payment:", status_payment);
+        }
+      } else {
+        console.log("Status_payment is not defined or is undefined.");
+      }
     } catch (error) {
-      console.error("Error creating invoice", error);
+      console.error("Error creating or navigating to the invoice", error);
     }
   };
-
   if (!user) {
     return (
       <div className="login-now">

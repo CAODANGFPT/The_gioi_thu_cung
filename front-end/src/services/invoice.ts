@@ -16,10 +16,10 @@ const invoiceApi = createApi({
   }),
   endpoints(builder) {
     return {
-      getInvoices: builder.query<TInvoice[], void>({
-        query: () => {
+      getInvoices: builder.query<TInvoice[], number>({
+        query: (id) => {
           return {
-            url: "/invoices",
+            url: `/invoices/${id}`,
             method: "GET",
           };
         },
@@ -34,10 +34,7 @@ const invoiceApi = createApi({
         }),
         invalidatesTags: ["Invoice"],
       }),
-
-     
     };
-    
   },
 });
 

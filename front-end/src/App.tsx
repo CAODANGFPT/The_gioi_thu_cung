@@ -103,6 +103,7 @@ import EditMenuAdmin from "./page/admin/menu/edit";
 import WebsiteInformationAdmin from "./page/admin/websiteInformation/list";
 import EditWebsiteInformationAdmin from "./page/admin/websiteInformation/edit";
 import OrderPay from "./page/base/orderPay";
+import PaymentCashPage from "./page/base/cashSuccsess";
 import OrderAdmin from "./page/admin/order";
 import DetailOrderAdmin from "./page/admin/order/detail";
 function App() {
@@ -306,6 +307,7 @@ function App() {
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
         <Route path="print-invoice/:id" element={<PrintInvoice />} />
+        <Route path="pay-cash" element={<PaymentCashPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
