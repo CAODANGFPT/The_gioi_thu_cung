@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect , useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
@@ -10,11 +10,25 @@ import {
   useUpdateBlockServicesMutation,
 } from "../../../services/services";
 import { TStatus } from "../../../schema/status";
+import Search from "antd/es/input/Search";
 
 const ServicesAdmin: React.FC = () => {
   const navigate = useNavigate();
-  const { data } = useServicesQuery();
   const [blockServices] = useUpdateBlockServicesMutation();
+  const [dataServices, setDataServices] = useState<any | null>(null);
+  const { data } = useServicesQuery();
+  useEffect(() => {
+    if (data) {
+      setDataServices(data);
+    }
+  }, [data]);
+
+  const [filter, setFilter] = useState({ name: "", price: "" });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
 
   const confirmBlock = (id: number) => {
     blockServices({ id: id, is_delete: 1 });
@@ -104,8 +118,52 @@ const ServicesAdmin: React.FC = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+      item.price?.toString().toLowerCase().includes(filter.price.trim().toLowerCase())
+    );
+    setDataServices(filteredData);
+  }, [data, filter]);
+  
+
+  useEffect(() => {
+    if (filter.name === "" && filter.price === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name, filter.price]);
+
   return (
     <>
+    <div
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm tên dịch vụ"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm giá"
+            value={filter?.price}
+            onChange={(e) => handleFilterChange("price", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "", price: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Button
         onClick={() => navigate("add")}
         type="primary"
@@ -114,7 +172,7 @@ const ServicesAdmin: React.FC = () => {
       >
         THÊM DỊCH VỤ
       </Button>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={dataServices} />
     </>
   );
 };

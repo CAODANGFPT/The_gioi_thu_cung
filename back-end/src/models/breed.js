@@ -3,7 +3,7 @@ import connection from "./../db";
 export default class Breed {
   static getAllBreeds() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM breed", (err, results) => {
+      connection.query("SELECT breed.id , breed.name , breed.species_id , species.name AS speciesName FROM breed JOIN species ON breed.species_id = species.id ", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });

@@ -1,17 +1,45 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TOrderAdminSchema } from "../../../schema/order";
 import { useGetAllOrderUserQuery } from "../../../services/order";
 import * as XLSX from "xlsx";
+import Search from "antd/es/input/Search";
 
 const OrderAdmin: React.FC = () => {
-  const { data: orderData } = useGetAllOrderUserQuery();
   const navigate = useNavigate();
   const orderNameFile: string = "Đơn hàng";
+
+  const [dataOrder, setDataOrder] = useState<any | null>(null);
+  const { data } = useGetAllOrderUserQuery();
+  useEffect(() => {
+    if (data) {
+      setDataOrder(data);
+    }
+  }, [data]);
+  const [filter, setFilter] = useState({ name: "" });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.userName?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setDataOrder(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
   const detailOrder = (item: any) => {
     navigate("detail", {
       state: {
@@ -20,8 +48,8 @@ const OrderAdmin: React.FC = () => {
     });
   };
   const exportToExcel = () => {
-    const flattenData = orderData
-      ? orderData.map((item: any) => ({
+    const flattenData = dataOrder
+      ? dataOrder.map((item: any) => ({
           Id: item.id,
           "Tên tài khoản": item.userName,
           "Tên người đặt hàng": item.address.name,
@@ -133,7 +161,27 @@ const OrderAdmin: React.FC = () => {
       >
         Xuất excel
       </Button>
-      <TableAdmin columns={columns} data={orderData || []} />;
+      <div
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tên người mua"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
+      <TableAdmin columns={columns} data={dataOrder || []} />;
     </>
   );
 };
