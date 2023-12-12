@@ -13,6 +13,8 @@ import { TStatusOrder } from "../../../schema/status_order";
 import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
 import * as XLSX from "xlsx";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const OrderAdmin: React.FC = () => {
   const { data: orderData } = useGetAllOrderUserQuery();
@@ -80,6 +82,71 @@ const OrderAdmin: React.FC = () => {
     XLSX.utils.book_append_sheet(wb, ws, "Đơn hàng");
     XLSX.writeFile(wb, `${orderNameFile}.xlsx`);
   };
+
+  const exportToPdf = () => {
+    const unit = "pt";
+    const size = "A2"; // Use A1, A2, A3 or A4
+    const orientation = "landscape"; // portrait or landscape
+
+    const marginLeft = 40;
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.addFont("times", "Times New Roman", "normal");
+
+    doc.setFont("Times New Roman");
+
+    doc.setFontSize(20);
+
+    const title = "Danh sách đơn hàng";
+    const headers = [
+      [
+        "ID",
+        "Tên tài khoản",
+        "Tên người đặt hàng",
+        "Sản phẩm",
+        "Thời gian",
+        "Địa chỉ",
+        "Số điện thoại",
+        "Thành tiền",
+        "Phương thức thanh toán",
+        "Trạng thái đơn hàng",
+        "Trạng thái thanh toán",
+        "Ghi chú",
+      ],
+    ];
+
+    const data = dataOrder
+      ? dataOrder.map((customer: any) => [
+          customer.id,
+          customer.userName,
+          customer.address.name,
+          customer.products && customer.products.length > 0
+            ? customer.products
+                .map((products: { name: string }) => products.name)
+                .join(", ")
+            : "",
+          customer.time,
+          customer.address.address,
+          customer.address.phone,
+          customer.total,
+          customer.paymentMethods.name,
+          customer.status.name,
+          customer.statusPayment.name,
+          customer.note,
+        ])
+      : [];
+
+    let content = {
+      startY: 50,
+      head: headers,
+      body: data,
+    };
+
+    doc.text(title, marginLeft, 40);
+    doc.autoTable(content);
+    doc.save("Order.pdf");
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: "STT",
@@ -228,6 +295,10 @@ const OrderAdmin: React.FC = () => {
           <Button htmlType="submit">Tìm kiếm</Button>
           <Button className="btn" onClick={() => exportToExcel()}>
             Xuất excel
+          </Button>
+
+          <Button className="btn" onClick={() => exportToPdf()}>
+            Xuất PDF
           </Button>
         </div>
       </Form>
