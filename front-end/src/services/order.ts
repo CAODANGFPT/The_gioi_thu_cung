@@ -25,6 +25,22 @@ const orderApi = createApi({
         }),
         invalidatesTags: ["order"],
       }),
+     updateOrderStatus: builder.mutation<any, any>({
+        query: (data) => ({
+          url: `/updateStatusOrder`,
+          method: "PATCH",
+          body: data,
+        }),
+        invalidatesTags: ["order"],
+      }),
+      updateStatusPaymentOrder: builder.mutation<any, any>({
+        query: (data) => ({
+          url: `/updateStatusPaymentOrder`,
+          method: "PATCH",
+          body: data,
+        }),
+        invalidatesTags: ["order"],
+      }),
       getAllOrderUser: builder.query<TOrderAdminSchema[], void>({
         query: () => {
           return {
@@ -51,6 +67,8 @@ const orderApi = createApi({
 
 export const {
   useCreateOrderMutation,
+  useUpdateOrderStatusMutation,
+  useUpdateStatusPaymentOrderMutation,
   useGetAllOrderUserQuery,
   useSearchOrderAdminMutation
 } = orderApi;

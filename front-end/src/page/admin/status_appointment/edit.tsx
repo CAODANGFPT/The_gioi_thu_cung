@@ -44,7 +44,6 @@ const EditStatus = () => {
 
       navigate("/admin/status_appointment");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating stauts:", error);
       reset();

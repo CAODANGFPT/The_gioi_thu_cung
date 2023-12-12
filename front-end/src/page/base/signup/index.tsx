@@ -16,7 +16,6 @@ const SignUp = () => {
     },
     validationSchema: SignUpRequestSchema,
     onSubmit: (values) => {
-      console.log("Submitted form:", values);
       navigate("/RegisterAccount", { state: values });
     },
   });

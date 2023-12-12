@@ -38,8 +38,6 @@ const ShoppingCart = () => {
   };
 
   const calculateTotalAmount = useCallback(() => {
-    console.log(dataOrder);
-    
     let totalAmount = 0;
     dataOrder.forEach(
       (item: { productsId: number; priceCart: number; quantity: number; }) => {
@@ -109,7 +107,6 @@ const ShoppingCart = () => {
 
   const order = () => {
     if (checkedItems.length > 0) {
-      console.log(dataOrder);
 
       const selectedProducts = dataOrder.filter((item: any) =>
         checkedItems.includes(item.productsId)
@@ -140,7 +137,6 @@ const ShoppingCart = () => {
           },
         },
       });
-      console.log(data);
     } else {
       message.error("Bạn chưa chọn sản phẩm nào để mua");
     }

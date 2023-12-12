@@ -19,21 +19,16 @@ export const createPayment = async (req, res) => {
 export const handleVnPayCallback = async (req, res) => {
   try {
     const { vnp_ResponseCode, vnp_TxnRef, vnp_OrderInfo } = req.body;
-    console.log("vnp_ResponseCode:", vnp_ResponseCode);
-    console.log("vnp_TxnRef:", vnp_TxnRef);
-    console.log("vnp_OrderInfo:", vnp_OrderInfo);
     if (vnp_ResponseCode == "00") {
       const reqID = vnp_OrderInfo;
       let onlyID;
 
       if (reqID.startsWith("AP")) {
         onlyID = reqID.substr(2);
-        console.log(onlyID);
         await updateAppointmentStatusPayment(onlyID);
         console.log("Appointment status updated success");
       } else if (reqID.startsWith("OD")) {
         onlyID = reqID.substr(2);
-        console.log(onlyID);
         await updateOrderStatusPayment(onlyID);
         console.log("Order status updated success");
       }

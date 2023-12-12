@@ -86,7 +86,7 @@ const OrderAdmin: React.FC = () => {
       dataIndex: "id",
       key: "id",
       fixed: "right",
-      width: 20,
+      width: 10,
       render: (text, record, index) => index + 1,
     },
     {
@@ -100,6 +100,18 @@ const OrderAdmin: React.FC = () => {
       dataIndex: "time",
       key: "day",
       render: (text) => <div>{dayjs(text).format("DD-MM-YYYY")}</div>,
+      width: 100,
+    },
+    {
+      title: "Thành tiền",
+      dataIndex: "total",
+      key: "total",
+      render: (total) => (
+        <div>
+          <span>{new Intl.NumberFormat("vi-VN").format(total)}</span>
+          <span>VNĐ</span>
+        </div>
+      ),
       width: 100,
     },
     {
@@ -136,7 +148,7 @@ const OrderAdmin: React.FC = () => {
     {
       title: "Thao tác",
       key: "action",
-      width: 100,
+      width: 250,
       render: (data) => (
         <>
           <Button
@@ -146,14 +158,7 @@ const OrderAdmin: React.FC = () => {
           >
             Chi tiết
           </Button>
-          <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-            Xác nhận đơn
-          </Button>
-          {data && (data.status.id === 2 || data.status.id === 1) && (
-            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-              Hủy đơn
-            </Button>
-          )}
+
         </>
       ),
     },
@@ -163,11 +168,7 @@ const OrderAdmin: React.FC = () => {
     if (values.time) {
       values.time = dayjs(values.time).format("YYYY-MM-DD");
     }
-    const { nameUser, paymentMethods_id, time, status_id, status_payment } =
-      values;
-
-    console.log(values);
-
+    const { nameUser, paymentMethods_id, time, status_id, status_payment } = values;
     const servicesData = {
       nameUser,
       paymentMethods_id,

@@ -26,7 +26,6 @@ const EditPetPage = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [form] = Form.useForm();
   const { id } = useParams<{ id: string }>();
-  console.log(id);
   const pet = useGetPetByIdQuery(Number(id));
   const [speciesId, setSpeciesId] = useState<number | undefined>(
     pet.data?.species_id
@@ -35,7 +34,6 @@ const EditPetPage = () => {
   const { data: breed } = useBreedQuery(Number(speciesId));
   const { data: user } = useGetUserQuery();
   const { data: status_id } = useGetAllstatusPetQuery();
-  console.log("chet chua:", status_id);
 
   const [updatePets, { isLoading: isUpdateLoading }] = useUpdatePetsMutation();
 
@@ -105,7 +103,6 @@ const EditPetPage = () => {
       status_id: values.status_id,
       health_condition: values.health_condition,
     };
-    console.log("petdataa", petData);
 
     try {
       await updatePets(petData).unwrap();

@@ -82,7 +82,6 @@ const CallbackVNPAY: React.FC = () => {
       try {
         const callbackApiUrl = "http://localhost:8080/api/callbackVNPAY";
         await axios.post(callbackApiUrl, callbackInfo);
-        console.log("Callback success!");
       } catch (error) {
         console.error("Error", error);
       }
@@ -92,14 +91,10 @@ const CallbackVNPAY: React.FC = () => {
       const paymentInfo = JSON.parse(
         localStorage.getItem("paymentInfo") || "{}"
       );
-      console.log("paymentInfo", paymentInfo);
 
       try {
         const amount = parseInt(paymentInfo.total, 10);
         const appointmentId = parseInt(paymentInfo.id, 10);
-        console.log("userid", user?.id);
-        console.log("giá", amount);
-        console.log("appointmenid", appointmentId);
 
         await addInvoice({
           user_id: user?.id,

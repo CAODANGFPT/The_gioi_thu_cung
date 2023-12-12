@@ -44,7 +44,6 @@ const EditStatusPet = () => {
 
       navigate("/admin/status_pet");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating stauts:", error);
       reset();

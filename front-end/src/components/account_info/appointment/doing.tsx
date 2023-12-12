@@ -8,7 +8,6 @@ import { Button, Tag } from "antd";
 
 const DoingAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(3);
-  console.log("data", listAppointment);
   const navigate = useNavigate();
 
   const handlePayment = (id: number | undefined, total: number | undefined) => {

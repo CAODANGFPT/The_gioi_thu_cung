@@ -17,7 +17,6 @@ const PaymentPage = () => {
   const { data: user } = useGetUserQuery();
   const appointmentshow = id ? parseInt(id, 10) : 0;
   const { data: statuspayment } = useShowStatusPaymentQuery(appointmentshow);
-  console.log("statuspayment", statuspayment?.status_payment);
   const idRef = useRef(id);
   const totalRef = useRef(total);
 
@@ -54,7 +53,6 @@ const PaymentPage = () => {
 
     try {
       if (statuspayment && statuspayment.status_payment === 2) {
-        console.log("Invoice already created for this appointment.");
         navigate(`/print-invoice/${id}`);
         return;
       } else {
@@ -69,8 +67,6 @@ const PaymentPage = () => {
         amount: amount,
         appointments_id: appointmentId,
       });
-
-      console.log("Invoice creation response:", response);
       navigate(`/print-invoice/${id}`);
     } catch (error) {
       console.error("Error creating invoice", error);

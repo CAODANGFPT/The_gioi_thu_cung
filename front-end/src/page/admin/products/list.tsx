@@ -179,8 +179,6 @@ const ProductsAdmin: React.FC = () => {
   const onFinish = async (values: any) => {
     const {status_id } = values;
 
-    console.log(values);
-
     const productDataz = {
       status_id,
     };
@@ -189,7 +187,6 @@ const ProductsAdmin: React.FC = () => {
       const data: any = await searchAddProduct(productDataz).unwrap();
       setDataProduct(data);
     } catch (error) {
-      console.log(error);
       message.error("Không tìm thấy sản phẩm nào phù hợp");
     }
   };

@@ -1,6 +1,6 @@
 import React from "react";
 
-const BreedIcon = () => {
+const BreedIcon: React.FC = () => {
   return (
     <div>
       <svg
