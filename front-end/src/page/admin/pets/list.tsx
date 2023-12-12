@@ -75,19 +75,19 @@ const PetsAdmin: React.FC = () => {
       width: 100,
     },
     {
-      title: "ID người dùng",
+      title: "Người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,
     },
     {
-      title: "ID Loài",
+      title: "Loài",
       dataIndex: "nameSpecies",
       key: "nameSpecies",
       width: 150,
     },
     {
-      title: "ID Giống",
+      title: "Giống",
       dataIndex: "nameBreed",
       key: "nameBreed",
       width: 150,

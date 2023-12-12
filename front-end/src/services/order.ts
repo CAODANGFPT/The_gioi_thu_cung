@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TOrderAdminSchema } from "../schema/order";
 
 const orderApi = createApi({
   reducerPath: "order",
@@ -8,7 +9,7 @@ const orderApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -24,13 +25,52 @@ const orderApi = createApi({
         }),
         invalidatesTags: ["order"],
       }),
+     updateOrderStatus: builder.mutation<any, any>({
+        query: (data) => ({
+          url: `/updateStatusOrder`,
+          method: "PATCH",
+          body: data,
+        }),
+        invalidatesTags: ["order"],
+      }),
+      updateStatusPaymentOrder: builder.mutation<any, any>({
+        query: (data) => ({
+          url: `/updateStatusPaymentOrder`,
+          method: "PATCH",
+          body: data,
+        }),
+        invalidatesTags: ["order"],
+      }),
+      getAllOrderUser: builder.query<TOrderAdminSchema[], void>({
+        query: () => {
+          return {
+            url: "/getAllOrderUser",
+            method: "GET",
+          };
+        },
+        providesTags: ["order"],
+      }),
+
+      searchOrderAdmin: builder.mutation<TOrderAdminSchema[], any>({
+        query: (order) => {
+          return {
+            url: "/searchOrder",
+            method: "POST",
+            body: order,
+          };
+        },
+        invalidatesTags: ["order"],
+      }),
     };
   },
 });
 
 export const {
   useCreateOrderMutation,
-
+  useUpdateOrderStatusMutation,
+  useUpdateStatusPaymentOrderMutation,
+  useGetAllOrderUserQuery,
+  useSearchOrderAdminMutation
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;

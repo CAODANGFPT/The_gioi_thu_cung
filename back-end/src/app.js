@@ -33,8 +33,11 @@ import PrintInvoice from "./routers/PrintInvoice";
 import menuTypeRoutes from "./routers/menuTYpe";
 import websiteInformationRoutes from "./routers/websiteInformation";
 import paymentMethodsRoutes from "./routers/paymentMethods";
+import deliveryAddressRoutes from "./routers/deliveryAddress";
+import statusPaymentRouters from "./routers/statusPayment";
 
-const app = express();
+
+const app = express();statusPaymentRouters
 app.use(express.json());
 app.use(cors());
 
@@ -71,4 +74,6 @@ app.use("/api", PrintInvoice);
 app.use("/api", menuTypeRoutes);
 app.use("/api", websiteInformationRoutes);
 app.use("/api", paymentMethodsRoutes);
+app.use("/api", statusPaymentRouters);
+app.use("/api", deliveryAddressRoutes);
 export const viteNodeApp = app;

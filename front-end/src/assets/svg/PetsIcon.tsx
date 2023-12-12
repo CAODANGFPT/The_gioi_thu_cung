@@ -1,6 +1,6 @@
 import React from "react";
 
-const PetIcon = () => {
+const PetIcon: React.FC = () => {
   return (
     <div>
       <svg

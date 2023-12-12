@@ -22,6 +22,8 @@ import {
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
+import * as XLSX from "xlsx";
+
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
   const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
@@ -38,9 +40,10 @@ const AppointmentsAdmin: React.FC = () => {
       setDataAppoiment(data);
     }
   }, [data]);
+
   const { data: petHouse } = useGetAllpetHouseQuery();
   const [searchAddAppointment] = useSearchAddAppointmentMutation();
-
+  const nameFile: string = "lịch đặt";
   const { data: petStatus } = useStatusQuery();
 
   const optionsPetHouse = petHouse?.map((item: TpetHouse) => ({
@@ -63,6 +66,33 @@ const AppointmentsAdmin: React.FC = () => {
   };
   const redirectToAdd = () => {
     navigate("/admin/appointment/add");
+  };
+  const exportToExcel = () => {
+    const flattenData = dataAppoiment.map((item: any) => ({
+      Id: item.id,
+      "Email người đặt": item.user_email,
+      "Tên người đặt": item.user_name,
+      "Thú cưng":
+        item.pets && item.pets.length > 0
+          ? item.pets.map((pet: { name: string }) => pet.name).join(", ")
+          : "",
+      "Dịch vụ":
+        item.services && item.services.length > 0
+          ? item.services
+              .map((service: { name: string }) => service.name)
+              .join(", ")
+          : "",
+      "Ngày đặt": dayjs(item.day).format("DD-MM-YYYY HH:mm"),
+      "Ngày làm": dayjs(item.start_time).format("DD-MM-YYYY HH:mm"),
+      Phòng: item.pethouse_name,
+      "Thành tiền": item.total,
+      "Trạng thái": item.status_name,
+      "Trạng thái thanh toán": item.statusPaymentName,
+    }));
+    const ws = XLSX.utils.json_to_sheet(flattenData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, `${nameFile}.xlsx`);
   };
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
@@ -201,6 +231,7 @@ const AppointmentsAdmin: React.FC = () => {
       values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
     }
     const { nameUser, pethouse_id, start_time, status_id } = values;
+
     const servicesData = {
       nameUser,
       pethouse_id,
@@ -212,7 +243,6 @@ const AppointmentsAdmin: React.FC = () => {
       const data: any = await searchAddAppointment(servicesData).unwrap();
       setDataAppoiment(data.uniqueData);
     } catch (error) {
-      console.log(error);
       message.error("Không tìm thấy bài nào phù hợp");
     }
   };
@@ -226,13 +256,13 @@ const AppointmentsAdmin: React.FC = () => {
         autoComplete="off"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        style={{marginTop: 10}}
+        style={{ marginTop: 10 }}
       >
         <div className="search-appointments-form">
           <Form.Item name="nameUser">
             <Input placeholder="Tên người đặt" />
           </Form.Item>
-          <Form.Item name="pethouse_id" label="" >
+          <Form.Item name="pethouse_id" label="">
             <Select options={optionsPetHouse} placeholder="Phòng" />
           </Form.Item>
           <Form.Item name="start_time" style={{ width: "100%" }}>
@@ -244,14 +274,29 @@ const AppointmentsAdmin: React.FC = () => {
             />
           </Form.Item>
           <Form.Item name="status_id">
-            <Select options={optionsStatus} placeholder="Trạng thái"/>
+            <Select options={optionsStatus} placeholder="Trạng thái" />
           </Form.Item>
         </div>
         <div>
           <Button htmlType="submit">Tìm kiếm</Button>
         </div>
       </Form>
-      <Button style={{marginTop: 20, marginBottom:20}} className="btn"  onClick={() => redirectToAdd()}>Thêm lịch đặt</Button>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button
+          style={{ marginTop: 20, marginBottom: 20 }}
+          className="btn"
+          onClick={() => redirectToAdd()}
+        >
+          Thêm lịch đặt
+        </Button>
+        <Button
+          style={{ marginTop: 20, marginBottom: 20 }}
+          className="btn"
+          onClick={() => exportToExcel()}
+        >
+          Xuất
+        </Button>
+      </div>
       <TableAdmin columns={columns} data={dataAppoiment} />;
     </>
   );

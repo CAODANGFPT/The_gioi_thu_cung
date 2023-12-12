@@ -3,7 +3,7 @@ import type { FormInstance } from "antd";
 import { Button, Form, Input, Space, message } from "antd";
 import {
   useCreateStatusOrderMutation,
-  useGetAllstatusOrderQuery,
+  useGetAllStatusOrderQuery,
 } from "../../../services/status_order";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const AddStatusOrderAdmin: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { refetch } = useGetAllstatusOrderQuery();
+  const { refetch } = useGetAllStatusOrderQuery();
 
   const handleFormSubmit = async (values: any) => {
     try {

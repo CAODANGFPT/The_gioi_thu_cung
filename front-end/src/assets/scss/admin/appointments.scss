@@ -1,17 +1,20 @@
 @import "../utils/functions.scss";
 @import "../utils/variables.scss";
 
-.search-appointments{
+.search-appointments {
   display: flex;
   justify-content: space-between;
-  &-form{
+
+  &-form {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
+
     @include max-screen(420px) {
       grid-template-columns: 1fr;
     }
-    .ant-form-item{
+
+    .ant-form-item {
       margin: 0;
     }
   }
@@ -24,6 +27,7 @@
     @include Flex(flex, space-between, flex-start);
     @include Gap(90px, 0);
   }
+
   .label {
     &::before {
       display: inline-block;
@@ -35,20 +39,22 @@
       content: "*";
     }
   }
+
   .ant-form-item-control-input-content {
     display: flex;
     column-gap: 20px;
   }
+
   .ant-btn {
     background-color: $EagleGreen;
     border: 1px solid $EagleGreen;
   }
-  :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(
-      :disabled
-    ):not(.ant-btn-disabled):hover {
+
+  :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not( :disabled):not(.ant-btn-disabled):hover {
     background-color: white;
     color: $EagleGreen;
   }
+
   .background {
     position: fixed;
     top: 0;
@@ -57,9 +63,15 @@
     backdrop-filter: grayscale(50%) blur(5px);
     z-index: 10;
   }
+
   .modal-1 {
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border-radius: 24px;
     padding: 20px;
   }
+}
+
+.btn-status-appointment {
+  display: flex;
+  justify-content: space-evenly;
 }

@@ -3,10 +3,7 @@ import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
-import {
-  useCreateInvoiceMutation,
-  useGetInvoicesQuery,
-} from "../../../services/invoice";
+import { useCreateInvoiceMutation } from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
 import { useShowStatusPaymentQuery } from "../../../services/appointments";
 
@@ -33,7 +30,6 @@ const PaymentPage = () => {
 
   const { data: user } = useGetUserQuery();
   const { data: status_payment } = useShowStatusPaymentQuery(Number(id));
-  console.log("appoinmentdata", status_payment?.status_payment);
 
   const handlePayment = () => {
     axios
@@ -56,7 +52,6 @@ const PaymentPage = () => {
       : undefined;
     try {
       if (status_payment && status_payment.status_payment !== undefined) {
-      
         if (status_payment.status_payment === 1) {
           const response = await addInvoice({
             user_id: user?.id,

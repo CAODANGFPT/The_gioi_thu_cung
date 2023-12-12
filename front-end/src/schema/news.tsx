@@ -7,6 +7,7 @@ export const NewsSchema = yup.object().shape({
   description: yup.string(),
   created_at: yup.string(),
   user_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const NewsRequestSchema = yup.object().shape({
@@ -16,6 +17,7 @@ export const NewsRequestSchema = yup.object().shape({
   description: yup.string(),
   created_at: yup.string(),
   user_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const NewsResponseSchema = yup.object().shape({
@@ -25,6 +27,7 @@ export const NewsResponseSchema = yup.object().shape({
   description: yup.string(),
   created_at: yup.string(),
   user_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const NewsErrorSchema = yup.object({});

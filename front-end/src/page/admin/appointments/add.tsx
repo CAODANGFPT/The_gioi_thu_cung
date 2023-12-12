@@ -81,8 +81,6 @@ const AppointmentsAdd: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(appointmentData);
-
       if (appointmentData) {
         const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id

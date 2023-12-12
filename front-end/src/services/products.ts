@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ProductResponseSchema, TProduct } from "../schema/products";
+import { ProductResponseSchema, TProduct, TSearchProduct } from "../schema/products";
 
 const ProductsApi = createApi({
   reducerPath: "products",
@@ -82,6 +82,16 @@ const ProductsApi = createApi({
         },
         invalidatesTags: ["Products"],
       }),
+      searchAddProduct: builder.mutation<TProduct, TSearchProduct>({
+        query: (product) => {
+          return {
+            url: "/searchProductsAdmin",
+            method: "POST",
+            body: product,
+          };
+        },
+        invalidatesTags: ["Products"],
+      }),
     };
   },
 });
@@ -94,6 +104,7 @@ export const {
   useRemoveProductMutation,
   useGetProductByIdQuery,
   useUpdateProductMutation,
+  useSearchAddProductMutation,
 } = ProductsApi;
 export const productsReducer = ProductsApi.reducer;
 export default ProductsApi;

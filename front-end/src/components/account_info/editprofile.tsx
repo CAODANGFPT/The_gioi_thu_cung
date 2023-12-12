@@ -80,7 +80,6 @@ const EditProfile: React.FC<EditProfileProps> = ({
       await updateProfile(dataUpdate).unwrap();
       message.success("thay đổi dữ liệu thành công");
     } catch (error: any) {
-      console.log(error);
       message.error("cập nhập thất bại ");
     }
   };

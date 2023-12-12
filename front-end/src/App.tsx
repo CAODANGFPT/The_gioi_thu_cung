@@ -104,6 +104,8 @@ import WebsiteInformationAdmin from "./page/admin/websiteInformation/list";
 import EditWebsiteInformationAdmin from "./page/admin/websiteInformation/edit";
 import OrderPay from "./page/base/orderPay";
 import PaymentCashPage from "./page/base/cashSuccsess";
+import OrderAdmin from "./page/admin/order";
+import DetailOrderAdmin from "./page/admin/order/detail";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -194,7 +196,10 @@ function App() {
             <Route path="add" element={<AddCategory />} />
             <Route path="edit/:id" element={<EditCategory />} />
           </Route>
-
+          <Route path="order">
+            <Route index element={<OrderAdmin />} />
+            <Route path="detail" element={<DetailOrderAdmin />} />
+          </Route>
           <Route path="products">
             <Route index element={<ProductsAdmin />} />
             <Route path="add" element={<AddProduct />} />

@@ -52,7 +52,6 @@ const EditMenuAdmin = () => {
       reset();
       navigate("/admin/menu");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating menu:", error);
       reset();

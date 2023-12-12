@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TStatusContact } from "../schema/status_contact";
 
 const paymentMethodsApi = createApi({
   reducerPath: "paymentMethods",

@@ -37,13 +37,13 @@ const ContactAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "Subject",
+      title: "Nội dung",
       dataIndex: "subject",
       key: "subject",
       width: 150,
     },
     {
-      title: "ID người dùng",
+      title: "Người dùng",
       dataIndex: "nameUser",
       key: "nameUser",
       width: 150,

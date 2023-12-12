@@ -1,14 +1,30 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStaff } from "../../../schema/staff";
 import { useStaffQuery, useRemoveStaffMutation } from "../../../services/staff";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 
 const StaffAdmin: React.FC = () => {
   const [removeStaff] = useRemoveStaffMutation();
+  const [dataStaff, setDataStaff] = useState<any | null>(null);
+  const { data } = useStaffQuery();
+  useEffect(() => {
+    if (data) {
+      setDataStaff(data);
+    }
+  }, [data]);
+
+  const [filter, setFilter] = useState({ name: ""});
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
   const confirm = (id: number) => {
     removeStaff(id)
       .then((response: any) => {
@@ -72,9 +88,44 @@ const StaffAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useStaffQuery();
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setDataStaff(filteredData);
+  }, [data, filter]);
+  
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
+
   return (
     <div>
+      <div
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm tên phòng"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: ""})}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/staff/add">
         <Button
           type="primary"
@@ -84,7 +135,7 @@ const StaffAdmin: React.FC = () => {
           THÊM NHÂN VIÊN
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={dataStaff} />
     </div>
   );
 };

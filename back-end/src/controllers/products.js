@@ -98,3 +98,22 @@ export const remote = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const searchProductsAdmin = async (req, res) => {
+  try {
+    const { category_id } = req.body;
+    const product = await Products.searchProducts(category_id);
+    if (product.length === 0) {
+      return res.status(400).json({
+        message: "Không có sản phẩm nào phù hợp",
+      });
+    }
+    return res.status(200).json({
+      message: "search thành công",
+      products: product,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};

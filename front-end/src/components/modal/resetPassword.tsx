@@ -27,7 +27,6 @@ const ModalResetPassword: FC<ModalResetPasswordProps> = ({
       await updatePassword(dataUpdate).unwrap();
       message.success("Đổi mât khẩu thành công");
     } catch (error: any) {
-      console.log(error);
       if (error?.status === 400) {
         message.error("Mật khẩu cũ không chính xác");
       } else {

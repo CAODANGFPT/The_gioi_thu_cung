@@ -85,6 +85,7 @@ export const AppointmentSchemaRes = yup.object().shape({
       name: yup.string(),
     })
   ),
+  status_id: yup.number(),
 });
 export const AppointmentRequestSchema = yup.object().shape({
   id: yup.number(),
