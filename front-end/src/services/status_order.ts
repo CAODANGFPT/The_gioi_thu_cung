@@ -17,7 +17,7 @@ const statusOrderApi = createApi({
 
   endpoints(builder) {
     return {
-      getAllstatusOrder: builder.query<TStatusOrder[], void>({
+      getAllStatusOrder: builder.query<TStatusOrder[], void>({
         query: () => {
           return {
             url: "/status_order",
@@ -69,7 +69,7 @@ const statusOrderApi = createApi({
 });
 
 export const {
-  useGetAllstatusOrderQuery,
+  useGetAllStatusOrderQuery,
   useCreateStatusOrderMutation,
   useUpdateStatusOrderMutation,
   useGetStatusOrderByIdQuery,

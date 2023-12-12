@@ -1,14 +1,30 @@
-import { Button } from "antd";
+import {
+  Button, DatePicker,
+  Form,
+  Input, Select, message
+} from "antd";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TOrderAdminSchema } from "../../../schema/order";
-import { useGetAllOrderUserQuery } from "../../../services/order";
-
+import { useGetAllOrderUserQuery, useSearchOrderAdminMutation } from "../../../services/order";
+import { useGetAllStatusOrderQuery } from "../../../services/status_order";
+import { TStatusOrder } from "../../../schema/status_order";
+import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
 const OrderAdmin: React.FC = () => {
   const { data: orderData } = useGetAllOrderUserQuery();
+  const { data: statusOrder } = useGetAllStatusOrderQuery();
+  const { data: statusPayment } = useGetAllStatusPaymentQuery();
+  const { data: paymentMethods } = useGetAllPaymentMethodsQuery();
+  const [ SearchOrderAdmin ] = useSearchOrderAdminMutation();
+  const [dataOrder, setDataOrder] = useState<any | null>(null);
+  useEffect(() => {
+    if (orderData) {
+      setDataOrder(orderData);
+    }
+  }, [orderData]);
   const navigate = useNavigate();
   const detailOrder = (item: any) => {
     navigate("detail", {
@@ -17,7 +33,19 @@ const OrderAdmin: React.FC = () => {
       },
     });
   };
-  const columns: ColumnsType<TOrderAdminSchema> = [
+  const optionsStatusOrder = statusOrder?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name
+  }));
+  const optionStatusPayment = statusPayment?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name
+  }));
+  const optionPaymentMethods = paymentMethods?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name
+  }));
+  const columns: ColumnsType<any> = [
     {
       title: "STT",
       dataIndex: "id",
@@ -95,9 +123,70 @@ const OrderAdmin: React.FC = () => {
       ),
     },
   ];
+
+  const onFinish = async (values: any) => {
+    if (values.time) {
+      values.time = dayjs(values.time).format("YYYY-MM-DD");
+    }
+    const { nameUser, paymentMethods_id, time, status_id, status_payment } = values;
+
+    console.log(values);
+
+    const servicesData = {
+      nameUser,
+      paymentMethods_id,
+      time: time,
+      status_id,
+      status_payment
+    };
+
+    try {
+      const data: any = await SearchOrderAdmin(servicesData).unwrap();
+      setDataOrder(data.uniqueData);
+    } catch (error) {
+      console.log(error);
+      message.error("Không tìm thấy bài nào phù hợp");
+    }
+  };
   return (
     <>
-      <TableAdmin columns={columns} data={orderData || []} />;
+      <Form
+        name="validateOnly"
+        className="search-appointments"
+        layout="vertical"
+        autoComplete="off"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={{ marginTop: 10 }}
+      >
+        <div className="search-appointments-form">
+          <Form.Item name="nameUser">
+            <Input placeholder="Tên người đặt" />
+          </Form.Item>
+         
+          <Form.Item name="time" style={{ width: "100%" }}>
+            <DatePicker
+              placeholder="Ngày"
+              style={{ width: "100%" }}
+              format="YYYY-MM-DD"
+              showNow={false}
+            />
+          </Form.Item>
+          <Form.Item name="status_id">
+            <Select options={optionsStatusOrder} placeholder="Trạng thái" />
+          </Form.Item>
+          <Form.Item name="paymentMethods_id">
+            <Select options={optionPaymentMethods} placeholder="Phương thức thanh toán" />
+          </Form.Item>
+          <Form.Item name="status_payment" label="">
+            <Select options={optionStatusPayment} placeholder="Trạng thái thanh toán" />
+          </Form.Item>
+        </div>
+        <div>
+          <Button htmlType="submit">Tìm kiếm</Button>
+        </div>
+      </Form>
+      <TableAdmin columns={columns} data={dataOrder} />;
     </>
   );
 };

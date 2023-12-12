@@ -5,13 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatusOrder } from "../../../schema/status_order";
 import {
-  useGetAllstatusOrderQuery,
+  useGetAllStatusOrderQuery,
   useRemoveStatusOrderMutation
 } from "../../../services/status_order";
 import { PlusOutlined } from "@ant-design/icons";
 
 const StatusOrderAdmin: React.FC = () => {
-  const { data } = useGetAllstatusOrderQuery();
+  const { data } = useGetAllStatusOrderQuery();
   const navigate = useNavigate();
   const [removeOrderContact] = useRemoveStatusOrderMutation();
 

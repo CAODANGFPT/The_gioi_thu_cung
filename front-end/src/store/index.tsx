@@ -52,6 +52,7 @@ import paymentMethodsApi, {
 } from "../services/paymentMethods";
 import orderApi, { orderReducer } from "../services/order";
 import deliveryAddressApi, { deliveryAddressReducer } from "../services/deliveryAddress";
+import statusPaymentApi, { statusPaymentReducer } from "../services/statusPayment";
 
 const persistConfig = {
   key: "root",
@@ -92,6 +93,8 @@ const rootReducer = combineReducers({
   [paymentMethodsApi.reducerPath]: paymentMethodsReducer,
   [orderApi.reducerPath]: orderReducer,
   [deliveryAddressApi.reducerPath]: deliveryAddressReducer,
+  [statusPaymentApi.reducerPath]: statusPaymentReducer,
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -135,7 +138,8 @@ export const store = configureStore({
       WebsiteInformationApi.middleware,
       paymentMethodsApi.middleware,
       orderApi.middleware,
-      deliveryAddressApi.middleware
+      deliveryAddressApi.middleware,
+      statusPaymentApi.middleware,
     ),
 });
 
