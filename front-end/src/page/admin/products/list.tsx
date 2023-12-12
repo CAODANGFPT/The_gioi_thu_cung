@@ -48,21 +48,13 @@ const ProductsAdmin: React.FC = () => {
     message.error("Xóa không thành công.");
   };
 
-  const { data: category } = useGetAllcategoryQuery();
-
-  const optionsCategory = category?.map((item: TProduct) => ({
-    value: item.id,
-    label: item.name,
-    disabled: item.category_id === 1,
-  }));
-
-  const { data: categoryData } = useGetAllcategoryQuery<any | null>(); // Fetch categories data
+  const { data: categoryData } = useGetAllcategoryQuery<any | null>(); 
 
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (categoryData) {
-      setCategories(categoryData); // Set categories state when data is available
+      setCategories(categoryData);
     }
   }, [categoryData]);
 
@@ -177,7 +169,7 @@ const ProductsAdmin: React.FC = () => {
   }, [filter.name]);
 
   const onFinish = async (values: any) => {
-    const {status_id } = values;
+    const { status_id } = values;
 
     console.log(values);
 
@@ -191,6 +183,18 @@ const ProductsAdmin: React.FC = () => {
     } catch (error) {
       console.log(error);
       message.error("Không tìm thấy sản phẩm nào phù hợp");
+    }
+  };
+  const handleCategoryChange = (value: number | "all") => {
+    setSelectedCategory(value);
+
+    if (value === "all") {
+      setDataProduct(data);
+    } else {
+      const filteredProducts = data?.filter(
+        (product) => product.category_id === value
+      );
+      setDataProduct(filteredProducts);
     }
   };
   return (
@@ -222,6 +226,22 @@ const ProductsAdmin: React.FC = () => {
             >
               Cài lại
             </Button>
+            <Select
+              style={{ width: 200, marginBottom: 10 }}
+              placeholder="Chọn danh mục"
+              value={selectedCategory}
+              onChange={(value) => handleCategoryChange(value)}
+            >
+              <Select.Option value="all">Tất cả</Select.Option>
+              {categories?.map((category: Tcategory) => (
+                <Select.Option
+                  key={category.id}
+                  value={category.id}
+                >
+                  {category.name}
+                </Select.Option>
+              ))}
+            </Select>
           </div>
         </div>
       </Form>

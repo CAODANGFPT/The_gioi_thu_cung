@@ -113,7 +113,7 @@ const CategoryAdmin: React.FC = () => {
       >
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
-            placeholder="Tìm tên phòng"
+            placeholder="Tìm tên danh mục"
             value={filter?.name}
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200, marginBottom: 10 }}

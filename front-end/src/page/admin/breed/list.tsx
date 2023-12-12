@@ -5,12 +5,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TBreed } from "../../../schema/breed";
-
 import {
-  useBreedQuery,
   useGetAllBreedQuery,
   useRemoveBreedMutation,
 } from "../../../services/breed";
+import { useGetAllspeciesQuery } from "../../../services/species";
+import { Tspecies } from "../../../schema/species";
 import Search from "antd/es/input/Search";
 const BreedAdmin: React.FC = () => {
   const navigate = useNavigate();
@@ -23,9 +23,9 @@ const BreedAdmin: React.FC = () => {
     }
   }, [data]);
 
-  const { Option } = Select;
   const [filter, setFilter] = useState({ name: "", species: "" });
   const [openReset, setOpenReset] = useState<boolean>(false);
+
 
   const handleFilterChange = (fieldName: string, value: string) => {
     setFilter({ ...filter, [fieldName]: value });
@@ -48,6 +48,15 @@ const BreedAdmin: React.FC = () => {
     message.error("Xóa không thành công.");
   };
 
+  const { data: speciesData } = useGetAllspeciesQuery<any | null>(); 
+
+  const [species, setSpecies] = useState([]);
+
+  useEffect(() => {
+    if (speciesData) {
+      setSpecies(speciesData);
+    }
+  }, [speciesData]);
   const columns: ColumnsType<TBreed> = [
     {
       title: "STT",
@@ -99,6 +108,10 @@ const BreedAdmin: React.FC = () => {
     },
   ];
 
+
+  const [selectedSpecies, setSelectedSpecies] = useState<"all" | number>(
+    "all"
+  );
   useEffect(() => {
     if (filter.name === "" && filter.species === "") {
       setOpenReset(false);
@@ -117,18 +130,27 @@ const BreedAdmin: React.FC = () => {
     }
 
     if (filter.species !== "all" && filter.species !== "") {
-      console.log(filter.species);
       filteredData = filteredData?.filter((item) =>
         item.speciesName
           ?.toLowerCase()
           .includes(filter.species.trim().toLowerCase())
       );
     }
-    console.log(filteredData);
-
     setDataBreed(filteredData);
   }, [data, filter]);
 
+  const handleCategoryChange = (value: number | "all") => {
+    setSelectedSpecies(value);
+
+    if (value === "all") {
+      setDataBreed(data);
+    } else {
+      const filteredProducts = data?.filter(
+        (breed) => breed.species_id === value
+      );
+      setDataBreed(filteredProducts);
+    }
+  };
   return (
     <>
       <div
@@ -150,17 +172,21 @@ const BreedAdmin: React.FC = () => {
             Cài lại
           </Button>
           <Select
-            value={filter?.species || "Tìm loài" }
-            onChange={(value) => handleFilterChange("species", value)}
-            style={{
-              width: 200,
-              marginBottom: 10,
-            }}
-          >
-            <Select.Option value="all">Tất Cả</Select.Option>
-            <Select.Option value="Mèo">Mèo</Select.Option>
-            <Select.Option value="Chó">Chó</Select.Option>
-          </Select>
+              style={{ width: 200, marginBottom: 10 }}
+              placeholder="Chọn danh mục"
+              value={selectedSpecies}
+              onChange={(value) => handleCategoryChange(value)}
+            >
+              <Select.Option value="all">Tất cả</Select.Option>
+              {species?.map((category: Tspecies) => (
+                <Select.Option
+                  key={category.id}
+                  value={category.id}
+                >
+                  {category.name}
+                </Select.Option>
+              ))}
+            </Select>
         </div>
       </div>
       <Button

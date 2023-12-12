@@ -3,21 +3,21 @@ import * as yup from "yup";
 export const BreedSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
-  species_id: yup.string(),
+  species_id: yup.mixed(),
   speciesName: yup.string(),
 });
 
 export const BreedRequestSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
-  species_id: yup.string(),
+  species_id: yup.mixed(),
   speciesName: yup.string(),
 });
 
 export const BreedResponseSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
-  species_id: yup.string(),
+  species_id: yup.mixed(),
   speciesName: yup.string(),
 });
 
