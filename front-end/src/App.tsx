@@ -103,6 +103,7 @@ import EditMenuAdmin from "./page/admin/menu/edit";
 import WebsiteInformationAdmin from "./page/admin/websiteInformation/list";
 import EditWebsiteInformationAdmin from "./page/admin/websiteInformation/edit";
 import OrderPay from "./page/base/orderPay";
+import PaymentCashPage from "./page/base/cashSuccsess";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -113,7 +114,7 @@ function App() {
         if (currentTime - loginTimestamp > 86400000) {
           await localStorage.removeItem("token");
           await localStorage.removeItem("DateTime");
-        } 
+        }
       }
     };
     checkTokenExpiration();
@@ -301,6 +302,7 @@ function App() {
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
         <Route path="print-invoice/:id" element={<PrintInvoice />} />
+        <Route path="pay-cash" element={<PaymentCashPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

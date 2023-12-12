@@ -16,10 +16,10 @@ const invoiceApi = createApi({
   }),
   endpoints(builder) {
     return {
-      getInvoices: builder.query<TInvoice[], void>({
-        query: () => {
+      getInvoices: builder.query<TInvoice[], number>({
+        query: (id) => {
           return {
-            url: "/invoices",
+            url: `/invoices/${id}`,
             method: "GET",
           };
         },
@@ -34,33 +34,10 @@ const invoiceApi = createApi({
         }),
         invalidatesTags: ["Invoice"],
       }),
-
-      updateStatusCash: builder.mutation<TInvoice[], TInvoice>({
-        query: (appointments_id) => {
-          return {
-            url: `/updateStatusCash/${appointments_id}`,
-            method: "PUT",
-            body: appointments_id,
-          };
-        },
-        invalidatesTags: ["Invoice"],
-      }),
-      getInvoiceByAppointmentID: builder.query<TInvoice[], number>({
-        query: (appointments_id) => ({
-          url: `/getInvoiceByAppointmentID/${appointments_id}`,
-          method: "GET",
-        }),
-        providesTags: ["Invoice"],
-      }),
     };
   },
 });
 
-export const {
-  useGetInvoicesQuery,
-  useCreateInvoiceMutation,
-  useUpdateStatusCashMutation,
-  useGetInvoiceByAppointmentIDQuery,
-} = invoiceApi;
+export const { useGetInvoicesQuery, useCreateInvoiceMutation } = invoiceApi;
 export const invoiceReducer = invoiceApi.reducer;
 export default invoiceApi;
