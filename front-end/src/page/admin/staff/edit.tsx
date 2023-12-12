@@ -44,7 +44,6 @@ const EditStaff = () => {
 
       navigate("/admin/staff");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating staff:", error);
       reset();

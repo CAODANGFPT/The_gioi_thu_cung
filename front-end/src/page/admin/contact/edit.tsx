@@ -39,7 +39,6 @@ const EditContact = () => {
     } catch (error) {
       cancel();
       console.error("Update trạng thái contact thất bại", error);
-      console.log(error)
       reset();
     }
   };

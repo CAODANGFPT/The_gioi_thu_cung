@@ -18,8 +18,6 @@ export const createInvoice = async (req, res) => {
       paymentMethod,
       appointments_id
     );
-
-    console.log("status success");
     res.json({ id: invoiceId, message: "thêm invoice thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

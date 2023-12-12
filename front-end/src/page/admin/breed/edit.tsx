@@ -45,7 +45,6 @@ const EditBreed = () => {
       reset();
       navigate("/admin/breed");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating breed:", error);
       reset();

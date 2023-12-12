@@ -22,9 +22,6 @@ const SignIn = () => {
   const [loginForm] = useLoginUserMutation();
   const { data: user, isLoading, isError, isSuccess } = useGetUserQuery();
   const currentTime = new Date().getTime();
-  console.log(isLoading);
-  console.log(isError);
-  console.log(user);
 
   useEffect(() => {
     if (!isLoading) {

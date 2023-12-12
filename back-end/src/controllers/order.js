@@ -54,7 +54,7 @@ export const getOrderUser = async (req, res) => {
                   paymentMethods: {
                     id: record.paymentMethods_id,
                     name: record.paymentMethods_name,
-                    image: record.paymentMethods_image
+                    image: record.paymentMethods_image,
                   },
                   statusPayment: {
                     id: record.status_payment_id,
@@ -107,7 +107,7 @@ export const getOrderUser = async (req, res) => {
                 paymentMethods: {
                   id: record.paymentMethods_id,
                   name: record.paymentMethods_name,
-                  image: record.paymentMethods_image
+                  image: record.paymentMethods_image,
                 },
                 statusPayment: {
                   id: record.status_payment_id,
@@ -168,7 +168,7 @@ export const getAllOrder = async (req, res) => {
               paymentMethods: {
                 id: record.paymentMethods_id,
                 name: record.paymentMethods_name,
-                image: record.paymentMethods_image
+                image: record.paymentMethods_image,
               },
               statusPayment: {
                 id: record.status_payment_id,
@@ -221,8 +221,7 @@ export const getAllOrder = async (req, res) => {
             paymentMethods: {
               id: record.paymentMethods_id,
               name: record.paymentMethods_name,
-              image: record.paymentMethods_image
-
+              image: record.paymentMethods_image,
             },
             statusPayment: {
               id: record.status_payment_id,
@@ -284,11 +283,26 @@ export const updateStatusOrder = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateStatusPaymentOrder = async (req, res) => {
+  try {
+    const { id, status_payment  } = req.body;
+    const orderId = await Orders.updateStatusOrder(id, status_payment);
+    res.json({ id: orderId, message: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const searchOrderAdmin = async (req, res) => {
   try {
-    const { paymentMethods_id, status_payment, nameUser, time,status_id } = req.body;
+    const { paymentMethods_id, status_payment, nameUser, time, status_id } =
+      req.body;
     const orders = await Orders.searchOrderAdmin(
-      paymentMethods_id,status_id, status_payment, nameUser, time
+      paymentMethods_id,
+      status_id,
+      status_payment,
+      nameUser,
+      time
     );
     if (orders.length === 0) {
       return res.status(400).json({
@@ -332,7 +346,7 @@ export const searchOrderAdmin = async (req, res) => {
               paymentMethods: {
                 id: record.paymentMethods_id,
                 name: record.paymentMethods_name,
-                image: record.paymentMethods_image
+                image: record.paymentMethods_image,
               },
               statusPayment: {
                 id: record.status_payment_id,
@@ -385,8 +399,7 @@ export const searchOrderAdmin = async (req, res) => {
             paymentMethods: {
               id: record.paymentMethods_id,
               name: record.paymentMethods_name,
-              image: record.paymentMethods_image
-
+              image: record.paymentMethods_image,
             },
             statusPayment: {
               id: record.status_payment_id,

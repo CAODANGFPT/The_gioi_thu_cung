@@ -61,7 +61,6 @@ const EditAbout = () => {
 
       navigate("/admin/about");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating About:", error);
       reset();

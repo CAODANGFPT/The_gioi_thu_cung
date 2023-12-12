@@ -46,10 +46,10 @@ export default class Order {
             total,
             currentTime,
             note,
+            status_id,
             paymentMethods_id,
             status_payment,
             address_id,
-            status_id,
           ],
           (err, results) => {
             if (err) reject(err);
@@ -72,7 +72,18 @@ export default class Order {
       );
     });
   }
-
+  static updateStatusPaymentOrder(id, status_payment ) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE status_payment  SET status_payment  = ? WHERE id = ?",
+        [status_payment , id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
   static searchOrderAdmin(
     paymentMethods_id,
     status_id,

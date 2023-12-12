@@ -23,7 +23,6 @@ const pieData = [
 const DashBoard = () => {
   const { data: listDashboard } = useListQuery();
   const { data: totalDashboard } = useTotalQuery();
-  // console.log(data);
 
   const lineData =
     listDashboard?.map((data) => ({

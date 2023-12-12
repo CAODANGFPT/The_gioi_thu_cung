@@ -44,7 +44,6 @@ const EditCategory = () => {
 
       navigate("/admin/category");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Lỗi khi update danh mục:", error);
       reset();

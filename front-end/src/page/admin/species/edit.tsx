@@ -43,7 +43,6 @@ const EditSpecies = () => {
       reset();
       navigate("/admin/species");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating species:", error);
       reset();

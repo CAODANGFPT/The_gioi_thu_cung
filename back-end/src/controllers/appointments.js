@@ -732,7 +732,6 @@ export const searchAppointmentsAdmin = async (req, res) => {
       message: "search thành công",
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };

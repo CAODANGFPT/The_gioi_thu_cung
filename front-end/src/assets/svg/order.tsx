@@ -1,4 +1,5 @@
-const OrderIcon = () => {
+import React from "react";
+const OrderIcon: React.FC  = () => {
   return (
     <>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="order">

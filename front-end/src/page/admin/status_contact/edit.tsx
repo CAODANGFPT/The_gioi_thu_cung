@@ -44,7 +44,6 @@ const EditStatusContact = () => {
 
       navigate("/admin/status_contact");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating stauts:", error);
       reset();

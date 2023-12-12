@@ -29,7 +29,6 @@ const Addnews = () => {
     message.error("Tạo bài đăng không công.");
   };
   const { data: user } = useGetUserQuery();
-  console.log("user", user?.id);
 
   const handleFormSubmit = async (values: TNews) => {
     const { title, description } = values;

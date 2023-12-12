@@ -80,7 +80,6 @@ const AppointmentEdit: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(appointmentData);
       
       if (appointmentData) {
         const petIds = appointmentData.pets?.map(

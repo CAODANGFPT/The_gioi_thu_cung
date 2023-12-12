@@ -44,7 +44,6 @@ const EditStatusOrder = () => {
 
       navigate("/admin/status_order");
     } catch (error) {
-      console.log(error);
       cancel();
       console.error("Error updating stauts:", error);
       reset();

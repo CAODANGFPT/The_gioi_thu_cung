@@ -44,7 +44,6 @@ const AddSetTime: React.FC = () => {
   };
 
   const handleFormSubmit = async (values: { name: string; time: any }) => {
-    // console.log(dayjs(values.time).format("DD-MM-YYYY (HH:mm)"));
     try {
       const updatedSetTime: TSetTimeAdd = {
         name: values.name,
