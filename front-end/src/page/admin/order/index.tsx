@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TOrderAdminSchema } from "../../../schema/order";
 import { useGetAllOrderUserQuery } from "../../../services/order";
+import * as XLSX from "xlsx";
 import Search from "antd/es/input/Search";
 
 const OrderAdmin: React.FC = () => {
   const navigate = useNavigate();
+  const orderNameFile: string = "Đơn hàng";
 
   const [dataOrder, setDataOrder] = useState<any | null>(null);
   const { data } = useGetAllOrderUserQuery();
@@ -44,6 +46,33 @@ const OrderAdmin: React.FC = () => {
         ...item,
       },
     });
+  };
+  const exportToExcel = () => {
+    const flattenData = dataOrder
+      ? dataOrder.map((item: any) => ({
+          Id: item.id,
+          "Tên tài khoản": item.userName,
+          "Tên người đặt hàng": item.address.name,
+          "Sản phẩm":
+            item.products && item.products.length > 0
+              ? item.products
+                  .map((products: { name: string }) => products.name)
+                  .join(", ")
+              : "",
+          "Thời gian": dayjs(item.time).format("DD-MM-YYYY HH:mm"),
+          "Địa chỉ": item.address.address,
+          "Số điện thoại": item.address.phone,
+          "Thành tiền": item.total,
+          "Phương thức thanh toán": item.paymentMethods.name,
+          "Trạng thái đơn hàng": item.status.name,
+          "Trạng thái thanh toán": item.statusPayment.name,
+          "Ghi chú": item.note,
+        }))
+      : [];
+    const ws = XLSX.utils.json_to_sheet(flattenData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Đơn hàng");
+    XLSX.writeFile(wb, `${orderNameFile}.xlsx`);
   };
   const columns: ColumnsType<TOrderAdminSchema> = [
     {
@@ -125,6 +154,13 @@ const OrderAdmin: React.FC = () => {
   ];
   return (
     <>
+      <Button
+        style={{ marginTop: 20, marginBottom: 20 }}
+        className="btn"
+        onClick={() => exportToExcel()}
+      >
+        Xuất excel
+      </Button>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
