@@ -112,6 +112,18 @@ const BreedAdmin: React.FC = () => {
   const [selectedSpecies, setSelectedSpecies] = useState<"all" | number>(
     "all"
   );
+  const handleCateButtonClick = async (cateId: "all" | number) => {
+    setSelectedSpecies(cateId);
+    if (cateId === "all") {
+      setDataBreed(data);
+    } else {
+      const filteredProducts = data?.filter(
+        (breed) => breed.species_id === cateId
+      );
+      setDataBreed(filteredProducts);
+    }
+  };
+
   useEffect(() => {
     if (filter.name === "" && filter.species === "") {
       setOpenReset(false);
@@ -197,6 +209,31 @@ const BreedAdmin: React.FC = () => {
       >
         THÊM GIỐNG
       </Button>
+      <div className="btn-status-appointment">
+        <li>
+          <Button
+            type="primary"
+            style={{ marginBottom: 20 }}
+            onClick={() => handleCateButtonClick("all")}
+            className={selectedSpecies === "all" ? "selected" : ""}
+          >
+            Tất cả
+          </Button>
+        </li>
+        {species?.map((FilterCard: any) => (
+          <li>
+            <Button
+              type="primary"
+              style={{ marginBottom: 20 }}
+              onClick={() => handleCateButtonClick(FilterCard.id)}
+              className={selectedSpecies === FilterCard.id ? "selected" : ""}
+              value={FilterCard.id}
+            >
+              {FilterCard.name}
+            </Button>
+          </li>
+        ))}
+      </div>
       <TableAdmin columns={columns} data={dataBreed} />
     </>
   );
