@@ -285,6 +285,7 @@
               border-radius: 5px;
               border: none;
               text-transform: uppercase;
+              cursor: pointer;
             }
            
           }
@@ -347,4 +348,8 @@
 }
 .close{
   background-color: firebrick;
+}
+.node-admin{
+  display: flex;
+  gap: 5px;
 }

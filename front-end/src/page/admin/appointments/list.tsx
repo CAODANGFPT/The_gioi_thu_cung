@@ -20,11 +20,9 @@ import {
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
 } from "../../../services/appointments";
-import * as XLSX from "xlsx";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
 const AppointmentsAdmin: React.FC = () => {
-  const nameFile: string = "lịch đặt"
   const navigate = useNavigate();
   const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
   const confirm = async (id: number) => {
@@ -46,25 +44,6 @@ const AppointmentsAdmin: React.FC = () => {
 
   const { data: petStatus } = useStatusQuery();
 
-  const exportToExcel = () => {
-    const flattenData = dataAppoiment.map((item: any) => ({
-      "Id": item.id,
-      "Email người đặt": item.user_email,
-      "Tên người đặt": item.user_name,
-      "Thú cưng": item.pets && item.pets.length > 0 ? item.pets.map((pet: { name: string; }) => pet.name).join(', ') : '',
-      "Dịch vụ": item.services && item.services.length > 0 ? item.services.map((service: { name: string; }) => service.name).join(', ') : '',
-      "Ngày đặt": dayjs(item.day).format("DD-MM-YYYY HH:mm"),
-      "Ngày làm": dayjs(item.start_time).format("DD-MM-YYYY HH:mm"),  
-      "Phòng": item.pethouse_name,
-      "Thành tiền": item.total,
-      "Trạng thái": item.status_name,
-      "Trạng thái thanh toán": item.statusPaymentName
-    }));
-    const ws = XLSX.utils.json_to_sheet(flattenData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, `${nameFile}.xlsx`);
-  };
   const optionsPetHouse = petHouse?.map((item: TpetHouse) => ({
     value: item.id,
     label: item.name,
@@ -86,6 +65,11 @@ const AppointmentsAdmin: React.FC = () => {
   const redirectToAdd = () => {
     navigate("/admin/appointment/add");
   };
+
+  const { data: status_appointment } = useStatusQuery<any>();
+
+  const [selectedStatusId, setSelectedStatusId] = useState<"all" | number>();
+  const [fillterStatus, setFillterStatus] = useState<any>();
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
     {
@@ -242,6 +226,28 @@ const AppointmentsAdmin: React.FC = () => {
     }
   };
 
+  const handleStatusButtonClick = async (statusId: "all" | number) => {
+    setSelectedStatusId(statusId);
+    try {
+      setFillterStatus(statusId === "all" ? null : statusId);
+    } catch (error) {
+      console.error("Error filtering data by status:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      const filteredData = fillterStatus
+        ? data.filter((item) => {
+            console.log(item);
+            return "status_id" in item && item.status_id === fillterStatus;
+          })
+        : data;
+
+      setDataAppoiment(filteredData);
+    }
+  }, [data, fillterStatus]);
+
   return (
     <>
       <h2>Tìm kiếm</h2>
@@ -277,23 +283,39 @@ const AppointmentsAdmin: React.FC = () => {
           <Button htmlType="submit">Tìm kiếm</Button>
         </div>
       </Form>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Button
-          style={{ marginTop: 20, marginBottom: 20 }}
-          className="btn"
-          onClick={() => redirectToAdd()}
-        >
-          Thêm lịch đặt
-        </Button>
-        <Button
-          style={{ marginTop: 20, marginBottom: 20 }}
-          className="btn"
-          onClick={() => exportToExcel()}
-        >
-          Xuất
-        </Button>
+      <Button
+        style={{ marginTop: 20, marginBottom: 20 }}
+        className="btn"
+        onClick={() => redirectToAdd()}
+      >
+        Thêm lịch đặt
+      </Button>
+      <div className="btn-status-appointment">
+        <li>
+          <Button
+            type="primary"
+            style={{ marginBottom: 20 }}
+            onClick={() => handleStatusButtonClick("all")}
+            className={selectedStatusId === "all" ? "selected" : ""}
+          >
+            Tất cả
+          </Button>
+        </li>
+        {status_appointment?.map((FilterCard: any) => (
+          <li>
+            <Button
+              type="primary"
+              style={{ marginBottom: 20 }}
+              onClick={() => handleStatusButtonClick(FilterCard.id)}
+              className={selectedStatusId === FilterCard.id ? "selected" : ""}
+              value={FilterCard.id}
+            >
+              {FilterCard.name}
+            </Button>
+          </li>
+        ))}
       </div>
-        <TableAdmin columns={columns} data={dataAppoiment} />;
+      <TableAdmin columns={columns} data={dataAppoiment} />;
     </>
   );
 };

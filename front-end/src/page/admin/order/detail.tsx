@@ -34,12 +34,14 @@ const DetailOrderAdmin: FC = () => {
             </div>
             <div className="orderPay-address-title-item">
               <div className="orderPay-address-title-item-user">
-                Nguyễn Văn Hải (+84) 971397545
+                Họ và tên: {data?.address.name}
               </div>
-              <div>
-                140 vũ trọng phụng, Phường Minh Khai, Thành Phố Hưng Yên, Hưng
-                Yên
+              <div className="orderPay-address-title-item-user">
+                Số điện thoại: +84{data?.address.phone}
               </div>
+            </div>
+            <div className="orderPay-address-title-item-user">
+              Điạ chỉ: {data?.address.address}
             </div>
           </div>
         </div>
@@ -92,6 +94,10 @@ const DetailOrderAdmin: FC = () => {
                 ))}
             </tbody>
           </table>
+          <div className="orderPay-product-node node-admin">
+            <div>Lời nhắn:</div>
+            <div>{data.note}</div>
+          </div>
           <div className="orderPay-product-total">
             <p>Tổng số tiền ({data.products.length} sản phẩm): </p>
             <div>
@@ -102,28 +108,34 @@ const DetailOrderAdmin: FC = () => {
         </div>
 
         <div className="orderPay-paymentMethods">
-          <div className="orderPay-paymentMethods-title" style={{ display: "flex", gap: 10}}>
-            <div style={{ fontWeight: 500}}>Phương thức thanh toán:</div>
+          <div
+            className="orderPay-paymentMethods-title"
+            style={{ display: "flex", gap: 10 }}
+          >
+            <div style={{ fontWeight: 500 }}>Phương thức thanh toán:</div>
             <div
               style={{
                 border: "1px solid #00575c",
                 padding: "2px 10px",
-                color: "#00575c"
+                color: "#00575c",
               }}
             >
-                {data.paymentMethods.name}
+              {data.paymentMethods.name}
             </div>
           </div>
-          <div className="orderPay-paymentMethods-title" style={{ display: "flex", gap: 10,  borderTop: "1px solid #f1f0ed",}}>
-            <div style={{ fontWeight: 500}}>Trạng thái đơn hàng:</div>
+          <div
+            className="orderPay-paymentMethods-title"
+            style={{ display: "flex", gap: 10, borderTop: "1px solid #f1f0ed" }}
+          >
+            <div style={{ fontWeight: 500 }}>Trạng thái đơn hàng:</div>
             <div
               style={{
                 border: "1px solid #00575c",
                 padding: "2px 10px",
-                color: "#00575c"
+                color: "#00575c",
               }}
             >
-                {data.status.name}
+              {data.status.name}
             </div>
           </div>
           <div className="orderPay-paymentMethods-money orderPay-paymentMethods-admin">

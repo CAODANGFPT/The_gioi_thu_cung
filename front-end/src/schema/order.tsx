@@ -14,32 +14,24 @@ export const OrderAdminSchema = yup.object().shape({
       quantity: yup.number(),
     })
   ),
-  address: yup.array().of(
-    yup.object().shape({
-      id: yup.number(),
-      name: yup.string(),
-      address: yup.string(),
-      phone: yup.number(),
-    })
-  ),
-  paymentMethods: yup.array().of(
-    yup.object().shape({
-      id: yup.number(),
-      name: yup.string(),
-    })
-  ),
-  status: yup.array().of(
-    yup.object().shape({
-      id: yup.number(),
-      name: yup.string(),
-    })
-  ),
-  statusPayment: yup.array().of(
-    yup.object().shape({
-      id: yup.number(),
-      name: yup.string(),
-    })
-  ),
+  address: yup.object().shape({
+    id: yup.number(),
+    name: yup.string(),
+    address: yup.string(),
+    phone: yup.number(),
+  }),
+  paymentMethods: yup.object().shape({
+    id: yup.number(),
+    name: yup.string(),
+  }),
+  status: yup.object().shape({
+    id: yup.number(),
+    name: yup.string(),
+  }),
+  statusPayment: yup.object().shape({
+    id: yup.number(),
+    name: yup.string(),
+  }),
   total: yup.number(),
   note: yup.number(),
 });

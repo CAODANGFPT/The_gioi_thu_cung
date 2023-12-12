@@ -284,3 +284,125 @@ export const updateStatusOrder = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const searchOrderAdmin = async (req, res) => {
+  try {
+    const { paymentMethods_id, status_payment, nameUser, time,status_id } = req.body;
+    const orders = await Orders.searchOrderAdmin(
+      paymentMethods_id,status_id, status_payment, nameUser, time
+    );
+    if (orders.length === 0) {
+      return res.status(400).json({
+        message: "Không có lịch nào phù hợp",
+      });
+    }
+
+    const uniqueData = orders.reduce((result, record) => {
+      if (record && record.id !== undefined) {
+        if (Array.isArray(result) && result.length > 0) {
+          const existingRecordIndex = result.findIndex(
+            (r) => r.id === record.id
+          );
+          if (existingRecordIndex === -1) {
+            result.push({
+              id: record.id,
+              userId: record.userId,
+              userName: record.userName,
+              products: [
+                {
+                  id: record.productId,
+                  name: record.productName,
+                  img: record.productImg,
+                  price: record.productPrice,
+                  quantity: record.quantity,
+                },
+              ],
+              address: {
+                id: record.addressId,
+                name: record.addressName,
+                phone: record.addressPhone,
+                address: record.address,
+              },
+              total: record.total,
+              time: record.time,
+              note: record.note,
+              status: {
+                id: record.status_id,
+                name: record.status_name,
+              },
+              paymentMethods: {
+                id: record.paymentMethods_id,
+                name: record.paymentMethods_name,
+                image: record.paymentMethods_image
+              },
+              statusPayment: {
+                id: record.status_payment_id,
+                name: record.status_payment_name,
+              },
+            });
+          } else {
+            const existingProductIndex = result[
+              existingRecordIndex
+            ].products.findIndex(
+              (products) => products.id === record.productId
+            );
+            if (existingProductIndex === -1) {
+              result[existingRecordIndex].products.push({
+                id: record.productId,
+                name: record.productName,
+                img: record.productImg,
+                price: record.productPrice,
+                quantity: record.quantity,
+              });
+            }
+          }
+        } else {
+          result.push({
+            id: record.id,
+            userId: record.userId,
+            userName: record.userName,
+            products: [
+              {
+                id: record.productId,
+                name: record.productName,
+                img: record.productImg,
+                price: record.productPrice,
+                quantity: record.quantity,
+              },
+            ],
+            address: {
+              id: record.addressId,
+              name: record.addressName,
+              phone: record.addressPhone,
+              address: record.address,
+            },
+            total: record.total,
+            time: record.time,
+            note: record.note,
+            status: {
+              id: record.status_id,
+              name: record.status_name,
+            },
+            paymentMethods: {
+              id: record.paymentMethods_id,
+              name: record.paymentMethods_name,
+              image: record.paymentMethods_image
+
+            },
+            statusPayment: {
+              id: record.status_payment_id,
+              name: record.status_payment_name,
+            },
+          });
+        }
+      }
+      return result;
+    }, []);
+    return res.status(200).json({
+      uniqueData,
+      message: "search thành công",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
