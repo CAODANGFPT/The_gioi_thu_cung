@@ -6,7 +6,6 @@ import AppoinmentIcon from "../svg/appoinmentIcon";
 import BannerIcon from "../svg/banner";
 import BreedIcon from "../svg/breed";
 import Category from "../svg/category";
-import LogoIcon from "../svg/logoIcon";
 import MenuIcon2 from "../svg/menuIcon2";
 import MenuTypeIcon from "../svg/menuTypeIcon";
 import NewIcon from "../svg/newIcon";
