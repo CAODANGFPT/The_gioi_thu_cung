@@ -1,43 +1,39 @@
-import { Button } from "antd";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TOrderAdminSchema } from "../../../schema/order";
-import { useGetAllOrderUserQuery } from "../../../services/order";
-import Search from "antd/es/input/Search";
+import {
+  useGetAllOrderUserQuery,
+  useSearchOrderAdminMutation,
+} from "../../../services/order";
+import { useGetAllStatusOrderQuery } from "../../../services/status_order";
+import { TStatusOrder } from "../../../schema/status_order";
+import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import * as XLSX from "xlsx";
 
 const OrderAdmin: React.FC = () => {
-  const navigate = useNavigate();
-
+  const { data: orderData } = useGetAllOrderUserQuery();
+  const { data: statusOrder } = useGetAllStatusOrderQuery();
+  const { data: statusPayment } = useGetAllStatusPaymentQuery();
+  const { data: paymentMethods } = useGetAllPaymentMethodsQuery();
+  const [SearchOrderAdmin] = useSearchOrderAdminMutation();
   const [dataOrder, setDataOrder] = useState<any | null>(null);
+  useEffect(() => {
+    if (orderData) {
+      setDataOrder(orderData);
+    }
+  }, [orderData]);
+  const navigate = useNavigate();
+  const orderNameFile: string = "Đơn hàng";
   const { data } = useGetAllOrderUserQuery();
   useEffect(() => {
     if (data) {
       setDataOrder(data);
     }
   }, [data]);
-  const [filter, setFilter] = useState({ name: "" });
-  const [openReset, setOpenReset] = useState<boolean>(false);
-
-  useEffect(() => {
-    const filteredData = data?.filter((item) =>
-      item.userName?.toLowerCase().includes(filter.name.trim().toLowerCase())
-    );
-    setDataOrder(filteredData);
-  }, [data, filter]);
-
-  useEffect(() => {
-    if (filter.name === "") {
-      setOpenReset(false);
-    } else {
-      setOpenReset(true);
-    }
-  }, [filter.name]);
-  const handleFilterChange = (fieldName: string, value: string) => {
-    setFilter({ ...filter, [fieldName]: value });
-  };
   const detailOrder = (item: any) => {
     navigate("detail", {
       state: {
@@ -45,7 +41,46 @@ const OrderAdmin: React.FC = () => {
       },
     });
   };
-  const columns: ColumnsType<TOrderAdminSchema> = [
+  const optionsStatusOrder = statusOrder?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name,
+  }));
+  const optionStatusPayment = statusPayment?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name,
+  }));
+  const optionPaymentMethods = paymentMethods?.map((item: TStatusOrder) => ({
+    value: item.id,
+    label: item.name,
+  }));
+  const exportToExcel = () => {
+    const flattenData = dataOrder
+      ? dataOrder.map((item: any) => ({
+          Id: item.id,
+          "Tên tài khoản": item.userName,
+          "Tên người đặt hàng": item.address.name,
+          "Sản phẩm":
+            item.products && item.products.length > 0
+              ? item.products
+                  .map((products: { name: string }) => products.name)
+                  .join(", ")
+              : "",
+          "Thời gian": dayjs(item.time).format("DD-MM-YYYY HH:mm"),
+          "Địa chỉ": item.address.address,
+          "Số điện thoại": item.address.phone,
+          "Thành tiền": item.total,
+          "Phương thức thanh toán": item.paymentMethods.name,
+          "Trạng thái đơn hàng": item.status.name,
+          "Trạng thái thanh toán": item.statusPayment.name,
+          "Ghi chú": item.note,
+        }))
+      : [];
+    const ws = XLSX.utils.json_to_sheet(flattenData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Đơn hàng");
+    XLSX.writeFile(wb, `${orderNameFile}.xlsx`);
+  };
+  const columns: ColumnsType<any> = [
     {
       title: "STT",
       dataIndex: "id",
@@ -123,29 +158,80 @@ const OrderAdmin: React.FC = () => {
       ),
     },
   ];
+
+  const onFinish = async (values: any) => {
+    if (values.time) {
+      values.time = dayjs(values.time).format("YYYY-MM-DD");
+    }
+    const { nameUser, paymentMethods_id, time, status_id, status_payment } =
+      values;
+
+    console.log(values);
+
+    const servicesData = {
+      nameUser,
+      paymentMethods_id,
+      time: time,
+      status_id,
+      status_payment,
+    };
+
+    try {
+      const data: any = await SearchOrderAdmin(servicesData).unwrap();
+      setDataOrder(data.uniqueData);
+    } catch (error) {
+      console.log(error);
+      message.error("Không tìm thấy bài nào phù hợp");
+    }
+  };
   return (
     <>
-      <div
-        className="btn-table"
-        style={{ display: "flex", justifyContent: "space-between" }}
+      <Form
+        name="validateOnly"
+        className="search-appointments"
+        layout="vertical"
+        autoComplete="off"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={{ marginTop: 10 }}
       >
-        <div style={{ display: "flex", columnGap: 20 }}>
-          <Search
-            placeholder="Tên người mua"
-            value={filter?.name}
-            onChange={(e) => handleFilterChange("name", e.target.value)}
-            style={{ width: 200, marginBottom: 10 }}
-          />
-          <Button
-            onClick={() => setFilter({ name: "" })}
-            danger
-            disabled={!openReset}
-          >
-            Cài lại
+        <div className="search-appointments-form">
+          <Form.Item name="nameUser">
+            <Input placeholder="Tên người đặt" />
+          </Form.Item>
+
+          <Form.Item name="time" style={{ width: "100%" }}>
+            <DatePicker
+              placeholder="Ngày"
+              style={{ width: "100%" }}
+              format="YYYY-MM-DD"
+              showNow={false}
+            />
+          </Form.Item>
+          <Form.Item name="status_id">
+            <Select options={optionsStatusOrder} placeholder="Trạng thái" />
+          </Form.Item>
+          <Form.Item name="paymentMethods_id">
+            <Select
+              options={optionPaymentMethods}
+              placeholder="Phương thức thanh toán"
+            />
+          </Form.Item>
+          <Form.Item name="status_payment" label="">
+            <Select
+              options={optionStatusPayment}
+              placeholder="Trạng thái thanh toán"
+            />
+          </Form.Item>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <Button htmlType="submit">Tìm kiếm</Button>
+          <Button className="btn" onClick={() => exportToExcel()}>
+            Xuất excel
           </Button>
         </div>
-      </div>
-      <TableAdmin columns={columns} data={dataOrder || []} />;
+      </Form>
+      <TableAdmin columns={columns} data={dataOrder} />;
     </>
   );
 };

@@ -34,13 +34,25 @@ const orderApi = createApi({
         },
         providesTags: ["order"],
       }),
+
+      searchOrderAdmin: builder.mutation<TOrderAdminSchema[], any>({
+        query: (order) => {
+          return {
+            url: "/searchOrder",
+            method: "POST",
+            body: order,
+          };
+        },
+        invalidatesTags: ["order"],
+      }),
     };
   },
 });
 
 export const {
   useCreateOrderMutation,
-  useGetAllOrderUserQuery
+  useGetAllOrderUserQuery,
+  useSearchOrderAdminMutation
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;

@@ -5,14 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatusOrder } from "../../../schema/status_order";
 import {
-  useGetAllstatusOrderQuery,
   useRemoveStatusOrderMutation,
+  useGetAllStatusOrderQuery,
 } from "../../../services/status_order";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 
 const StatusOrderAdmin: React.FC = () => {
-  const { data } = useGetAllstatusOrderQuery();
+  const { data } = useGetAllStatusOrderQuery();
 
   const [filter, setFilter] = useState({ name: "" });
   const [listSttOrder, setListSttOrder] = useState<TStatusOrder[] | undefined>([]);
