@@ -1,17 +1,28 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatusPet } from "../../../schema/status_pet";
 import {
   useGetAllstatusPetQuery,
-  useRemoveStatuspetMutation
+  useRemoveStatuspetMutation,
 } from "../../../services/status_pet";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 
 const StatusPetAdmin: React.FC = () => {
   const { data } = useGetAllstatusPetQuery();
+
+  const [filter, setFilter] = useState({ name: "" });
+  const [listSttPet, setListSttPet] = useState<TStatusPet[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
   const navigate = useNavigate();
   const [removePetContact] = useRemoveStatuspetMutation();
 
@@ -73,8 +84,39 @@ const StatusPetAdmin: React.FC = () => {
       ),
     },
   ];
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListSttPet(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <div>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm Trạng Thái "
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/status_pet/add">
         <Button
           type="primary"
@@ -84,7 +126,7 @@ const StatusPetAdmin: React.FC = () => {
           THÊM TRẠNG THÁI THÚ
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={listSttPet} />
     </div>
   );
 };

@@ -1,17 +1,27 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TStatusOrder } from "../../../schema/status_order";
 import {
+  useRemoveStatusOrderMutation,
   useGetAllStatusOrderQuery,
-  useRemoveStatusOrderMutation
 } from "../../../services/status_order";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 
 const StatusOrderAdmin: React.FC = () => {
   const { data } = useGetAllStatusOrderQuery();
+
+  const [filter, setFilter] = useState({ name: "" });
+  const [listSttOrder, setListSttOrder] = useState<TStatusOrder[] | undefined>([]);
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
   const navigate = useNavigate();
   const [removeOrderContact] = useRemoveStatusOrderMutation();
 
@@ -73,8 +83,39 @@ const StatusOrderAdmin: React.FC = () => {
       ),
     },
   ];
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListSttOrder(filteredData);
+  }, [data, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <div>
+      <div className="btn-table">
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm Trạng Thái "
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/status_order/add">
         <Button
           type="primary"
@@ -84,7 +125,7 @@ const StatusOrderAdmin: React.FC = () => {
           THÊM TRẠNG THÁI ĐẶT HÀNG
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={listSttOrder} />
     </div>
   );
 };

@@ -104,14 +104,6 @@ const StatusAdmin: React.FC = () => {
 
   return (
     <div>
-      <Button
-        onClick={() => navigator("add")}
-        type="primary"
-        icon={<PlusOutlined />}
-        style={{ marginBottom: "1rem" }}
-      >
-        THÊM TRẠNG THÁI
-      </Button>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -129,6 +121,14 @@ const StatusAdmin: React.FC = () => {
           </Button>
         </div>
       </div>
+      <Button
+        onClick={() => navigator("add")}
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        THÊM TRẠNG THÁI
+      </Button>
       <TableAdmin columns={columns} data={listStatusAppointment} />
     </div>
   );
