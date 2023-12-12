@@ -16,6 +16,15 @@ const breedApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getAllBreed: builder.query<TBreed[], void>({
+        query: () => {
+          return {
+            url: `/breeds`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Breed"],
+      }),
       breed: builder.query<TBreed[], number>({
         query: (id) => {
           return {
@@ -66,6 +75,7 @@ const breedApi = createApi({
 });
 
 export const {
+  useGetAllBreedQuery,
   useBreedQuery,
   useGetBreedByIdQuery,
   useUpdateBreedMutation,

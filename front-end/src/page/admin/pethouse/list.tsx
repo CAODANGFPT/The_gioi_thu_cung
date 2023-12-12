@@ -1,6 +1,6 @@
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TpetHouse } from "../../../schema/pethouse";
@@ -9,9 +9,25 @@ import {
   useRemovePetHouseMutation,
 } from "../../../services/pethouse";
 import { PlusOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 
 const PetHouseAdmin: React.FC = () => {
   const [removePetHouse] = useRemovePetHouseMutation();
+  const [dataPethouse, setDataPethouse] = useState<any | null>(null);
+  const { data } = useGetAllpetHouseQuery();
+  useEffect(() => {
+    if (data) {
+      setDataPethouse(data);
+    }
+  }, [data]);
+
+  const [filter, setFilter] = useState({ name: "", price: "" });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
   const confirm = (id: number) => {
     removePetHouse(id)
       .then((response: any) => {
@@ -81,9 +97,50 @@ const PetHouseAdmin: React.FC = () => {
     },
   ];
 
-  const { data } = useGetAllpetHouseQuery();
+  useEffect(() => {
+    const filteredData = data?.filter((item) =>
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+      item.price?.toString().toLowerCase().includes(filter.price.trim().toLowerCase())
+    );
+    setDataPethouse(filteredData);
+  }, [data, filter]);
+  
+
+  useEffect(() => {
+    if (filter.name === "" && filter.price === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name, filter.price]);
   return (
     <div>
+      <div
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm tên phòng"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm giá"
+            value={filter?.price}
+            onChange={(e) => handleFilterChange("price", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "", price: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Link to="/admin/pethouse/add">
         <Button
           type="primary"
@@ -93,7 +150,7 @@ const PetHouseAdmin: React.FC = () => {
           THÊM PHÒNG
         </Button>
       </Link>
-      <TableAdmin columns={columns} data={data} />
+      <TableAdmin columns={columns} data={dataPethouse} />
     </div>
   );
 };
