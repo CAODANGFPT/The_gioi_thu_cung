@@ -36,12 +36,12 @@ const items: MenuItem[] = [
     getItem(<Link to={"cancelledAppointment"}>Đã hủy</Link>, "9"),
   ]),
   getItem("Đơn hàng", "sub2", null, [
-    getItem(<Link to={"to-pay"}>Chờ xác nhận</Link>, "5"),
-    getItem(<Link to={"to-ship"}>Chờ lấy hàng</Link>, "10"),
-    getItem(<Link to={"to-receive"}>Chờ giao hàng</Link>, "11"),
-    getItem(<Link to={"completed"}>Đã giao</Link>, "12"),
-    getItem(<Link to={"cancelled"}>Đã hủy</Link>, "13"),
-    getItem(<Link to={"return-refund"}>Trả hàng</Link>, "14"),
+    getItem(<Link to={"to-pay"}>Chờ xác nhận</Link>, "10"),
+    getItem(<Link to={"to-ship"}>Chờ lấy hàng</Link>, "11"),
+    getItem(<Link to={"to-receive"}>Chờ giao hàng</Link>, "12"),
+    getItem(<Link to={"completed"}>Đã giao</Link>, "13"),
+    getItem(<Link to={"cancelled"}>Đã hủy</Link>, "14"),
+    getItem(<Link to={"return-refund"}>Trả hàng</Link>, "15"),
   ]),
 ];
 
