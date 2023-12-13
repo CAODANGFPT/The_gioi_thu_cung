@@ -20,12 +20,12 @@ export const listContactUser = async (req, res) => {
 
 export const listStatusContact = async (req, res) => {
     try {
-      const contact = await Contact.getAllUsersRole();
-      res.json(contact);
+        const contact = await Contact.getAllUsersRole();
+        res.json(contact);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
 export const show = async (req, res) => {
     try {
         const contactsItem = await Contact.getContactById(req.params.id);
@@ -41,7 +41,7 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const { title, subject, user_id } = req.body;
+        const { title, subject, user_id, status_id } = req.body;
         const { error } = contactSchema.validate(req.body);
         if (error) {
             const errors = error.details.map((errorItem) => errorItem.message);
@@ -49,7 +49,7 @@ export const create = async (req, res) => {
                 message: errors,
             });
         }
-        const contactsId = await Contact.createContact(title, subject, user_id);
+        const contactsId = await Contact.createContact(title, subject, user_id, status_id);
         res.json({ id: contactsId, message: "Tạo liên hệ thành công !" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -75,13 +75,13 @@ export const update = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-      const { id, status_id } = req.body;
-      await Contact.updateStatusContact(id, status_id);
-      res.json({ message: "Contact update thành công" });
+        const { id, status_id } = req.body;
+        await Contact.updateStatusContact(id, status_id);
+        res.json({ message: "Contact update thành công" });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
 
 
 export const destroy = async (req, res) => {

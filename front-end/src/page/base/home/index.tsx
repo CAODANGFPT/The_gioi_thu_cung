@@ -1,5 +1,4 @@
 import React from "react";
-import banner from "../../../assets/image/banner.png";
 import "../../../assets/scss/page/home.scss";
 import ArrowRightIcon from "../../../assets/svg/arrowRightIcon";
 
@@ -9,37 +8,57 @@ import CarouselProduct from "../../../components/carouselProduct";
 import ServiceCard from "../../../components/serviceCard";
 import { useGetTop8ProductsQuery } from "../../../services/products";
 import { useServicesTop4Query } from "../../../services/services";
+import { useGetAllBannerQuery } from "../../../services/banner";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
   const { data: listServices } = useServicesTop4Query();
   const { data: listTop8Products } = useGetTop8ProductsQuery();
+  const { data: listBanner } = useGetAllBannerQuery();
   return (
     <div className="bg">
       <div className="home">
         <div className="home-banner">
           <div className="home-banner-img">
-            <img src={banner} alt="" />
+            <img
+              src={
+                listBanner &&
+                listBanner.length > 0 &&
+                typeof listBanner[0]?.img === "string"
+                  ? listBanner[0]?.img
+                  : undefined
+              }
+              alt="Ảnh banner website."
+            />
           </div>
           <div className="home-banner-text">
             <div className="top">
-              <h1>PET CARE</h1>
+              <h1>
+                {listBanner && listBanner.length > 0 && listBanner[0].title}
+              </h1>
             </div>
-            <div>
-              <p>HẠNH PHÚC BẮT ĐẦU TỪ CHĂM SÓC</p>
+            <div className="slogan">
+              <p>
+                {listBanner && listBanner.length > 0 && listBanner[0].slogan}
+              </p>
             </div>
             <div className="bottom">
               <button
                 onClick={() =>
-                  navigator("/appointment", {
-                    state: {
-                      appointmentData: {
-                        pets: [],
-                        services: [],
-                        type: 1,
+                  navigator(
+                    listBanner && listBanner.length > 0 && listBanner[0].link
+                      ? listBanner[0].link
+                      : "/default-link",
+                    {
+                      state: {
+                        appointmentData: {
+                          pets: [],
+                          services: [],
+                          type: 1,
+                        },
                       },
-                    },
-                  })
+                    }
+                  )
                 }
               >
                 <div>Khám phá ngay</div> <ArrowRightIcon />
