@@ -254,7 +254,6 @@ export const getOrderByIdUserAndIdStatus = async (req, res) => {
           decoded.id,
           req.params.status_id
         );
-        console.log(Order);
         const uniqueData = Order.reduce((result, record) => {
           if (record && record.id !== undefined) {
             if (Array.isArray(result) && result.length > 0) {

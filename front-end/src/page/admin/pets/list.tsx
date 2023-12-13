@@ -126,7 +126,9 @@ const PetsAdmin: React.FC = () => {
     const filteredData = data?.filter(
       (item) =>
         item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
-        item.nameUser?.toLowerCase().includes(filter.nameUser.trim().toLowerCase())
+        item.nameUser
+          ?.toLowerCase()
+          .includes(filter.nameUser.trim().toLowerCase())
     );
     setListPet(filteredData);
   }, [data, filter]);
@@ -141,6 +143,7 @@ const PetsAdmin: React.FC = () => {
 
   return (
     <>
+      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search

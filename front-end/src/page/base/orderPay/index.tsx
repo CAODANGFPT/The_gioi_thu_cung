@@ -26,7 +26,7 @@ const OrderPay: FC<Props> = () => {
   const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   const [data] = useState<any>(location.state?.data);
   const [address, setAddress] = useState<TDeliveryAddress>();
   const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
@@ -37,8 +37,6 @@ const OrderPay: FC<Props> = () => {
   const [createOrder, { isLoading: isLoadingOrder }] = useCreateOrderMutation();
   const [addDeliveryAddress, { isLoading }] =
     useCreateDeliveryAddressMutation();
-  console.log(data);
-
   useEffect(() => {
     if (!location.state) {
       navigate("/shoppingCart");
