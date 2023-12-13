@@ -187,6 +187,7 @@ const OrderAdmin: React.FC = () => {
   };
   return (
     <>
+       <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"

@@ -21,7 +21,7 @@ const CategoryAdmin: React.FC = () => {
     }
   }, [data]);
 
-  const [filter, setFilter] = useState({ name: ""});
+  const [filter, setFilter] = useState({ name: "" });
   const [openReset, setOpenReset] = useState<boolean>(false);
 
   const handleFilterChange = (fieldName: string, value: string) => {
@@ -75,7 +75,7 @@ const CategoryAdmin: React.FC = () => {
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"
             onConfirm={() =>
-                cate.id !== undefined ? confirm(cate.id) : undefined
+              cate.id !== undefined ? confirm(cate.id) : undefined
             }
             onCancel={cancel}
             okText="Đồng ý"
@@ -96,7 +96,6 @@ const CategoryAdmin: React.FC = () => {
     );
     setDataCategory(filteredData);
   }, [data, filter]);
-  
 
   useEffect(() => {
     if (filter.name === "") {
@@ -106,7 +105,8 @@ const CategoryAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -118,9 +118,9 @@ const CategoryAdmin: React.FC = () => {
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200, marginBottom: 10 }}
           />
-          
+
           <Button
-            onClick={() => setFilter({ name: ""})}
+            onClick={() => setFilter({ name: "" })}
             danger
             disabled={!openReset}
           >
@@ -138,7 +138,7 @@ const CategoryAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={dataCategory} />
-    </div>
+    </>
   );
 };
 

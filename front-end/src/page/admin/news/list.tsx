@@ -8,6 +8,7 @@ import { useNewsQuery, useRemoveNewsMutation } from "../../../services/news";
 import { TNews } from "../../../schema/news";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
+import dayjs from "dayjs";
 const NewsAdmin: React.FC = () => {
   const [removeNews] = useRemoveNewsMutation();
 
@@ -16,7 +17,6 @@ const NewsAdmin: React.FC = () => {
   const [filter, setFilter] = useState({ name: "" });
   const [listNews, setListNews] = useState<TNews[] | undefined>([]);
   const [openReset, setOpenReset] = useState<boolean>(false);
-
 
   const handleFilterChange = (fieldName: string, value: string) => {
     setFilter({ ...filter, [fieldName]: value });
@@ -59,18 +59,47 @@ const NewsAdmin: React.FC = () => {
       dataIndex: "title",
       key: "title",
       width: 150,
+      render: (title) => (
+        <div
+          style={{
+            display: "-webkit-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {title}
+        </div>
+      ),
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
       width: 150,
+      render: (description) => (
+        <div
+          style={{
+            display: "-webkit-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {description}
+        </div>
+      ),
     },
     {
       title: "Thời gian tạo",
       dataIndex: "created_at",
       key: "created_at",
       width: 150,
+      render: (created_at) => (
+        <div>{dayjs(created_at).format("DD-MM-YYYY (HH:mm:ss)")}</div>
+      ),
     },
     {
       title: "Người dùng",
@@ -112,8 +141,8 @@ const NewsAdmin: React.FC = () => {
       item.nameUser?.toLowerCase().includes(filter.name.trim().toLowerCase())
     );
     setListNews(filteredData);
-    console.log(data)
-    console.log("filter" , filteredData);
+    console.log(data);
+    console.log("filter", filteredData);
   }, [data, filter]);
 
   useEffect(() => {
@@ -124,7 +153,8 @@ const NewsAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -152,7 +182,7 @@ const NewsAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={listNews} />
-    </div>
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ const BreedAdmin: React.FC = () => {
   const [removeBreed] = useRemoveBreedMutation();
   const [dataBreed, setDataBreed] = useState<any | null>(null);
   const { data } = useGetAllBreedQuery();
+
   useEffect(() => {
     if (data) {
       setDataBreed(data);
@@ -26,37 +27,10 @@ const BreedAdmin: React.FC = () => {
   const [filter, setFilter] = useState({ name: "", species: "" });
   const [openReset, setOpenReset] = useState<boolean>(false);
 
-
-  const handleFilterChange = (fieldName: string, value: string) => {
-    setFilter({ ...filter, [fieldName]: value });
-  };
-  const confirm = (id: number) => {
-    removeBreed(id)
-      .then((response: any) => {
-        if (response.error) {
-          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
-        } else {
-          message.success("Xóa thành công.");
-        }
-      })
-      .catch((error: any) => {
-        message.error("Có lỗi xảy ra khi xóa.");
-      });
-  };
-
-  const cancel = () => {
-    message.error("Xóa không thành công.");
-  };
-
-  const { data: speciesData } = useGetAllspeciesQuery<any | null>(); 
+  const { data: speciesData } = useGetAllspeciesQuery<any | null>();
 
   const [species, setSpecies] = useState([]);
 
-  useEffect(() => {
-    if (speciesData) {
-      setSpecies(speciesData);
-    }
-  }, [speciesData]);
   const columns: ColumnsType<TBreed> = [
     {
       title: "STT",
@@ -108,21 +82,33 @@ const BreedAdmin: React.FC = () => {
     },
   ];
 
-
-  const [selectedSpecies, setSelectedSpecies] = useState<"all" | number>(
-    "all"
-  );
-  const handleCateButtonClick = async (cateId: "all" | number) => {
-    setSelectedSpecies(cateId);
-    if (cateId === "all") {
-      setDataBreed(data);
-    } else {
-      const filteredProducts = data?.filter(
-        (breed) => breed.species_id === cateId
-      );
-      setDataBreed(filteredProducts);
-    }
+  const confirm = (id: number) => {
+    removeBreed(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
   };
+
+  const cancel = () => {
+    message.error("Xóa không thành công.");
+  };
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
+  useEffect(() => {
+    if (speciesData) {
+      setSpecies(speciesData);
+    }
+  }, [speciesData]);
 
   useEffect(() => {
     if (filter.name === "" && filter.species === "") {
@@ -133,38 +119,26 @@ const BreedAdmin: React.FC = () => {
   }, [filter.name, filter.species]);
 
   useEffect(() => {
-    let filteredData = data;
-
-    if (filter.name !== "") {
-      filteredData = filteredData?.filter((item) =>
-        item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
-      );
-    }
-
-    if (filter.species !== "all" && filter.species !== "") {
-      filteredData = filteredData?.filter((item) =>
+    const filteredData = data?.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
         item.speciesName
           ?.toLowerCase()
           .includes(filter.species.trim().toLowerCase())
-      );
-    }
+    );
     setDataBreed(filteredData);
   }, [data, filter]);
 
-  const handleCategoryChange = (value: number | "all") => {
-    setSelectedSpecies(value);
-
+  const handleCategoryChange = (fieldName: string, value: string) => {
     if (value === "all") {
-      setDataBreed(data);
+      setFilter({ ...filter, [fieldName]: "" });
     } else {
-      const filteredProducts = data?.filter(
-        (breed) => breed.species_id === value
-      );
-      setDataBreed(filteredProducts);
+      setFilter({ ...filter, [fieldName]: value });
     }
   };
   return (
     <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -176,6 +150,20 @@ const BreedAdmin: React.FC = () => {
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200, marginBottom: 10 }}
           />
+          <Select
+            style={{ width: 200, marginBottom: 10 }}
+            placeholder="Chọn danh mục"
+            defaultValue="all"
+            value={filter.species !== "" ? filter.species : "Tất cả"}
+            onChange={(value) => handleCategoryChange("species", value)}
+          >
+            <Select.Option value="all">Tất cả</Select.Option>
+            {species?.map((category: Tspecies) => (
+              <Select.Option key={category.id} value={category.name}>
+                {category.name}
+              </Select.Option>
+            ))}
+          </Select>
           <Button
             onClick={() => setFilter({ name: "", species: "" })}
             danger
@@ -183,22 +171,6 @@ const BreedAdmin: React.FC = () => {
           >
             Cài lại
           </Button>
-          <Select
-              style={{ width: 200, marginBottom: 10 }}
-              placeholder="Chọn danh mục"
-              value={selectedSpecies}
-              onChange={(value) => handleCategoryChange(value)}
-            >
-              <Select.Option value="all">Tất cả</Select.Option>
-              {species?.map((category: Tspecies) => (
-                <Select.Option
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </Select.Option>
-              ))}
-            </Select>
         </div>
       </div>
       <Button
@@ -209,31 +181,6 @@ const BreedAdmin: React.FC = () => {
       >
         THÊM GIỐNG
       </Button>
-      <div className="btn-status-appointment">
-        <li>
-          <Button
-            type="primary"
-            style={{ marginBottom: 20 }}
-            onClick={() => handleCateButtonClick("all")}
-            className={selectedSpecies === "all" ? "selected" : ""}
-          >
-            Tất cả
-          </Button>
-        </li>
-        {species?.map((FilterCard: any) => (
-          <li>
-            <Button
-              type="primary"
-              style={{ marginBottom: 20 }}
-              onClick={() => handleCateButtonClick(FilterCard.id)}
-              className={selectedSpecies === FilterCard.id ? "selected" : ""}
-              value={FilterCard.id}
-            >
-              {FilterCard.name}
-            </Button>
-          </li>
-        ))}
-      </div>
       <TableAdmin columns={columns} data={dataBreed} />
     </>
   );

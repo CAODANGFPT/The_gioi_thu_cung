@@ -143,6 +143,7 @@ const UserAdmin: React.FC = () => {
 
   return (
     <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search

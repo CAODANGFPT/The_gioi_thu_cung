@@ -1,10 +1,24 @@
 import React from "react";
-import "../../../assets/scss/page/account/order.scss";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import "../../../assets/scss/page/account/order.scss";
 
-import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
+import { Popconfirm, message } from "antd";
+import {
+  useGetOrderByIdUserAndIdStatusQuery,
+  useUpdateOrderStatusMutation
+} from "../../../services/order";
 const ToPay: React.FC = () => {
-  const { data } = useGetOrderByIdUserAndIdStatusQuery(1);
+  const { data, refetch } = useGetOrderByIdUserAndIdStatusQuery(1);
+  const [updateStatus] = useUpdateOrderStatusMutation();
+  const confirm = async (id: number | undefined) => {
+    try {
+      await updateStatus({ id: id, status_id: 5 });
+      message.success("Hủy đơn hàng thành công");
+      refetch();
+    } catch (error) {
+      message.success("Hủy đơn hàng thất bại");
+    }
+  };
   return (
     <>
       {data?.length ? (
@@ -36,9 +50,15 @@ const ToPay: React.FC = () => {
               ))}
               <div className="toShip-box-bottom">
                 <div className="toShip-box-bottom-action">
-                  <div className="toShip-box-bottom-action-abort">
-                    Hủy đơn hàng
-                  </div>
+                  <Popconfirm
+                    onConfirm={() => confirm(item.id)}
+                    title="Hủy đơn hàng"
+                    description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
+                  >
+                    <div className="toShip-box-bottom-action-abort">
+                      Hủy đơn hàng
+                    </div>
+                  </Popconfirm>
                 </div>
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}

@@ -99,7 +99,8 @@ const StatusPetAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -127,7 +128,7 @@ const StatusPetAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={listSttPet} />
-    </div>
+    </>
   );
 };
 
