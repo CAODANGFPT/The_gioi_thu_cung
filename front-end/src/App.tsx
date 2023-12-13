@@ -106,6 +106,12 @@ import OrderPay from "./page/base/orderPay";
 import PaymentCashPage from "./page/base/cashSuccsess";
 import OrderAdmin from "./page/admin/order";
 import DetailOrderAdmin from "./page/admin/order/detail";
+import ToShip from "./components/account_info/order/toShip";
+import ToPay from "./components/account_info/order/toPay";
+import Cancelled from "./components/account_info/order/cancelled";
+import ReturnRefund from "./components/account_info/order/returnRefund";
+import ToReceive from "./components/account_info/order/toReceive";
+import Completed from "./components/account_info/order/completed";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -161,6 +167,20 @@ function App() {
               path="accomplished-appointment"
               element={<AccomplishedAppointment />}
             />
+            <Route path="doing-appointment" element={<DoingAppointment />} />
+            <Route
+              path="accomplished-appointment"
+              element={<AccomplishedAppointment />}
+            />
+            {/* order */}
+
+            <Route path="to-ship" element={<ToShip />} />
+            <Route path="to-pay" element={<ToPay />} />
+            <Route path="cancelled" element={<Cancelled />} />
+            <Route path="return-refund" element={<ReturnRefund />} />
+            <Route path="to-receive" element={<ToReceive />} />
+            <Route path="completed" element={<Completed />} />
+
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

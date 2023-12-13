@@ -35,5 +35,63 @@ export const OrderAdminSchema = yup.object().shape({
   total: yup.number(),
   note: yup.number(),
 });
-
+export const OrderAdminSchemaRq = yup
+  .array()
+  .of(
+    yup
+      .object()
+      .shape({
+        id: yup.number().required(),
+        userId: yup.number().required(),
+        userName: yup.string().required(),
+        time: yup.string().required(),
+        products: yup
+          .array()
+          .of(
+            yup.object().shape({
+              id: yup.number().required(),
+              name: yup.string().required(),
+              img: yup.string().required(),
+              price: yup.number().required(),
+              quantity: yup.number().required(),
+            })
+          )
+          .required(),
+        address: yup
+          .object()
+          .shape({
+            id: yup.number(),
+            name: yup.string(),
+            address: yup.string(),
+            phone: yup.number(),
+          })
+          .required(),
+        paymentMethods: yup
+          .object()
+          .shape({
+            id: yup.number(),
+            name: yup.string(),
+          })
+          .required(),
+        status: yup
+          .object()
+          .shape({
+            id: yup.number(),
+            name: yup.string(),
+          })
+          .required(),
+        statusPayment: yup
+          .object()
+          .shape({
+            id: yup.number().required(),
+            name: yup.string().required(),
+          })
+          .required(),
+        total: yup.number().required(),
+        note: yup.number().required(),
+      })
+      .required()
+  )
+  .required();
 export type TOrderAdminSchema = yup.InferType<typeof OrderAdminSchema>;
+export type TOrderAdminSchemaRq = yup.InferType<typeof OrderAdminSchemaRq>;

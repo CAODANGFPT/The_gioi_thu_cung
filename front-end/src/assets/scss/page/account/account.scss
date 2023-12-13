@@ -17,7 +17,6 @@
   padding: 12px;
   border-radius: 10px;
   background-color: #fff;
-  // box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   img {
     width: 100%;
   }
@@ -210,10 +209,6 @@
     .col_2 {
       display: flex;
       flex: 3;
-      background-color: white;
-      padding: 30px 30px 20px 30px;
-      border-radius: 8px;
-
       hr {
         opacity: 0.3;
       }
@@ -859,4 +854,9 @@
 
 .custom-label-col {
   width: 200px;
+}
+.bg-acc{
+  background-color: white;
+  padding: 30px 30px 20px 30px;
+  border-radius: 8px;
 }

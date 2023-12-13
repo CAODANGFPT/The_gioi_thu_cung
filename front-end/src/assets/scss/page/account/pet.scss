@@ -4,8 +4,9 @@
 .pet {
   width: 100%;
   font-family: $Roboto;
-  padding: 15px 20px;
-
+  background-color: white;
+  padding: 30px 30px 20px 30px;
+  border-radius: 8px;
   &-title {
     display: flex;
     justify-content: space-between;
@@ -26,17 +27,21 @@
         border: none;
         border-radius: 5px;
         background-color: $EagleGreen;
+
         @include max-screen($md) {
           display: none;
         }
+
         .btn-add {
           color: white;
         }
       }
     }
+
     &-plus {
       color: $EagleGreen;
       font-size: 26px;
+
       @include min-screen($md) {
         display: none;
       }
@@ -91,6 +96,7 @@
             padding: 5px 15px;
             background-color: $SeaSerpent;
             margin-left: 10px;
+
             .btn-edit {
               color: white;
             }
