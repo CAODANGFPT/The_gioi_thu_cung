@@ -1,9 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import { useNavigate } from "react-router-dom";
+import {
+  useAddToCartsMutation,
+  useGetUserListCartsQuery,
+  useUpdateQuantityCartsMutation,
+} from "../../../services/shoppingCart";
 
 const Cancelled: React.FC = () => {
   const { data } = useGetOrderByIdUserAndIdStatusQuery(5);
+  const [AddToCart] = useAddToCartsMutation();
+  const { data: dataCart } = useGetUserListCartsQuery();
+  const navigate = useNavigate();
+  const [updateOrderMutation] = useUpdateQuantityCartsMutation();
+
+  const resetCart = async (items: any[], userId: number) => {
+    const updatedCart: any[] = [];
+
+    for (const item of items) {
+      const existingCartItem = dataCart.find(
+        (cartItem: any) => cartItem.productsId === item.id
+      );
+
+      if (existingCartItem) {
+        const updatedQuantity = existingCartItem.quantity + item.quantity;
+        await updateOrderMutation({
+          id: existingCartItem.id,
+          quantity: updatedQuantity,
+        }).unwrap();
+      } else {
+        const cartItem = {
+          user_id: userId,
+          products_id: item.id,
+          quantity: item.quantity,
+        };
+        updatedCart.push(cartItem);
+        await AddToCart(cartItem).unwrap();
+      }
+    }
+
+    console.log(updatedCart);
+
+    navigate("/shoppingCart", {
+      state: {
+        data: updatedCart,
+      },
+    });
+  };
+  
   return (
     <>
       {data?.length ? (
@@ -34,7 +79,10 @@ const Cancelled: React.FC = () => {
                 </div>
               ))}
               <div className="toShip-box-bottom">
-                <div className="toShip-box-bottom-action">
+                <div
+                  className="toShip-box-bottom-action"
+                  onClick={() => resetCart(item.products, item.userId)}
+                >
                   <div className="toShip-box-bottom-action-abort">Đặt lại</div>
                 </div>
                 <div className="toShip-box-bottom-total">

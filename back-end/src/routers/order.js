@@ -8,7 +8,7 @@ router.get("/getOrderUser", getOrderUser);
 router.get("/getAllOrderUser", getAllOrder);
 router.get("/getOrderByIdUserAndIdStatus/:status_id", getOrderByIdUserAndIdStatus);
 router.post("/createOrder", createOrderUser);
-router.patch("/updateStatusOrder",checkPermission, updateStatusOrder);
+router.patch("/updateStatusOrder", updateStatusOrder);
 router.patch("/updateStatusPaymentOrder",checkPermission, updateStatusPaymentOrder);
 router.post("/searchOrder", searchOrderAdmin);
 export default router;
