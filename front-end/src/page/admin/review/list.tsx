@@ -8,18 +8,17 @@ import {
   useUpdateBlockReviewMutation,
 } from "../../../services/review";
 import dayjs from "dayjs";
-import { TBlockReview , TReview} from "../../../schema/review";
+import { TBlockReview, TReview } from "../../../schema/review";
 import Search from "antd/es/input/Search";
 
 const ReviewAdmin: React.FC = () => {
-  const { data} = useReviewQuery();
+  const { data } = useReviewQuery();
   console.log(data);
   const [updateBlockReview] = useUpdateBlockReviewMutation();
 
   const [filter, setFilter] = useState({ name: "" });
   const [listReview, setListReview] = useState<TReview[] | undefined>([]);
   const [openReset, setOpenReset] = useState<boolean>(false);
-
 
   const handleFilterChange = (fieldName: string, value: string) => {
     setFilter({ ...filter, [fieldName]: value });
@@ -115,7 +114,7 @@ const ReviewAdmin: React.FC = () => {
       item.user_name?.toLowerCase().includes(filter.name.trim().toLowerCase())
     );
     setListReview(filteredData);
-    console.log(filteredData)
+    console.log(filteredData);
   }, [data, filter]);
 
   useEffect(() => {
@@ -128,6 +127,7 @@ const ReviewAdmin: React.FC = () => {
 
   return (
     <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -145,7 +145,7 @@ const ReviewAdmin: React.FC = () => {
           </Button>
         </div>
       </div>
-      <TableAdmin columns={columns} data={listReview} />;
+      <TableAdmin columns={columns} data={listReview} />
     </>
   );
 };

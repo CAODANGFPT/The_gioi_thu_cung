@@ -98,7 +98,8 @@ const StatusContactAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -126,7 +127,7 @@ const StatusContactAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={listSttContact} />
-    </div>
+    </>
   );
 };
 

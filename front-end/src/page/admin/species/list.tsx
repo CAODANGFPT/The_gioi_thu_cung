@@ -9,7 +9,8 @@ import {
 } from "../../../services/species";
 import { Tspecies } from "../../../schema/species";
 import Search from "antd/es/input/Search";
-import { PlusOutlined } from "@ant-design/icons";const SpeciesAdmin: React.FC = () => {
+import { PlusOutlined } from "@ant-design/icons";
+const SpeciesAdmin: React.FC = () => {
   const [removeSpecies] = useRemoveSpeciesMutation();
 
   const [dataSpecies, setDataSpecies] = useState<any | null>(null);
@@ -104,27 +105,28 @@ import { PlusOutlined } from "@ant-design/icons";const SpeciesAdmin: React.FC = 
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div
-          className="btn-table"
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <div style={{ display: "flex", columnGap: 20 }}>
-            <Search
-              placeholder="Tìm kiếm tên"
-              value={filter?.name}
-              onChange={(e) => handleFilterChange("name", e.target.value)}
-              style={{ width: 200, marginBottom: 10 }}
-            />
-            <Button
-              onClick={() => setFilter({ name: "" })}
-              danger
-              disabled={!openReset}
-            >
-              Cài lại
-            </Button>
-          </div>
+        className="btn-table"
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm tên"
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
         </div>
+      </div>
       <Link to="/admin/species/add">
         <Button
           type="primary"
@@ -135,7 +137,7 @@ import { PlusOutlined } from "@ant-design/icons";const SpeciesAdmin: React.FC = 
         </Button>
       </Link>
       <TableAdmin columns={columns} data={dataSpecies} />
-    </div>
+    </>
   );
 };
 
