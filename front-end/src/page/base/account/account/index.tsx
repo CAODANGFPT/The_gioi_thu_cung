@@ -25,7 +25,6 @@ function getItem(
 const items: MenuItem[] = [
   getItem(<Link to={"/account"}>Thông tin</Link>, "account"),
   getItem(<Link to={"pet-user"}>Thú cưng</Link>, "pet-user"),
-  getItem(<Link to={"payment"}>Cài đặt thanh toán</Link>, "payment"),
   getItem("Lịch đã đặt", "sub1", null, [
     getItem(
       <Link to={"wait-for-confirmation-appointment"}>Chờ xác nhận</Link>,
@@ -35,6 +34,14 @@ const items: MenuItem[] = [
     getItem(<Link to={"doing-appointment"}>Đang thực hiện</Link>, "7"),
     getItem(<Link to={"accomplished-appointment"}>Đã Hoàn thành</Link>, "8"),
     getItem(<Link to={"cancelledAppointment"}>Đã hủy</Link>, "9"),
+  ]),
+  getItem("Đơn hàng", "sub2", null, [
+    getItem(<Link to={"to-pay"}>Chờ xác nhận</Link>, "5"),
+    getItem(<Link to={"to-ship"}>Chờ lấy hàng</Link>, "10"),
+    getItem(<Link to={"to-receive"}>Chờ giao hàng</Link>, "11"),
+    getItem(<Link to={"completed"}>Đã giao</Link>, "12"),
+    getItem(<Link to={"cancelled"}>Đã hủy</Link>, "13"),
+    getItem(<Link to={"return-refund"}>Trả hàng</Link>, "14"),
   ]),
 ];
 
@@ -55,9 +62,6 @@ const AccountPage = () => {
   }
   return (
     <div className="account_info">
-      {/* <div className="account_info-row">
-        <Breadcrumb name="Tài khoản" />
-      </div> */}
       <div className="account_info-row">
         <h4 className="account_info-heading">Tài Khoản</h4>
       </div>

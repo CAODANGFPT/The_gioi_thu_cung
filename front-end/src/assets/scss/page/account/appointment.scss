@@ -9,7 +9,9 @@
 
 .cancelledAppointment {
   width: 100%;
-  padding: 10px 15px;
+  background-color: white;
+  padding: 30px 30px 20px 30px;
+  border-radius: 8px;
   h4 {
     font-family: $Roboto;
     color: #00575c;
@@ -104,7 +106,8 @@
 }
 
 .notAppointment {
-  margin: 30px 0;
+  background-color: white;
+  padding: 60px 0;
   gap: 10px;
   display: flex;
   align-items: center;
