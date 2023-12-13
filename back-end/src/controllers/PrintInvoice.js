@@ -3,7 +3,7 @@ import IDInvoice from "../models/PrintInvoice";
 export const getIDInvoices = async (req, res) => {
   try {
     const printInvoice = await IDInvoice.getIDInvoice(req.params.id);
-    res.json({ printInvoice });
+    res.json(printInvoice);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
