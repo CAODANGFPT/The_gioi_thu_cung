@@ -15,7 +15,9 @@ const StatusOrderAdmin: React.FC = () => {
   const { data } = useGetAllStatusOrderQuery();
 
   const [filter, setFilter] = useState({ name: "" });
-  const [listSttOrder, setListSttOrder] = useState<TStatusOrder[] | undefined>([]);
+  const [listSttOrder, setListSttOrder] = useState<TStatusOrder[] | undefined>(
+    []
+  );
   const [openReset, setOpenReset] = useState<boolean>(false);
 
   const handleFilterChange = (fieldName: string, value: string) => {
@@ -98,7 +100,8 @@ const StatusOrderAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -126,7 +129,7 @@ const StatusOrderAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={listSttOrder} />
-    </div>
+    </>
   );
 };
 

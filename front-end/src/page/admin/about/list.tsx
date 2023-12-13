@@ -11,7 +11,7 @@ const AboutAdmin: React.FC = () => {
   const { data } = useAboutQuery();
 
   const [removeAbout] = useRemoveAboutMutation();
-  function createMarkup(description: any) {
+  const createMarkup = (description: any) =>  {
     return { __html: description };
   }
   const confirm = (id: number) => {
@@ -45,16 +45,25 @@ const AboutAdmin: React.FC = () => {
       title: "Ảnh",
       dataIndex: "image",
       key: "image",
-      width: 150,
+      width: 50,
       render: (image) => <Image width={100} src={image} />,
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
-      width: 150,
+      width: 400,
       render: (description) => (
-        <div dangerouslySetInnerHTML={createMarkup(description)} />
+        <div
+          style={{
+            display: "-webkit-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: "vertical",
+          }}
+          dangerouslySetInnerHTML={createMarkup(description)}
+        />
       ),
     },
     {

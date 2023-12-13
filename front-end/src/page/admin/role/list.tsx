@@ -16,7 +16,6 @@ const RoleAdmin: React.FC = () => {
   const [listRole, setListRole] = useState<TRole[] | undefined>([]);
   const [openReset, setOpenReset] = useState<boolean>(false);
 
-
   const handleFilterChange = (fieldName: string, value: string) => {
     setFilter({ ...filter, [fieldName]: value });
   };
@@ -87,7 +86,8 @@ const RoleAdmin: React.FC = () => {
     }
   }, [filter.name]);
   return (
-    <div>
+    <>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -115,7 +115,7 @@ const RoleAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={listRole} />
-    </div>
+    </>
   );
 };
 

@@ -17,48 +17,15 @@ const ProductsAdmin: React.FC = () => {
   const [removeProduct] = useRemoveProductMutation();
 
   const [dataProduct, setDataProduct] = useState<any | null>(null);
-  const { data } = useGetAllProductsQuery();
-  useEffect(() => {
-    if (data) {
-      setDataProduct(data);
-    }
-  }, [data]);
-
-  const [filter, setFilter] = useState({ name: "" });
+  const [categories, setCategories] = useState([]);
+  const [filter, setFilter] = useState({ name: "", cate: "" });
   const [openReset, setOpenReset] = useState<boolean>(false);
+  const { data } = useGetAllProductsQuery();
+  const { data: categoryData } = useGetAllcategoryQuery<any | null>();
 
   const handleFilterChange = (fieldName: string, value: string) => {
     setFilter({ ...filter, [fieldName]: value });
   };
-  const confirm = (id: number) => {
-    removeProduct(id)
-      .then((response: any) => {
-        if (response.error) {
-          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
-        } else {
-          message.success("Xóa thành công.");
-        }
-      })
-      .catch((error: any) => {
-        message.error("Có lỗi xảy ra khi xóa.");
-      });
-  };
-
-  const cancel = () => {
-    message.error("Xóa không thành công.");
-  };
-
-  const { data: categoryData } = useGetAllcategoryQuery<any | null>(); 
-
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    if (categoryData) {
-      setCategories(categoryData);
-    }
-  }, [categoryData]);
-
-  const [searchAddProduct] = useSearchAddProductMutation();
 
   const columns: ColumnsType<TProduct> = [
     {
@@ -137,36 +104,56 @@ const ProductsAdmin: React.FC = () => {
     },
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState<"all" | number>(
-    "all"
-  );
+  const confirm = (id: number) => {
+    removeProduct(id)
+      .then((response: any) => {
+        if (response.error) {
+          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+        } else {
+          message.success("Xóa thành công.");
+        }
+      })
+      .catch((error: any) => {
+        message.error("Có lỗi xảy ra khi xóa.");
+      });
+  };
 
-  const handleCateButtonClick = async (cateId: "all" | number) => {
-    setSelectedCategory(cateId);
-    if (cateId === "all") {
-      setDataProduct(data);
-    } else {
-      const filteredProducts = data?.filter(
-        (product) => product.category_id === cateId
-      );
-      setDataProduct(filteredProducts);
-    }
+  const cancel = () => {
+    message.error("Xóa không thành công.");
   };
 
   useEffect(() => {
-    const filteredData = data?.filter((item) =>
-      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    if (categoryData) {
+      setCategories(categoryData);
+    }
+  }, [categoryData]);
+
+  const [searchAddProduct] = useSearchAddProductMutation();
+
+  useEffect(() => {
+    if (data) {
+      setDataProduct(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const filteredData = data?.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.nameCategory
+          ?.toLowerCase()
+          .includes(filter.cate.trim().toLowerCase())
     );
     setDataProduct(filteredData);
   }, [data, filter]);
 
   useEffect(() => {
-    if (filter.name === "") {
+    if (filter.name === "" && filter.cate === "") {
       setOpenReset(false);
     } else {
       setOpenReset(true);
     }
-  }, [filter.name]);
+  }, [filter.cate, filter.name]);
 
   const onFinish = async (values: any) => {
     const { status_id } = values;
@@ -182,20 +169,18 @@ const ProductsAdmin: React.FC = () => {
       message.error("Không tìm thấy sản phẩm nào phù hợp");
     }
   };
-  const handleCategoryChange = (value: number | "all") => {
-    setSelectedCategory(value);
 
+  const handleCategoryChange = (fieldName: string, value: string) => {
     if (value === "all") {
-      setDataProduct(data);
+      setFilter({ ...filter, [fieldName]: "" });
     } else {
-      const filteredProducts = data?.filter(
-        (product) => product.category_id === value
-      );
-      setDataProduct(filteredProducts);
+      setFilter({ ...filter, [fieldName]: value });
     }
   };
+
   return (
     <>
+    <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"
@@ -216,29 +201,27 @@ const ProductsAdmin: React.FC = () => {
               onChange={(e) => handleFilterChange("name", e.target.value)}
               style={{ width: 200, marginBottom: 10 }}
             />
+            <Select
+              style={{ width: 200, marginBottom: 10 }}
+              placeholder="Chọn danh mục"
+              defaultValue="all"
+              value={filter.cate !== "" ? filter.cate : "Tất cả"}
+              onChange={(text) => handleCategoryChange("cate", text)}
+            >
+              <Select.Option value="all">Tất cả</Select.Option>
+              {categories?.map((category: Tcategory) => (
+                <Select.Option key={category.id} value={category.name}>
+                  {category.name}
+                </Select.Option>
+              ))}
+            </Select>
             <Button
-              onClick={() => setFilter({ name: "" })}
+              onClick={() => setFilter({ name: "", cate: "" })}
               danger
               disabled={!openReset}
             >
               Cài lại
             </Button>
-            <Select
-              style={{ width: 200, marginBottom: 10 }}
-              placeholder="Chọn danh mục"
-              value={selectedCategory}
-              onChange={(value) => handleCategoryChange(value)}
-            >
-              <Select.Option value="all">Tất cả</Select.Option>
-              {categories?.map((category: Tcategory) => (
-                <Select.Option
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </Select.Option>
-              ))}
-            </Select>
           </div>
         </div>
       </Form>
@@ -250,31 +233,6 @@ const ProductsAdmin: React.FC = () => {
       >
         THÊM PRODUCTS
       </Button>
-      <div className="btn-status-appointment">
-        <li>
-          <Button
-            type="primary"
-            style={{ marginBottom: 20 }}
-            onClick={() => handleCateButtonClick("all")}
-            className={selectedCategory === "all" ? "selected" : ""}
-          >
-            Tất cả
-          </Button>
-        </li>
-        {categories?.map((FilterCard: any) => (
-          <li>
-            <Button
-              type="primary"
-              style={{ marginBottom: 20 }}
-              onClick={() => handleCateButtonClick(FilterCard.id)}
-              className={selectedCategory === FilterCard.id ? "selected" : ""}
-              value={FilterCard.id}
-            >
-              {FilterCard.name}
-            </Button>
-          </li>
-        ))}
-      </div>
       <TableAdmin columns={columns} data={dataProduct} />
     </>
   );

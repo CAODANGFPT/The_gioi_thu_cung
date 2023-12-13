@@ -114,7 +114,8 @@ const PetHouseAdmin: React.FC = () => {
     }
   }, [filter.name, filter.price]);
   return (
-    <div>
+    <>
+      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -151,7 +152,7 @@ const PetHouseAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={dataPethouse} />
-    </div>
+    </>
   );
 };
 
