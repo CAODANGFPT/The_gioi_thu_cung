@@ -8,10 +8,10 @@ import {
   useGetAllBannerQuery,
   useRemoveBannerMutation,
 } from "../../../services/banner";
-import { PlusOutlined } from "@ant-design/icons";
+// import { PlusOutlined } from "@ant-design/icons";
 
 const BannerAdmin: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { data } = useGetAllBannerQuery();
   const [removeBanner] = useRemoveBannerMutation();
   const confirm = (id: number) => {
@@ -87,7 +87,7 @@ const BannerAdmin: React.FC = () => {
             okText="Đồng ý"
             cancelText="Không"
           >
-            <Button danger className="btn-delete">
+            <Button danger className="btn-delete" disabled>
               Xóa
             </Button>
           </Popconfirm>
@@ -98,15 +98,32 @@ const BannerAdmin: React.FC = () => {
 
   return (
     <>
-      <Button
+      {/* <Button
         onClick={() => navigate("add")}
         type="primary"
         icon={<PlusOutlined />}
         style={{ marginBottom: "1rem" }}
       >
         THÊM BANNER
-      </Button>
+      </Button> */}
+
+      <div>
+        <h1 style={{ marginBottom: "1rem" }}>Quản lý banner website.</h1>
+      </div>
       <TableAdmin columns={columns} data={data} />
+      <div>
+        <p
+          style={{ fontSize: "17px", fontWeight: "bold", fontStyle: "italic" }}
+        >
+          Ghi chú:
+          <span
+            style={{ color: "red", fontWeight: "500", fontStyle: "normal" }}
+          >
+            Phần quản lý banner website chỉ có thể cập nhật không thể thêm và
+            xóa!
+          </span>
+        </p>
+      </div>
     </>
   );
 };
