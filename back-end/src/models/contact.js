@@ -44,11 +44,11 @@ export default class Contact {
             );
         });
     }
-    static createContact(title, subject, user_id) {
+    static createContact(title, subject, user_id, status_id) {
         return new Promise((resolve, reject) => {
             connection.query(
                 "INSERT INTO contact (title, subject, user_id , status_id) VALUES (?,?, ?,?)",
-                [title, subject, user_id],
+                [title, subject, user_id, status_id],
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results.insertId);

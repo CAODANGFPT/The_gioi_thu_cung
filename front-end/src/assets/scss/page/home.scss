@@ -45,8 +45,8 @@
 
       &-text {
         position: absolute;
-        top: 35%;
-        left: 50px;
+        top: 30%;
+        left: 80px;
         bottom: 50%;
 
         .bottom {
@@ -62,11 +62,17 @@
             @include Gap(5px, 5px);
             background-color: $EagleGreen;
             color: white;
-            padding: 15px 25px;
-            border-radius: 30px;
+            padding: 16px 25px;
+            border-radius: 50px;
             transition: all 0.5s ease-in-out;
             border: 1px solid $EagleGreen;
             gap: 5px;
+            width: 18rem;
+
+            div {
+              margin-right: 1.5rem;
+              margin-left: 0.3rem;
+            }
 
             @include max-screen($sm) {
               @include Size(16px, null, normal);
@@ -100,6 +106,11 @@
             line-height: 1;
           }
 
+          h1 {
+            color: $EagleGreen;
+            font-size: 45px;
+          }
+
           p {
             color: black;
             font-size: 24px;
@@ -113,6 +124,15 @@
             @include max-screen($sm) {
               @include Size(8px, null, normal);
             }
+          }
+        }
+
+        .slogan {
+          p {
+            color: black;
+            font-size: 19px;
+            font-weight: 500;
+            margin: 1rem 0.2rem 1.5rem 0.2rem;
           }
         }
       }
@@ -131,8 +151,10 @@
       &-item {
         position: relative;
         cursor: pointer;
+
         .top {
           width: 100%;
+
           img {
             border-radius: 10px;
             width: 100%;
@@ -177,6 +199,7 @@
             }
           }
         }
+
         .title {
           position: absolute;
           bottom: 20px;
@@ -187,6 +210,7 @@
           text-align: center;
           margin-bottom: 0px;
         }
+
         &:hover {
           .bottom {
             height: 100%;
@@ -263,11 +287,13 @@
           background-color: white;
           height: 100%;
           cursor: pointer;
+
           &:hover {
             .card-name {
               color: $EagleGreen;
             }
           }
+
           .product--image {
             position: relative;
 
