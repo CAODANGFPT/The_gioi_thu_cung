@@ -1,23 +1,36 @@
 import React from "react";
 import "../../../assets/scss/page/account/order.scss";
 import imageNot from "../../../assets/image/notAppoiment.png";
-
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
+import { useNavigate } from "react-router-dom";
+
 const ToPay: React.FC = () => {
   const { data } = useGetOrderByIdUserAndIdStatusQuery(1);
+  const navigate = useNavigate();
+
+  const detailOrderPage = (Item: any) => {
+    navigate("detailOrder", {
+      state: {
+        ...Item,
+      },
+    });
+  };
   return (
     <>
       {data?.length ? (
-        data.map((item) => (
-          <div key={item.id} className="toShip">
+        data.map((Item) => (
+          <div key={Item.id} className="toShip">
             <div className="toShip-status">
-              <div>{item.paymentMethods.name}</div>
-              <div className="toShip-status-name">{item.status.name}</div>
+              <div>{Item.paymentMethods.name}</div>
+              <div className="toShip-status-name">{Item.status.name}</div>
             </div>
             <div className="toShip-box">
-              {item.products.map((item) => (
+              {Item.products.map((item) => (
                 <div key={item.id} className="toShip-box-top">
-                  <div className="toShip-box-top-item">
+                  <div
+                    onClick={() => detailOrderPage(Item)}
+                    className="toShip-box-top-item"
+                  >
                     <div className="toShip-box-top-item-img">
                       <img src={item.img} alt="" />
                     </div>
@@ -43,7 +56,7 @@ const ToPay: React.FC = () => {
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}
                   <span>
-                    {new Intl.NumberFormat("vi-VN").format(item.total)} VNĐ
+                    {new Intl.NumberFormat("vi-VN").format(Item.total)} VNĐ
                   </span>
                 </div>
               </div>

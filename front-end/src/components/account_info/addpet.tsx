@@ -54,8 +54,8 @@ const AddPetPage = () => {
   };
 
   const onChangeSpecies = (value: number) => {
-    setOpenBreed(true);
     setIdSpecies(value);
+    setOpenBreed(true);
     form.resetFields(["breed_id"]);
   };
 

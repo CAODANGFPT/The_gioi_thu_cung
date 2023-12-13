@@ -112,6 +112,7 @@ import Cancelled from "./components/account_info/order/cancelled";
 import ReturnRefund from "./components/account_info/order/returnRefund";
 import ToReceive from "./components/account_info/order/toReceive";
 import Completed from "./components/account_info/order/completed";
+import DetailOrderPage from "./components/account_info/order/orderDetail";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -180,7 +181,7 @@ function App() {
             <Route path="return-refund" element={<ReturnRefund />} />
             <Route path="to-receive" element={<ToReceive />} />
             <Route path="completed" element={<Completed />} />
-
+            <Route path="detailOrder" element={<DetailOrderPage />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

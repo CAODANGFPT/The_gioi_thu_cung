@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import { Link } from "react-router-dom";
 
 const Completed: React.FC = () => {
   const { data } = useGetOrderByIdUserAndIdStatusQuery(4);
@@ -18,7 +19,9 @@ const Completed: React.FC = () => {
                 <div key={item.id} className="toShip-box-top">
                   <div className="toShip-box-top-item">
                     <div className="toShip-box-top-item-img">
-                      <img src={item.img} alt="" />
+                      <Link to={`/account/detailOrder/${item.id}`}>
+                        <img src={item.img} alt="" />
+                      </Link>
                     </div>
                     <div>
                       <div>{item.name}</div>
