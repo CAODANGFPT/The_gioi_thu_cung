@@ -40,11 +40,9 @@ const Cancelled: React.FC = () => {
       }
     }
 
-    console.log(updatedCart);
-
     navigate("/shoppingCart", {
       state: {
-        data: updatedCart,
+        data: items,
       },
     });
   };

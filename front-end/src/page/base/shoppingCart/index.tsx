@@ -1,6 +1,6 @@
 import { Button, Popconfirm, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/shoppingCart.scss";
 import AddIcon from "../../../assets/svg/add";
@@ -14,6 +14,8 @@ import {
 import { useGetUserQuery } from "../../../services/user";
 const ShoppingCart = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [orderReturn] = useState<any>(location.state?.data);
   const { data } = useGetUserListCartsQuery();
   const { data: user } = useGetUserQuery();
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -40,7 +42,7 @@ const ShoppingCart = () => {
   const calculateTotalAmount = useCallback(() => {
     let totalAmount = 0;
     dataOrder.forEach(
-      (item: { productsId: number; priceCart: number; quantity: number; }) => {
+      (item: { productsId: number; priceCart: number; quantity: number }) => {
         if (checkedItems.includes(item.productsId)) {
           totalAmount += item.priceCart * item.quantity;
         }
@@ -58,9 +60,17 @@ const ShoppingCart = () => {
   }, [calculateTotalAmount]);
 
   const handleSelectAll = (e: any) => {
-    setSelectAll(!selectAll);
-    const allItemIds = dataOrder.map((item: { productsId: any }) => item.productsId);
-    setCheckedItems(selectAll ? [] : allItemIds);
+    setShippingCost(10000);
+    setSelectAll(e.target.checked);
+    if (e.target.checked) {
+      dataOrder?.map(
+        (item: { productsId: number }) =>
+          !checkedItems.includes(item.productsId) &&
+          checkedItems.push(item.productsId)
+      );
+    } else {
+      setCheckedItems([]);
+    }
   };
 
   const handleDecreaseQuantity = (id: number) => {
@@ -107,7 +117,6 @@ const ShoppingCart = () => {
 
   const order = () => {
     if (checkedItems.length > 0) {
-
       const selectedProducts = dataOrder.filter((item: any) =>
         checkedItems.includes(item.productsId)
       );
@@ -133,7 +142,7 @@ const ShoppingCart = () => {
         state: {
           data: {
             ...data,
-            userId: user?.id
+            userId: user?.id,
           },
         },
       });
@@ -146,6 +155,16 @@ const ShoppingCart = () => {
     message.error("Xóa sản phẩm thất bại");
   };
 
+  useEffect(() => {
+    if (orderReturn?.length > 0) {
+      orderReturn?.map(
+        (item: { id: number }) =>
+          !checkedItems.includes(item.id) && checkedItems.push(item.id)
+      );
+    }
+  }, [orderReturn]);
+
+  console.log(checkedItems);
   if (!user) {
     return (
       <div className="login-now">
@@ -155,7 +174,7 @@ const ShoppingCart = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="shoppingCart">
       <div className="shoppingCart-blog">
@@ -186,9 +205,7 @@ const ShoppingCart = () => {
                     <td className="checkbox">
                       <input
                         type="checkbox"
-                        checked={
-                          selectAll || checkedItems.includes(data.productsId)
-                        }
+                        checked={checkedItems.includes(data.productsId)}
                         onChange={() => handleCheckboxChange(data.productsId)}
                       />
                     </td>
