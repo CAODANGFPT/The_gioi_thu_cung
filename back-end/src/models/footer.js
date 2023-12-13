@@ -16,11 +16,11 @@ export default class Footer {
             });
         });
     }
-    static createFooter(logo, slogan, send_email, content, license) {
+    static createFooter(slogan, content_left, content_right, license) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO footer (logo, slogan, send_email, content, license) VALUES (?, ?, ?, ?, ?)",
-                [logo, slogan, send_email, content, license],
+                "INSERT INTO footer ( slogan, content_left, content_right, license) VALUES ( ?, ?, ?, ?)",
+                [slogan, content_left, content_right, license],
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results.insertId);
@@ -28,11 +28,11 @@ export default class Footer {
             );
         });
     }
-    static updateFooter(id, logo, slogan, send_email, content, license) {
+    static updateFooter(id, slogan, content_left, content_right, license) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "UPDATE footer SET logo = ?, slogan = ?, send_email = ?, content = ?, license = ? WHERE id = ?",
-                [logo, slogan, send_email, content, license, id],
+                "UPDATE footer SET slogan = ?, content_left = ?, content_right = ?, license = ? WHERE id = ?",
+                [slogan, content_left, content_right, license, id],
                 (err) => {
                     if (err) reject(err);
                     resolve();
