@@ -11,6 +11,7 @@ import ShoppingCartIcon from "../../assets/svg/shoppingCartIcon";
 import { useGetUserListCartsQuery } from "../../services/shoppingCart";
 import { useGetUserQuery } from "../../services/user";
 import ModalUser from "./modal";
+import { useMenuQuery } from "../../services/menu";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const HeaderBase = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [isWideScreen, setIsWideScreen] = useState(false);
   const { data: carts } = useGetUserListCartsQuery();
+  const { data: menuData } = useMenuQuery();
 
   useEffect(() => {
     setOpenMenu(false);
@@ -39,6 +41,24 @@ const HeaderBase = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [isWideScreen]);
+
+  const filteredMenuDataTop =
+    menuData && menuData?.filter((item) => item.menuType_id === 5);
+  const filteredMenuDataMain =
+    menuData && menuData?.filter((item) => item.menuType_id === 6);
+
+  const handleBookAppointmentClick = () => {
+    console.log("Clicked on ĐẶT LỊCH CHĂM SÓC");
+    navigate("/appointment", {
+      state: {
+        appointmentData: {
+          pets: [],
+          services: [],
+          type: 1,
+        },
+      },
+    });
+  };
   return (
     <div className="headerBase">
       <div className="frame29">
@@ -48,10 +68,12 @@ const HeaderBase = () => {
         <p className="frame29-title2">Chi tiết</p>
       </div>
       <div className="frame32">
-        <p className="frame32-title">Giúp đỡ</p>
-        <p className="frame32-title">Theo dõi đơn hàng</p>
-        <p className="frame32-title">Về chúng tôi</p>
-        <p className="frame32-title">Bản tin</p>
+        {filteredMenuDataTop &&
+          filteredMenuDataTop?.map((item) => (
+            <p key={item.id} className="frame32-title">
+              {item.name}
+            </p>
+          ))}
         {user ? (
           <p className="frame32-title">
             Xin chào: <span className="hello_login">{user.name}</span>
@@ -134,12 +156,24 @@ const HeaderBase = () => {
       </div>
       <div className="frame52">
         <ul className="menu">
-          <li className="menu-title">
-            <button className="title-button" onClick={() => navigate("")}>
-              <div>TRANG CHỦ</div>
-            </button>
-          </li>
-          <li className="menu-title">
+          {filteredMenuDataMain &&
+            filteredMenuDataMain.map((item) => (
+              <li key={item.id} className="menu-title">
+                {item.link ? (
+                  <Link className="title1" to={item.link}>
+                    {item.name}
+                  </Link>
+                ) : (
+                  <button
+                    className="title-button"
+                    onClick={handleBookAppointmentClick}
+                  >
+                    <div>{item.name}</div>
+                  </button>
+                )}
+              </li>
+            ))}
+            <li className="menu-title">
             <button
               className="title-button"
               onClick={() =>
@@ -154,18 +188,8 @@ const HeaderBase = () => {
                 })
               }
             >
-              <div>ĐẶT LỊCH CHĂM SÓC</div>
+              <div className="text">ĐẶT LỊCH CHĂM SÓC</div>
             </button>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={"/product"}>
-              SẢN PHẨM CHO THÚ CƯNG
-            </Link>
-          </li>
-          <li className="menu-title">
-            <Link className="title1" to={"/services"}>
-              LOẠI DỊCH VỤ
-            </Link>
           </li>
         </ul>
       </div>

@@ -54,7 +54,7 @@ const AddMenuAdmin: React.FC = () => {
   const handleFormSubmit = async (values: {
     name: string;
     link: string;
-    menuType_id: string;
+    menuType_id: number;
   }) => {
     try {
       const updatedMenu: TMenuAdd = {
