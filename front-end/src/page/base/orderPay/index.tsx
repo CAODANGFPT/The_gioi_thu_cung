@@ -26,7 +26,6 @@ const OrderPay: FC<Props> = () => {
   const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   const [data] = useState<any>(location.state?.data);
   const [address, setAddress] = useState<TDeliveryAddress>();
@@ -45,9 +44,10 @@ const OrderPay: FC<Props> = () => {
       navigate("/shoppingCart");
     }
   }, [data, navigate]);
+
   useEffect(() => {
     setAddress(deliveryAddress && deliveryAddress[0]);
-    setValue((deliveryAddress && deliveryAddress[0].id) ?? 0);
+    setValue((deliveryAddress && deliveryAddress[0]?.id) ?? 0);
   }, [deliveryAddress]);
 
   const calculateTotalAmount = () => {
@@ -83,7 +83,7 @@ const OrderPay: FC<Props> = () => {
       note: note,
       paymentMethods_id: paymentMethods_id,
       status_payment: 1,
-      address_id: address?.id,
+      address_id: address?.id || 0,
       status_id: status_id,
     };
     try {
@@ -162,20 +162,29 @@ const OrderPay: FC<Props> = () => {
                 <div className="orderPay-address-title-icon">
                   <Location /> Địa chỉ nhận hàng
                 </div>
-                <div className="orderPay-address-title-item">
-                  <div className="orderPay-address-title-item-user">
-                    Họ và tên: {address?.name}
-                  </div>
-                  <div className="orderPay-address-title-item-user">
-                    Số điện thoại: {address?.phone}
-                  </div>
-                </div>
-                <div className="orderPay-address-title-item-user">
-                  Điạ chỉ: {address?.address}
-                </div>
-                <div className="address" onClick={() => setOpen(true)}>
-                  Thay đổi điạ chỉ
-                </div>
+                {address ? (
+                  <>
+                    <div className="orderPay-address-title-item">
+                      <div className="orderPay-address-title-item-user">
+                        Họ và tên: {address?.name}
+                      </div>
+                      <div className="orderPay-address-title-item-user">
+                        Số điện thoại: {address?.phone}
+                      </div>
+                    </div>
+                    <div className="orderPay-address-title-item-user">
+                      Điạ chỉ: {address?.address}
+                    </div>
+                    <div className="address" onClick={() => setOpen(true)}>
+                      Thay đổi điạ chỉ
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ margin: "10px 0", color: 'red' }}>Bạn chưa có địa chỉ nhận hàng</p>
+                    <p className="address" onClick={() => setOpenAddAddress(true)}>đăng ký địa chỉ ở đây!</p>
+                  </>
+                )}
               </div>
             </div>
 
