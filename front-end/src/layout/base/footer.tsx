@@ -16,21 +16,21 @@ const FooterBase = () => {
             <p className="logo-title">Chúng tôi có mọi thứ cho mèo ở đây!</p>
           </div>
           <div className="group18">
-            <p className="group18-title-1">Theo dõi bản tìn của chúng tôi</p>
+            <p className="group18-title-1">Theo dõi bản tin của chúng tôi</p>
             <p className="group18-title-2">Blog mới về mèo mỗi tuần</p>
             <div className="group18-input">
               <input type="text" placeholder="ĐỊA CHỈ EMAIL CỦA BẠN" />
-              <button>ĐẶT MUA</button>
+              <button>GỬI EMAIL</button>
             </div>
           </div>
         </div>
         <div className="containerFooter-2">
           <div className="group8">
-            <p className="group8-title-1">Đơn hàng của tôi đâu?</p>
+            <p className="group8-title-1">Thứ tự đặt lịch của tôi đâu?</p>
             <button>THEO DÕI THỨ TỰ</button>
             <p className="group8-title-2">
-              Xin lưu ý, có thể mất nhiều thời gian hơn bình thường để hoàn
-              thành các đơn hàng do ảnh hưởng của COVID-19.
+              Xin lưu ý, đặt lịch chăm sóc thú cưng PetCare chỉ nhận lịch trước
+              5 ngày để đảm bảo tính uy tín của cửa hàng và lịch của khách.
             </p>
           </div>
           <div className="group8">
@@ -62,12 +62,13 @@ const FooterBase = () => {
               <TwitterIcon />
             </div>
             <p className="group8-title-2">
-              Cho chúng tôi xem con mèo của bạn với: #meowshop #themeowshop
+              Cho chúng tôi xem con mèo của bạn với hastag: #meowshop
+              #themeowshop #petcare #pet_care
             </p>
           </div>
           <div className="group8">
             <p className="group8-title-1">Chính sách</p>
-            <p className="group8-title-2">chính sách vận chuyển</p>
+            <p className="group8-title-2">Chính sách vận chuyển</p>
             <p className="group8-title-2">Chính sách hoàn tiền</p>
             <p className="group8-title-2">Chính sách bảo mật</p>
             <p className="group8-title-2">Điều khoản dịch vụ</p>
@@ -75,7 +76,7 @@ const FooterBase = () => {
         </div>
       </div>
       <div className="copyright">
-        <p>Copyright © 2022 The Meow Shop. Đã đăng ký Bản quyền</p>
+        <p>Copyright © 2022 The Pet Care Shop. Đã đăng ký Bản quyền</p>
       </div>
     </>
   );
