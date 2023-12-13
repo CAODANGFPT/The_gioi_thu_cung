@@ -3,10 +3,11 @@ import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
 import axios from "axios";
-import { useCreateInvoiceMutation } from "../../../services/invoice";
+import {
+  useCreateInvoiceMutation,
+  useGetInvoicesQuery,
+} from "../../../services/invoice";
 import { useGetUserQuery } from "../../../services/user";
-import { useShowStatusPaymentQuery } from "../../../services/appointments";
-
 const API_URL = "http://localhost:8080/api";
 
 const PaymentPage = () => {
@@ -29,8 +30,7 @@ const PaymentPage = () => {
   }, []);
 
   const { data: user } = useGetUserQuery();
-  const { data: status_payment } = useShowStatusPaymentQuery(Number(id));
-
+  const { data } = useGetInvoicesQuery(Number(id));
   const handlePayment = () => {
     axios
       .post(`${API_URL}/create-payment`, { appointmentID: id, amount: total })
@@ -51,25 +51,30 @@ const PaymentPage = () => {
       ? parseInt(idRef.current, 10)
       : undefined;
     try {
-      if (status_payment && status_payment.status_payment !== undefined) {
-        if (status_payment.status_payment === 1) {
-          const response = await addInvoice({
-            user_id: user?.id,
-            paymentMethod: "CASH",
-            amount: amount,
-            appointments_id: appointmentId,
-          });
+      const existingInvoice =
+        data &&
+        data.length > 0 &&
+        data.find((invoice) => {
+          return (
+            invoice.appointments_id === 270 && invoice.paymentMethod === "CASH"
+          );
+        });
 
-          console.log("Invoice creation response:", response);
-          navigate(`/pay-cash`);
-        } else if (status_payment.status_payment === 2) {
-          console.log("Invoice has already been printed for this appointment.");
-          navigate(`/pay-cash`);
-        } else {
-          console.log("Invalid status_payment:", status_payment);
-        }
+      if (existingInvoice) {
+        console.log(
+          "Invoice đã tồn tại cho appointments_id là 270 và method là cash."
+        );
+        navigate(`/pay-cash`);
       } else {
-        console.log("Status_payment is not defined or is undefined.");
+        const response = await addInvoice({
+          user_id: user?.id,
+          paymentMethod: "CASH",
+          amount: amount,
+          appointments_id: appointmentId,
+        });
+
+        console.log("Invoice creation response:", response);
+        navigate(`/pay-cash`);
       }
     } catch (error) {
       console.error("Error creating or navigating to the invoice", error);
