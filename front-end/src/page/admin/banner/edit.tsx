@@ -117,7 +117,7 @@ const EditBanner = () => {
             />
           </Form.Item>
 
-          <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
+          <Form.Item label={<span className="">Ảnh banner</span>} name="img">
             <Upload
               name="file"
               action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"

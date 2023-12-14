@@ -51,8 +51,13 @@ import paymentMethodsApi, {
   paymentMethodsReducer,
 } from "../services/paymentMethods";
 import orderApi, { orderReducer } from "../services/order";
-import deliveryAddressApi, { deliveryAddressReducer } from "../services/deliveryAddress";
-import statusPaymentApi, { statusPaymentReducer } from "../services/statusPayment";
+import deliveryAddressApi, {
+  deliveryAddressReducer,
+} from "../services/deliveryAddress";
+import statusPaymentApi, {
+  statusPaymentReducer,
+} from "../services/statusPayment";
+import FooterApi, { footerReducer } from "../services/footer";
 
 const persistConfig = {
   key: "root",
@@ -84,6 +89,7 @@ const rootReducer = combineReducers({
   [cartsApi.reducerPath]: cartsReducer,
   [statusPetApi.reducerPath]: statusPetReducer,
   [BannerApi.reducerPath]: bannerReducer,
+  [FooterApi.reducerPath]: footerReducer,
   [statusOrderApi.reducerPath]: statusOrderReducer,
   [dashboardApi.reducerPath]: dashboardReducer,
   [invoiceApi.reducerPath]: invoiceReducer,
@@ -94,7 +100,6 @@ const rootReducer = combineReducers({
   [orderApi.reducerPath]: orderReducer,
   [deliveryAddressApi.reducerPath]: deliveryAddressReducer,
   [statusPaymentApi.reducerPath]: statusPaymentReducer,
-
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -130,6 +135,7 @@ export const store = configureStore({
       cartsApi.middleware,
       statusPetApi.middleware,
       BannerApi.middleware,
+      FooterApi.middleware,
       statusOrderApi.middleware,
       dashboardApi.middleware,
       invoiceApi.middleware,
@@ -139,7 +145,7 @@ export const store = configureStore({
       paymentMethodsApi.middleware,
       orderApi.middleware,
       deliveryAddressApi.middleware,
-      statusPaymentApi.middleware,
+      statusPaymentApi.middleware
     ),
 });
 
