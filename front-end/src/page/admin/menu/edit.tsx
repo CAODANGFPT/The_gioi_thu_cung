@@ -64,10 +64,8 @@ const EditMenuAdmin = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập Nhập Menu #{id}
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
+      <h2 style={{ marginBottom: 10 }}>Cập Nhập Menu #{id}</h2>
+      <div>
         <Form
           form={form}
           name="updateUserRoleForm"

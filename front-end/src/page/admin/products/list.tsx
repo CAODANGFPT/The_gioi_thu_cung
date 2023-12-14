@@ -50,16 +50,16 @@ const ProductsAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "Mô tả",
-      dataIndex: "description",
-      key: "description",
-      width: 150,
-    },
-    {
       title: "Giá",
       dataIndex: "price",
       key: "price",
       width: 150,
+      render: (price) => (
+        <div>
+          {new Intl.NumberFormat("vi-VN").format(price)}
+          <span> VNĐ</span>
+        </div>
+      ),
     },
     {
       title: "Số lượng",
@@ -180,7 +180,7 @@ const ProductsAdmin: React.FC = () => {
 
   return (
     <>
-    <h2>Tìm kiếm</h2>
+      <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"

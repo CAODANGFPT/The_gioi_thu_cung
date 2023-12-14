@@ -98,13 +98,10 @@ const EditNews = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật tin tức _ {id}
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <h2 style={{ marginBottom: 10 }}>Cập nhật tin tức _ {id}</h2>
+      <div>
         <Form
           form={form}
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={handleFormSubmit}
@@ -113,15 +110,15 @@ const EditNews = () => {
         >
           <Form.Item
             label={
-              <span className="text-base dark:text-white">Tên bài đăng</span>
+              <span>Tên bài đăng</span>
             }
             name="title"
             rules={[{ required: true, message: "Vui lòng nhập tên bài đăng!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300" />
+            <Input />
           </Form.Item>
           <Form.Item
-            label={<span className="text-base dark:text-white">Image</span>}
+            label={<span>Image</span>}
             name="img"
             rules={[{ required: true, message: "Vui lòng nhập image!" }]}
           >
@@ -151,7 +148,7 @@ const EditNews = () => {
             </Upload>
           </Form.Item>
           <Form.Item
-            label={<span className="text-base dark:text-white">Mô tả</span>}
+            label={<span>Mô tả</span>}
             name="description"
             rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
           >
@@ -165,10 +162,10 @@ const EditNews = () => {
           <Form.Item
             style={{ marginTop: 60 }}
             label={
-              <span className="text-base dark:text-white">Tên người đăng</span>
+              <span >Tên người đăng</span>
             }
           >
-            <span className="dark:text-white">{user?.name}</span>
+            <span>{user?.name}</span>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">

@@ -45,7 +45,6 @@ const AddPetHouse: React.FC = () => {
     try {
       const updatedPethouse: TpetHouse = {
         name: values.name,
-        price: values.price,
         status_id: values.status_id,
       };
       await createPethouse(updatedPethouse).unwrap();
@@ -58,34 +57,27 @@ const AddPetHouse: React.FC = () => {
   };
 
   return (
+    <>
+      <h2 style={{marginBottom: 10}}>Thêm phòng</h2>
+    
     <Form
       form={form}
       name="validateOnly"
       layout="vertical"
       autoComplete="off"
       onFinish={handleFormSubmit}
-    >
+      >
       <Form.Item name="name" label="Tên phòng" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-
-      <Form.Item
-        label={<span className="text-base dark:text-white">Giá phòng </span>}
-        name="price"
-        rules={[{ required: true, message: "Vui lòng nhập giá phòng!" }]}
-      >
-        <InputNumber
-          min={1}
-          className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
-        />
-      </Form.Item>
       <Form.Item>
         <Space>
-          <SubmitButton form={form} />
-          <Button htmlType="reset">Reset</Button>
+          <Button type="primary" htmlType="submit">Thêm phòng</Button>
+          <Button htmlType="reset">Cài lại</Button>
         </Space>
       </Form.Item>
     </Form>
+      </>
   );
 };
 

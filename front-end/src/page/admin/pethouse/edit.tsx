@@ -27,8 +27,7 @@ const EditPetHouse = () => {
     if (pethouse.data) {
       form.setFieldsValue({
         id: pethouse.data.id,
-        name: pethouse.data.name,
-        price: pethouse.data.price,
+        name: pethouse.data.name
       });
     }
   }, [pethouse.data, form]);
@@ -36,13 +35,11 @@ const EditPetHouse = () => {
   const onFinish = async (values: {
     id: number;
     name: string;
-    price: number;
   }) => {
     try {
       const updatedPetHouse: TpetHouse = {
         id: Number(id),
         name: values.name,
-        price: values.price,
       };
       await updatePetHouseMutation(updatedPetHouse).unwrap();
       confirm();
@@ -64,11 +61,11 @@ const EditPetHouse = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
+      <h2 className="">
         Cập nhật phòng _ {id}
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
+      </h2>
         <Form
+        style={{marginTop : 20}}
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -82,23 +79,12 @@ const EditPetHouse = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label={<span className="text-base dark:text-white">Giá phòng</span>}
-            name="price"
-            rules={[{ required: true, message: "Vui lòng nhập giá phòng!" }]}
-          >
-            <InputNumber
-              min={1}
-              className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
-            />
-          </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Cập nhật
             </Button>
           </Form.Item>
         </Form>
-      </div>
     </>
   );
 };

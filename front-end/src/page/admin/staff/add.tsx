@@ -55,10 +55,6 @@ const Add: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      {/* <Form.Item name="id" label="ID">
-        <Input disabled />
-      </Form.Item> */}
-
       <Form.Item name="name" label="Tên nhân viên" rules={[{ required: true }]}>
         <Input />
       </Form.Item>

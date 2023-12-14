@@ -81,10 +81,8 @@ const EditAbout = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật About _ {id}
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
+      <h2 style={{ marginBottom: 10 }}>Cập nhật About _ {id}</h2>
+      <div>
         <Form
           form={form}
           onFinish={onFinish}
@@ -113,7 +111,7 @@ const EditAbout = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="text-base dark:text-white">Mô tả</span>}
+            label={<span>Mô tả</span>}
             name="description"
             rules={[{ required: true, message: "Vui lòng nhập giá mô tả!" }]}
             initialValue={about.data ? about.data.description : ""}

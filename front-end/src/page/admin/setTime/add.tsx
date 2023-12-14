@@ -47,8 +47,8 @@ const AddSetTime: React.FC = () => {
     try {
       const updatedSetTime: TSetTimeAdd = {
         name: values.name,
-        start_time: dayjs(values.time[0]).format('HH:mm:00.000[Z]'),
-        end_time: dayjs(values.time[1]).format('HH:mm:00.000[Z]'),
+        start_time: dayjs(values.time[0]).format("HH:mm:00.000[Z]"),
+        end_time: dayjs(values.time[1]).format("HH:mm:00.000[Z]"),
       };
       await createSetTime(updatedSetTime).unwrap();
       confirm();
@@ -63,43 +63,35 @@ const AddSetTime: React.FC = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Thêm thời gian
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="validateOnly"
-          layout="vertical"
-          autoComplete="off"
-          onFinish={handleFormSubmit}
+      <h2 style={{ marginBottom: 10 }}>Thêm thời gian</h2>
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Tên"
+          rules={[{ required: true, message: "Vui lòng nhập tên thời gian !" }]}
         >
-          <Form.Item
-            name="name"
-            label="Tên"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên thời gian !" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            label="Thời gian"
-            rules={[{ required: true, message: "Vui lòng nhập thời gian !" }]}
-          >
-            <TimePicker.RangePicker
-              format={"HH:mm"}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <SubmitButton form={form} />
-              <Button htmlType="reset">Reset</Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="time"
+          label="Thời gian"
+          rules={[{ required: true, message: "Vui lòng nhập thời gian !" }]}
+        >
+          <TimePicker.RangePicker format={"HH:mm"} />
+        </Form.Item>
+        <Form.Item>
+          <Space>
+            <SubmitButton form={form} />
+            <Button htmlType="reset">Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
     </>
   );
 };

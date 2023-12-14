@@ -75,52 +75,46 @@ const AddMenuAdmin: React.FC = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Thêm Menu
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="validateOnly"
-          layout="vertical"
-          autoComplete="off"
-          onFinish={handleFormSubmit}
+      <h2>Thêm Menu</h2>
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Tên Menu"
+          rules={[{ required: true, message: "Vui lòng nhập tên Menu!" }]}
         >
-          <Form.Item
-            name="name"
-            label="Tên Menu"
-            rules={[{ required: true, message: "Vui lòng nhập tên Menu!" }]}
-          >
-            <Input />
-          </Form.Item>
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            name="link"
-            label="Liên kết"
-            rules={[
-              { required: true, message: "Vui lòng nhập đường liên kết!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        <Form.Item
+          name="link"
+          label="Liên kết"
+          rules={[{ required: true, message: "Vui lòng nhập đường liên kết!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item name="menuType_id" label="Kiểu Menu">
-            <Select>
-              {menuType.data?.map((item: TMenuType) => (
-                <Select.Option key={item.id} value={item.id}>
-                  {item.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <SubmitButton form={form} />
-              <Button htmlType="reset">Reset</Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </div>
+        <Form.Item name="menuType_id" label="Kiểu Menu">
+          <Select>
+            {menuType.data?.map((item: TMenuType) => (
+              <Select.Option key={item.id} value={item.id}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Space>
+            <SubmitButton form={form} />
+            <Button htmlType="reset">Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
     </>
   );
 };

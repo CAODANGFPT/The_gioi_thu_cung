@@ -7,7 +7,6 @@ import {
 import { Tspecies } from "../../../schema/species";
 import { useEffect } from "react";
 
-
 const confirm = () => {
   message.success("Cập nhật Species thành công.");
 };
@@ -32,7 +31,7 @@ const EditSpecies = () => {
     }
   }, [species.data, form]);
 
-  const onFinish = async (values: { name: string;}) => {
+  const onFinish = async (values: { name: string }) => {
     try {
       const updatedSpecies: Tspecies = {
         id: Number(id),
@@ -55,32 +54,28 @@ const EditSpecies = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật Loại ĐV _ {id}
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="updateUserRoleForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 style={{ marginBottom: 10 }}>Cập nhật Loại ĐV _ {id}</h2>
+      <Form
+        form={form}
+        name="updateUserRoleForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+          initialValue={species.data ? species.data.name : ""}
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Vui lòng nhập tên" }]}
-            initialValue={species.data ? species.data.name : ""}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

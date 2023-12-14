@@ -31,7 +31,6 @@ const AddService = () => {
       description,
     };
     try {
-
       await addServices(servicesData).unwrap();
       message.success("Product added successfully");
       reset();
@@ -51,12 +50,9 @@ const AddService = () => {
   );
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Thêm sản phẩm
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <h1>Thêm sản phẩm</h1>
+      <div>
         <Form
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -68,7 +64,7 @@ const AddService = () => {
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
           <Form.Item
             label={<span className="">Ảnh danh mục</span>}

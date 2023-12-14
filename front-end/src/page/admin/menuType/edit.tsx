@@ -50,36 +50,30 @@ const EditMenuType = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật kiểu menu
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="updateMenuTypeForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 style={{ marginBottom: 10 }}>Cập nhật kiểu menu</h2>
+      <Form
+        form={form}
+        name="updateMenuTypeForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item name="id" label="ID">
+          <Input disabled />
+        </Form.Item>
+        <Form.Item
+          name="name"
+          label="Kiểu menu"
+          rules={[{ required: true, message: "Vui lòng nhập tên kiểu menu!" }]}
         >
-          <Form.Item name="id" label="ID">
-            <Input disabled />
-          </Form.Item>
-          <Form.Item
-            name="name"
-            label="Kiểu menu"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên kiểu menu!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

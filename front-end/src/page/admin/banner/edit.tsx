@@ -93,93 +93,81 @@ const EditBanner = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật banner
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
-        <Form
-          form={form}
-          className="w-4/5 dark:text-white"
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 style={{ marginBottom: 10 }}>Cập nhật banner</h2>
+      <Form
+        form={form}
+        name="basic"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label={<span className="">Id</span>}
+          name="id"
+          rules={[{ required: true, message: "Vui lòng nhập!" }]}
         >
-          <Form.Item
-            label={<span className="">Id</span>}
-            name="id"
-            rules={[{ required: true, message: "Vui lòng nhập!" }]}
+          <Input disabled />
+        </Form.Item>
+
+        <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
+          <Upload
+            name="file"
+            action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+            data={{
+              upload_preset: "wh3rdke8",
+              cloud_name: "dksgvucji",
+            }}
+            listType="picture-card"
+            maxCount={1}
+            fileList={fileList}
+            showUploadList={true}
+            className="ant-upload-wrapper ant-upload-select"
+            onChange={handleImageChange}
           >
-            <Input
-              disabled
-              className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm"
-            />
-          </Form.Item>
+            {uploadButton}
+          </Upload>
+        </Form.Item>
 
-          <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
-            <Upload
-              name="file"
-              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-              data={{
-                upload_preset: "wh3rdke8",
-                cloud_name: "dksgvucji",
-              }}
-              listType="picture-card"
-              maxCount={1}
-              fileList={fileList}
-              showUploadList={true}
-              className="ant-upload-wrapper ant-upload-select"
-              onChange={handleImageChange}
-            >
-              {uploadButton}
-            </Upload>
-          </Form.Item>
+        <Form.Item
+          label={<span className="">Tiêu đề</span>}
+          name="title"
+          rules={[{ required: true, message: "Vui lòng nhập tiêu đề banner!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            label={<span className="">Tiêu đề</span>}
-            name="title"
-            rules={[
-              { required: true, message: "Vui lòng nhập tiêu đề banner!" },
-            ]}
+        <Form.Item
+          label={<span className="">Slogan</span>}
+          name="slogan"
+          rules={[{ required: true, message: "Vui lòng nhập slogan banner!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label={<span className="">Link</span>}
+          name="link"
+          rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            style={{ marginTop: 30 }}
+            htmlType="submit"
+            className="text-black transition-colors duration-300 dark:text-white"
+            size="large"
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
-
-          <Form.Item
-            label={<span className="">Slogan</span>}
-            name="slogan"
-            rules={[
-              { required: true, message: "Vui lòng nhập slogan banner!" },
-            ]}
-          >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
-
-          <Form.Item
-            label={<span className="">Link</span>}
-            name="link"
-            rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
-          >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              style={{ marginTop: 30 }}
-              htmlType="submit"
-              className="text-black transition-colors duration-300 dark:text-white"
-              size="large"
-            >
-              {isAddLoading ? (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              ) : (
-                "Sửa Banner"
-              )}
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+            {isAddLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "Sửa Banner"
+            )}
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

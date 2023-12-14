@@ -75,13 +75,10 @@ const Addnews = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Thêm bài đăng
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <h2>Thêm bài đăng</h2>
+      <div>
         <Form
           form={form}
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={handleFormSubmit}
