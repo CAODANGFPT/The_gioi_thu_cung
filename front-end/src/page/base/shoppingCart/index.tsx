@@ -218,18 +218,20 @@ const ShoppingCart = () => {
                           <div className="product-item-text-title">
                             {data.productCart}
                           </div>
-                          <Popconfirm
-                            title="Xóa"
-                            description="Bạn có muốn xóa không?"
-                            onConfirm={() => remove(data.id)}
-                            onCancel={cancel}
-                            okText="Đồng ý"
-                            cancelText="Không"
-                          >
-                            <div className="remove">
-                              <TrashAlt />
-                            </div>
-                          </Popconfirm>
+                          <div className="remove">
+                            <Popconfirm
+                              title="Xóa"
+                              description="Bạn có muốn xóa không?"
+                              onConfirm={() => remove(data.id)}
+                              onCancel={cancel}
+                              okText="Đồng ý"
+                              cancelText="Không"
+                            >
+                              <div style={{ maxWidth: 20 }}>
+                                <TrashAlt />
+                              </div>
+                            </Popconfirm>
+                          </div>
                           <div className="price">
                             {(data.priceCart * data.quantity).toLocaleString(
                               "vi-VN",

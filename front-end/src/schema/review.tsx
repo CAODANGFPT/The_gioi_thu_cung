@@ -11,6 +11,14 @@ export const ReviewSchema = yup.object().shape({
   user_name: yup.string(),
 });
 
+export const createReviewSchema = yup.object().shape({
+  user_id: yup.string(),
+  rating: yup.number(),
+  comment: yup.string(),
+  created_at: yup.string(),
+  services_id: yup.number(),
+});
+
 export const ReviewRequestSchema = yup.object().shape({
   id: yup.number(),
   user_id: yup.string(),
