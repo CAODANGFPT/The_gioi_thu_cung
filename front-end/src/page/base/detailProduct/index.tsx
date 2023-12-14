@@ -131,64 +131,6 @@ const DetailProduct: React.FC = () => {
             <div className="img">
               <img src={product?.img} alt="anh" />
             </div>
-
-            {/* <div className="feedback">
-              <div className="userName">
-                <div className="avt">
-                  <img src={userImg} alt="" />
-                </div>
-                <div className="name">
-                  <h3>mr.bean</h3>
-                  <div>
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                  </div>
-                  <p>Mar 7, 2022</p>
-                </div>
-              </div>
-
-              <div className="content">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Deleniti ullam praesentium quis molestias atque sapiente
-                  nulla, rem cupiditate magni eveniet!
-                </p>
-
-                <img src={product10} alt="" />
-              </div>
-            </div>
-
-            <div className="feedback">
-              <div className="userName">
-                <div className="avt">
-                  <img src={userImg} alt="" />
-                </div>
-                <div className="name">
-                  <h3>mr.bean</h3>
-                  <div>
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                    <StartIcon />
-                  </div>
-                  <p>Mar 7, 2022</p>
-                </div>
-              </div>
-
-              <div className="content">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Deleniti ullam praesentium quis molestias atque sapiente
-                  nulla, rem cupiditate magni eveniet!
-                </p>
-
-                <img src={product10} alt="" />
-              </div>
-            </div> */}
           </div>
 
           <div className="detail-right">

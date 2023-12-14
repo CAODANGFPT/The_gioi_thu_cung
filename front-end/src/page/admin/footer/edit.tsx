@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Form, Input, message } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { TFooter } from "../../../schema/footer";
@@ -8,6 +8,7 @@ import {
   useGetFooterByIdQuery,
   useUpdateFooterMutation,
 } from "../../../services/footer";
+import ReactQuill from "react-quill";
 
 const EditFooterAdmin = () => {
   const { TextArea } = Input;
@@ -15,6 +16,7 @@ const EditFooterAdmin = () => {
   const { id } = useParams<{ id: string }>();
   const footer = useGetFooterByIdQuery(Number(id));
   const [form] = Form.useForm();
+  const [contentRight, setContentRight] = useState("");
 
   const [updateFooterMutation, { reset }] = useUpdateFooterMutation();
   const confirm = () => {
@@ -61,60 +63,56 @@ const EditFooterAdmin = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập Footer #{id}
-      </h1>
-      <div>
-        <Form
-          form={form}
-          name="updateMenuTypeForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 style={{ marginBottom: 10 }}>Cập nhật Footer</h2>
+      <Form
+        form={form}
+        name="updateMenuTypeForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item name="id" label="ID">
+          <Input disabled />
+        </Form.Item>
+
+        <Form.Item
+          name="slogan"
+          label="Slogan"
+          rules={[{ required: true, message: "Vui lòng nhập slogan!" }]}
         >
-          <Form.Item name="id" label="ID">
-            <Input disabled />
-          </Form.Item>
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            name="slogan"
-            label="Slogan"
-            rules={[{ required: true, message: "Vui lòng nhập slogan!" }]}
-          >
-            <Input />
-          </Form.Item>
+        <Form.Item
+          name="content_left"
+          label="Nội dung trái"
+          rules={[{ required: true, message: "Vui lòng nhập nội dung!" }]}
+        >
+          <TextArea rows={6} placeholder="Vui lòng nhập nội dung..." />
+        </Form.Item>
 
-          <Form.Item
-            name="content_left"
-            label="Nội dung trái"
-            rules={[{ required: true, message: "Vui lòng nhập nội dung!" }]}
-          >
-            <TextArea rows={6} placeholder="Vui lòng nhập nội dung..." />
-          </Form.Item>
+        <Form.Item
+          name="content_right"
+          label="Nội dung phải"
+          rules={[{ required: true, message: "Vui lòng nhập nội dung!" }]}
+        >
+          <TextArea rows={6} placeholder="Vui lòng nhập nội dung..." />
+        </Form.Item>
 
-          <Form.Item
-            name="content_right"
-            label="Nội dung phải"
-            rules={[{ required: true, message: "Vui lòng nhập nội dung!" }]}
-          >
-            <TextArea rows={6} placeholder="Vui lòng nhập nội dung..." />
-          </Form.Item>
+        <Form.Item
+          name="license"
+          label="Bản quyền"
+          rules={[{ required: true, message: "Vui lòng nhập bản quyền!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            name="license"
-            label="Bản quyền"
-            rules={[{ required: true, message: "Vui lòng nhập bản quyền!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

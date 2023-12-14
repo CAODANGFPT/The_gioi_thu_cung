@@ -23,7 +23,7 @@
       display: flex;
       gap: 15px;
       align-items: center;
-      border-top: 1px solid rgba(0, 0, 0, .09);
+      border-top: 1px solid rgba(0, 0, 0, 0.09);
 
       &-item {
         flex: 1;
@@ -44,7 +44,7 @@
     }
 
     &-bottom {
-      border-top: 1px solid rgba(0, 0, 0, .09);
+      border-top: 1px solid rgba(0, 0, 0, 0.09);
       background-color: $BabyPowder;
       padding: 20px 30px;
       border-bottom-left-radius: 8px;
@@ -64,6 +64,7 @@
       }
 
       &-action {
+        @include Flex(Flex, flex-start, center);
         &-abort {
           cursor: pointer;
           margin: 10px 0;
@@ -73,6 +74,15 @@
           padding: 10px 25px;
           background-color: red;
           font-size: 16px;
+        }
+        .review {
+          color: black;
+          margin-left: 10px;
+          border-color: white;
+          cursor: pointer;
+          &:hover {
+            color: $EagleGreen;
+          }
         }
       }
     }
