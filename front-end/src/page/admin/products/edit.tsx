@@ -112,7 +112,9 @@ const EditProduct = () => {
 
   return (
     <>
-      <h2 style={{marginBottom: 10}}>Cập nhật sản phẩm</h2>
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập sản phẩm #{id}
+      </h1>
       <Form
         form={form}
         name="basic"

@@ -66,7 +66,9 @@ const EditSetTime = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập nhật thời gian</h2>
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Thời gian #{id}
+      </h1>
       <Form
         form={form}
         name="updateSetTimeForm"

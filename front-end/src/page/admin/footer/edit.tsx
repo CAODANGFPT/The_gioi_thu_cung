@@ -61,10 +61,10 @@ const EditFooterAdmin = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật Footer
+      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Footer #{id}
       </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
+      <div>
         <Form
           form={form}
           name="updateMenuTypeForm"
