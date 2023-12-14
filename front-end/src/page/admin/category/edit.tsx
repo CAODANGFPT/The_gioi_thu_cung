@@ -56,7 +56,9 @@ const EditCategory = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập nhật danh mục _ {id}</h2>
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Danh mục #{id}
+      </h1>
       <Form
         form={form}
         onFinish={onFinish}

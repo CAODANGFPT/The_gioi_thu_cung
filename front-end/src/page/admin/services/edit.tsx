@@ -102,7 +102,9 @@ const EditService = () => {
 
   return (
     <>
-      <h1>Cập nhật sản phẩm</h1>
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập sản phẩm #{id}
+      </h1>
       <div>
         <Form
           form={form}

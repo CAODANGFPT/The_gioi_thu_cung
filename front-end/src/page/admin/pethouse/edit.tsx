@@ -61,9 +61,9 @@ const EditPetHouse = () => {
 
   return (
     <>
-      <h2 className="">
-        Cập nhật phòng _ {id}
-      </h2>
+      <h4 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập phòng #{id}
+      </h4>
         <Form
         style={{marginTop : 20}}
           form={form}
