@@ -66,46 +66,40 @@ const EditSetTime = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật thời gian
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="updateSetTimeForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 style={{ marginBottom: 10 }}>Cập nhật thời gian</h2>
+      <Form
+        form={form}
+        name="updateSetTimeForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          name="name"
+          label="Tên"
+          rules={[{ required: true, message: "Vui lòng nhập tên thời gian !" }]}
         >
-          <Form.Item
-            name="name"
-            label="Tên"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên thời gian !" },
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="time"
+          label="Thời gian"
+          rules={[{ required: true, message: "Vui lòng nhập thời gian !" }]}
+        >
+          <TimePicker.RangePicker
+            format={"HH:mm"}
+            defaultValue={[
+              dayjs(setTime.data?.start_time ?? "00:00:00", "HH:mm"),
+              dayjs(setTime.data?.end_time ?? "00:00:00", "HH:mm"),
             ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            label="Thời gian"
-            rules={[{ required: true, message: "Vui lòng nhập thời gian !" }]}
-          >
-            <TimePicker.RangePicker
-              format={"HH:mm"}
-              defaultValue={[
-                dayjs(setTime.data?.start_time ?? "00:00:00", "HH:mm"),
-                dayjs(setTime.data?.end_time ?? "00:00:00", "HH:mm"),
-              ]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

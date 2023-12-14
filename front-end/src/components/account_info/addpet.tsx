@@ -80,10 +80,8 @@ const AddPetPage = () => {
 
   return (
     <div>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Thêm mới Thú cưng
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <h1>Thêm mới Thú cưng</h1>
+      <div>
         <Form
           form={form}
           name="validateOnly"

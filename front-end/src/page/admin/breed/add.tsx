@@ -73,41 +73,37 @@ const AddBreed: React.FC = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Thêm giống
-      </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="validateOnly"
-          layout="vertical"
-          autoComplete="off"
-          onFinish={handleFormSubmit}
+      <h2 style={{ marginBottom: 10 }}>Thêm giống</h2>
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item name="species_id" label="Species">
+          <Select>
+            {species.data?.map((item: Tspecies) => (
+              <Select.Option key={item.id} value={item.id}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="name"
+          label="Tên"
+          rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
         >
-          <Form.Item name="species_id" label="Species">
-            <Select>
-              {species.data?.map((item: Tspecies) => (
-                <Select.Option key={item.id} value={item.id}>
-                  {item.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="name"
-            label="Tên"
-            rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <SubmitButton form={form} />
-              <Button htmlType="reset">Reset</Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Space>
+            <SubmitButton form={form} />
+            <Button htmlType="reset">Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
     </>
   );
 };
