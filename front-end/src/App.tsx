@@ -116,6 +116,7 @@ import ToReceive from "./components/account_info/order/toReceive";
 import Completed from "./components/account_info/order/completed";
 import ListNews from "./page/base/news/list";
 import DetailNews from "./page/base/news/detail";
+import Contact from "./page/base/contact";
 function App() {
   const [dateTime] = useState(localStorage.getItem("DateTime"));
   useEffect(() => {
@@ -143,6 +144,7 @@ function App() {
           <Route path="detailProduct/:id" element={<DetailProduct />} />
           <Route path="ShoppingCart" element={<ShoppingCart />} />
           <Route path="orderPay" element={<OrderPay />} />
+          <Route path="contact" element={<Contact />} />
           <Route path="news">
             <Route index element={<ListNews />} />
             <Route path=":id" element={<DetailNews />} />
