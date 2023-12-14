@@ -133,6 +133,12 @@ export const create = async (req, res) => {
     );
     for (const item of services) {
       await AppointmentsDetail.createAppointmentsServices(appointmentsId, item);
+
+      const servicesDetails = await Services.getNameServicesById(item);
+      if (servicesDetails && servicesDetails.length > 0) {
+        const servicesName = servicesDetails[0].name;
+        ServicesArray.push(servicesName);
+      }
     }
     for (const item of pet) {
       await AppointmentsDetail.createAppointmentsPet(appointmentsId, item);
