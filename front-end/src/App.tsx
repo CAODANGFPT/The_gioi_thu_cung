@@ -181,7 +181,7 @@ function App() {
             <Route path="return-refund" element={<ReturnRefund />} />
             <Route path="to-receive" element={<ToReceive />} />
             <Route path="completed" element={<Completed />} />
-            <Route path="detailOrder" element={<DetailOrderPage />} />
+            <Route path="detailOrder/:id" element={<DetailOrderPage />} />
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />

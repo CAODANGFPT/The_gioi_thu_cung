@@ -1,30 +1,33 @@
 import React from "react";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import { Link } from "react-router-dom";
 
 const ToReceive: React.FC = () => {
   const { data } = useGetOrderByIdUserAndIdStatusQuery(3);
   return (
     <>
       {data?.length ? (
-        data.map((item) => (
-          <div key={item.id} className="toShip">
+        data.map((Item) => (
+          <div key={Item.id} className="toShip">
             <div className="toShip-status">
-              <div>{item.paymentMethods.name}</div>
-              <div className="toShip-status-name">{item.status.name}</div>
+              <div>{Item.paymentMethods.name}</div>
+              <div className="toShip-status-name">{Item.status.name}</div>
             </div>
             <div className="toShip-box">
-              {item.products.map((item) => (
+              {Item.products.map((item) => (
                 <div key={item.id} className="toShip-box-top">
-                  <div className="toShip-box-top-item">
-                    <div className="toShip-box-top-item-img">
-                      <img src={item.img} alt="" />
+                  <Link to={`/account/detailOrder/${Item.id}`} state={Item}>
+                    <div className="toShip-box-top-item">
+                      <div className="toShip-box-top-item-img">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <div>
+                        <div>{item.name}</div>
+                        <div>x{item.quantity}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div>{item.name}</div>
-                      <div>x{item.quantity}</div>
-                    </div>
-                  </div>
+                  </Link>
                   <div className="toShip-box-top-price">
                     {new Intl.NumberFormat("vi-VN").format(
                       item.quantity * item.price ?? 0
@@ -42,7 +45,7 @@ const ToReceive: React.FC = () => {
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}
                   <span>
-                    {new Intl.NumberFormat("vi-VN").format(item.total)} VNĐ
+                    {new Intl.NumberFormat("vi-VN").format(Item.total)} VNĐ
                   </span>
                 </div>
               </div>
