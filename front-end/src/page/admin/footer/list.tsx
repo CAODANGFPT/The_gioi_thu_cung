@@ -31,11 +31,10 @@ const FooterAdmin: React.FC = () => {
   };
 
   const renderContentColumn = (content: string) => {
-    // Giới hạn hiển thị chỉ khoảng 100 ký tự
     const truncatedContent =
       content.length > 100 ? `${content.substring(0, 100)}...` : content;
 
-    return <span title={content}>{truncatedContent}</span>;
+    return truncatedContent
   };
 
   const columns: ColumnsType<TFooter> = [
@@ -58,7 +57,13 @@ const FooterAdmin: React.FC = () => {
       dataIndex: "content_left",
       key: "content_left",
       width: 150,
-      render: (content_left) => renderContentColumn(content_left),
+      render: (content_left) => (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: renderContentColumn(content_left) || "",
+          }}
+        ></div>
+      ),
     },
 
     {
@@ -66,7 +71,13 @@ const FooterAdmin: React.FC = () => {
       dataIndex: "content_right",
       key: "content_right",
       width: 150,
-      render: (content_right) => renderContentColumn(content_right),
+      render: (content_right) => (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: renderContentColumn(content_right) || "",
+          }}
+        ></div>
+      ),
     },
     {
       title: "Bản quyền",

@@ -25,6 +25,15 @@ const newsApi = createApi({
         },
         providesTags: ["News"],
       }),
+      newsTop3: builder.query<TNews[], void>({
+        query: () => {
+          return {
+            url: "/newsTop3",
+            method: "GET",
+          };
+        },
+        providesTags: ["News"],
+      }),
       addNews: builder.mutation<TNews, Partial<TNews>>({
         query: (News) => ({
           url: `/news`,
@@ -66,6 +75,6 @@ const newsApi = createApi({
   },
 });
 
-export const { useNewsQuery, useAddNewsMutation, useRemoveNewsMutation, useUpdateNewsMutation, useNewsByIdQuery } =  newsApi;
+export const { useNewsQuery,useNewsTop3Query, useAddNewsMutation, useRemoveNewsMutation, useUpdateNewsMutation, useNewsByIdQuery } =  newsApi;
 export const newsReducer = newsApi.reducer;
 export default newsApi;

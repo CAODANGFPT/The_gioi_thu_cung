@@ -9,7 +9,14 @@ export default class News {
       });
     });
   }
-
+  static getListNewsTop3() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM news ORDER BY news.created_at DESC LIMIT 3", (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
   static getNewsUsers() {
     return new Promise((resolve, reject) => {
       connection.query(

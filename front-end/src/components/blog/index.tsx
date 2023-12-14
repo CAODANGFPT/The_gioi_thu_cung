@@ -1,5 +1,6 @@
+import dayjs from "dayjs";
 import { FC } from "react";
-import React from "react";
+import "../../assets/scss/components/blog.scss";
 import Image from "../../assets/svg/icon";
 
 type BlogProps = {
@@ -16,12 +17,17 @@ const Blog: FC<BlogProps> = ({ name, description, url, date }) => (
       <div className="date">
         <div className="date-title">
           <Image />
-          <p>{date}</p>
+          <p>{dayjs(date).format("DD-MM-YYYY")}</p>
         </div>
       </div>
     </div>
     <div className="blog-name">{name}</div>
-    <div className="blog-describe">{description}</div>
+    <div
+      className="blog-describe"
+      dangerouslySetInnerHTML={{
+        __html: description || "",
+      }}
+    ></div>
   </div>
 );
 
