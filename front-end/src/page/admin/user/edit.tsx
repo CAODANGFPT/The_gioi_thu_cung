@@ -49,7 +49,9 @@ const EditUser = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập nhật vai trò người dùng #{id}</h2>
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập vai trò người dùng #{id}
+      </h1>
       <Form
         form={form}
         name="updateUserRoleForm"

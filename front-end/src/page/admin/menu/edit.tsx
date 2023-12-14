@@ -64,7 +64,9 @@ const EditMenuAdmin = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập Nhập Menu #{id}</h2>
+      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Menu #{id}
+      </h1>
       <div>
         <Form
           form={form}

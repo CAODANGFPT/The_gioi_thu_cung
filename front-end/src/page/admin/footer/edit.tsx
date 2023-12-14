@@ -96,12 +96,7 @@ const EditFooterAdmin = () => {
           label="Nội dung phải"
           rules={[{ required: true, message: "Vui lòng nhập nội dung!" }]}
         >
-          <ReactQuill
-            style={{ height: 500 }}
-            theme="snow"
-            value={contentRight}
-            onChange={setContentRight}
-          />
+          <TextArea rows={6} placeholder="Vui lòng nhập nội dung..." />
         </Form.Item>
 
         <Form.Item
