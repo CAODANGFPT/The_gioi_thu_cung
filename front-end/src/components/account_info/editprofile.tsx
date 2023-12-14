@@ -54,8 +54,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
       gender: user.gender,
     });
   }, [form, user.id, user.img, user.name, user.email, user.phone, user.gender]);
-  const handleImageChange = ({ fileList: newFileList } : any) => {
-    if(newFileList[0].response){
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList[0].response) {
       setImage(newFileList[0].response.secure_url);
     }
     setFileList(newFileList);
@@ -101,7 +101,6 @@ const EditProfile: React.FC<EditProfileProps> = ({
       >
         <Form
           form={form}
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -127,7 +126,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
               onChange={handleImageChange}
               fileList={fileList}
             >
-                {uploadButton}
+              {uploadButton}
             </Upload>
           </Form.Item>
           <Form.Item
@@ -135,21 +134,21 @@ const EditProfile: React.FC<EditProfileProps> = ({
             name="email"
             rules={[{ required: true, message: "Vui lòng nhập email!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
           <Form.Item
             label={<span className="">số điện thoại </span>}
             name="phone"
             rules={[{ required: true, message: "Vui lòng số điện thoại!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
           <Form.Item
             label={<span className="">Tên người dùng</span>}
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
           <Form.Item
             label={<span className="">giới tính</span>}

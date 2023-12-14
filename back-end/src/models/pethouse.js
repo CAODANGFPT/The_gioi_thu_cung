@@ -3,7 +3,7 @@ import connection from "../db";
 export default class Pethouse {
   static getAllPethouse() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM pethouse", (err, results) => {
+      connection.query("SELECT pethouse.id as id, pethouse.name FROM pethouse", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
@@ -23,11 +23,11 @@ export default class Pethouse {
     });
   }
 
-  static createPethouse(name, price) {
+  static createPethouse(name) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO pethouse (name,price) VALUES (?,?)",
-        [name, price],
+        "INSERT INTO pethouse (name, price) VALUES (?,1)",
+        [name],
         (err, results) => {
           if (err) {
             reject(err);
@@ -39,9 +39,9 @@ export default class Pethouse {
     });
   }
 
-  static updatePethouse(id, name, price) {
-    const updateSql = "UPDATE pethouse SET name = ?, price = ? WHERE id = ?";
-    const values = [name, price, id];
+  static updatePethouse(id, name) {
+    const updateSql = "UPDATE pethouse SET name = ? WHERE id = ?";
+    const values = [name, id];
     return new Promise((resolve, reject) => {
       connection.query(updateSql, values, (err) => {
         if (err) reject(err);

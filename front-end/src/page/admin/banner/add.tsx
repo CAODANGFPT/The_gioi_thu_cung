@@ -1,11 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Form,
-  Input,
-  Upload,
-  message
-} from "antd";
+import { Button, Form, Input, Upload, message } from "antd";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "react-quill/dist/quill.snow.css";
@@ -54,12 +48,9 @@ const AddBanner = () => {
   );
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Thêm banner
-      </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <h2 style={{marginBottom: 10}}>Thêm banner</h2>
+      <div>
         <Form
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -97,7 +88,7 @@ const AddBanner = () => {
             name="title"
             rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -105,7 +96,7 @@ const AddBanner = () => {
             name="slogan"
             rules={[{ required: true, message: "Vui lòng nhập slogan!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -113,7 +104,7 @@ const AddBanner = () => {
             name="link"
             rules={[{ required: true, message: "Vui lòng nhập link!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item>

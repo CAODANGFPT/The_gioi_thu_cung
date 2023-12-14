@@ -93,13 +93,11 @@ const EditBanner = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật banner
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Banner #{id}
       </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
-        <Form
+      <Form
           form={form}
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -113,11 +111,10 @@ const EditBanner = () => {
           >
             <Input
               disabled
-              className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm"
             />
           </Form.Item>
 
-          <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
+          <Form.Item label={<span className="">Ảnh banner</span>} name="img">
             <Upload
               name="file"
               action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
@@ -143,7 +140,7 @@ const EditBanner = () => {
               { required: true, message: "Vui lòng nhập tiêu đề banner!" },
             ]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -153,7 +150,7 @@ const EditBanner = () => {
               { required: true, message: "Vui lòng nhập slogan banner!" },
             ]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -161,14 +158,13 @@ const EditBanner = () => {
             name="link"
             rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item>
             <Button
               style={{ marginTop: 30 }}
               htmlType="submit"
-              className="text-black transition-colors duration-300 dark:text-white"
               size="large"
             >
               {isAddLoading ? (
@@ -179,7 +175,6 @@ const EditBanner = () => {
             </Button>
           </Form.Item>
         </Form>
-      </div>
     </>
   );
 };

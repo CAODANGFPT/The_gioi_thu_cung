@@ -1,19 +1,23 @@
 import React from "react";
-import "../../../assets/scss/page/account/order.scss";
 import imageNot from "../../../assets/image/notAppoiment.png";
-import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
-import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import "../../../assets/scss/page/account/order.scss";
+import { Popconfirm, message } from "antd";
+import {
+  useGetOrderByIdUserAndIdStatusQuery,
+  useUpdateOrderStatusMutation,
+} from "../../../services/order";
 const ToPay: React.FC = () => {
-  const { data } = useGetOrderByIdUserAndIdStatusQuery(1);
-  const navigate = useNavigate();
-
-  const detailOrderPage = (Item: any) => {
-    navigate("detailOrder", {
-      state: {
-        ...Item,
-      },
-    });
+  const { data, refetch } = useGetOrderByIdUserAndIdStatusQuery(1);
+  const [updateStatus] = useUpdateOrderStatusMutation();
+  const confirm = async (id: number | undefined) => {
+    try {
+      await updateStatus({ id: id, status_id: 5 });
+      message.success("Hủy đơn hàng thành công");
+      refetch();
+    } catch (error) {
+      message.success("Hủy đơn hàng thất bại");
+    }
   };
   return (
     <>
@@ -27,18 +31,17 @@ const ToPay: React.FC = () => {
             <div className="toShip-box">
               {Item.products.map((item) => (
                 <div key={item.id} className="toShip-box-top">
-                  <div
-                    onClick={() => detailOrderPage(Item)}
-                    className="toShip-box-top-item"
-                  >
-                    <div className="toShip-box-top-item-img">
-                      <img src={item.img} alt="" />
+                  <Link to={`/account/detailOrder/${Item.id}`} state={Item}>
+                    <div className="toShip-box-top-item">
+                      <div className="toShip-box-top-item-img">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <div>
+                        <div>{item.name}</div>
+                        <div>x{item.quantity}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div>{item.name}</div>
-                      <div>x{item.quantity}</div>
-                    </div>
-                  </div>
+                  </Link>
                   <div className="toShip-box-top-price">
                     {new Intl.NumberFormat("vi-VN").format(
                       item.quantity * item.price ?? 0
@@ -49,9 +52,15 @@ const ToPay: React.FC = () => {
               ))}
               <div className="toShip-box-bottom">
                 <div className="toShip-box-bottom-action">
-                  <div className="toShip-box-bottom-action-abort">
-                    Hủy đơn hàng
-                  </div>
+                  <Popconfirm
+                    onConfirm={() => confirm(Item.id)}
+                    title="Hủy đơn hàng"
+                    description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
+                  >
+                    <div className="toShip-box-bottom-action-abort">
+                      Hủy đơn hàng
+                    </div>
+                  </Popconfirm>
                 </div>
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}

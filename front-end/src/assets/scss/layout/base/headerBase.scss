@@ -239,7 +239,7 @@
 
   .frame52 {
     max-width: $xl;
-    margin: 30px auto;
+    margin: 5px auto;
 
     @include max-screen($xl) {
       margin: 30px 30px;
@@ -255,15 +255,16 @@
 
       &-title {
         border-bottom: 2px solid transparent;
-        padding-bottom: 10px;
+        padding: 20px 5px;
 
         &:hover {
           border-bottom: 2px solid $EagleGreen;
+          cursor: pointer;
         }
 
         .title1 {
           color: black;
-
+          padding: 30px 5px;
           &:hover {
             color: $EagleGreen;
           }

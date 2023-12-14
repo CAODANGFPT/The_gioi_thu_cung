@@ -56,31 +56,29 @@ const EditStaff = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật nhân viên _ {id}
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập nhân viên #{id}
       </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <Form
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label="Trạng thái"
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập trạng thái" }]}
+          initialValue={staff.data ? staff.data.name : ""}
         >
-          <Form.Item
-            label="Trạng thái"
-            name="name"
-            rules={[{ required: true, message: "Vui lòng nhập trạng thái" }]}
-            initialValue={staff.data ? staff.data.name : ""}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

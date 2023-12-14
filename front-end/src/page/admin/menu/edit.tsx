@@ -37,7 +37,7 @@ const EditMenuAdmin = () => {
   const onFinish = async (values: {
     name: string;
     link: string;
-    menuType_id: string;
+    menuType_id: number;
   }) => {
     try {
       const updatedMenu: TMenu = {
@@ -64,10 +64,10 @@ const EditMenuAdmin = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập Nhập Menu #{id}
+      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Menu #{id}
       </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
+      <div>
         <Form
           form={form}
           name="updateUserRoleForm"

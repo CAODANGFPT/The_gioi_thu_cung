@@ -4,24 +4,30 @@ export const MenuSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   link: yup.string(),
-  menuType_id: yup.string(),
-  nameMenuMenuType: yup.number(),
+  menuType_id: yup.number(),
+  nameMenuMenuType: yup.string(),
+  isButton: yup.boolean(),
+  route: yup.string(),
 });
 
 export const MenuRequestSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   link: yup.string(),
-  menuType_id: yup.string(),
-  nameMenuMenuType: yup.number(),
+  menuType_id: yup.number(),
+  nameMenuMenuType: yup.string(),
+  isButton: yup.boolean(),
+  route: yup.string(),
 });
 
 export const MenuResponseSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   link: yup.string(),
-  menuType_id: yup.string(),
-  nameMenuMenuType: yup.number(),
+  menuType_id: yup.number(),
+  nameMenuMenuType: yup.string(),
+  isButton: yup.boolean(),
+  route: yup.string(),
 });
 
 export const MenuErrorSchema = yup.object({});
@@ -36,7 +42,7 @@ export const MenuAddSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   link: yup.string(),
-  menuType_id: yup.string(),
+  menuType_id: yup.number(),
 });
 
 export type TMenuAdd = yup.InferType<typeof MenuAddSchema>;

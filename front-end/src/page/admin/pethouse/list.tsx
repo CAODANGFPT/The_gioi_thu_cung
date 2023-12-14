@@ -62,12 +62,6 @@ const PetHouseAdmin: React.FC = () => {
       width: 150,
     },
     {
-      title: "Giá",
-      dataIndex: "price",
-      key: "price",
-      width: 150,
-    },
-    {
       title: "Thao tác",
       key: "action",
       width: 100,
@@ -99,8 +93,7 @@ const PetHouseAdmin: React.FC = () => {
 
   useEffect(() => {
     const filteredData = data?.filter((item) =>
-      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
-      item.price?.toString().toLowerCase().includes(filter.price.trim().toLowerCase())
+      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
     );
     setDataPethouse(filteredData);
   }, [data, filter]);
@@ -114,7 +107,8 @@ const PetHouseAdmin: React.FC = () => {
     }
   }, [filter.name, filter.price]);
   return (
-    <div>
+    <>
+      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -124,12 +118,6 @@ const PetHouseAdmin: React.FC = () => {
             placeholder="Tìm tên phòng"
             value={filter?.name}
             onChange={(e) => handleFilterChange("name", e.target.value)}
-            style={{ width: 200, marginBottom: 10 }}
-          />
-          <Search
-            placeholder="Tìm giá"
-            value={filter?.price}
-            onChange={(e) => handleFilterChange("price", e.target.value)}
             style={{ width: 200, marginBottom: 10 }}
           />
           <Button
@@ -151,7 +139,7 @@ const PetHouseAdmin: React.FC = () => {
         </Button>
       </Link>
       <TableAdmin columns={columns} data={dataPethouse} />
-    </div>
+    </>
   );
 };
 

@@ -55,70 +55,72 @@ const AddAbout: React.FC = () => {
     </div>
   );
   return (
-    <Form
-      name="validateOnly"
-      layout="vertical"
-      autoComplete="off"
-      onFinish={handleFormSubmit}
-      initialValues={{ remember: true }}
-      onFinishFailed={onFinishFailed}
-    >
-      <Form.Item
-        label={<span className="">Ảnh Giới thiệu</span>}
-        name="picture-card"
-        rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+    <>
+      <Form
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+        initialValues={{ remember: true }}
+        onFinishFailed={onFinishFailed}
       >
-        <Upload
-          name="file"
-          action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-          data={{
-            upload_preset: "wh3rdke8",
-            cloud_name: "dksgvucji",
-          }}
-          listType="picture-card"
-          maxCount={1}
-          showUploadList={false}
-          className="ant-upload-wrapper ant-upload-select"
-          onChange={handleImageChange}
+        <Form.Item
+          label={<span className="">Ảnh Giới thiệu</span>}
+          name="picture-card"
+          rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
         >
-          {image ? (
-            <img src={image} alt="avatar" style={{ width: "100%" }} />
-          ) : (
-            uploadButton
-          )}
-        </Upload>
-      </Form.Item>
-
-      <Form.Item
-        name="description"
-        label="Mô tả"
-        rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-      >
-        <ReactQuill
-          style={{ height: 500 }}
-          theme="snow"
-          value={value}
-          onChange={setValue}
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Space>
-          <Button
-            style={{ marginTop: 30 }}
-            htmlType="submit"
-            className="text-black transition-colors duration-300 dark:text-white"
-            size="large"
+          <Upload
+            name="file"
+            action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+            data={{
+              upload_preset: "wh3rdke8",
+              cloud_name: "dksgvucji",
+            }}
+            listType="picture-card"
+            maxCount={1}
+            showUploadList={false}
+            className="ant-upload-wrapper ant-upload-select"
+            onChange={handleImageChange}
           >
-            {isAddLoading ? (
-              <AiOutlineLoading3Quarters className="animate-spin" />
+            {image ? (
+              <img src={image} alt="avatar" style={{ width: "100%" }} />
             ) : (
-              "Thêm sản phẩm"
+              uploadButton
             )}
-          </Button>
-        </Space>
-      </Form.Item>
-    </Form>
+          </Upload>
+        </Form.Item>
+
+        <Form.Item
+          name="description"
+          label="Mô tả"
+          rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+        >
+          <ReactQuill
+            style={{ height: 500 }}
+            theme="snow"
+            value={value}
+            onChange={setValue}
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Space>
+            <Button
+              style={{ marginTop: 30 }}
+              htmlType="submit"
+              className="text-black transition-colors duration-300 dark:text-white"
+              size="large"
+            >
+              {isAddLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Thêm sản phẩm"
+              )}
+            </Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

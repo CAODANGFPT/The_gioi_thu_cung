@@ -62,12 +62,11 @@ const AddProduct = () => {
   );
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
+      <h1 >
         Thêm product
       </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <div>
         <Form
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -79,7 +78,7 @@ const AddProduct = () => {
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input/>
           </Form.Item>
           <Form.Item
             label={<span className="">Ảnh sản phẩm</span>}
@@ -108,18 +107,17 @@ const AddProduct = () => {
           </Form.Item>
           <Form.Item
             label={
-              <span className="text-base dark:text-white">Giá sản phẩm</span>
+              <span>Giá sản phẩm</span>
             }
             name="price"
             rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
           >
             <InputNumber
               min={1}
-              className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
             />
           </Form.Item>
           <Form.Item
-            label={<span className="text-base dark:text-white">Mô tả</span>}
+            label={<span >Mô tả</span>}
             name="description"
             rules={[
               { required: true, message: "Vui lòng nhập mô tả sản phẩm!" },
@@ -140,7 +138,7 @@ const AddProduct = () => {
               { required: true, message: "Vui lòng nhập số lượng sản phẩm!" },
             ]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -160,7 +158,6 @@ const AddProduct = () => {
             <Button
               style={{ marginTop: 30 }}
               htmlType="submit"
-              className="text-black transition-colors duration-300 dark:text-white"
               size="large"
             >
               {isAddLoading ? (

@@ -49,45 +49,43 @@ const EditUser = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập nhật vai trò người dùng #{id}
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập vai trò người dùng #{id}
       </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="updateUserRoleForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <Form
+        form={form}
+        name="updateUserRoleForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item label="Tên">
+          <Input disabled value={user.data?.name} />
+        </Form.Item>
+        <Form.Item label="Email">
+          <Input disabled value={user.data?.email} />
+        </Form.Item>
+        <Form.Item
+          label="Vai trò"
+          name="role_id"
+          rules={[{ required: true, message: "Vui lòng chọn vai trò" }]}
         >
-          <Form.Item label="Tên">
-            <Input disabled value={user.data?.name} />
-          </Form.Item>
-          <Form.Item label="Email">
-            <Input disabled value={user.data?.email} />
-          </Form.Item>
-          <Form.Item
-            label="Vai trò"
-            name="role_id"
-            rules={[{ required: true, message: "Vui lòng chọn vai trò" }]}
-          >
-            {user.data?.role_id && (
-              <Select defaultValue={user.data?.role_id}>
-                {roles.data?.map((item: TRole) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          {user.data?.role_id && (
+            <Select defaultValue={user.data?.role_id}>
+              {roles.data?.map((item: TRole) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Popconfirm, message, Button } from "antd";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../../assets/scss/page/orderPay.scss";
 import Location from "../../../assets/svg/loaction";
@@ -11,15 +11,11 @@ import {
 const DetailOrderPage: FC = () => {
   const shippingCost: number = 10000;
   const { id: orderId } = useParams<{ id: string }>();
-  console.log("orderId", orderId);
-
   const location = useLocation();
   const navigate = useNavigate();
   const [updateStatusOrder] = useUpdateOrderStatusMutation();
   const [updateStatusPaymentOrder] = useUpdateStatusPaymentOrderMutation();
   const [data] = useState<any>(location.state);
-  console.log("data", data);
-  console.log("adđtế", data[0]?.address?.name);
   const calculateTotalAmount = () => {
     let totalAmount = 0;
     data.products?.forEach(
@@ -60,14 +56,14 @@ const DetailOrderPage: FC = () => {
               </div>
               <div className="orderPay-address-title-item">
                 <div className="orderPay-address-title-item-user">
-                  Họ và tên: {data?.address.name}
+                  Họ và tên: {data.address.name}
                 </div>
                 <div className="orderPay-address-title-item-user">
-                  Số điện thoại: +84{data?.address.phone}
+                  Số điện thoại: +84{data.address.phone}
                 </div>
               </div>
               <div className="orderPay-address-title-item-user">
-                Điạ chỉ: {data?.address.address}
+                Điạ chỉ: {data.address.address}
               </div>
             </div>
           </div>
@@ -149,7 +145,7 @@ const DetailOrderPage: FC = () => {
                   color: "#00575c",
                 }}
               >
-                {data.paymentMethods?.name}
+                {data.paymentMethods.name}
               </div>
             </div>
             <div
@@ -178,7 +174,7 @@ const DetailOrderPage: FC = () => {
                     color: "#00575c",
                   }}
                 >
-                  {data.status?.name}
+                  {data.status.name}
                 </div>
               </div>
               <div
@@ -197,7 +193,7 @@ const DetailOrderPage: FC = () => {
                     color: "#00575c",
                   }}
                 >
-                  {data.statusPayment?.name}
+                  {data.statusPayment.name}
                 </div>
               </div>
             </div>
@@ -208,7 +204,7 @@ const DetailOrderPage: FC = () => {
                     Tên khách hàng
                   </div>
                   <div className="orderPay-paymentMethods-money-box-item-price">
-                    {data?.name}
+                    {data.address.name}
                   </div>
                 </div>
                 <div className="orderPay-paymentMethods-money-box-item">
@@ -216,7 +212,7 @@ const DetailOrderPage: FC = () => {
                     Số điện thoại
                   </div>
                   <div className="orderPay-paymentMethods-money-box-item-price">
-                    +84{data?.phone}
+                    +84{data.address.phone}
                   </div>
                 </div>
                 <div className="orderPay-paymentMethods-money-box-item">
@@ -224,7 +220,7 @@ const DetailOrderPage: FC = () => {
                     Địa chỉ
                   </div>
                   <div className="orderPay-paymentMethods-money-box-item-price">
-                    {data?.address}
+                    {data.address.address}
                   </div>
                 </div>
                 {data.statusPayment.id === 1 &&
@@ -286,7 +282,7 @@ const DetailOrderPage: FC = () => {
                         title="Xác nhận đơn hàng"
                         description="Bạn có chắc chắn xác nhận đơn hàng?"
                       >
-                        <button className="close">Đang giao hàng</button>
+                        <button className="close">Xác nhận đơn hàng</button>
                       </Popconfirm>
                       <Popconfirm
                         onConfirm={() => confirm(5, "Hủy đơn hàng thành công")}

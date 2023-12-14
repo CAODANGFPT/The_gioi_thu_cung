@@ -57,44 +57,42 @@ const EditBreed = () => {
 
   return (
     <>
-      <h1 className="md:ml-16 md:text-left text-center mt-5 text-3xl font-semibold dark:text-white text-black">
-        Cập Nhập Breed #{id}
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập Breed #{id}
       </h1>
-      <div className="md:ml-16 sm:mx-auto mx-2 mt-5">
-        <Form
-          form={form}
-          name="updateUserRoleForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <Form
+        form={form}
+        name="updateUserRoleForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+          initialValue={breed.data ? breed.data.name : ""}
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Vui lòng nhập tên" }]}
-            initialValue={breed.data ? breed.data.name : ""}
-          >
-            <Input />
-          </Form.Item>
+          <Input />
+        </Form.Item>
 
-          <Form.Item label="Species" name="species_id">
-            {breed.data && breed.data?.species_id && (
-              <Select defaultValue={breed.data?.species_id}>
-                {species.data?.map((item: Tspecies) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+        <Form.Item label="Species" name="species_id">
+          {breed.data && breed.data?.species_id && (
+            <Select defaultValue={breed.data?.species_id}>
+              {species.data?.map((item: Tspecies) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

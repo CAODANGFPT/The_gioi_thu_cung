@@ -57,10 +57,6 @@ const AddRoleAdmin: React.FC = () => {
       autoComplete="off"
       onFinish={handleFormSubmit}
     >
-      {/* <Form.Item name="id" label="ID">
-        <Input disabled />
-      </Form.Item> */}
-
       <Form.Item name="name" label="Vai trò" rules={[{ required: true }]}>
         <Input />
       </Form.Item>

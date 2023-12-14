@@ -3,7 +3,6 @@ import * as yup from "yup";
 export const petHouseSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
-  price: yup.number(),
   status_id: yup.number(),
 });
 

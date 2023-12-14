@@ -112,116 +112,117 @@ const EditProduct = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật sản phẩm
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập sản phẩm #{id}
       </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
-        <Form
-          form={form}
-          className="w-4/5 dark:text-white"
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <Form
+        form={form}
+        name="basic"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label={<span className="">Id</span>}
+          name="id"
+          rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
         >
-          <Form.Item
-            label={<span className="">Id</span>}
-            name="id"
-            rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
+          <Input
+            disabled
+          />
+        </Form.Item>
+        <Form.Item
+          label={<span className="">Tên dịch vụ</span>}
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
+          <Upload
+            name="file"
+            action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+            data={{
+              upload_preset: "wh3rdke8",
+              cloud_name: "dksgvucji",
+            }}
+            listType="picture-card"
+            maxCount={1}
+            fileList={fileList}
+            showUploadList={true}
+            className="ant-upload-wrapper ant-upload-select"
+            onChange={handleImageChange}
           >
-            <Input
-              disabled
-              className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm"
-            />
-          </Form.Item>
-          <Form.Item
-            label={<span className="">Tên dịch vụ</span>}
-            name="name"
-            rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
-          >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
-          <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
-            <Upload
-              name="file"
-              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-              data={{
-                upload_preset: "wh3rdke8",
-                cloud_name: "dksgvucji",
-              }}
-              listType="picture-card"
-              maxCount={1}
-              fileList={fileList}
-              showUploadList={true}
-              className="ant-upload-wrapper ant-upload-select"
-              onChange={handleImageChange}
-            >
-              {uploadButton}
-            </Upload>
-          </Form.Item>
-          <Form.Item
-            label={
-              <span className="text-base dark:text-white">Giá dịch vụ </span>
-            }
-            name="price"
-            rules={[{ required: true, message: "Vui lòng nhập giá dịch vụ!" }]}
-          >
-            <InputNumber
-              min={1}
-              className="dark:hover:border-[#00c6ab] w-full transition-colors duration-300"
-            />
-          </Form.Item>
-          <Form.Item
-            label={<span className="text-base dark:text-white">Mô tả</span>}
-            name="description"
-            rules={[
-              { required: true, message: "Vui lòng nhập giá mô tả dịch vụ!" },
-            ]}
-          >
-            <ReactQuill
-              style={{ height: 500 }}
-              theme="snow"
-              value={value}
-              onChange={setValue}
-            />
-          </Form.Item>
+            {uploadButton}
+          </Upload>
+        </Form.Item>
+        <Form.Item
+          label={
+            <span >Giá dịch vụ </span>
+          }
+          name="price"
+          rules={[{ required: true, message: "Vui lòng nhập giá dịch vụ!" }]}
+        >
+          <InputNumber
+            min={1}
+          />
+        </Form.Item>
+        <Form.Item
+          style={{ marginBottom: 50 }}
+          label={<span >Mô tả</span>}
+          name="description"
+          rules={[
+            { required: true, message: "Vui lòng nhập giá mô tả dịch vụ!" },
+          ]}
+        >
+          <ReactQuill
+            style={{ height: 400 }}
+            theme="snow"
+            value={value}
+            onChange={setValue}
+          />
+        </Form.Item>
 
-          <Form.Item
-            label={<span className="">Số lượng</span>}
-            name="quantity"
-            rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
-          >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
-          </Form.Item>
+        <Form.Item
+          label={<span className="">Số lượng</span>}
+          name="quantity"
+          rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
+        >
+          <Input className=" inputForm" />
+        </Form.Item>
 
-          <Form.Item label="Category" name="category_id">
-            {productById.data && productById.data?.category_id && (
-              <Select defaultValue={productById.data?.category_id}>
-                {category.data?.map((item: Tcategory) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+        <Form.Item
+          label="Category"
+          name="category_id"
+          rules={[
+            { required: true, message: "Vui lòng chọn danh mục sản phẩm!" },
+          ]}
+        >
+          {productById.data && productById.data?.category_id && (
+            <Select defaultValue={productById.data?.category_id}>
+              {category.data?.map((item: Tcategory) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button
+            style={{ marginTop: 30 }}
+            htmlType="submit"
+            size="large"
+          >
+            {isAddLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "Sửa Sản Phẩm"
             )}
-          </Form.Item>
-          <Form.Item>
-            <Button
-              style={{ marginTop: 30 }}
-              htmlType="submit"
-              className="text-black transition-colors duration-300 dark:text-white"
-              size="large"
-            >
-              {isAddLoading ? (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              ) : (
-                "Sửa Sản Phẩm"
-              )}
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

@@ -102,13 +102,12 @@ const EditService = () => {
 
   return (
     <>
-      <h1 className="mt-5 text-3xl font-semibold text-center text-black md:ml-16 md:text-left dark:text-white">
-        Cập nhật sản phẩm
+    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+        Cập nhập sản phẩm #{id}
       </h1>
-      <div className="bg-white dark:bg-[#38383B] p-10 md:w-[90%] md:ml-16 sm:mx-auto mx-2 mt-5 shadow-lg rounded ">
+      <div>
         <Form
           form={form}
-          className="w-4/5 dark:text-white"
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -120,22 +119,16 @@ const EditService = () => {
             name="id"
             rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
           >
-            <Input
-              disabled
-              className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm"
-            />
+            <Input disabled />
           </Form.Item>
           <Form.Item
             label={<span className="">Tên dịch vụ</span>}
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
           >
-            <Input className="dark:hover:border-[#00c6ab] transition-colors duration-300 inputForm" />
+            <Input />
           </Form.Item>
-          <Form.Item
-            label={<span className="">Ảnh dịch vụ</span>}
-            name="img"    
-          >
+          <Form.Item label={<span className="">Ảnh dịch vụ</span>} name="img">
             <Upload
               name="file"
               action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"

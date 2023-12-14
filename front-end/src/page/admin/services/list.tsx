@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { useEffect , useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
@@ -120,13 +120,16 @@ const ServicesAdmin: React.FC = () => {
   ];
 
   useEffect(() => {
-    const filteredData = data?.filter((item) =>
-      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
-      item.price?.toString().toLowerCase().includes(filter.price.trim().toLowerCase())
+    const filteredData = data?.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.price
+          ?.toString()
+          .toLowerCase()
+          .includes(filter.price.trim().toLowerCase())
     );
     setDataServices(filteredData);
   }, [data, filter]);
-  
 
   useEffect(() => {
     if (filter.name === "" && filter.price === "") {
@@ -138,7 +141,8 @@ const ServicesAdmin: React.FC = () => {
 
   return (
     <>
-    <div
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
       >
