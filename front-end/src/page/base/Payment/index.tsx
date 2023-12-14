@@ -68,6 +68,17 @@ const PaymentPage = () => {
     const appointmentId = idRef.current
       ? parseInt(idRef.current, 10)
       : undefined;
+
+    const statusPaymentResponse = await axios.get(
+      `${API_URL}/appointment/${appointmentId}/status_payment`
+    );
+    const appointmentData = statusPaymentResponse.data;
+
+    if (appointmentData.status_payment === 2) {
+      console.log("Đơn hàng đã được thanh toán");
+      message.warning("Đơn hàng đã được thanh toán");
+      return;
+    }
     try {
       const existingInvoice =
         data &&
