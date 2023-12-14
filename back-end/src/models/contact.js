@@ -12,7 +12,7 @@ export default class Contact {
     static getAllStatusContact() {
         return new Promise((resolve, reject) => {
             connection.query(
-                "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , status_contact.name as statusName FROM contact  JOIN status_contact on contact.status_id = status_contact.id",
+                "SELECT contact.id, contact.phone, contact.title, contact.subject, contact.user_id, contact.status_id , status_contact.name as statusName FROM contact  JOIN status_contact on contact.status_id = status_contact.id",
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results);
@@ -24,7 +24,7 @@ export default class Contact {
     static getContactUser() {
         return new Promise((resolve, reject) => {
             connection.query(
-                "SELECT contact.id, contact.title, contact.subject, contact.user_id, contact.status_id , users.name as nameUser, status_contact.name as statusName FROM contact " + "JOIN status_contact on contact.status_id = status_contact.id " + "JOIN users on contact.user_id = users.id",
+                "SELECT contact.id,contact.phone, contact.title, contact.subject, contact.user_id, contact.status_id , users.name as nameUser, status_contact.name as statusName FROM contact " + "JOIN status_contact on contact.status_id = status_contact.id " + "JOIN users on contact.user_id = users.id",
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results);
@@ -44,11 +44,11 @@ export default class Contact {
             );
         });
     }
-    static createContact(title, subject, user_id, status_id) {
+    static createContact(phone, title, subject, user_id, status_id) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO contact (title, subject, user_id , status_id) VALUES (?,?, ?,?)",
-                [title, subject, user_id, status_id],
+                "INSERT INTO contact (phone, title, subject, user_id , status_id) VALUES (?, ?,?, ?,?)",
+                [phone, title, subject, user_id, status_id],
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results.insertId);
@@ -56,11 +56,11 @@ export default class Contact {
             );
         });
     }
-    static updateContact(id, title, subject, user_id) {
+    static updateContact(id, phone, title, subject, user_id) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "UPDATE contact SET title = ?, subject = ?, user_id=? status_id=? WHERE id = ?",
-                [title, subject, user_id, id],
+                "UPDATE contact SET phone = ?,title = ?, subject = ?, user_id=? status_id=? WHERE id = ?",
+                [phone, title, subject, user_id, id],
                 (err) => {
                     if (err) reject(err);
                     resolve();
