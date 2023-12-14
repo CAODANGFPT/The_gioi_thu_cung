@@ -6,6 +6,7 @@ import AppoinmentIcon from "../svg/appoinmentIcon";
 import BannerIcon from "../svg/banner";
 import BreedIcon from "../svg/breed";
 import Category from "../svg/category";
+import FooterIcon from "../svg/footerIcon";
 import MenuIcon2 from "../svg/menuIcon2";
 import MenuTypeIcon from "../svg/menuTypeIcon";
 import NewIcon from "../svg/newIcon";
@@ -70,6 +71,7 @@ export const navigationLinks = [
   { id: 23, title: "Kiểu Menu", image: MenuTypeIcon, link: "menutype" },
   { id: 24, title: "Menu", image: MenuIcon2, link: "menu" },
   { id: 25, title: "Banner", image: BannerIcon, link: "banner" },
+  { id: 26, title: "Footer", image: FooterIcon, link: "footer" },
 ];
 
 export const transactions = [

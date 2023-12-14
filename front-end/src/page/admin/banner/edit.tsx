@@ -95,79 +95,84 @@ const EditBanner = () => {
     <>
       <h2 style={{ marginBottom: 10 }}>Cập nhật banner</h2>
       <Form
-        form={form}
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        layout="vertical"
-      >
-        <Form.Item
-          label={<span className="">Id</span>}
-          name="id"
-          rules={[{ required: true, message: "Vui lòng nhập!" }]}
+          form={form}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          layout="vertical"
         >
-          <Input disabled />
-        </Form.Item>
-
-        <Form.Item label={<span className="">Ảnh sản phẩm</span>} name="img">
-          <Upload
-            name="file"
-            action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
-            data={{
-              upload_preset: "wh3rdke8",
-              cloud_name: "dksgvucji",
-            }}
-            listType="picture-card"
-            maxCount={1}
-            fileList={fileList}
-            showUploadList={true}
-            className="ant-upload-wrapper ant-upload-select"
-            onChange={handleImageChange}
+          <Form.Item
+            label={<span className="">Id</span>}
+            name="id"
+            rules={[{ required: true, message: "Vui lòng nhập!" }]}
           >
-            {uploadButton}
-          </Upload>
-        </Form.Item>
+            <Input
+              disabled
+            />
+          </Form.Item>
 
-        <Form.Item
-          label={<span className="">Tiêu đề</span>}
-          name="title"
-          rules={[{ required: true, message: "Vui lòng nhập tiêu đề banner!" }]}
-        >
-          <Input />
-        </Form.Item>
+          <Form.Item label={<span className="">Ảnh banner</span>} name="img">
+            <Upload
+              name="file"
+              action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+              data={{
+                upload_preset: "wh3rdke8",
+                cloud_name: "dksgvucji",
+              }}
+              listType="picture-card"
+              maxCount={1}
+              fileList={fileList}
+              showUploadList={true}
+              className="ant-upload-wrapper ant-upload-select"
+              onChange={handleImageChange}
+            >
+              {uploadButton}
+            </Upload>
+          </Form.Item>
 
-        <Form.Item
-          label={<span className="">Slogan</span>}
-          name="slogan"
-          rules={[{ required: true, message: "Vui lòng nhập slogan banner!" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={<span className="">Link</span>}
-          name="link"
-          rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            style={{ marginTop: 30 }}
-            htmlType="submit"
-            className="text-black transition-colors duration-300 dark:text-white"
-            size="large"
+          <Form.Item
+            label={<span className="">Tiêu đề</span>}
+            name="title"
+            rules={[
+              { required: true, message: "Vui lòng nhập tiêu đề banner!" },
+            ]}
           >
-            {isAddLoading ? (
-              <AiOutlineLoading3Quarters className="animate-spin" />
-            ) : (
-              "Sửa Banner"
-            )}
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label={<span className="">Slogan</span>}
+            name="slogan"
+            rules={[
+              { required: true, message: "Vui lòng nhập slogan banner!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label={<span className="">Link</span>}
+            name="link"
+            rules={[{ required: true, message: "Vui lòng nhập link banner!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              style={{ marginTop: 30 }}
+              htmlType="submit"
+              size="large"
+            >
+              {isAddLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Sửa Banner"
+              )}
+            </Button>
+          </Form.Item>
+        </Form>
     </>
   );
 };

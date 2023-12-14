@@ -69,7 +69,9 @@ import PetUser from "./components/account_info/pet";
 import AppointmentEdit from "./page/admin/appointments/edit";
 import AddBanner from "./page/admin/banner/add";
 import EditBanner from "./page/admin/banner/edit";
+import EditFooterAdmin from "./page/admin/footer/edit";
 import BannerAdmin from "./page/admin/banner/list";
+import FooterAdmin from "./page/admin/footer/list";
 import AddCategory from "./page/admin/category/add";
 import EditCategory from "./page/admin/category/edit";
 import CategoryAdmin from "./page/admin/category/list";
@@ -180,7 +182,6 @@ function App() {
             <Route path="return-refund" element={<ReturnRefund />} />
             <Route path="to-receive" element={<ToReceive />} />
             <Route path="completed" element={<Completed />} />
-
           </Route>
           <Route path="cart" element={<CartPage />} />
           <Route path="services" element={<ServicePage />} />
@@ -290,6 +291,12 @@ function App() {
             <Route index element={<BannerAdmin />} />
             <Route path="add" element={<AddBanner />} />
             <Route path="edit/:id" element={<EditBanner />} />
+          </Route>
+
+          <Route path="footer">
+            <Route index element={<FooterAdmin />} />
+            {/* <Route path="add" element={<AddBanner />} /> */}
+            <Route path="edit/:id" element={<EditFooterAdmin />} />
           </Route>
 
           <Route path="websiteinformation">
