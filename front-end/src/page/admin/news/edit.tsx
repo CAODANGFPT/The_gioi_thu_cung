@@ -9,7 +9,6 @@ import {
   useNewsByIdQuery,
 } from "../../../services/news";
 import dayjs from "dayjs";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useGetUserQuery } from "../../../services/user";
 
@@ -70,7 +69,9 @@ const EditNews = () => {
         created_at: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
         user_id: user?.id || 0,
       };
-
+      if (!image && news.data && news.data.img) {
+        dateNews.img = news.data.img;
+      }
       await updateNewsMutation(dateNews).unwrap();
 
       confirm();
@@ -111,9 +112,7 @@ const EditNews = () => {
           layout="vertical"
         >
           <Form.Item
-            label={
-              <span>Tên bài đăng</span>
-            }
+            label={<span>Tên bài đăng</span>}
             name="title"
             rules={[{ required: true, message: "Vui lòng nhập tên bài đăng!" }]}
           >
@@ -163,9 +162,7 @@ const EditNews = () => {
           </Form.Item>
           <Form.Item
             style={{ marginTop: 60 }}
-            label={
-              <span >Tên người đăng</span>
-            }
+            label={<span>Tên người đăng</span>}
           >
             <span>{user?.name}</span>
           </Form.Item>

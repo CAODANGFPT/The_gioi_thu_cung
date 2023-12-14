@@ -9,7 +9,7 @@ const reviewApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -35,10 +35,24 @@ const reviewApi = createApi({
         },
         invalidatesTags: ["Review"],
       }),
+      createReview: builder.mutation<TReview, Partial<TReview>>({
+        query: (review) => {
+          return {
+            url: "/review",
+            method: "POST",
+            body: review,
+          };
+        },
+        invalidatesTags: ["Review"],
+      }),
     };
   },
 });
 
-export const { useReviewQuery, useUpdateBlockReviewMutation } = reviewApi;
+export const {
+  useReviewQuery,
+  useCreateReviewMutation,
+  useUpdateBlockReviewMutation,
+} = reviewApi;
 export const reviewReducer = reviewApi.reducer;
 export default reviewApi;

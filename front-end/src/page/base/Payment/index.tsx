@@ -56,14 +56,13 @@ const PaymentPage = () => {
         data.length > 0 &&
         data.find((invoice) => {
           return (
-            invoice.appointments_id === 270 && invoice.paymentMethod === "CASH"
+            invoice.appointments_id === appointmentId &&
+            invoice.paymentMethod === "CASH"
           );
         });
 
       if (existingInvoice) {
-        console.log(
-          "Invoice đã tồn tại cho appointments_id là 270 và method là cash."
-        );
+        console.log("Invoice đã tồn tại và method là cash.");
         navigate(`/pay-cash`);
       } else {
         const response = await addInvoice({
