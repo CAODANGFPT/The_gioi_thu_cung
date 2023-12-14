@@ -47,7 +47,6 @@ const Cancelled: React.FC = () => {
       },
     });
   };
-
   return (
     <>
       {data?.length ? (
