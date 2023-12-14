@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import { Link } from "react-router-dom";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import {
   useAddToCartsMutation,
@@ -76,56 +77,58 @@ const Completed: React.FC = () => {
   return (
     <>
       {data?.length ? (
-        data.map((item) => (
-          <div key={item.id} className="toShip">
+        data.map((Item) => (
+          <div key={Item.id} className="toShip">
             <div className="toShip-status">
-              <div>{item.paymentMethods.name}</div>
-              <div className="toShip-status-name">{item.status.name}</div>
+              <div>{Item.paymentMethods.name}</div>
+              <div className="toShip-status-name">{Item.status.name}</div>
             </div>
             <div className="toShip-box">
-              {item.products.map((item) => (
+              {Item.products.map((item) => (
                 <div key={item.id} className="toShip-box-top">
-                  <div className="toShip-box-top-item">
-                    <div className="toShip-box-top-item-img">
-                      <img src={item.img} alt="" />
-                    </div>
-                    <div>
-                      <div>{item.name}</div>
-                      <div>x{item.quantity}</div>
-                      <Button
-                        className="review"
-                        onClick={() => {
-                          Modal.info({
-                            title: "Đánh giá chất lượng dịch vụ",
-                            content: (
-                              <div style={{ marginLeft: -30 }}>
-                                <div style={{ marginBottom: 10 }}>
-                                  Bạn cảm thấy chất lượng dịch vụ như thế nào?
+                  <Link to={`/account/detailOrder/${Item.id}`} state={Item}>
+                    <div className="toShip-box-top-item">
+                      <div className="toShip-box-top-item-img">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <div>
+                        <div>{item.name}</div>
+                        <div>x{item.quantity}</div>
+                        <Button
+                          className="review"
+                          onClick={() => {
+                            Modal.info({
+                              title: "Đánh giá chất lượng dịch vụ",
+                              content: (
+                                <div style={{ marginLeft: -30 }}>
+                                  <div style={{ marginBottom: 10 }}>
+                                    Bạn cảm thấy chất lượng dịch vụ như thế nào?
+                                  </div>
+                                  <Rate
+                                    style={{ fontSize: 30 }}
+                                    allowHalf
+                                    defaultValue={rating}
+                                    onChange={handleRateChange}
+                                  />
+                                  <TextArea
+                                    style={{ marginTop: 10 }}
+                                    rows={4}
+                                    onChange={handleTextAreaChange}
+                                    placeholder="Hãy viết những góp ý của bạn vào đây"
+                                  />
                                 </div>
-                                <Rate
-                                  style={{ fontSize: 30 }}
-                                  allowHalf
-                                  defaultValue={rating}
-                                  onChange={handleRateChange}
-                                />
-                                <TextArea
-                                  style={{ marginTop: 10 }}
-                                  rows={4}
-                                  onChange={handleTextAreaChange}
-                                  placeholder="Hãy viết những góp ý của bạn vào đây"
-                                />
-                              </div>
-                            ),
-                            footer: (_) => (
-                              <Button onClick={() => handleOk()}>Gửi</Button>
-                            ),
-                          });
-                        }}
-                      >
-                        Đánh giá sản phẩm
-                      </Button>
+                              ),
+                              footer: (_) => (
+                                <Button onClick={() => handleOk()}>Gửi</Button>
+                              ),
+                            });
+                          }}
+                        >
+                          Đánh giá sản phẩm
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                   <div className="toShip-box-top-price">
                     {new Intl.NumberFormat("vi-VN").format(
                       item.quantity * item.price ?? 0
@@ -137,7 +140,7 @@ const Completed: React.FC = () => {
               <div className="toShip-box-bottom">
                 <div className="toShip-box-bottom-action">
                   <div
-                    onClick={() => resetCart(item.products, item.userId)}
+                    onClick={() => resetCart(Item.products, Item.userId)}
                     className="toShip-box-bottom-action-abort"
                   >
                     Đặt lại
@@ -146,7 +149,7 @@ const Completed: React.FC = () => {
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}
                   <span>
-                    {new Intl.NumberFormat("vi-VN").format(item.total)} VNĐ
+                    {new Intl.NumberFormat("vi-VN").format(Item.total)} VNĐ
                   </span>
                 </div>
               </div>

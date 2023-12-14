@@ -1,21 +1,23 @@
 import React from "react";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import imageNot from "../../../assets/image/notAppoiment.png";
+import { Link } from "react-router-dom";
 
 const ToShip: React.FC = () => {
   const { data } = useGetOrderByIdUserAndIdStatusQuery(2);
   return (
     <>
       {data?.length ? (
-        data.map((item) => (
-          <div className="toShip" key={item.id}>
+        data.map((Item) => (
+          <div className="toShip" key={Item.id}>
             <div className="toShip-status">
-              <div>{item.paymentMethods.name}</div>
-              <div className="toShip-status-name">{item.status.name}</div>
+              <div>{Item.paymentMethods.name}</div>
+              <div className="toShip-status-name">{Item.status.name}</div>
             </div>
             <div className="toShip-box">
-              {item.products.map((item) => (
+              {Item.products.map((item) => (
                 <div key={item.id} className="toShip-box-top">
+                      <Link to={`/account/detailOrder/${Item.id}`} state={Item}>
                   <div className="toShip-box-top-item">
                     <div className="toShip-box-top-item-img">
                       <img src={item.img} alt="" />
@@ -25,6 +27,7 @@ const ToShip: React.FC = () => {
                       <div>x{item.quantity}</div>
                     </div>
                   </div>
+                  </Link>
                   <div className="toShip-box-top-price">
                     {new Intl.NumberFormat("vi-VN").format(
                       item.quantity * item.price ?? 0
@@ -42,7 +45,7 @@ const ToShip: React.FC = () => {
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}
                   <span>
-                    {new Intl.NumberFormat("vi-VN").format(item.total)} VNĐ
+                    {new Intl.NumberFormat("vi-VN").format(Item.total)} VNĐ
                   </span>
                 </div>
               </div>
