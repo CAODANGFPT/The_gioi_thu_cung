@@ -1,0 +1,112 @@
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.news {
+  max-width: 1240px;
+  margin: 10px auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+
+  @include max-screen($xl) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @include max-screen($md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include max-screen(500px) {
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+  }
+
+  @include max-screen($xl) {
+    margin: 10px 2rem;
+  }
+}
+
+.detailNews {
+  max-width: 1240px;
+  margin: 10px auto;
+  display: flex;
+  gap: 20px;
+
+  @include max-screen($xl) {
+    margin: 10px 2rem;
+  }
+
+  &-recentPost {
+    width: 28%;
+
+    &-title {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 1);
+      font-weight: 500;
+    }
+
+    &-hr {
+      margin: 5px 0;
+      width: 72px;
+      height: 3px;
+      background-color: $EagleGreen;
+    }
+
+    &-item {
+      margin-top: 20px;
+      height: 90px;
+      background-color: white;
+      display: flex;
+      gap: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      &-img {
+        img {
+          border-bottom-left-radius: 5px;
+          border-top-left-radius: 5px;
+          width: 113px;
+          height: 100%;
+        }
+      }
+
+      &-text {
+        padding: 5px 5px 5px 0;
+
+        &-title {
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        &-date {
+          color: rgba(122, 122, 122, 1);
+          font-size: 12px;
+          font-weight: 500;
+          padding: 5px 0;
+        }
+      }
+    }
+  }
+
+  &-item {
+    flex: 1;
+    background-color: white;
+    padding: 20px 40px;
+    &-title {
+      font-size: 32px;
+      line-height: 150%;
+      font-weight: bold;
+
+    }
+
+    &-description {
+      margin-top: 20px;
+    }
+  }
+}
