@@ -29,7 +29,6 @@
       display: flex;
       margin: 20px 0px 30px 0px;
       @include Flex(flex, space-between, flex-start);
-      @include Gap(90px, 0);
 
       .contact_1 {
         display: flex;
@@ -60,20 +59,21 @@
       }
     }
 
+    h1 {
+      margin: 30px 0px;
+      opacity: 0.7;
+      text-align: center;
+      color: $EagleGreen;
+    }
+
     .contact_mail {
       display: flex;
       justify-content: center;
       align-items: center;
 
-      form {
+      Form {
         width: 600px;
         font-size: 17px;
-
-        h1 {
-          margin: 30px 0px;
-          opacity: 0.7;
-          color: $EagleGreen;
-        }
 
         .controll {
           display: flex;
@@ -85,14 +85,14 @@
             color: #727272
           }
 
-          input {
+          Input {
             padding: 7px;
             outline: none;
             border: 1px solid #ccc;
             border-radius: 5px;
           }
 
-          textarea {
+          TextArea {
             border: 1px solid #ccc;
             outline: none;
             border-radius: 5px;
@@ -100,7 +100,7 @@
           }
         }
 
-        button {
+        Button {
           margin: 13px auto;
           padding: 10px 5px;
           width: 100px;
@@ -111,6 +111,13 @@
           background-color: $EagleGreen;
           color: white;
           border-radius: 6px;
+          height: auto;
+
+          &:hover {
+            color: $EagleGreen;
+            border: 1px solid $EagleGreen;
+            background: white;
+          }
         }
       }
     }

@@ -55,6 +55,15 @@ const contactApi = createApi({
         },
         invalidatesTags: ["Contact"],
       }),
+
+      createContact: builder.mutation<TContact[], Partial<TContact>>({
+        query: (contactData) => ({
+          url: "/contact",
+          method: "POST",
+          body: contactData,
+        }),
+        invalidatesTags: ["Contact"],
+      }),
     };
   },
 });
@@ -64,6 +73,7 @@ export const {
   useContactByIdQuery,
   useGetContactQuery,
   useUpdateStatusContactMutation,
+  useCreateContactMutation,
 } = contactApi;
 export const contactReducer = contactApi.reducer;
 export default contactApi;
