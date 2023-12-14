@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/reviews", list);
 router.get("/review/:id", show);
-router.post("/review", checkPermission, create);
+router.post("/review", create);
 router.delete("/review/:id", checkPermission, remote);
 router.patch("/blockReview", checkPermission, blockReview);
 

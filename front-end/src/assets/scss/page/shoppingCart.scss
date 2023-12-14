@@ -181,9 +181,18 @@
                   }
                   .remove {
                     margin-top: 10px;
-                    cursor: pointer;
-                    @include max-screen(620px) {
-                      display: none;
+                    div {
+                      cursor: pointer;
+                      &:hover {
+                        svg {
+                          path {
+                            fill: $EagleGreen;
+                          }
+                        }
+                      }
+                      @include max-screen(620px) {
+                        display: none;
+                      }
                     }
                   }
                 }
