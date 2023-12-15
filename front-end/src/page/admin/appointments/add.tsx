@@ -14,12 +14,12 @@ import {
   useGetAppointmentTimeMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
-import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { useGetAllpetHouseClientQuery, useGetAllpetHouseQuery } from "../../../services/pethouse";
 import {
   useGetPetByIdPostMutation,
   useUserPetMutation,
 } from "../../../services/pets";
-import { useServicesQuery } from "../../../services/services";
+import { useServicesClientQuery, useServicesQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import {
   useStatusPaymentQuery,
@@ -64,8 +64,8 @@ const AppointmentsAdd: React.FC = () => {
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const { data: user } = useGetUserQuery();
-  const { data: pethouse } = useGetAllpetHouseQuery();
-  const { data: services } = useServicesQuery();
+  const { data: pethouse } = useGetAllpetHouseClientQuery();
+  const { data: services } = useServicesClientQuery();
   const { data: statusPayment } = useStatusPaymentQuery();
   const { data: statusAppointment } = useStatusQuery();
   const { data: getAllUser } = useGetAllUserQuery();
@@ -152,6 +152,20 @@ const AppointmentsAdd: React.FC = () => {
     if ("data" in resAppointment) {
       message.success("Thêm thành công");
       navigate("/admin/appointment");
+    }else {
+      if (
+        resAppointment.error &&
+        "status" in resAppointment.error &&
+        resAppointment.error.data &&
+        "message" in (resAppointment.error.data as Record<string, unknown>)
+      ) {
+        const errorMessage = (
+          resAppointment.error.data as Record<string, unknown>
+        ).message as string;
+        message.error(errorMessage);
+      } else {
+        message.error("Thêm lịch thất bại");
+      }
     }
   };
 

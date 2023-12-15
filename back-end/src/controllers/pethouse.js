@@ -3,7 +3,7 @@ import { pethouseSchema } from "../schemas/pethouse";
 
 export const list = async (req, res) => {
   try {
-    const pethouse = await Pethouse.getAllPethouse();
+    const pethouse = await Pethouse.getAllPetHouse();
     res.json(pethouse);
   } catch (err) {
     res.status(500).json({ error: err.message });
