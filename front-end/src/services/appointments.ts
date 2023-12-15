@@ -115,7 +115,7 @@ const appointmentApi = createApi({
       >({
         query: (appointments) => ({
           url: `/appointmentStatus/${appointments.id}`,
-          method: "PATCH",
+          method: "PUT",
           body: appointments,
         }),
         invalidatesTags: ["Appointment"],

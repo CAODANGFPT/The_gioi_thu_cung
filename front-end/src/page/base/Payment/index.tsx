@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
+import { message } from "antd";
+
 import axios from "axios";
 import {
   useCreateInvoiceMutation,
@@ -33,10 +35,26 @@ const PaymentPage = () => {
   const { data } = useGetInvoicesQuery(Number(id));
   const handlePayment = () => {
     axios
-      .post(`${API_URL}/create-payment`, { appointmentID: id, amount: total })
-      .then((response) => {
-        localStorage.setItem("paymentInfo", JSON.stringify({ id, total }));
-        window.location.href = response.data.paymentUrl;
+      .get(`${API_URL}/appointment/${id}/status_payment`)
+      .then((appointmentResponse) => {
+        const appointmentData = appointmentResponse.data;
+        if (appointmentData.status_payment === 2) {
+          console.log("Đơn hàng đã được thanh toán");
+          message.warning("Đơn hàng đã được thanh toán");
+          return;
+        }
+        axios
+          .post(`${API_URL}/create-payment`, {
+            appointmentID: id,
+            amount: total,
+          })
+          .then((response) => {
+            localStorage.setItem("paymentInfo", JSON.stringify({ id, total }));
+            window.location.href = response.data.paymentUrl;
+          })
+          .catch((error) => {
+            console.error("Error", error);
+          });
       })
       .catch((error) => {
         console.error("Error", error);
@@ -50,6 +68,17 @@ const PaymentPage = () => {
     const appointmentId = idRef.current
       ? parseInt(idRef.current, 10)
       : undefined;
+
+    const statusPaymentResponse = await axios.get(
+      `${API_URL}/appointment/${appointmentId}/status_payment`
+    );
+    const appointmentData = statusPaymentResponse.data;
+
+    if (appointmentData.status_payment === 2) {
+      console.log("Đơn hàng đã được thanh toán");
+      message.warning("Đơn hàng đã được thanh toán");
+      return;
+    }
     try {
       const existingInvoice =
         data &&
