@@ -4,6 +4,7 @@ export const petHouseSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string(),
   status_id: yup.number(),
+  is_delete: yup.boolean(),
 });
 
 export const petHouseRequestSchema = yup.object().shape({

@@ -3,12 +3,9 @@ import "../../assets/scss/page/account/pet.scss";
 import { useGetAllUserPetsQuery } from "../../services/pets";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useGetUserQuery } from "../../services/user";
 
 const PetUser: FC = () => {
   const { data: listPet } = useGetAllUserPetsQuery();
-  const { data: user } = useGetUserQuery();
-
   return (
     <>
       <div className="pet">

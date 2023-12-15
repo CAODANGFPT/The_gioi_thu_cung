@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TpetHouse } from "../schema/pethouse";
+import { TBlockService } from "../schema/services";
 
 const pethouseApi = createApi({
   reducerPath: "pethouse",
@@ -16,6 +17,15 @@ const pethouseApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getAllpetHouseClient: builder.query<TpetHouse[], void>({
+        query: () => {
+          return {
+            url: "/petHouseClient",
+            method: "GET",
+          };
+        },
+        providesTags: ["PetHouse"],
+      }),
       getAllpetHouse: builder.query<TpetHouse[], void>({
         query: () => {
           return {
@@ -59,16 +69,43 @@ const pethouseApi = createApi({
         },
         invalidatesTags: ["PetHouse"],
       }),
+      updateBlockPetHouse: builder.mutation<
+        TBlockService,
+        Partial<TBlockService>
+      >({
+        query: (petHouse) => {
+          return {
+            url: `/petHouse/block`,
+            method: "PATCH",
+            body: petHouse,
+          };
+        },
+        invalidatesTags: ["PetHouse"],
+      }),
+
+      checkPetHouse: builder.mutation<TpetHouse[], any>({
+        query: (id) => {
+          return {
+            url: "/checkPetHouse",
+            method: "POST",
+            body: id,
+          };
+        },
+        invalidatesTags: ["PetHouse"],
+      }),
     };
   },
 });
 
 export const {
+  useGetAllpetHouseClientQuery,
   useGetAllpetHouseQuery,
   usePetHouseByIdQuery,
   useUpdatePetHouseMutation,
   useCreatePetHouseMutation,
   useRemovePetHouseMutation,
+  useUpdateBlockPetHouseMutation,
+  useCheckPetHouseMutation,
 } = pethouseApi;
 export const pethouseReducer = pethouseApi.reducer;
 export default pethouseApi;

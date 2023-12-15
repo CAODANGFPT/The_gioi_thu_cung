@@ -6,6 +6,7 @@ import { updateAppointmentStatusSchema } from "../schemas/appointments";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import Pet from "../models/pet";
+import Pethouse from "../models/pethouse";
 
 export const list = async (req, res) => {
   try {
@@ -121,29 +122,39 @@ export const create = async (req, res) => {
       end_time,
       total,
     } = req.body;
-    const petNamesArray = [];
-    const ServicesArray = [];
     const check = [];
-    const appointmentsId = await Appointments.createAppointments(
-      day,
-      user_id,
-      pethouse_id,
-      start_time,
-      end_time,
-      total
-    );
+
     for (const item of services) {
       const data = await Services.checkServices(item);
       if (data[0]) {
         check.push(data[0]);
       }
     }
-    if (check.length > 0) {
+    const petHouse = await Pethouse.checkPethouse(pethouse_id);
+    if (petHouse) {
+      res
+        .status(400)
+        .json({
+          message: `Phòng ${petHouse[0].name} hiện tại cửa hàng tạm đóng`,
+        });
+    } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
       console.log(namesString);
-      res.status(400).json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
+      res
+        .status(400)
+        .json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
     } else {
+      const petNamesArray = [];
+      const ServicesArray = [];
+      const appointmentsId = await Appointments.createAppointments(
+        day,
+        user_id,
+        pethouse_id,
+        start_time,
+        end_time,
+        total
+      );
       for (const item of services) {
         await AppointmentsDetail.createAppointmentsServices(
           appointmentsId,
@@ -198,31 +209,31 @@ export const create = async (req, res) => {
         to: email,
         subject: "Thông tin đặt lịch chăm sóc",
         html: `  <div style="background-color: white; border: 5px solid #5ebdc2; width: 390px; padding: 30px 25px;">
-        <div style="display: flex; align-items: center; justify-content: center;">
-          <img style="width: 100%;" src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png" alt="">
-        </div>
-        <div style="margin-top: 30px;">
-          <div style="font-weight: 600;">Chào ${name}</div>
-          <div style="margin: 15px 0;">Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
-          <div style="margin: 15px 0;">Đây là thông tin lịch đặt của bạn: </div>
-          <div style="display: flex; gap: 5px; margin: 15px 0;">
-            <span style="font-weight: 600;" >Tên người đặt:</span>
-            <span  style="padding-left: 10px;">${name}</span>
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <img style="width: 100%;" src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png" alt="">
           </div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Dịch vụ: </span> <span sty  style="padding-left: 10px;">${servicesNamesString}</span></div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Pet: </span> <span  style="padding-left: 10px;">${petNamesString}</span></div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bạn đặt: </span> <span  style="padding-left: 10px;">${day}</span></div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bắt đầu lịch: </span> <span  style="padding-left: 10px;">${start_time}</span></div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian kết lịch: </span> <span  style="padding-left: 10px;">${end_time}</span></div>
-          <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Tổng tiền: </span> <span  style="padding-left: 10px;">${formattedTotal}    </span></div>
-          <div>
-            Nếu bạn có gì thắc mắc có thể liên hệ số điện thoại: <a href="tel:0917397543">0917397543</a> hoặc gửi email: hai20112030@gmail.com
+          <div style="margin-top: 30px;">
+            <div style="font-weight: 600;">Chào ${name}</div>
+            <div style="margin: 15px 0;">Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
+            <div style="margin: 15px 0;">Đây là thông tin lịch đặt của bạn: </div>
+            <div style="display: flex; gap: 5px; margin: 15px 0;">
+              <span style="font-weight: 600;" >Tên người đặt:</span>
+              <span  style="padding-left: 10px;">${name}</span>
+            </div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Dịch vụ: </span> <span sty  style="padding-left: 10px;">${servicesNamesString}</span></div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Pet: </span> <span  style="padding-left: 10px;">${petNamesString}</span></div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bạn đặt: </span> <span  style="padding-left: 10px;">${day}</span></div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bắt đầu lịch: </span> <span  style="padding-left: 10px;">${start_time}</span></div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian kết lịch: </span> <span  style="padding-left: 10px;">${end_time}</span></div>
+            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Tổng tiền: </span> <span  style="padding-left: 10px;">${formattedTotal}    </span></div>
+            <div>
+              Nếu bạn có gì thắc mắc có thể liên hệ số điện thoại: <a href="tel:0917397543">0917397543</a> hoặc gửi email: hai20112030@gmail.com
+            </div>
+            <div>
+              Thân mếm
+            </div>
           </div>
-          <div>
-            Thân mếm
-          </div>
-        </div>
-      </div>`,
+        </div>`,
       };
 
       await transporter.sendMail(mailOptions);

@@ -15,7 +15,7 @@ import {
   useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
-import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { useGetAllpetHouseClientQuery } from "../../../services/pethouse";
 import {
   useGetAllUserPetsQuery,
   useUserPetMutation,
@@ -55,7 +55,7 @@ const Appointment: React.FC = () => {
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const { data: user } = useGetUserQuery();
-  const { data: pethouse } = useGetAllpetHouseQuery();
+  const { data: pethouse } = useGetAllpetHouseClientQuery();
   const { data: services } = useServicesClientQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
