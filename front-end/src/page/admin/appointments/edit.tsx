@@ -148,6 +148,20 @@ const AppointmentEdit: React.FC = () => {
     if ("data" in resAppointment) {
       message.success("Sửa thành công");
       navigate("/admin/appointment");
+    }else {
+      if (
+        resAppointment.error &&
+        "status" in resAppointment.error &&
+        resAppointment.error.data &&
+        "message" in (resAppointment.error.data as Record<string, unknown>)
+      ) {
+        const errorMessage = (
+          resAppointment.error.data as Record<string, unknown>
+        ).message as string;
+        message.error(errorMessage);
+      } else {
+        message.error("Sửa lịch thất bại");
+      }
     }
   };
 
