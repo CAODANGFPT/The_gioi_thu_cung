@@ -158,7 +158,6 @@ const OrderAdmin: React.FC = () => {
           >
             Chi tiết
           </Button>
-
         </>
       ),
     },
@@ -168,7 +167,8 @@ const OrderAdmin: React.FC = () => {
     if (values.time) {
       values.time = dayjs(values.time).format("YYYY-MM-DD");
     }
-    const { nameUser, paymentMethods_id, time, status_id, status_payment } = values;
+    const { nameUser, paymentMethods_id, time, status_id, status_payment } =
+      values;
     const servicesData = {
       nameUser,
       paymentMethods_id,
@@ -187,7 +187,7 @@ const OrderAdmin: React.FC = () => {
   };
   return (
     <>
-       <h2>Tìm kiếm</h2>
+      <h2>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"
@@ -233,7 +233,7 @@ const OrderAdmin: React.FC = () => {
           </Button>
         </div>
       </Form>
-      <TableAdmin columns={columns} data={dataOrder} />;
+      <TableAdmin columns={columns} data={dataOrder} />
     </>
   );
 };

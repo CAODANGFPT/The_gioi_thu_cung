@@ -12,6 +12,7 @@ import { useGetUserListCartsQuery } from "../../services/shoppingCart";
 import { useGetUserQuery } from "../../services/user";
 import ModalUser from "./modal";
 import { useMenuQuery } from "../../services/menu";
+import { useGetAllWebsiteInformationQuery } from "../../services/websiteInformation";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const HeaderBase = () => {
   const [isWideScreen, setIsWideScreen] = useState(false);
   const { data: carts } = useGetUserListCartsQuery();
   const { data: menuData } = useMenuQuery();
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
 
   useEffect(() => {
     setOpenMenu(false);
@@ -91,7 +93,16 @@ const HeaderBase = () => {
           <MenuIcon />
         </div>
         <Link className="logo" to="">
-          <img className="logo-image" src={logo} alt="Logo" />
+          <img
+            src={
+              listWebsiteInformation &&
+              listWebsiteInformation.length > 0 &&
+              typeof listWebsiteInformation[0]?.logo === "string"
+                ? listWebsiteInformation[0]?.logo
+                : undefined
+            }
+            alt="Ảnh logo"
+          />
         </Link>
         <form className="frame31">
           <SearchIcon />
@@ -173,7 +184,7 @@ const HeaderBase = () => {
                 )}
               </li>
             ))}
-            <li className="menu-title">
+          <li className="menu-title">
             <button
               className="title-button"
               onClick={() =>
