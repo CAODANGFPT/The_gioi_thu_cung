@@ -54,6 +54,7 @@ export const OrderAdminSchemaRq = yup
               img: yup.string().required(),
               price: yup.number().required(),
               quantity: yup.number().required(),
+              review_id: yup.number().nullable(),
             })
           )
           .required(),

@@ -1,26 +1,25 @@
+import { Button } from "antd";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
-import { Link } from "react-router-dom";
 import { useGetOrderByIdUserAndIdStatusQuery } from "../../../services/order";
 import {
   useAddToCartsMutation,
   useGetUserListCartsQuery,
   useUpdateQuantityCartsMutation,
 } from "../../../services/shoppingCart";
-import { useNavigate } from "react-router-dom";
-import { Button, Input, Modal, Rate } from "antd";
-import { useCreateReviewMutation } from "../../../services/review";
+import ModalReview from "./modalReview";
 
 const Completed: React.FC = () => {
   const navigate = useNavigate();
-  const [rating, setRating] = useState<number>(5);
-  const [text, setText] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [productId, setProductId] = useState<number>();
 
-  const { data } = useGetOrderByIdUserAndIdStatusQuery(4);
+  const { data, refetch } = useGetOrderByIdUserAndIdStatusQuery(4);
   const { data: dataCart } = useGetUserListCartsQuery();
+
   const [AddToCart] = useAddToCartsMutation();
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
-  const [createReviewMutation] = useCreateReviewMutation();
 
   const resetCart = async (items: any[], userId: number) => {
     const updatedCart: any[] = [];
@@ -47,31 +46,11 @@ const Completed: React.FC = () => {
         };
         updatedCart.push(cartItem);
         const res = await AddToCart(cartItem);
-        console.log("1");
         if ("data" in res) {
           navigate("/shoppingCart");
         }
       }
     }
-  };
-
-  const handleRateChange = (value: number) => {
-    setRating(value);
-  };
-
-  const { TextArea } = Input;
-
-  const handleTextAreaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setText(event.target.value);
-  };
-
-  const handleOk = async () => {
-    console.log("submit ở đây này");
-    // lấy đánh giá rating
-    // lấy text
-    // await createReviewMutation();
   };
 
   return (
@@ -94,46 +73,34 @@ const Completed: React.FC = () => {
                       <div>
                         <div>{item.name}</div>
                         <div>x{item.quantity}</div>
-                        <Button
-                          className="review"
-                          onClick={() => {
-                            Modal.info({
-                              title: "Đánh giá chất lượng dịch vụ",
-                              content: (
-                                <div style={{ marginLeft: -30 }}>
-                                  <div style={{ marginBottom: 10 }}>
-                                    Bạn cảm thấy chất lượng dịch vụ như thế nào?
-                                  </div>
-                                  <Rate
-                                    style={{ fontSize: 30 }}
-                                    allowHalf
-                                    defaultValue={rating}
-                                    onChange={handleRateChange}
-                                  />
-                                  <TextArea
-                                    style={{ marginTop: 10 }}
-                                    rows={4}
-                                    onChange={handleTextAreaChange}
-                                    placeholder="Hãy viết những góp ý của bạn vào đây"
-                                  />
-                                </div>
-                              ),
-                              footer: (_) => (
-                                <Button onClick={() => handleOk()}>Gửi</Button>
-                              ),
-                            });
-                          }}
-                        >
-                          Đánh giá sản phẩm
-                        </Button>
                       </div>
                     </div>
                   </Link>
-                  <div className="toShip-box-top-price">
-                    {new Intl.NumberFormat("vi-VN").format(
-                      item.quantity * item.price ?? 0
-                    )}{" "}
-                    VNĐ
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-end",
+                      flexDirection: "column",
+                      rowGap: 10,
+                    }}
+                  >
+                    <div className="toShip-box-top-price">
+                      {new Intl.NumberFormat("vi-VN").format(
+                        item.quantity * item.price ?? 0
+                      )}{" "}
+                      VNĐ
+                    </div>
+                    {item.review_id === null && (
+                      <Button
+                        className="review"
+                        onClick={() => {
+                          setOpen(true);
+                          setProductId(item.id);
+                        }}
+                      >
+                        Đánh giá sản phẩm
+                      </Button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -154,6 +121,7 @@ const Completed: React.FC = () => {
                 </div>
               </div>
             </div>
+            <ModalReview refetch={refetch} open={open} setOpen={setOpen} productId={productId} />
           </div>
         ))
       ) : (
