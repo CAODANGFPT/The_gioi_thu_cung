@@ -858,3 +858,18 @@ export const status_payment = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const listPaymentAppointment = async (req, res) => {
+  try {
+    const listPaymentAppointment = await Appointments.getAppointmentDetails(
+      req.params.id
+    );
+    if (!listPaymentAppointment) {
+      res.status(404).json({ error: "Không tìm thấy" });
+    } else {
+      res.json(listPaymentAppointment);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
