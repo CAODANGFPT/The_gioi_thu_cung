@@ -10,22 +10,21 @@
 .news {
   max-width: 1240px;
   margin: 10px auto;
-  display: grid;
+  @include Gird(grid, 4);
   gap: 20px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
 
 
   @include max-screen($xl) {
-    grid-template-columns: 1fr 1fr 1fr;
+    @include Gird(grid, 3);
   }
 
   @include max-screen($md) {
-    grid-template-columns: 1fr 1fr;
+    @include Gird(grid, 2);
   }
 
   @include max-screen(500px) {
     margin: 0 auto;
-    grid-template-columns: 1fr;
+    @include Gird(grid, 1);
   }
 
   @include max-screen($xl) {
@@ -61,7 +60,7 @@
 
     &-item {
       margin-top: 20px;
-      height: 90px;
+      height: 100px;
       background-color: white;
       display: flex;
       gap: 10px;
@@ -77,11 +76,17 @@
       }
 
       &-text {
-        padding: 5px 5px 5px 0;
+        margin: 10px;
+        height: auto;
 
         &-title {
           font-weight: 500;
           font-size: 14px;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         &-date {
@@ -89,6 +94,16 @@
           font-size: 12px;
           font-weight: 500;
           padding: 5px 0;
+        }
+        &-user {
+          color: rgba(122, 122, 122, 1);
+          font-size: 12px;
+          font-weight: 500;
+          padding: 5px 0;
+          span{
+            font-size: 14px;
+            font-weight: 700;
+          }
         }
       }
     }

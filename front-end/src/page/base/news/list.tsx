@@ -5,11 +5,8 @@ import "../../../assets/scss/page/news.scss";
 import { useNavigate } from "react-router-dom";
 const ListNews: React.FC = () => {
   const { data: dataNews } = useNewsQuery();
-  console.log(dataNews);
   const navigate = useNavigate();
-  const detailNews = (id:Number) => {
-    navigate(`${id}`);
-  };
+  
   return (
     <>
       <div className="bg">
@@ -18,7 +15,7 @@ const ListNews: React.FC = () => {
             dataNews.map((item) => (
               <div
                 onClick={() => {
-                  detailNews(item.id);
+                  navigate(`${item.id}`);
                 }}
                 key={item.id}
               >

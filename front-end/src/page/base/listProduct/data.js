@@ -13,26 +13,12 @@ import product12 from "../../../assets/image/project12.png";
 
 
 export const ListFilterPriceData = [
-  {
-    id: 1,
-    name: "Dưới 100.000 VNĐ",
-  },
-  {
-    id: 2,
-    name: "Từ 100.000 - 200.000 VNĐ",
-  },
-  {
-    id: 3,
-    name: "Từ 200.000 - 500.000 VNĐ",
-  },
-  {
-    id: 4,
-    name: "Từ 500.000 - 1.000.000 VNĐ",
-  },
-  {
-    id: 5,
-    name: "Từ 1.000.000 - 5.000.000 VNĐ",
-  }
+  { label: 'Dưới 100.000 VNĐ', value: '1' },
+  { label: 'Từ 100.000 - 200.000 VNĐ', value: '2' },
+  { label: 'Từ 200.000 - 500.000 VNĐ', value: '3' },
+  { label: 'Từ 500.000 - 1.000.000 VNĐ', value: '4' },
+  { label: 'Từ 1.000.000 - 5.000.000 VNĐ', value: '5' },
+  { label: 'Trên 5.000.000 VNĐ', value: '6' },
 ];
 
 export const ListFilterCategoryData = [

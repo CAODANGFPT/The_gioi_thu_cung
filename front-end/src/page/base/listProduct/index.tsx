@@ -1,21 +1,16 @@
 import Modal from "@mui/material/Modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { Checkbox, Col, Select } from "antd";
+import { Checkbox, Col, Slider } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../assets/scss/page/listproduct.scss";
 import FilterIcon from "../../../assets/svg/filterIcon";
 import ListProductCard from "../../../components/listProduct";
+import { TProduct } from "../../../schema/products";
 import { useGetAllcategoryQuery } from "../../../services/category";
 import { useGetAllProductsQuery } from "../../../services/products";
-import { ListFilterCategoryData, ListFilterPriceData } from "./data";
-
-// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-//   event.preventDefault();
-//   console.info("You clicked a breadcrumb.");
-// }
 
 const ListProduct: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,20 +20,57 @@ const ListProduct: React.FC = () => {
     _event: any,
     page: React.SetStateAction<number>
   ) => {
+    window.scrollTo({
+      top: 0,
+    });
     setCurrentPage(page);
   };
   const itemsPerPage = 8;
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = productsList?.slice(indexOfFirstItem, indexOfLastItem);
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = productsList?.slice(indexOfFirstItem, indexOfLastItem);
+    setProducts(currentItems);
+  }, [currentPage, productsList]);
   const totalPages = Math.ceil((productsList?.length || 0) / itemsPerPage);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [value, setValue] = useState<number[]>([]);
+  const [price, setPrice] = useState<number[]>([0, 10000000]);
+  const [cate, setCate] = useState<CheckboxValueType[]>([]);
+  const [products, setProducts] = useState<TProduct[] | undefined>();
+
   const onChange = (checkedValues: CheckboxValueType[]) => {
     console.log("checked = ", checkedValues);
+    setCate(checkedValues);
+  };
+
+  const onAfterChangePrice = (value: number[]) => {
+    setValue(value);
+    setPrice(value);
+  };
+
+  useEffect(() => {
+    if (value.length > 0 || cate.length > 0) {
+      const filteredData = products?.filter((item) => {
+        const price = parseFloat(item.price?.toString() || "");
+        const isPriceInRange =
+          value.length === 0 || (price >= value[0] && price <= value[1]);
+        const isCategorySelected =
+          cate.length === 0 || cate.includes(item.category_id || 0);
+        return isPriceInRange && isCategorySelected;
+      });
+      setProducts(filteredData);
+    } else {
+      setProducts(productsList);
+    }
+  }, [products, value, cate, productsList]);
+
+  const formatSliderValue = (value: any) => {
+    return `${new Intl.NumberFormat("vi-VN").format(value)} VNĐ`;
   };
 
   return (
@@ -46,7 +78,7 @@ const ListProduct: React.FC = () => {
       <div className="titleProduct">
         <h2>
           Phụ kiện thú cưng
-          <span>({productsList?.length})</span>
+          <span>({products?.length})</span>
         </h2>
 
         <div className="btn-filter" onClick={handleOpen}>
@@ -63,54 +95,40 @@ const ListProduct: React.FC = () => {
             <h3>bộ lọc</h3>
             <div className="brand">
               <div>
-                <h3>Giá</h3>
-                <ul>
-                  {ListFilterPriceData.map((FilterCard) => {
-                    return (
-                      <li key={FilterCard.id}>
-                        <form action="">
-                          <input
-                            type="checkbox"
-                            value={FilterCard.name}
-                            name={FilterCard.name}
-                          />
-                          <label htmlFor="">{FilterCard.name}</label>
-                        </form>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <h4>Danh mục sản phẩm</h4>
+                <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
+                  <Col>
+                    {categories?.map((FilterCard) => (
+                      <Col key={FilterCard.id}>
+                        <Checkbox value={FilterCard.id}>
+                          {FilterCard.name}
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Col>
+                </Checkbox.Group>
               </div>
               <div>
-                <h3>Màu sắc</h3>
-                <ul>
-                  {ListFilterCategoryData.map((FilterCard) => {
-                    return (
-                      <li key={FilterCard.id}>
-                        <form action="">
-                          <input
-                            type="checkbox"
-                            value={FilterCard.name}
-                            name={FilterCard.name}
-                          />
-                          <label htmlFor="">{FilterCard.name}</label>
-                        </form>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <h4>Giá</h4>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>{formatSliderValue(price[0])}</div>
+                  <div>{formatSliderValue(price[1])}</div>
+                </div>
+                <Slider
+                  range
+                  step={100000}
+                  defaultValue={[0, 10000000]}
+                  max={10000000}
+                  tooltip={{ formatter: null }}
+                  onChange={onAfterChangePrice}
+                  tipFormatter={formatSliderValue}
+                />
               </div>
             </div>
           </div>
         </Modal>
-        <Select
-          defaultValue="1"
-          style={{ width: 200 }}
-          options={[
-            { value: "1", label: "Sản phẩm bán chạy" },
-            { value: "2", label: "Sản phẩm mới" },
-          ]}
-        />
       </div>
 
       <div className="product">
@@ -133,23 +151,25 @@ const ListProduct: React.FC = () => {
             </div>
             <div>
               <h4>Giá</h4>
-              <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
-                <Col>
-                  {ListFilterPriceData.map((FilterCard) => (
-                    <Col>
-                      <Checkbox value={FilterCard.id}>
-                        {FilterCard.name}
-                      </Checkbox>
-                    </Col>
-                  ))}
-                </Col>
-              </Checkbox.Group>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div>{formatSliderValue(price[0])}</div>
+                <div>{formatSliderValue(price[1])}</div>
+              </div>
+              <Slider
+                range
+                step={100000}
+                defaultValue={[0, 10000000]}
+                max={10000000}
+                tooltip={{ formatter: null }}
+                onChange={onAfterChangePrice}
+                tipFormatter={formatSliderValue}
+              />
             </div>
           </div>
         </div>
         <div className="list-pagination">
           <div className="product-list">
-            {productsList?.map((item) => {
+            {products?.map((item) => {
               return <ListProductCard key={item.id} item={item} />;
             })}
           </div>

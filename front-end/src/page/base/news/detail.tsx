@@ -9,9 +9,7 @@ const DetailNews: React.FC = () => {
   const { data: dataNewsTop3 } = useNewsTop3Query();
   const { data: dataNews } = useNewsByIdQuery(Number(id));
   const navigate = useNavigate();
-  const detailNews = (id: Number) => {
-    navigate(`/news/${id}`);
-  };
+
   return (
     <>
       <div className="bg">
@@ -23,7 +21,7 @@ const DetailNews: React.FC = () => {
               dataNewsTop3.map((item) => (
                 <div
                   onClick={() => {
-                    detailNews(item.id);
+                    navigate(`/news/${item.id}`);
                   }}
                   key={item.id}
                   className="detailNews-recentPost-item"
@@ -37,6 +35,10 @@ const DetailNews: React.FC = () => {
                     </div>
                     <div className="detailNews-recentPost-item-text-date">
                       {dayjs(item.created_at).format("DD-MM-YYYY")}
+                    </div>
+                    <div className="detailNews-recentPost-item-text-user">
+                      <span>Người đăng: </span>
+                      {item.nameUser}
                     </div>
                   </div>
                 </div>
