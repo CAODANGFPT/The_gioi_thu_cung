@@ -132,11 +132,9 @@ export const create = async (req, res) => {
     }
     const petHouse = await Pethouse.checkPethouse(pethouse_id);
     if (petHouse) {
-      res
-        .status(400)
-        .json({
-          message: `Phòng ${petHouse[0].name} hiện tại cửa hàng tạm đóng`,
-        });
+      res.status(400).json({
+        message: `Phòng ${petHouse[0].name} hiện tại cửa hàng tạm đóng`,
+      });
     } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
@@ -779,6 +777,21 @@ export const status_payment = async (req, res) => {
       res.status(404).json({ error: "Không tìm thấy mục lịch hẹn" });
     } else {
       res.json({ status_payment: statusPayment });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const listPaymentAppointment = async (req, res) => {
+  try {
+    const listPaymentAppointment = await Appointments.getAppointmentDetails(
+      req.params.id
+    );
+    if (!listPaymentAppointment) {
+      res.status(404).json({ error: "Không tìm thấy" });
+    } else {
+      res.json(listPaymentAppointment);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });

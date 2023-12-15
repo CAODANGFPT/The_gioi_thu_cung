@@ -17,6 +17,7 @@ import {
   updateAdmin,
   updateAppointmentStatus,
   updateStatusCancelAppointment,
+  listPaymentAppointment,
 } from "../controllers/appointments";
 import { checkPermission } from "../middlewares/checkPermission";
 
@@ -40,6 +41,7 @@ router.put("/appointmentStatus/:id", updateAppointmentStatus);
 router.post("/appointmentTime", getAppointmentTime);
 router.patch("/cancelHistoryAppointment", cancelHistoryAppointment);
 router.get("/updateStatusCancelAppointment", updateStatusCancelAppointment);
+router.get("/appointmentListPayment/:id", listPaymentAppointment);
 
 cron.schedule("*/1 * * * *", async () => {
   console.log("cron job success");
