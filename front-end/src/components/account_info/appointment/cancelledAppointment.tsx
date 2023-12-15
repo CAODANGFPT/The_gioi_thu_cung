@@ -6,41 +6,56 @@ import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import { useCheckServicesMutation } from "../../../services/services";
+import { useCheckPetHouseMutation } from "../../../services/pethouse";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
   const [checkServices] = useCheckServicesMutation();
+  const [checkPetHouse] = useCheckPetHouseMutation();
+
   const navigate = useNavigate();
   const redirectToAppointment = async (item: any) => {
     const servicesPromises = item.services.map(
       async (service: { id: number }) => {
-        const dataServices = await checkServices({ id: service.id });
-        if ("data" in dataServices) {
-          return dataServices.data[0];
+        try {
+          const dataServices = await checkServices({ id: service.id });
+          return "data" in dataServices ? dataServices.data[0] : null;
+        } catch (error) {
+          console.error("Error fetching service:", error);
+          return null;
         }
-        return null;
       }
     );
-    const resolveServices = await Promise.all(servicesPromises);
-    console.log(resolveServices);
 
+    const resolveServices = await Promise.all(servicesPromises);
     const filterServices = resolveServices.filter(
       (service) => service && "name" in service
     );
 
-    if (filterServices.length > 0) {
-      const name = filterServices.map((service: { name: any }) => service.name);
-      const namesString = name.join(", ");
-      message.error(`Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa`);
-    } else {
-      navigate("/appointment", {
-        state: {
-          appointmentData: {
-            ...item,
-            type: 2,
+    try {
+      const petHouseResult = await checkPetHouse({ id: item.pethouse_id });
+      if ("data" in petHouseResult && petHouseResult.data.length > 0) {
+        message.error(
+          `Phòng ${petHouseResult.data[0]?.name} hiện tại cửa hàng tạm khóa`
+        );
+      } else if (filterServices.length > 0) {
+        const names = filterServices.map(
+          (service: { name: any }) => service.name
+        );
+        const namesString = names.join(", ");
+        message.error(`Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa`);
+      } else {
+        navigate("/appointment", {
+          state: {
+            appointmentData: {
+              ...item,
+              type: 2,
+            },
           },
-        },
-      });
+        });
+      }
+    } catch (error) {
+      console.error("Error checking pet house:", error);
     }
   };
 

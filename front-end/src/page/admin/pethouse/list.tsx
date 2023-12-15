@@ -7,6 +7,7 @@ import { TpetHouse } from "../../../schema/pethouse";
 import {
   useGetAllpetHouseQuery,
   useRemovePetHouseMutation,
+  useUpdateBlockPetHouseMutation,
 } from "../../../services/pethouse";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
@@ -15,6 +16,8 @@ const PetHouseAdmin: React.FC = () => {
   const [removePetHouse] = useRemovePetHouseMutation();
   const [dataPethouse, setDataPethouse] = useState<any | null>(null);
   const { data } = useGetAllpetHouseQuery();
+  const [blockPetHouse] = useUpdateBlockPetHouseMutation();
+
   useEffect(() => {
     if (data) {
       setDataPethouse(data);
@@ -28,24 +31,31 @@ const PetHouseAdmin: React.FC = () => {
     setFilter({ ...filter, [fieldName]: value });
   };
 
-  const confirm = (id: number) => {
-    removePetHouse(id)
-      .then((response: any) => {
-        if (response.error) {
-          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
-        } else {
-          message.success("Xóa thành công.");
-        }
-      })
-      .catch((error: any) => {
-        message.error("Có lỗi xảy ra khi xóa.");
-      });
+  const confirm = (id: number | undefined) => {
+    if (id) {
+      removePetHouse(id)
+        .then((response: any) => {
+          if (response.error) {
+            message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
+          } else {
+            message.success("Xóa thành công.");
+          }
+        })
+        .catch((error: any) => {
+          message.error("Có lỗi xảy ra khi xóa.");
+        });
+    }
   };
 
   const cancel = () => {
     message.error("Xóa không thành công.");
   };
-
+  const confirmBlock = (id: number | undefined) => {
+    if (id) {
+      blockPetHouse({ id: id, is_delete: 1 });
+      message.success("khóa thành công");
+    }
+  };
   const columns: ColumnsType<TpetHouse> = [
     {
       title: "STT",
@@ -82,10 +92,37 @@ const PetHouseAdmin: React.FC = () => {
             okText="Đồng ý"
             cancelText="Không"
           >
-            <Button danger className="btn-delete">
+            <Button danger className="btn-delete" style={{ marginRight: "1rem" }}>
               Xóa
             </Button>
           </Popconfirm>
+          {room.is_delete ? (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn mở khóa không?"
+              onConfirm={() => confirm(room.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button type="primary" ghost>
+                Mở Khóa
+              </Button>
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn khóa không?"
+              onConfirm={() => confirmBlock(room.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button danger className="btn-delete">
+                Khóa
+              </Button>
+            </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -97,7 +134,6 @@ const PetHouseAdmin: React.FC = () => {
     );
     setDataPethouse(filteredData);
   }, [data, filter]);
-  
 
   useEffect(() => {
     if (filter.name === "" && filter.price === "") {
@@ -108,7 +144,7 @@ const PetHouseAdmin: React.FC = () => {
   }, [filter.name, filter.price]);
   return (
     <>
-      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}

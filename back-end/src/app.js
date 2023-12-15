@@ -37,8 +37,7 @@ import deliveryAddressRoutes from "./routers/deliveryAddress";
 import statusPaymentRouters from "./routers/statusPayment";
 import footerRouters from "./routers/footer";
 
-
-const app = express(); statusPaymentRouters
+const app = express();
 app.use(express.json());
 app.use(cors());
 
@@ -78,4 +77,5 @@ app.use("/api", paymentMethodsRoutes);
 app.use("/api", statusPaymentRouters);
 app.use("/api", deliveryAddressRoutes);
 app.use("/api", footerRouters);
+
 export const viteNodeApp = app;

@@ -137,7 +137,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
             <Input />
           </Form.Item>
           <Form.Item
-            label={<span className="">số điện thoại </span>}
+            label={<span className="">Số điện thoại </span>}
             name="phone"
             rules={[{ required: true, message: "Vui lòng số điện thoại!" }]}
           >
@@ -151,7 +151,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
             <Input />
           </Form.Item>
           <Form.Item
-            label={<span className="">giới tính</span>}
+            label={<span className="">Giới tính</span>}
             name="gender"
             rules={[{ required: true, message: "Vui lòng chọn giới tính!" }]}
           >

@@ -9,7 +9,14 @@ export const list = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
+export const listClient = async (req, res) => {
+  try {
+    const pethouse = await Pethouse.getAllPetHouseClient();
+    res.json(pethouse);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const showById = async (req, res) => {
   try {
     const pethouse = await Pethouse.getPethouseById(req.params.id);
@@ -71,6 +78,26 @@ export const deletePe = async (req, res) => {
 
     await Pethouse.deletePethouse(req.params.id);
     res.json({ message: "pethouse xóa thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateIsDelete = async (req, res) => {
+  try {
+    const { id, is_delete } = req.body;
+    await Pethouse.updateBlockPetHouse(id, is_delete);
+    res.json({ message: "Khóa phòng thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const checkPetHouse = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const pethouse = await Pethouse.checkPethouse(id);
+    res.status(200).json(pethouse);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
