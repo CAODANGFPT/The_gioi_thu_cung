@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const LayoutBase: FC = () => {
   return (
-    <>
+    <>                                                                                                                                   
       <HeaderBase />
       <Outlet />
       <FooterBase />

@@ -1,6 +1,17 @@
 import connection from "../db";
 
 export default class Services {
+  static getAllServicesCLient() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM services WHERE is_delete <> 1",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getAllServices() {
     return new Promise((resolve, reject) => {
       connection.query("SELECT * FROM services", (err, results) => {
@@ -9,13 +20,15 @@ export default class Services {
       });
     });
   }
-
   static getTop4Services() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM services ORDER BY id LIMIT 4;", (err, results) => {
-        if (err) reject(err);
-        resolve(results);
-      });
+      connection.query(
+        "SELECT * FROM services ORDER BY id LIMIT 4;",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
     });
   }
   static getNameServicesById(id) {
@@ -59,10 +72,10 @@ export default class Services {
     });
   }
 
-  static updateServices(id, name,image, description, price) {
+  static updateServices(id, name, image, description, price) {
     const updateSql =
       "UPDATE services SET name = ?,image = ?, description = ?, price = ? WHERE id = ?";
-    const values = [name,image, description, price, id];
+    const values = [name, image, description, price, id];
     return new Promise((resolve, reject) => {
       connection.query(updateSql, values, (err) => {
         if (err) reject(err);
@@ -76,6 +89,19 @@ export default class Services {
       connection.query(
         "UPDATE services SET is_delete = ? WHERE id = ?",
         [is_delete, id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
+  static checkServices(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM services WHERE is_delete = 1 AND id = ?",
+        [id],
         (err, results) => {
           if (err) reject(err);
           resolve(results);

@@ -1,24 +1,49 @@
+import { Button, Tag, message } from "antd";
 import dayjs from "dayjs";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import { Button, Tag } from "antd";
+import { useCheckServicesMutation } from "../../../services/services";
 
 const CancelledAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(5);
+  const [checkServices] = useCheckServicesMutation();
   const navigate = useNavigate();
-  const redirectToAppointment = (item: any) => {
-    navigate("/appointment", {
-      state: {
-        appointmentData: {
-          ...item,
-          type: 2,
+  const redirectToAppointment = async (item: any) => {
+    const servicesPromises = item.services.map(
+      async (service: { id: number }) => {
+        const dataServices = await checkServices({ id: service.id });
+        if ("data" in dataServices) {
+          return dataServices.data[0];
+        }
+        return null;
+      }
+    );
+    const resolveServices = await Promise.all(servicesPromises);
+    console.log(resolveServices);
+
+    const filterServices = resolveServices.filter(
+      (service) => service && "name" in service
+    );
+
+    if (filterServices.length > 0) {
+      const name = filterServices.map((service: { name: any }) => service.name);
+      const namesString = name.join(", ");
+      message.error(`Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa`);
+    } else {
+      navigate("/appointment", {
+        state: {
+          appointmentData: {
+            ...item,
+            type: 2,
+          },
         },
-      },
-    });
+      });
+    }
   };
+
   return (
     <>
       {listAppointment?.length ? (

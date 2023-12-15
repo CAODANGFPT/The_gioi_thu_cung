@@ -84,7 +84,7 @@ const AppointmentsAdmin: React.FC = () => {
           : "",
       "Ngày đặt": dayjs(item.day).format("DD-MM-YYYY HH:mm"),
       "Ngày làm": dayjs(item.start_time).format("DD-MM-YYYY HH:mm"),
-      Phòng: item.pethouse_name,
+      "Phòng": item.pethouse_name,
       "Thành tiền": item.total,
       "Trạng thái": item.status_name,
       "Trạng thái thanh toán": item.statusPaymentName,

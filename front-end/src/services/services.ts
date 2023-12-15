@@ -25,6 +25,15 @@ const servicesApi = createApi({
         },
         providesTags: ["Services"],
       }),
+      servicesClient: builder.query<TServices[], void>({
+        query: () => {
+          return {
+            url: "/servicesClient",
+            method: "GET",
+          };
+        },
+        providesTags: ["Services"],
+      }),
       servicesTop4: builder.query<TServices[], void>({
         query: () => {
           return {
@@ -52,6 +61,16 @@ const servicesApi = createApi({
             url: "/services",
             method: "POST",
             body: services,
+          };
+        },
+        invalidatesTags: ["Services"],
+      }),
+      checkServices: builder.mutation<TServices[], any>({
+        query: (id) => {
+          return {
+            url: "/checkServices",
+            method: "POST",
+            body: id,
           };
         },
         invalidatesTags: ["Services"],
@@ -88,8 +107,10 @@ const servicesApi = createApi({
 
 export const {
   useServicesQuery,
+  useServicesClientQuery,
   useServicesTop4Query,
   useAddServicesMutation,
+  useCheckServicesMutation,
   useServicesByIdQuery,
   useUpdateServicesMutation,
   useUpdateBlockServicesMutation,

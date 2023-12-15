@@ -10,6 +10,15 @@ export const list = async (req, res) => {
   }
 };
 
+export const listClient = async (req, res) => {
+  try {
+    const services = await Services.getAllServicesCLient();
+    res.json(services);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const getTop4Services = async (req, res) => {
   try {
     const services = await Services.getTop4Services();
@@ -53,10 +62,18 @@ export const create = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
+export const checkServices = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const servicesId = await Services.checkServices(id);
+    res.status(200).json(servicesId);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const update = async (req, res) => {
   try {
-    const { name,image, description, price } = req.body;
+    const { name, image, description, price } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -65,14 +82,12 @@ export const update = async (req, res) => {
       });
     }
     const serviceId = req.params.id;
-
-    // Check if the service exists before attempting to update
     const existingService = await Services.getServicesById(serviceId);
     if (!existingService) {
       return res.status(404).json({ error: "Service không tồn tại" });
     }
 
-    await Services.updateServices(serviceId, name,image, description, price);
+    await Services.updateServices(serviceId, name, image, description, price);
     res.json({ message: "Dịch vụ đã được cập nhật thành công" });
   } catch (err) {
     res.status(500).json({ error: err });
