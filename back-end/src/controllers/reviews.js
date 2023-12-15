@@ -25,7 +25,8 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { user_id, rating, comment, created_at, services_id } = req.body;
+    const { user_id, rating, comment, created_at, services_id, product_id } =
+      req.body;
     const { error } = reviewSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -33,7 +34,14 @@ export const create = async (req, res) => {
         message: errors,
       });
     }
-    const reviewId = await Reviews.createReview(user_id, rating, comment, created_at, services_id);
+    const reviewId = await Reviews.createReview(
+      user_id,
+      rating,
+      comment,
+      created_at,
+      services_id ?? null,
+      product_id ?? null
+    );
     res.json({ id: reviewId });
   } catch (err) {
     res.status(500).json({ error: err.message });
