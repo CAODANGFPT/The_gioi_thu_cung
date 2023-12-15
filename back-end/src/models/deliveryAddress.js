@@ -4,7 +4,7 @@ export default class deliveryAddress {
   static getAllDeliveryAddress(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM delivery_address WHERE user_Id = ?",
+        "SELECT * FROM delivery_address WHERE user_Id = ? AND is_delete <> 1",
         [id],
         (err, results) => {
           if (err) reject(err);

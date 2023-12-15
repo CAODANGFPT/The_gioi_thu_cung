@@ -20,7 +20,7 @@ import {
   useGetAllUserPetsQuery,
   useUserPetMutation,
 } from "../../../services/pets";
-import { useServicesQuery } from "../../../services/services";
+import { useServicesClientQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "./modalAddPet";
@@ -56,7 +56,7 @@ const Appointment: React.FC = () => {
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseQuery();
-  const { data: services } = useServicesQuery();
+  const { data: services } = useServicesClientQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
@@ -81,7 +81,7 @@ const Appointment: React.FC = () => {
           (item: { id: number }) => item.id
         );
         if (appointmentData.type === 1) {
-          if(services){
+          if (services) {
             form.setFieldsValue({
               services: serviceId,
             });
@@ -110,12 +110,10 @@ const Appointment: React.FC = () => {
     };
     fetchData();
   }, [appointmentData, form, services]);
-  console.log(form.getFieldValue("services"));
 
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
     label: item.name,
-    disabled: item.is_delete === 1,
   }));
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
@@ -146,6 +144,20 @@ const Appointment: React.FC = () => {
     if ("data" in resAppointment) {
       message.success(resAppointment.data.message);
       navigate("/account/wait-for-confirmation-appointment");
+    } else {
+      if (
+        resAppointment.error &&
+        "status" in resAppointment.error &&
+        resAppointment.error.data &&
+        "message" in (resAppointment.error.data as Record<string, unknown>)
+      ) {
+        const errorMessage = (
+          resAppointment.error.data as Record<string, unknown>
+        ).message as string;
+        message.error(errorMessage);
+      } else {
+        message.error("Đặt lịch thất bại, vui lòng thử lại");
+      }
     }
   };
 
@@ -519,7 +531,6 @@ const Appointment: React.FC = () => {
             >
               <Select
                 mode="multiple"
-                disabled={!!idService}
                 style={{ width: "100%" }}
                 defaultValue={[]}
                 onChange={handleChangeService}

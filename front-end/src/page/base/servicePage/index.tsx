@@ -4,13 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import banner from "../../../assets/image/banner.png";
 import "../../../assets/scss/page/servicesPage.scss";
 import { TServices } from "../../../schema/services";
-import { useServicesQuery } from "../../../services/services";
+import { useServicesClientQuery } from "../../../services/services";
 
 const ServicePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState<TServices[]>();
-  const { data: listService } = useServicesQuery();
+  const { data: listService } = useServicesClientQuery();
 
   useEffect(() => {
     if (location.pathname !== "/service") {
