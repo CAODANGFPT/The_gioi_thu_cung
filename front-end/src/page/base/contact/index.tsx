@@ -1,77 +1,169 @@
-import { useState } from "react";
+/* eslint-disable jsx-a11y/iframe-has-title */
+import React from "react";
+import type { FormInstance } from "antd";
+import { Button, Form, Input, Space, message } from "antd";
 import "../../../assets/scss/page/contact.scss";
+import { useCreateContactMutation } from "../../../services/contact";
+import TextArea from "antd/es/input/TextArea";
+import { useNavigate } from "react-router-dom";
+import { useGetUserQuery } from "../../../services/user";
+import { TContact } from "../../../schema/contact";
 
-const Contact = () => {
-  const [textareaValue, setTextareaValue] = useState("");
+const SubmitButton = ({ form }: { form: FormInstance }) => {
+  const [submittable, setSubmittable] = React.useState(false);
 
-  const handleTextareaChange = (event: any) => {
-    setTextareaValue(event.target.value);
-  };
+  const values = Form.useWatch([], form);
+
+  React.useEffect(() => {
+    form.validateFields({ validateOnly: true }).then(
+      () => {
+        setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      }
+    );
+  }, [form, values]);
+
   return (
-    <div className="contact_container">
-      <div className="contact_main">
-        <div className="contact_1">
-          <h1>Liên hệ</h1>
-          <div className="textwidget">GIỜ LÀM VIỆC</div>
-          <div className="title">
-            <p>
-              Thứ 2 - thứ 7: 8h - 12h & 14h - 19h (Riêng PetCare 3 đóng cửa lúc
-              18h)
-            </p>
-            <p>Chủ nhật & Ngày lễ : 8h - 12h</p>
+    <Button type="primary" htmlType="submit" disabled={!submittable}>
+      Submit
+    </Button>
+  );
+};
+
+const Contact: React.FC = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+
+  const [createContact, { reset }] = useCreateContactMutation();
+  const { data: user } = useGetUserQuery();
+  const handleFormSubmit = async (values: TContact) => {
+    const { phone, title, subject } = values;
+
+    const dateNews = {
+      phone,
+      title,
+      subject,
+      user_id: user?.id,
+      status_id: 2,
+    };
+    try {
+      await createContact(dateNews).unwrap();
+      message.success("Gửi thông tin liên hệ thành công.");
+
+      reset();
+      navigate("/");
+    } catch (error: any) {
+      message.error("Lỗi khi gửi thông tin liên hệ: " + error.message);
+    }
+  };
+
+  return (
+    <>
+      <div className="contact">
+        <div className="contact_container">
+          <div className="contact_main">
+            <div className="contact_1">
+              <h1>Liên hệ</h1>
+              <div className="textwidget">GIỜ LÀM VIỆC</div>
+              <div className="title">
+                <p>
+                  Thứ 2 - thứ 7: 8h - 12h & 14h - 19h (Riêng ngày thứ 7 đóng cửa
+                  lúc 16h)
+                </p>
+                <p>Chủ nhật & Ngày lễ : 8h - 12h</p>
+              </div>
+              <div className="textwidget">THÔNG TIN TÀI KHOẢN NGÂN HÀNG</div>
+              <div className="title">
+                <p>Tên tài khoản: PetCare Shop</p>
+                <p>
+                  Địa chỉ tài khoản: Số 57 Lý Thường Kiệt, phường Trần Hưng Đạo,
+                  quận Hoàn Kiếm, TP. Hà Nội.
+                </p>
+                <p>Số tài khoản: 0562 4975 901</p>
+                <p>Ngân hàng: TP Bank</p>
+              </div>
+            </div>
+            <div className="contact_2">
+              <iframe
+                src="https:www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4428.452844687378!2d105.74773981873967!3d21.03788212172185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313455e940879933%3A0xcf10b34e9f1a03df!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1702574642264!5m2!1svi!2s"
+                width="600"
+                height="450"
+                style={{ border: "0" }}
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
-          <div className="textwidget">THÔNG TIN TÀI KHOẢN NGÂN HÀNG</div>
-          <div className="title">
-            <p>Tên tài khoản: Công ty TNHH MTV Dịch Vụ Thú Y An Việt</p>
-            <p>
-              Địa chỉ tài khoản: 124A Xuân Thủy, phường Thảo Điền, quận 2, Tp.
-              Hồ Chí Minh
-            </p>
-            <p>Số tài khoản: 101110 9779</p>
-            <p>Ngân hàng: Vietcombank</p>
+          <br />
+          <hr />
+          <br />
+
+          <h1>Gửi thông điệp đến Pet Care Shop</h1>
+          <div className="contact_mail">
+            <Form
+              form={form}
+              name="validateOnly"
+              layout="vertical"
+              autoComplete="off"
+              onFinish={handleFormSubmit}
+            >
+              <Form.Item
+                name="name"
+                label="Họ tên"
+                className="controll"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                name="phone"
+                label="Số điện thoại"
+                className="controll"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                name="title"
+                label="Tiêu đề"
+                className="controll"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                name="subject"
+                label="Nội dung"
+                className="controll"
+                rules={[{ required: true }]}
+              >
+                <TextArea rows={10} cols={30} />
+              </Form.Item>
+
+              <Form.Item>
+                <Space>
+                  <SubmitButton form={form} />
+                  <Button
+                    style={{
+                      background: "transparent",
+                      border: "1px solid #00575c",
+                      color: "black",
+                    }}
+                    htmlType="reset"
+                  >
+                    Reset
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Form>
           </div>
         </div>
-        <div className="contact_2">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4428.452844687378!2d105.74773981873967!3d21.03788212172185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313455e940879933%3A0xcf10b34e9f1a03df!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1702574642264!5m2!1svi!2s"
-            width="600"
-            height="450"
-            style={{border: "0"}}
-            loading="lazy"
-          ></iframe>
-        </div>
       </div>
-      <br />
-      <hr />
-      <br />
-      <div className="contact_mail">
-        <form action="">
-          <h1>Gửi thông điệp đến Petcare</h1>
-          <div className="controll">
-            <label htmlFor="">Họ tên (*)</label>
-            <input type="text" />
-          </div>
-          <div className="controll">
-            <label htmlFor="">Số Điện Thoại (*)</label>
-            <input type="text" />
-          </div>
-          <div className="controll">
-            <label htmlFor="">Tiêu đề (*)</label>
-            <input type="text" />
-          </div>
-          <div className="controll">
-            <label htmlFor="">Nội dung</label>
-            <textarea
-              cols={30}
-              rows={10}
-              value={textareaValue}
-              onChange={handleTextareaChange}
-            ></textarea>
-          </div>
-          <button>Gửi Petcare</button>
-        </form>
-      </div>
-    </div>
+    </>
   );
 };
 

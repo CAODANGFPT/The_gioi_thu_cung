@@ -32,9 +32,9 @@ const FooterAdmin: React.FC = () => {
 
   const renderContentColumn = (content: string) => {
     const truncatedContent =
-      content.length > 100 ? `${content.substring(0, 100)}...` : content;
+      content.length > 200 ? `${content.substring(0, 200)}...` : content;
 
-    return truncatedContent
+    return truncatedContent;
   };
 
   const columns: ColumnsType<TFooter> = [

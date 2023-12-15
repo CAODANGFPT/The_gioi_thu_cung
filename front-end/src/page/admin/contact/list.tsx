@@ -31,6 +31,13 @@ const ContactAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+      width: 150,
+      render: (phone) => <span>{phone ? `0${phone}` : ""}</span>,
+    },
+    {
       title: "Tiêu đề",
       dataIndex: "title",
       key: "title",
@@ -90,7 +97,9 @@ const ContactAdmin: React.FC = () => {
     const filteredData = data?.filter(
       (item) =>
         item.title?.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
-        item.nameUser?.toLowerCase().includes(filter.nameUser.trim().toLowerCase())
+        item.nameUser
+          ?.toLowerCase()
+          .includes(filter.nameUser.trim().toLowerCase())
     );
     setListContact(filteredData);
   }, [data, filter]);
@@ -105,7 +114,7 @@ const ContactAdmin: React.FC = () => {
 
   return (
     <>
-    <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
+      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search

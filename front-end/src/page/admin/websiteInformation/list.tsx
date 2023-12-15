@@ -57,6 +57,7 @@ const WebsiteInformationAdmin: React.FC = () => {
       dataIndex: "phone",
       key: "phone",
       width: 150,
+      render: (phone) => <span>{phone ? `0${phone}` : ""}</span>,
     },
     {
       title: "Link FB",

@@ -41,7 +41,7 @@ export const show = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const { title, subject, user_id, status_id } = req.body;
+        const { phone, title, subject, user_id, status_id } = req.body;
         const { error } = contactSchema.validate(req.body);
         if (error) {
             const errors = error.details.map((errorItem) => errorItem.message);
@@ -49,7 +49,7 @@ export const create = async (req, res) => {
                 message: errors,
             });
         }
-        const contactsId = await Contact.createContact(title, subject, user_id, status_id);
+        const contactsId = await Contact.createContact(phone, title, subject, user_id, status_id);
         res.json({ id: contactsId, message: "Tạo liên hệ thành công !" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -58,7 +58,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const { title, subject, user_id } = req.body;
+        const { phone, title, subject, user_id } = req.body;
         const { error } = contactSchema.validate(req.body);
         if (error) {
             const errors = error.details.map((errorItem) => errorItem.message);
@@ -66,7 +66,7 @@ export const update = async (req, res) => {
                 message: errors,
             });
         }
-        await Contact.updateContact(req.params.id, title, subject, user_id);
+        await Contact.updateContact(req.params.id, phone, title, subject, user_id);
         res.json({ message: "Contact update thành công" });
     } catch (err) {
         res.status(500).json({ error: err.message });

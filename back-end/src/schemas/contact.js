@@ -2,6 +2,10 @@ import joi from "joi";
 
 export const contactSchema = joi.object({
     id: joi.number(),
+    phone: joi.number().required().messages({
+        "String.empty": "Số điện thoại không được để trống",
+        "any.required": "Trường số điện thoại là bắt buộc",
+    }),
     title: joi.string().required().messages({
         "String.empty": "Tên không được để trống",
         "any.required": "Trường tên là bắt buộc",

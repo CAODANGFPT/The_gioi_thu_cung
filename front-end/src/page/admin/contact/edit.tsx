@@ -2,8 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Form, Input, Select, message } from "antd";
 import {
-  useUpdateStatusContactMutation ,
-  useContactByIdQuery
+  useUpdateStatusContactMutation,
+  useContactByIdQuery,
 } from "../../../services/contact";
 import { useGetAllstatusContactQuery } from "../../../services/status_contact";
 import { TStatusContact } from "../../../schema/status_contact";
@@ -24,7 +24,8 @@ const EditContact = () => {
   const status = useGetAllstatusContactQuery();
   const [form] = Form.useForm();
 
-  const [updateStatusContactMutation, { reset }] = useUpdateStatusContactMutation();
+  const [updateStatusContactMutation, { reset }] =
+    useUpdateStatusContactMutation();
 
   const onFinish = async (values: { status_id: number }) => {
     try {
@@ -49,49 +50,57 @@ const EditContact = () => {
 
   return (
     <>
-    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
         Cập nhập Trạng Thái Liên Hệ #{id}
       </h1>
-        <Form
-          form={form}
-          name="updateUserRoleForm"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <Form
+        form={form}
+        name="updateUserRoleForm"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item label="id">
+          <Input disabled value={contact.data?.id} />
+        </Form.Item>
+
+        <Form.Item label="Số điện thoại">
+          <Input disabled value={contact.data?.phone} />
+        </Form.Item>
+
+        <Form.Item label="tiltle">
+          <Input disabled value={contact.data?.title} />
+        </Form.Item>
+
+        <Form.Item label="subject">
+          <Input disabled value={contact.data?.subject} />
+        </Form.Item>
+
+        <Form.Item label="user_id">
+          <Input disabled value={contact.data?.user_id} />
+        </Form.Item>
+
+        <Form.Item
+          label="Trạng thái"
+          name="status_id"
+          rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
         >
-          <Form.Item label="id">
-            <Input disabled value={contact.data?.id} />
-          </Form.Item>
-          <Form.Item label="tiltle">
-            <Input disabled value={contact.data?.title} />
-          </Form.Item>
-          <Form.Item label="subject">
-            <Input disabled value={contact.data?.subject} />
-          </Form.Item>
-          <Form.Item label="user_id">
-            <Input disabled value={contact.data?.user_id} />
-          </Form.Item>
-          <Form.Item
-            label="Trạng thái"
-            name="status_id"
-            rules={[{ required: true, message: "Vui lòng chọn trạng thái" }]}
-          >
-            {contact.data?.id && (
-              <Select defaultValue={contact.data?.status_id}>
-                {status.data?.map((item: TStatusContact) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
+          {contact.data?.id && (
+            <Select defaultValue={contact.data?.status_id}>
+              {status.data?.map((item: TStatusContact) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };
