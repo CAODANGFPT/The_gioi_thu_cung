@@ -272,6 +272,7 @@ export const getOrderByIdUserAndIdStatus = async (req, res) => {
                       img: record.productImg,
                       price: record.productPrice,
                       quantity: record.quantity,
+                      review_id: record.reviews_id,
                     },
                   ],
                   address: {
@@ -310,6 +311,7 @@ export const getOrderByIdUserAndIdStatus = async (req, res) => {
                     img: record.productImg,
                     price: record.productPrice,
                     quantity: record.quantity,
+                    review_id: record.reviews_id,
                   });
                 }
               }
@@ -325,6 +327,7 @@ export const getOrderByIdUserAndIdStatus = async (req, res) => {
                     img: record.productImg,
                     price: record.productPrice,
                     quantity: record.quantity,
+                    review_id: record.reviews_id,
                   },
                 ],
                 address: {

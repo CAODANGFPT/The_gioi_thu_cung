@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TBlockReview, TReview } from "../schema/review";
+import { TBlockReview, TCreateReview, TReview } from "../schema/review";
 
 const reviewApi = createApi({
   reducerPath: "review",
@@ -35,7 +35,7 @@ const reviewApi = createApi({
         },
         invalidatesTags: ["Review"],
       }),
-      createReview: builder.mutation<TReview, Partial<TReview>>({
+      createReview: builder.mutation<any, Partial<TCreateReview>>({
         query: (review) => {
           return {
             url: "/review",

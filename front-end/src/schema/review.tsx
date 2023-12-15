@@ -12,11 +12,12 @@ export const ReviewSchema = yup.object().shape({
 });
 
 export const createReviewSchema = yup.object().shape({
-  user_id: yup.string(),
+  user_id: yup.number(),
   rating: yup.number(),
   comment: yup.string(),
   created_at: yup.string(),
   services_id: yup.number(),
+  product_id: yup.number(),
 });
 
 export const ReviewRequestSchema = yup.object().shape({
@@ -44,6 +45,8 @@ export const ReviewResponseSchema = yup.object().shape({
 export const ReviewErrorSchema = yup.object({});
 
 export type TReview = yup.InferType<typeof ReviewSchema>;
+
+export type TCreateReview= yup.InferType<typeof createReviewSchema>;
 
 export type ReviewResponse = yup.InferType<typeof ReviewResponseSchema>;
 
