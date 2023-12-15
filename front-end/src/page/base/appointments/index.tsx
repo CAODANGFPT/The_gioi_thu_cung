@@ -178,6 +178,20 @@ const Appointment: React.FC = () => {
     if ("data" in resAppointment) {
       message.success("Sửa lịch thành công");
       navigate("/account/wait-for-confirmation-appointment");
+    } else {
+      if (
+        resAppointment.error &&
+        "status" in resAppointment.error &&
+        resAppointment.error.data &&
+        "message" in (resAppointment.error.data as Record<string, unknown>)
+      ) {
+        const errorMessage = (
+          resAppointment.error.data as Record<string, unknown>
+        ).message as string;
+        message.error(errorMessage);
+      } else {
+        message.error("Sửa lịch thất bại");
+      }
     }
   };
 
