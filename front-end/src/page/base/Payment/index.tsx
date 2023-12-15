@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../../../assets/scss/page/paymentPage.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import logo from "../../../assets/image/logo.png";
-import { message } from "antd";
+import { message, List, Typography, Spin } from "antd";
 
 import axios from "axios";
 import {
@@ -23,14 +23,29 @@ const PaymentPage = () => {
     totalRef.current = total;
   }, [id, total]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [appointmentList, setAppointmentData] = useState<any | null>(null);
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(loadingTimeout);
   }, []);
+  useEffect(() => {
+    const fetchAppointmentDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/appointmentListPayment/${id}`
+        );
+        setAppointmentData(response.data);
+      } catch (error) {
+        console.error("Error fetching appointment details", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
+    fetchAppointmentDetails();
+  }, [id]);
   const { data: user } = useGetUserQuery();
   const { data } = useGetInvoicesQuery(Number(id));
   const handlePayment = () => {
@@ -118,37 +133,74 @@ const PaymentPage = () => {
     );
   }
   return (
-    <div className="payment-page">
-      {isLoading ? (
-        <div className="loading-overlay">
-          <div className="loader"></div>
-        </div>
-      ) : null}
-      <div className="h-payment">
-        <img className="logo" src={logo} alt="logo" />
-      </div>
-      <div className="h-payment">
-        <h1>Chọn phương thức thanh toán</h1>
-      </div>
-      <div className="payment-options">
-        <div
-          className="payment-padding btn-f bg-with"
-          onClick={handlePaymentCash}
-        >
-          <h3 className="">Thanh Toán Bằng Tiền Mặt</h3>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1vztU8IzuRgDR1QVXxz5LVwtjwOm2YW2h9w&usqp=CAU"
-            alt="VNPAY"
-            className="payment-image"
+    <div className="container">
+      <div className="icing">
+        <h2>
+          <img className="logo" src={logo} alt="logo" width={130} />
+        </h2>
+        <ul className="order">
+          <List
+            itemLayout="vertical"
+            size="large"
+            dataSource={appointmentList ? [appointmentList] : []}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                {appointmentList ? (
+                  <div>
+                    <Typography.Title level={4}>
+                      Mã đơn hàng: {item.id}
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                      Số Tiền:{" "}
+                      {new Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(item.total)}
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                      Ngày Đặt: {item.day}
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                      Nhà Cung Cấp: The PetCare Shop
+                    </Typography.Paragraph>
+                  </div>
+                ) : (
+                  <Spin size="large" />
+                )}
+              </List.Item>
+            )}
           />
-        </div>
-        <div className="payment-padding btn-f bg-with" onClick={handlePayment}>
-          <h3 className="">Thanh Toán Online VNPAY</h3>
-          <img
-            src="https://sandbox.vnpayment.vn/paymentv2/images/icons/mics/64x64-vi-vnpay.svg"
-            alt="VNPAY"
-            className="payment-image"
-          />
+        </ul>
+      </div>
+      <br />
+      <div className="dough">
+        <h2>Vui lòng chọn phương thức thanh toán</h2>
+        <br />
+        <br />
+        <div>
+          <div className="buttons" onClick={handlePaymentCash}>
+            <button className="order-button flex">
+              Thanh Toán Bằng Tiền Mặt{" "}
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1vztU8IzuRgDR1QVXxz5LVwtjwOm2YW2h9w&usqp=CAU"
+                alt="VNPAY"
+                width={50}
+                className="payment-image"
+              />
+            </button>
+          </div>
+          <br />
+          <div className="buttons" onClick={handlePayment}>
+            <button className="order-button flex">
+              Thanh Toán Online VNPAY{" "}
+              <img
+                src="https://sandbox.vnpayment.vn/paymentv2/images/icons/mics/64x64-vi-vnpay.svg"
+                alt="VNPAY"
+                width={50}
+                className="payment-image"
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
