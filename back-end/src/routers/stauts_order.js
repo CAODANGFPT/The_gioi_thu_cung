@@ -7,6 +7,6 @@ const router = Router();
 router.get("/status_order", list);
 router.get("/status_order/:id", showStatusOrderById);
 router.post("/status_order", checkPermission, create);
-router.patch("/editStatusOrder", checkPermission, update);
+router.put("/status_order/:id", checkPermission, update);
 router.delete("/status_order/:id", checkPermission, deleteStatusOrder);
 export default router;

@@ -64,6 +64,15 @@ const contactApi = createApi({
         }),
         invalidatesTags: ["Contact"],
       }),
+      removeContact: builder.mutation<TContact, number>({
+        query: (id) => {
+          return {
+            url: `/contact/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["Contact"],
+      }),
     };
   },
 });
@@ -74,6 +83,7 @@ export const {
   useGetContactQuery,
   useUpdateStatusContactMutation,
   useCreateContactMutation,
+  useRemoveContactMutation,
 } = contactApi;
 export const contactReducer = contactApi.reducer;
 export default contactApi;

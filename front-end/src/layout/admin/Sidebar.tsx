@@ -6,15 +6,15 @@ import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetUserQuery } from "../../services/user";
+import { useGetAllWebsiteInformationQuery } from "../../services/websiteInformation";
 const Sidebar = () => {
   const navigate = useNavigate();
   const [activeLinkIdx, setActiveLinkIdx] = useState(1);
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
   const [borderRadius, setBorderRadius] = useState("");
-
   const { isSidebarOpen } = useContext<any>(SidebarContext);
-
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
   const { data: user } = useGetUserQuery();
   const { pathname } = useLocation();
 
@@ -46,8 +46,14 @@ const Sidebar = () => {
         <img
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
-          src={logo}
-          alt="profileImage"
+          src={
+            listWebsiteInformation &&
+            listWebsiteInformation.length > 0 &&
+            typeof listWebsiteInformation[0]?.logo === "string"
+              ? listWebsiteInformation[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
         />
       </div>
 
