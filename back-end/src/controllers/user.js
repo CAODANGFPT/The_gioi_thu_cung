@@ -25,7 +25,7 @@ export const updateRole = async (req, res) => {
   try {
     const { id, role_id } = req.body;
     await User.updateUserRole(id, role_id);
-    res.json({ message: "User updated successfully" });
+    res.json({ message: "update user thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -45,7 +45,7 @@ export const getById = async (req, res) => {
   try {
     const usersItem = await User.getUserById(req.params.id);
     if (!usersItem) {
-      res.status(404).json({ error: "UserItem not found" });
+      res.status(404).json({ error: "User này không tồn tại" });
     } else {
       res.json(usersItem);
     }
