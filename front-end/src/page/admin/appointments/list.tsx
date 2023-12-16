@@ -205,26 +205,34 @@ const AppointmentsAdmin: React.FC = () => {
       render: (data) => (
         <>
           <div>
-            {data.status_id !== 4 &&
-              data.status_id !== 5 &&
-              data.statusPaymentId !== 2 && (
-                <Button
-                  onClick={() => redirectToAppointment(data)}
-                  className="btn-edit"
-                  style={{ marginRight: "1rem" }}
-                >
-                  Sửa
-                </Button>
-              )}
-            {data.status_id === 1 || data.status_id === 2 ? (
-              <Popconfirm
-                onConfirm={() => confirm(data.id)}
-                title="Hủy lịch"
-                description="Bạn có chắc chắn hủy lịch này không?"
+            <Button
+              onClick={() => redirectToAppointment(data)}
+              className="btn-edit"
+              style={{ marginRight: "1rem" }}
+              disabled={
+                data.status_id === 4 ||
+                data.status_id === 5 ||
+                data.statusPaymentId === 2
+              }
+            >
+              Sửa
+            </Button>
+            <Popconfirm
+              onConfirm={() => confirm(data.id)}
+              title="Hủy lịch"
+              description="Bạn có chắc chắn hủy lịch này không?"
+            >
+              <Button
+                danger
+                className="btn-delete"
+                disabled={
+                  data.status_id === 4 ||
+                  data.status_id === 5 
+                }
               >
-                <Button className="btn">Hủy</Button>
-              </Popconfirm>
-            ) : null}
+                Hủy
+              </Button>
+            </Popconfirm>
           </div>
         </>
       ),
