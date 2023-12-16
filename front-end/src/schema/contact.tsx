@@ -16,6 +16,8 @@ export const ContactRequestSchema = yup.object().shape({
   title: yup.string(),
   subject: yup.string(),
   user_id: yup.number(),
+  status_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const ContactResponseSchema = yup.object().shape({
@@ -24,6 +26,8 @@ export const ContactResponseSchema = yup.object().shape({
   title: yup.string(),
   subject: yup.string(),
   user_id: yup.number(),
+  status_id: yup.number(),
+  nameUser: yup.string(),
 });
 
 export const ContactErrorSchema = yup.object({});

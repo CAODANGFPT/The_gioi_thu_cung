@@ -13,6 +13,7 @@ import { useGetUserQuery } from "../../services/user";
 import ModalUser from "./modal";
 import { useMenuQuery } from "../../services/menu";
 import { useGetAllWebsiteInformationQuery } from "../../services/websiteInformation";
+import { useGetAllBannerQuery } from "../../services/banner";
 
 const HeaderBase = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const HeaderBase = () => {
   const { data: carts } = useGetUserListCartsQuery();
   const { data: menuData } = useMenuQuery();
   const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
+  const { data: listBanner } = useGetAllBannerQuery();
 
   useEffect(() => {
     setOpenMenu(false);
@@ -50,16 +52,21 @@ const HeaderBase = () => {
     menuData && menuData?.filter((item) => item.menuType_id === 6);
 
   const handleBookAppointmentClick = () => {
-    console.log("Clicked on ĐẶT LỊCH CHĂM SÓC");
-    navigate("/appointment", {
-      state: {
-        appointmentData: {
-          pets: [],
-          services: [],
-          type: 1,
+    // console.log("Clicked on ĐẶT LỊCH CHĂM SÓC");
+    navigate(
+      listBanner && listBanner.length > 0 && listBanner[0].link
+        ? listBanner[0].link
+        : "/default-link",
+      {
+        state: {
+          appointmentData: {
+            pets: [],
+            services: [],
+            type: 1,
+          },
         },
-      },
-    });
+      }
+    );
   };
   return (
     <div className="headerBase">
@@ -188,15 +195,20 @@ const HeaderBase = () => {
             <button
               className="title-button"
               onClick={() =>
-                navigate("/appointment", {
-                  state: {
-                    appointmentData: {
-                      pets: [],
-                      services: [],
-                      type: 1,
+                navigate(
+                  listBanner && listBanner.length > 0 && listBanner[0].link
+                    ? listBanner[0].link
+                    : "/default-link",
+                  {
+                    state: {
+                      appointmentData: {
+                        pets: [],
+                        services: [],
+                        type: 1,
+                      },
                     },
-                  },
-                })
+                  }
+                )
               }
             >
               <div className="text">ĐẶT LỊCH CHĂM SÓC</div>
@@ -221,15 +233,20 @@ const HeaderBase = () => {
             <button
               className="title-button"
               onClick={() =>
-                navigate("/appointment", {
-                  state: {
-                    appointmentData: {
-                      pets: [],
-                      services: [],
-                      type: 1,
+                navigate(
+                  listBanner && listBanner.length > 0 && listBanner[0].link
+                    ? listBanner[0].link
+                    : "/default-link",
+                  {
+                    state: {
+                      appointmentData: {
+                        pets: [],
+                        services: [],
+                        type: 1,
+                      },
                     },
-                  },
-                })
+                  }
+                )
               }
             >
               <div>ĐẶT LỊCH CHĂM SÓC</div>

@@ -19,19 +19,21 @@
   font-family: $Roboto;
   background-color: #030f39;
   width: 260px;
-  padding: 36px 0px 36px 20px;
+  padding: 20px 0px 36px 20px;
   transition: all 300ms ease-in-out;
 
   .user-info {
-    @include Flex(flex, flex-start, center);
+    @include Flex(flex, center, stretch);
     @include Gap(16px, 0);
-    img{
-      width: 150px;
+    margin-right: 2rem;
+
+    img {
+      width: 140px;
     }
   }
 
   .nav {
-    margin-top: 28px;
+    margin-top: 16px;
     height: 600px;
     width: 100%;
     overflow-y: scroll;
@@ -87,6 +89,7 @@
           @include Gap(12px, 0);
           fill: white;
           fill-opacity: 0.4;
+
           &:hover {
             border: 1px solid #473b33;
 
@@ -97,6 +100,7 @@
               }
             }
           }
+
           &:focus {
             svg {
               path {
@@ -108,6 +112,7 @@
 
           &-icon {
             @include Flex(flex, center, center);
+
             svg {
               width: 22px;
             }
@@ -126,9 +131,11 @@
           @include max-screen(1200px) {
             border-radius: 100%;
           }
+
           background-color: #fe6c00;
           box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-            rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+          rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+
           svg {
             path {
               fill: white;
@@ -149,14 +156,17 @@
   @include max-screen(420px) {
     margin-left: 0px;
   }
+
   width: 72px;
   margin-left: 0px;
   padding-left: 12px;
   padding-right: 12px;
 }
+
 .setSidebarText {
   display: none;
 }
+
 .borderRadius {
   border-radius: 100%;
 }

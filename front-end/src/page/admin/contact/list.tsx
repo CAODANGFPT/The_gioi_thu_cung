@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TContact } from "../../../schema/contact";
-import { useContactQuery } from "../../../services/contact";
+import {
+  useContactQuery,
+  useRemoveContactMutation,
+} from "../../../services/contact";
 import Search from "antd/es/input/Search";
 
 const ContactAdmin: React.FC = () => {
@@ -12,8 +15,10 @@ const ContactAdmin: React.FC = () => {
   const [listContact, setListContact] = useState<TContact[] | undefined>([]);
   const [openReset, setOpenReset] = useState<boolean>(false);
   const { data } = useContactQuery();
+  const [removeContact] = useRemoveContactMutation();
 
-  const confirm = () => {
+  const confirm = (id: number) => {
+    removeContact(id);
     message.success("Xóa thành công.");
   };
 
@@ -65,22 +70,32 @@ const ContactAdmin: React.FC = () => {
       title: "Thao tác",
       key: "action",
       width: 150,
-      render: (contact) => (
+      render: (contact: TContact) => (
         <div>
           <Link to={`edit/${contact.id}`}>
-            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+            <Button
+              className="btn-edit"
+              style={{ marginRight: "1rem" }}
+              disabled={contact.status_id === 1}
+            >
               Sửa
             </Button>
           </Link>
           <Popconfirm
             title="Xóa trạng thái."
             description="Bạn có muốn xóa không?"
-            onConfirm={confirm}
+            onConfirm={() =>
+              confirm(contact?.id !== undefined ? contact.id : 0)
+            }
             onCancel={cancel}
             okText="Đồng ý"
             cancelText="Không"
           >
-            <Button danger className="btn-delete">
+            <Button
+              danger
+              className="btn-delete"
+              disabled={contact?.status_id === 1}
+            >
               Xóa
             </Button>
           </Popconfirm>
