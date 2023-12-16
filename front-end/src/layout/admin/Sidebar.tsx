@@ -5,8 +5,9 @@ import "../../assets/scss/layout/admin/sidebar.scss";
 import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useGetUserQuery } from "../../services/user";
 const Sidebar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [activeLinkIdx, setActiveLinkIdx] = useState(1);
   const [sidebarClass, setSidebarClass] = useState("");
   const [sidebarText, setSidebarText] = useState("");
@@ -14,6 +15,7 @@ const Sidebar = () => {
 
   const { isSidebarOpen } = useContext<any>(SidebarContext);
 
+  const { data: user } = useGetUserQuery();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -41,30 +43,41 @@ const Sidebar = () => {
   return (
     <div className={`sidebar ${sidebarClass}`}>
       <div className="user-info">
-        <img onClick={() => navigate('/')} style={{cursor: 'pointer'}} src={logo} alt="profileImage" />
+        <img
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+          src={logo}
+          alt="profileImage"
+        />
       </div>
 
       <nav className="nav">
         <ul className="nav-list">
-          {navigationLinks.map((navigationLink) => (
-            <li className="nav-list-item" key={navigationLink.id}>
-              <Link
-                className={`${borderRadius} nav-list-item-link  ${
-                  navigationLink.id === activeLinkIdx ? "active" : null
-                }`}
-                onClick={() => handleLinkClick(navigationLink.id)}
-                to={navigationLink.link}
-              >
-                <div className="nav-list-item-link-icon">
-                  {navigationLink.image &&
-                    React.createElement(navigationLink.image)}
-                </div>
-                <span className={`nav-list-item-link-text ${sidebarText}`}>
-                  {navigationLink.title}
-                </span>
-              </Link>
-            </li>
-          ))}
+          {navigationLinks.map(
+            (navigationLink) =>
+              (user?.role_id === 1 ||
+                (user?.role_id === 10 &&
+                  navigationLink.id >= 2 &&
+                  navigationLink.id <= 5)) && (
+                <li className="nav-list-item" key={navigationLink.id}>
+                  <Link
+                    className={`${borderRadius} nav-list-item-link  ${
+                      navigationLink.id === activeLinkIdx ? "active" : null
+                    }`}
+                    onClick={() => handleLinkClick(navigationLink.id)}
+                    to={navigationLink.link}
+                  >
+                    <div className="nav-list-item-link-icon">
+                      {navigationLink.image &&
+                        React.createElement(navigationLink.image)}
+                    </div>
+                    <span className={`nav-list-item-link-text ${sidebarText}`}>
+                      {navigationLink.title}
+                    </span>
+                  </Link>
+                </li>
+              )
+          )}
         </ul>
       </nav>
     </div>

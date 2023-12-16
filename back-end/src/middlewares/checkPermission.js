@@ -9,7 +9,7 @@ export const checkPermission = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, "duantotnghiep");
     const user = await User.getUserById(decoded.id);
-    if (!user || user.role_id !== 1) {
+    if (!user || (user.role_id !== 1 && user.role_id !== 10)) {
       throw new Error("Bạn không có quyền truy cập tài nguyên này");
     }
     next();

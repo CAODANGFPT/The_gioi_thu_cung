@@ -26,7 +26,7 @@ const SignIn = () => {
   useEffect(() => {
     if (!isLoading) {
       if (isSuccess) {
-        if (user?.role_id === 1) {
+        if (user?.role_id === 1 || user?.role_id === 10) {
           navigate("/admin");
         } else {
           navigate("/");
@@ -47,16 +47,19 @@ const SignIn = () => {
         if ("error" in response) {
           message.error("Tài khoản mật khẩu không chính xác");
         } else {
-          if (response.data && response.data.user.role_id === 3) {
+          const userRoleId = response.data?.user?.role_id;
+          if (userRoleId === 3) {
             message.error("Tải khoản bị khóa");
           } else {
             localStorage.setItem("DateTime", String(currentTime));
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {
-              response.data.user.role_id === 1
+              userRoleId === 1 ||
+              userRoleId === 10 
                 ? navigate("/admin")
                 : navigate("/");
+
             }, 100);
           }
         }

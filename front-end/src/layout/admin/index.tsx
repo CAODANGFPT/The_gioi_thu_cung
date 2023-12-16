@@ -14,7 +14,7 @@ const LayoutAdmin: FC<Props> = () => {
     if (!isLoading) {
       if (!user) {
         navigate("/signin");
-      } else if (user.role_id !== 1) {
+      } else if (user.role_id !== 1 && user.role_id !== 10) {
         navigate("/");
       }
     }
