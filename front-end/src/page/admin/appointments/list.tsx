@@ -205,6 +205,7 @@ const AppointmentsAdmin: React.FC = () => {
       render: (data) => (
         <>
           <div>
+          {data.status_id !== 4 && data.status_id !== 5 && data.statusPaymentId !== 2 && (
             <Button
               onClick={() => redirectToAppointment(data)}
               className="btn-edit"
@@ -212,6 +213,7 @@ const AppointmentsAdmin: React.FC = () => {
             >
               Sửa
             </Button>
+          )}
             {data.status_id === 1 || data.status_id === 2 ? (
               <Popconfirm
                 onConfirm={() => confirm(data.id)}
