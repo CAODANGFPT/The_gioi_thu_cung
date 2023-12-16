@@ -18,6 +18,11 @@ import "../../../assets/scss/page/appointment.scss";
 import { TBreed } from "../../../schema/breed";
 import { Tspecies } from "../../../schema/species";
 import { useCreatePetsMutation } from "../../../services/pets";
+import { useGetUserQuery } from "../../../services/user";
+import { useNavigate } from "react-router-dom";
+
+
+
 type TModalAddPet = {
   setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
   userId?: number;
@@ -38,6 +43,7 @@ type TModalAddPet = {
   setValueId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
+
 const ModalAddPet: FC<TModalAddPet> = ({
   setIdSpecies,
   species,
@@ -53,8 +59,18 @@ const ModalAddPet: FC<TModalAddPet> = ({
   const [loading, setLoading] = useState(false);
   const [createSPets, { isLoading }] = useCreatePetsMutation();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
+    const isUserLoggedIn = user?.id || (userId && userId > 0);
+
+    if (!isUserLoggedIn) {
+      message.error("Vui lòng đăng nhập trước khi thêm thú cưng !");
+      setTimeout(() => {
+        navigate('/SignIn');
+      }, 3000);
+      return;
+    }
     let petNew: any = undefined;
     if (userId) {
       petNew = {
@@ -124,6 +140,7 @@ const ModalAddPet: FC<TModalAddPet> = ({
     <>
       {openAddPest && (
         <>
+        
           <div
             className="modal-1"
             style={{
