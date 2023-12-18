@@ -27,16 +27,17 @@
 
     .date {
       position: absolute;
+      width: 100%;
       top: 20px;
+      left: 0;
 
       &-title {
         position: relative;
-
         p {
           position: absolute;
+          width: 100%;
           top: 20%;
-          left: 50px;
-          transform: translateX(-50%);
+          left: 10px;
           font-weight: 500;
         }
       }

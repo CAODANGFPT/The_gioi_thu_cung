@@ -11,7 +11,7 @@ export default class News {
   }
   static getListNewsTop3() {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM news ORDER BY news.created_at DESC LIMIT 3", (err, results) => {
+      connection.query("SELECT news.*, users.name as nameUser FROM news JOIN users ON news.user_id = users.id ORDER BY news.created_at DESC LIMIT 3", (err, results) => {
         if (err) reject(err);
         resolve(results);
       });

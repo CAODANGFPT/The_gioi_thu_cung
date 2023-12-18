@@ -50,7 +50,9 @@
     border: 1px solid $EagleGreen;
   }
 
-  :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not( :disabled):not(.ant-btn-disabled):hover {
+  :where(.css-dev-only-do-not-override-xu9wm8).ant-btn-primary:not(
+      :disabled
+    ):not(.ant-btn-disabled):hover {
     background-color: white;
     color: $EagleGreen;
   }
@@ -74,4 +76,54 @@
 .btn-status-appointment {
   display: flex;
   justify-content: space-evenly;
+}
+
+.detailAppointment {
+  &_modal {
+    position: fixed;
+    top: 5vh;
+    left: 5vw;
+    width: 90vw;
+    height: 90vh;
+    background-color: white;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    transition: margin 0.7s ease-in-out;
+    border-radius: 24px;
+    z-index: 20;
+    padding: 20px;
+    &_close {
+      padding: 10px;
+      border-radius: 24px;
+      cursor: pointer;
+      &:hover {
+        background-color: #eaeaea;
+      }
+    }
+    .table {
+      &_vertical {
+        display: flex;
+        &:nth-child(2n + 1) {
+          background: #eaeaea;
+        }
+        &:nth-child(2n + 2) {
+          background: white;
+        }
+        .text-left {
+          flex: 1;
+          text-align: left;
+          &:nth-child(2n + 1) {
+            padding-left: 150px;
+          }
+        }
+      }
+    }
+  }
+  .background {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: grayscale(50%) blur(5px);
+    z-index: 10;
+  }
 }

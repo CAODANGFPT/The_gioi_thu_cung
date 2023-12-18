@@ -1,19 +1,24 @@
 import {
   Button,
   DatePicker,
-  Form,
+  DatePickerProps,
   Input,
   Popconfirm,
   Select,
+  Tag,
   message,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 import "../../../assets/scss/admin/appointments.scss";
 import TableAdmin from "../../../components/table";
-import { TAppointmentSchemaRes } from "../../../schema/appointments";
+import {
+  TAppointment,
+  TAppointmentSchemaRes,
+} from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import {
   useGetAllappointmentDataQuery,
@@ -22,11 +27,21 @@ import {
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
-import * as XLSX from "xlsx";
+import DetailAppointment from "./modalDetail";
 
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
   const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  const [filter, setFilter] = useState({
+    name: "",
+    house: "",
+    start_time: "",
+    status: "",
+  });
+  const [openReset, setOpenReset] = useState<boolean>(false);
+  const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [dataDetail, setDataDetail] = useState<TAppointment>();
+
   const confirm = async (id: number) => {
     try {
       await updateStatusAppointment({ id: id, status_id: 5 });
@@ -35,11 +50,6 @@ const AppointmentsAdmin: React.FC = () => {
 
   const [dataAppoiment, setDataAppoiment] = useState<any | null>(null);
   const { data } = useGetAllappointmentDataQuery();
-  useEffect(() => {
-    if (data) {
-      setDataAppoiment(data);
-    }
-  }, [data]);
 
   const { data: petHouse } = useGetAllpetHouseQuery();
   const [searchAddAppointment] = useSearchAddAppointmentMutation();
@@ -51,6 +61,7 @@ const AppointmentsAdmin: React.FC = () => {
     label: item.name,
     disabled: item.status_id === 1,
   }));
+
   const optionsStatus = petStatus?.map((item: TpetHouse) => ({
     value: item.id,
     label: item.name,
@@ -67,6 +78,7 @@ const AppointmentsAdmin: React.FC = () => {
   const redirectToAdd = () => {
     navigate("/admin/appointment/add");
   };
+
   const exportToExcel = () => {
     const flattenData = dataAppoiment.map((item: any) => ({
       Id: item.id,
@@ -108,7 +120,7 @@ const AppointmentsAdmin: React.FC = () => {
       title: "Người đặt",
       dataIndex: "user_name",
       key: "user_name",
-      width: 100,
+      width: 50,
     },
     {
       title: "Ngày đặt",
@@ -141,7 +153,15 @@ const AppointmentsAdmin: React.FC = () => {
       key: "services",
       width: 100,
       render: (services) => (
-        <div>
+        <div
+          style={{
+            display: "-webkit-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: "vertical",
+          }}
+        >
           {services &&
             Array.isArray(services) &&
             services.map((service, serviceIndex) => (
@@ -158,12 +178,12 @@ const AppointmentsAdmin: React.FC = () => {
       title: "Tên phòng",
       dataIndex: "pethouse_name",
       key: "pethouse_name",
-      width: 150,
+      width: 100,
     },
     {
       title: "Thời gian Ca",
       key: "time",
-      width: 100,
+      width: 110,
       render: (data) => (
         <>
           {data.start_time && data.end_time ? (
@@ -178,34 +198,61 @@ const AppointmentsAdmin: React.FC = () => {
       ),
     },
     {
-      title: "Thanh toán",
-      dataIndex: "statusPaymentName",
-      key: "statusPaymentName",
+      title: "Giá tiền",
+      key: "total",
       width: 100,
-      render: (statusPaymentName) => (
-        <>
-          <div>{statusPaymentName}</div>
-        </>
+      render: (data) => (
+        <p>{new Intl.NumberFormat("vi-VN").format(data.total)} VNĐ</p>
+      ),
+    },
+    {
+      title: "Thanh toán",
+      key: "statusPaymentName",
+      width: 150,
+      render: (data) => (
+        <Tag color={data.statusPaymentId === 1 ? "red" : "cyan"}>
+          {data.statusPaymentName}
+        </Tag>
       ),
     },
     {
       title: "Trạng thái",
-      dataIndex: "status_name",
       key: "status_name",
       width: 100,
-      render: (status_name) => (
-        <>
-          <div>{status_name}</div>
-        </>
+      render: (data) => (
+        <Tag
+          color={
+            data.status_id === 1
+              ? "blue"
+              : data.status_id === 2
+              ? "cyan"
+              : data.status_id === 3
+              ? "orange"
+              : data.status_id === 4
+              ? "green"
+              : data.status_id === 5
+              ? "red"
+              : ""
+          }
+        >
+          {data.status_name}
+        </Tag>
       ),
     },
     {
       key: "action",
-      width: 100,
+      width: 200,
       render: (data) => (
-        <>
-          <div>
-            <Button
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "stretch",
+              flexDirection: "column",
+              rowGap: 10,
+            }}
+          >
+            {/* <Button
               onClick={() => redirectToAppointment(data)}
               className="btn-edit"
               style={{ marginRight: "1rem" }}
@@ -216,7 +263,24 @@ const AppointmentsAdmin: React.FC = () => {
               }
             >
               Sửa
-            </Button>
+            </Button> */}
+            {(data.status_id === 1 ||
+              data.status_id === 2 ||
+              data.status_id === 3) && (
+              <Button
+                type="primary"
+                onClick={() => redirectToAppointment(data)}
+                className="btn-edit"
+              >
+                {data.status_id === 1
+                  ? "Xác nhận"
+                  : data.status_id === 2
+                  ? "Thực hiện"
+                  : data.status_id === 3
+                  ? "Hoàn thành"
+                  : ""}
+              </Button>
+            )}
             <Popconfirm
               onConfirm={() => confirm(data.id)}
               title="Hủy lịch"
@@ -225,74 +289,143 @@ const AppointmentsAdmin: React.FC = () => {
               <Button
                 danger
                 className="btn-delete"
-                disabled={
-                  data.status_id === 4 ||
-                  data.status_id === 5 
-                }
+                disabled={data.status_id === 4 || data.status_id === 5}
               >
                 Hủy
               </Button>
             </Popconfirm>
           </div>
-        </>
+          <Button
+            type="link"
+            onClick={() => {
+              setOpenDetail(true);
+              setDataDetail(data)
+            }}
+          >
+            Chi tiết
+          </Button>
+        </div>
       ),
     },
   ];
-  const onFinish = async (values: any) => {
-    if (values.start_time) {
-      values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
-    }
-    const { nameUser, pethouse_id, start_time, status_id } = values;
+  // const onFinish = async (values: any) => {
+  //   if (values.start_time) {
+  //     values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
+  //   }
+  //   const { nameUser, pethouse_id, start_time, status_id } = values;
 
-    const servicesData = {
-      nameUser,
-      pethouse_id,
-      start_time: start_time,
-      status_id,
-    };
+  //   const servicesData = {
+  //     nameUser,
+  //     pethouse_id,
+  //     start_time: start_time,
+  //     status_id,
+  //   };
 
-    try {
-      const data: any = await searchAddAppointment(servicesData).unwrap();
-      setDataAppoiment(data.uniqueData);
-    } catch (error) {
-      message.error("Không tìm thấy bài nào phù hợp");
+  //   try {
+  //     const data: any = await searchAddAppointment(servicesData).unwrap();
+  //     setDataAppoiment(data.uniqueData);
+  //   } catch (error) {
+  //     message.error("Không tìm thấy bài nào phù hợp");
+  //   }
+  // };
+  console.log(data && data[0].pethouse_id);
+
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    if (date) {
+      handleFilterChange("start_time", dayjs(date).format("DD/MM/YYYY"));
+    } else {
+      handleFilterChange("start_time", "");
     }
   };
+
+  const handleFilterChange = (fieldName: string, value: string) => {
+    console.log(fieldName, value);
+
+    setFilter({ ...filter, [fieldName]: value });
+  };
+
+  useEffect(() => {
+    const filteredData = data?.filter(
+      (item) =>
+        item.user_name
+          ?.toLowerCase()
+          .includes(filter.name.trim().toLowerCase()) &&
+        item.pethouse_id?.toString().toLowerCase().includes(filter.house) &&
+        dayjs(item.start_time)
+          .format("DD/MM/YYYY")
+          .toLowerCase()
+          .includes(filter.start_time.trim().toLowerCase()) &&
+        item.status_id?.toString().toLowerCase().includes(filter.status)
+    );
+    setDataAppoiment(filteredData);
+  }, [data, filter.name, filter.house, filter.start_time, filter.status]);
+
+  useEffect(() => {
+    if (
+      filter.name === "" &&
+      filter.house === "" &&
+      filter.start_time === "" &&
+      filter.status === ""
+    ) {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name, filter.house, filter.start_time, filter.status]);
+
+  useEffect(() => {
+    setDataAppoiment(data);
+  }, [data]);
+
   return (
     <>
       <h2>Tìm kiếm</h2>
-      <Form
-        name="validateOnly"
-        className="search-appointments"
-        layout="vertical"
-        autoComplete="off"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        style={{ marginTop: 10 }}
-      >
-        <div className="search-appointments-form">
-          <Form.Item name="nameUser">
-            <Input placeholder="Tên người đặt" />
-          </Form.Item>
-          <Form.Item name="pethouse_id" label="">
-            <Select options={optionsPetHouse} placeholder="Phòng" />
-          </Form.Item>
-          <Form.Item name="start_time" style={{ width: "100%" }}>
-            <DatePicker
-              placeholder="Ngày"
-              style={{ width: "100%" }}
-              format="YYYY-MM-DD"
-              showNow={false}
-            />
-          </Form.Item>
-          <Form.Item name="status_id">
-            <Select options={optionsStatus} placeholder="Trạng thái" />
-          </Form.Item>
+      <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
+        <div>
+          <p style={{ margin: "10px 0" }}>Tên người đặt</p>
+          <Input
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200 }}
+          />
         </div>
         <div>
-          <Button htmlType="submit">Tìm kiếm</Button>
+          <p style={{ margin: "10px 0" }}>Tên phòng</p>
+          <Select
+            options={optionsPetHouse}
+            onChange={(value) => handleFilterChange("house", value)}
+            value={filter.house}
+            style={{ width: 200 }}
+          />
         </div>
-      </Form>
+        <div>
+          <p style={{ margin: "10px 0" }}>Ngày đặt</p>
+          <DatePicker
+            style={{ width: 200 }}
+            format="YYYY-MM-DD"
+            placeholder=""
+            onChange={onChange}
+          />
+        </div>
+        <div>
+          <p style={{ margin: "10px 0" }}>Trạng thái</p>
+          <Select
+            options={optionsStatus}
+            onChange={(value) => handleFilterChange("status", value)}
+            value={filter.status}
+            style={{ width: 200 }}
+          />
+        </div>
+        <Button
+          onClick={() =>
+            setFilter({ name: "", house: "", start_time: "", status: "" })
+          }
+          danger
+          disabled={!openReset}
+        >
+          Cài lại
+        </Button>
+      </div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Button
           style={{ marginTop: 20, marginBottom: 20 }}
@@ -310,6 +443,11 @@ const AppointmentsAdmin: React.FC = () => {
         </Button>
       </div>
       <TableAdmin columns={columns} data={dataAppoiment} />
+      <DetailAppointment
+        openDetail={openDetail}
+        setOpenDetail={setOpenDetail}
+        dataDetail={dataDetail}
+      />
     </>
   );
 };
