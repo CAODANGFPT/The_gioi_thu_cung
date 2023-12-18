@@ -22,3 +22,10 @@ export const RegisterAccountSchema = yup.object().shape({
 export type TRegisterAccount = yup.InferType<typeof RegisterAccountSchema>;
 
 export const RegisterAccountRequestSchema = yup.object().shape({});
+
+export const RegisterAccountRequest = yup.object().shape({
+  token: yup.string(),
+  id: yup.number().required(),
+});
+
+export type TRegisterAccountRequest = yup.InferType<typeof RegisterAccountRequest>;

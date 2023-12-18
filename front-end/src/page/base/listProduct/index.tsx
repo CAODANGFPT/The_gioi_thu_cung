@@ -55,7 +55,7 @@ const ListProduct: React.FC = () => {
 
   useEffect(() => {
     if (value.length > 0 || cate.length > 0) {
-      const filteredData = products?.filter((item) => {
+      const filteredData = productsList?.filter((item) => {
         const price = parseFloat(item.price?.toString() || "");
         const isPriceInRange =
           value.length === 0 || (price >= value[0] && price <= value[1]);

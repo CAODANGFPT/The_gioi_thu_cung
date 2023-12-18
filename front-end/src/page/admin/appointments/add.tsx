@@ -4,6 +4,7 @@ import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
+import User from "../../../assets/image/user.png";
 import "../../../assets/scss/admin/appointments.scss";
 import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
@@ -14,12 +15,18 @@ import {
   useGetAppointmentTimeMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
-import { useGetAllpetHouseClientQuery, useGetAllpetHouseQuery } from "../../../services/pethouse";
+import {
+  useGetAllpetHouseClientQuery,
+  useGetAllpetHouseQuery,
+} from "../../../services/pethouse";
 import {
   useGetPetByIdPostMutation,
   useUserPetMutation,
 } from "../../../services/pets";
-import { useServicesClientQuery, useServicesQuery } from "../../../services/services";
+import {
+  useServicesClientQuery,
+  useServicesQuery,
+} from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import {
   useStatusPaymentQuery,
@@ -27,6 +34,8 @@ import {
 } from "../../../services/status_appointment";
 import { useGetAllUserQuery, useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "../../base/appointments/modalAddPet";
+import { TUser } from "../../../schema/user";
+import ModalAddUser from "../../base/appointments/modalAddUser";
 
 type TFinish = {
   petHouse_id: number;
@@ -49,9 +58,11 @@ const AppointmentsAdd: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
+  const [user, setUser] = useState<TUser>();
   const [petByUserId, setPetByUserId] = useState<TPetsSchemaRes[]>([]);
-  const [userId, setUserId] = useState<number|undefined>(0);
+  const [userId, setUserId] = useState<number | undefined>(0);
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
+  const [openAddUser, setOpenAddUser] = useState<boolean>(false);
   const [onChangedisabled, setOnChangedisabled] = useState<boolean>(true);
   const [servicesOpenTime, setServicesOpenTime] = useState<boolean>(false);
   const [idSpecies, setIdSpecies] = useState<number>(0);
@@ -63,12 +74,12 @@ const AppointmentsAdd: React.FC = () => {
   const [valueId, setValueId] = useState<number | undefined>();
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
-  const { data: user } = useGetUserQuery();
+  // const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseClientQuery();
   const { data: services } = useServicesClientQuery();
   const { data: statusPayment } = useStatusPaymentQuery();
   const { data: statusAppointment } = useStatusQuery();
-  const { data: getAllUser } = useGetAllUserQuery();
+  const { data: getAllUser, refetch } = useGetAllUserQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: breed } = useBreedQuery(idSpecies);
   const [addAppointment] = useAddAppointmentAdminMutation();
@@ -152,7 +163,7 @@ const AppointmentsAdd: React.FC = () => {
     if ("data" in resAppointment) {
       message.success("Thêm thành công");
       navigate("/admin/appointment");
-    }else {
+    } else {
       if (
         resAppointment.error &&
         "status" in resAppointment.error &&
@@ -379,6 +390,7 @@ const AppointmentsAdd: React.FC = () => {
       setPet([]);
     }
   };
+
   const handleChangePets = (petValue: number[]) => {
     listPets(petValue);
     setDefaultValue(petValue);
@@ -386,6 +398,15 @@ const AppointmentsAdd: React.FC = () => {
       functionEndTimeChange(undefined, petValue);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      form.setFieldValue("user_id", user?.id);
+      refetch();
+      setOnChangedisabled(false);
+      onChangeUser(user.id);
+    }
+  }, [form, user, user?.id]);
 
   useEffect(() => {
     if (totalServices && defaultValue.length) {
@@ -471,6 +492,7 @@ const AppointmentsAdd: React.FC = () => {
       setEndTime(null);
     }
   };
+
   const totalService = (value: number[]) => {
     if (services) {
       const servicesId =
@@ -496,7 +518,7 @@ const AppointmentsAdd: React.FC = () => {
         const { data: dataPet } = response;
         setPetByUserId(dataPet);
         setOnChangedisabled(false);
-        setUserId(value)
+        setUserId(value);
       } else {
         console.error("No 'data' property found in the API response");
       }
@@ -528,7 +550,6 @@ const AppointmentsAdd: React.FC = () => {
             >
               <Select
                 showSearch
-                placeholder="Select a person"
                 optionFilterProp="children"
                 filterOption={filterOption}
                 options={optionsUser}
@@ -639,8 +660,63 @@ const AppointmentsAdd: React.FC = () => {
               </Space>
             </Form.Item>
           </div>
-
           <div style={{ flex: 1 }}>
+            {user ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  rowGap: 20,
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    background: "#F7F7F7",
+                    padding: 10,
+                    color: "#00575C",
+                    border: 2,
+                    borderColor: "#00575C",
+                  }}
+                >
+                  <div>Email: {user.email}</div>
+                  <div>Tên tài khoản: {user.name}</div>
+                  <div style={{ position: "absolute", top: 5, right: 5 }}>
+                    {user.img ? (
+                      <Avatar size={100} shape="circle" src={User} />
+                    ) : (
+                      <Avatar size={100} shape="circle" src={user.img} />
+                    )}
+                  </div>
+                </div>
+                <Button
+                  onClick={() => setOpenAddPest(!openAddPest)}
+                  style={{ maxWidth: 100, color: "white" }}
+                >
+                  Thêm mới
+                </Button>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar size={200} src={User} />
+                <div>Chưa chọn người dùng</div>
+                <p>Nếu bạn chưa có hoặc thêm mới ấn vào đây!</p>
+                <Button
+                  onClick={() => setOpenAddUser(true)}
+                  style={{ maxWidth: 100, color: "white" }}
+                >
+                  Thêm
+                </Button>
+              </div>
+            )}
+
             {pet.length > 0 ? (
               <div
                 style={{
@@ -711,6 +787,11 @@ const AppointmentsAdd: React.FC = () => {
         userId={userId}
         setNamePet={setNamePet}
         setValueId={setValueId}
+      />
+      <ModalAddUser
+        openAddUser={openAddUser}
+        setOpenAddUser={setOpenAddUser}
+        setUser={setUser}
       />
     </div>
   );
