@@ -500,12 +500,10 @@ export const updateAppointmentStatus = async (req, res) => {
         message: errors,
       });
     }
-    const appointmentId = req.params.id;
-    await Appointments.updateAppointmentStatus(appointmentId, status_id);
-    const appointment = await Appointments.getAppointmentsById(appointmentId);
-    const userId = appointment.user_id;
-    const user = await User.getUserById(userId);
-    if (user && user.email) {
+    await Appointments.updateAppointmentStatus(req.params.id, status_id);
+    const appointment = await Appointments.getAppointmentsById(req.params.id);
+    console.log(appointment);
+    if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
@@ -516,7 +514,7 @@ export const updateAppointmentStatus = async (req, res) => {
 
       const mailOptions = {
         from: "hainv21123@gmail.com",
-        to: user.email,
+        to: appointment.user_email,
         subject: "Xác nhận đặt lịch thành công",
         html: `<div style="font-family: sans-serif; margin: 0 40px;">
           <img
@@ -524,7 +522,7 @@ export const updateAppointmentStatus = async (req, res) => {
             src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
             alt=""
           />
-          <p>Chào <span style="font-weight: 600">${user.name},</span></p>
+          <p>Chào <span style="font-weight: 600">${appointment.user_name},</span></p>
           <p>
             Chúc mừng bạn đã đặt lịch thành công tại
             <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>

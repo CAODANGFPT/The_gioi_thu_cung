@@ -28,6 +28,9 @@ import {
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
 import { useStatusQuery } from "../../../services/status_appointment";
 import DetailAppointment from "./modalDetail";
+import { useGetUserQuery } from "../../../services/user";
+import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
+import { TStatusPet } from "../../../schema/pets";
 
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
@@ -36,25 +39,32 @@ const AppointmentsAdmin: React.FC = () => {
     name: "",
     house: "",
     start_time: "",
+    pay: "",
     status: "",
   });
+  const [dataAppoiment, setDataAppoiment] = useState<TAppointment[]>();
   const [openReset, setOpenReset] = useState<boolean>(false);
   const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingCancel, setLoadingCancel] = useState<boolean>(false);
   const [dataDetail, setDataDetail] = useState<TAppointment>();
-
-  const confirm = async (id: number) => {
-    try {
-      await updateStatusAppointment({ id: id, status_id: 5 });
-    } catch (error) {}
-  };
-
-  const [dataAppoiment, setDataAppoiment] = useState<any | null>(null);
   const { data } = useGetAllappointmentDataQuery();
-
   const { data: petHouse } = useGetAllpetHouseQuery();
   const [searchAddAppointment] = useSearchAddAppointmentMutation();
-  const nameFile: string = "lịch đặt";
   const { data: petStatus } = useStatusQuery();
+  const { data: dataPay } = useGetAllStatusPaymentQuery();
+
+  const confirm = async (id: number) => {
+    setLoadingCancel(true);
+    const res = await updateStatusAppointment({ id: id, status_id: 5 });
+    if ("data" in res) {
+      message.success("Hủy lịch đặt thành công");
+      setLoadingCancel(false);
+    } else {
+      message.error("Hủy lịch đặt không thành công");
+      setLoadingCancel(false);
+    }
+  };
 
   const optionsPetHouse = petHouse?.map((item: TpetHouse) => ({
     value: item.id,
@@ -68,19 +78,30 @@ const AppointmentsAdmin: React.FC = () => {
     disabled: item.status_id === 1,
   }));
 
-  const redirectToAppointment = (item: any) => {
-    navigate("/admin/appointment/edit", {
-      state: {
-        appointmentData: item,
-      },
-    });
-  };
-  const redirectToAdd = () => {
-    navigate("/admin/appointment/add");
+  const optionsPay = dataPay?.map((item: TStatusPet) => ({
+    value: item.id,
+    label: item.name,
+  }));
+
+  const redirectToAppointment = async (id: number, status_id: number) => {
+    if (status_id === 1 || status_id === 2 || status_id === 3) {
+      setLoading(true);
+      const res = await updateStatusAppointment({
+        id: id,
+        status_id: status_id + 1,
+      });
+      if ("data" in res) {
+        message.success("Sửa trạng thái thành công");
+        setLoading(false);
+      } else {
+        message.error("Sửa trạng thái không thành công");
+        setLoading(false);
+      }
+    }
   };
 
   const exportToExcel = () => {
-    const flattenData = dataAppoiment.map((item: any) => ({
+    const flattenData = dataAppoiment?.map((item: any) => ({
       Id: item.id,
       "Email người đặt": item.user_email,
       "Tên người đặt": item.user_name,
@@ -101,10 +122,10 @@ const AppointmentsAdmin: React.FC = () => {
       "Trạng thái": item.status_name,
       "Trạng thái thanh toán": item.statusPaymentName,
     }));
-    const ws = XLSX.utils.json_to_sheet(flattenData);
+    const ws = XLSX.utils.json_to_sheet(flattenData || []);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, `${nameFile}.xlsx`);
+    XLSX.writeFile(wb, `lịch đặt.xlsx`);
   };
 
   const columns: ColumnsType<TAppointmentSchemaRes> = [
@@ -267,39 +288,43 @@ const AppointmentsAdmin: React.FC = () => {
             {(data.status_id === 1 ||
               data.status_id === 2 ||
               data.status_id === 3) && (
-              <Button
-                type="primary"
-                onClick={() => redirectToAppointment(data)}
-                className="btn-edit"
-              >
-                {data.status_id === 1
-                  ? "Xác nhận"
-                  : data.status_id === 2
-                  ? "Thực hiện"
-                  : data.status_id === 3
-                  ? "Hoàn thành"
-                  : ""}
-              </Button>
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => redirectToAppointment(data.id, data.status_id)}
+                  className="btn-edit"
+                  loading={loading}
+                >
+                  {data.status_id === 1
+                    ? "Xác nhận"
+                    : data.status_id === 2
+                    ? "Thực hiện"
+                    : data.status_id === 3
+                    ? "Hoàn thành"
+                    : ""}
+                </Button>
+
+                <Popconfirm
+                  onConfirm={() => confirm(data.id)}
+                  title="Hủy lịch"
+                  description="Bạn có chắc chắn hủy lịch này không?"
+                >
+                  <Button
+                    danger
+                    className="btn-delete"
+                    disabled={data.status_id === 4 || data.status_id === 5}
+                  >
+                    Hủy
+                  </Button>
+                </Popconfirm>
+              </>
             )}
-            <Popconfirm
-              onConfirm={() => confirm(data.id)}
-              title="Hủy lịch"
-              description="Bạn có chắc chắn hủy lịch này không?"
-            >
-              <Button
-                danger
-                className="btn-delete"
-                disabled={data.status_id === 4 || data.status_id === 5}
-              >
-                Hủy
-              </Button>
-            </Popconfirm>
           </div>
           <Button
             type="link"
             onClick={() => {
               setOpenDetail(true);
-              setDataDetail(data)
+              setDataDetail(data);
             }}
           >
             Chi tiết
@@ -308,6 +333,7 @@ const AppointmentsAdmin: React.FC = () => {
       ),
     },
   ];
+
   // const onFinish = async (values: any) => {
   //   if (values.start_time) {
   //     values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
@@ -328,7 +354,6 @@ const AppointmentsAdmin: React.FC = () => {
   //     message.error("Không tìm thấy bài nào phù hợp");
   //   }
   // };
-  console.log(data && data[0].pethouse_id);
 
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     if (date) {
@@ -340,7 +365,6 @@ const AppointmentsAdmin: React.FC = () => {
 
   const handleFilterChange = (fieldName: string, value: string) => {
     console.log(fieldName, value);
-
     setFilter({ ...filter, [fieldName]: value });
   };
 
@@ -355,27 +379,38 @@ const AppointmentsAdmin: React.FC = () => {
           .format("DD/MM/YYYY")
           .toLowerCase()
           .includes(filter.start_time.trim().toLowerCase()) &&
+        item.statusPaymentId?.toString().toLowerCase().includes(filter.pay) &&
         item.status_id?.toString().toLowerCase().includes(filter.status)
     );
     setDataAppoiment(filteredData);
-  }, [data, filter.name, filter.house, filter.start_time, filter.status]);
+  }, [
+    data,
+    filter.name,
+    filter.house,
+    filter.start_time,
+    filter.status,
+    filter.pay,
+  ]);
 
   useEffect(() => {
     if (
       filter.name === "" &&
       filter.house === "" &&
       filter.start_time === "" &&
+      filter.pay === "" &&
       filter.status === ""
     ) {
       setOpenReset(false);
     } else {
       setOpenReset(true);
     }
-  }, [filter.name, filter.house, filter.start_time, filter.status]);
+  }, [filter.name, filter.house, filter.start_time, filter.status, filter.pay]);
 
   useEffect(() => {
-    setDataAppoiment(data);
-  }, [data]);
+    if (!dataAppoiment) {
+      setDataAppoiment(data);
+    }
+  }, [data, dataAppoiment]);
 
   return (
     <>
@@ -408,6 +443,15 @@ const AppointmentsAdmin: React.FC = () => {
           />
         </div>
         <div>
+          <p style={{ margin: "10px 0" }}>Thanh toán</p>
+          <Select
+            options={optionsPay}
+            onChange={(value) => handleFilterChange("pay", value)}
+            value={filter.pay}
+            style={{ width: 200 }}
+          />
+        </div>
+        <div>
           <p style={{ margin: "10px 0" }}>Trạng thái</p>
           <Select
             options={optionsStatus}
@@ -418,7 +462,13 @@ const AppointmentsAdmin: React.FC = () => {
         </div>
         <Button
           onClick={() =>
-            setFilter({ name: "", house: "", start_time: "", status: "" })
+            setFilter({
+              name: "",
+              house: "",
+              start_time: "",
+              pay: "",
+              status: "",
+            })
           }
           danger
           disabled={!openReset}
@@ -430,7 +480,7 @@ const AppointmentsAdmin: React.FC = () => {
         <Button
           style={{ marginTop: 20, marginBottom: 20 }}
           className="btn"
-          onClick={() => redirectToAdd()}
+          onClick={() => navigate("/admin/appointment/add")}
         >
           Thêm lịch đặt
         </Button>
