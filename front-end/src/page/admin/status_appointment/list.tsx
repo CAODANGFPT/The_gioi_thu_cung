@@ -20,7 +20,7 @@ const StatusAdmin: React.FC = () => {
   const [openReset, setOpenReset] = useState<boolean>(false);
   const { data } = useStatusQuery();
   const [removeStatusAppointment] = useRemoveStatusAppointmentMutation();
-  
+
   const confirm = (id: number) => {
     removeStatusAppointment(id)
       .then((response: any) => {
@@ -104,7 +104,18 @@ const StatusAdmin: React.FC = () => {
 
   return (
     <div>
-      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý trạng thái xác nhận đặt lịch
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -124,9 +135,14 @@ const StatusAdmin: React.FC = () => {
       </div>
       <Button
         onClick={() => navigator("add")}
-        type="primary"
+        type="text"
+        block
         icon={<PlusOutlined />}
-        style={{ marginBottom: "1rem" }}
+        style={{
+          marginBottom: "1rem",
+          fontWeight: "500",
+          border: "1px solid #c3c3c3",
+        }}
       >
         THÊM TRẠNG THÁI
       </Button>

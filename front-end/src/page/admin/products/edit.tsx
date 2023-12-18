@@ -112,9 +112,17 @@ const EditProduct = () => {
 
   return (
     <>
-    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập sản phẩm #{id}
-      </h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật sản phẩm
+      </h2>
       <Form
         form={form}
         name="basic"
@@ -124,13 +132,11 @@ const EditProduct = () => {
         layout="vertical"
       >
         <Form.Item
-          label={<span className="">Id</span>}
+          label={<span className="">ID</span>}
           name="id"
           rules={[{ required: true, message: "Vui lòng nhập tên dịch vụ!" }]}
         >
-          <Input
-            disabled
-          />
+          <Input disabled />
         </Form.Item>
         <Form.Item
           label={<span className="">Tên dịch vụ</span>}
@@ -158,19 +164,15 @@ const EditProduct = () => {
           </Upload>
         </Form.Item>
         <Form.Item
-          label={
-            <span >Giá dịch vụ </span>
-          }
+          label={<span>Giá dịch vụ </span>}
           name="price"
           rules={[{ required: true, message: "Vui lòng nhập giá dịch vụ!" }]}
         >
-          <InputNumber
-            min={1}
-          />
+          <InputNumber min={1} />
         </Form.Item>
         <Form.Item
           style={{ marginBottom: 50 }}
-          label={<span >Mô tả</span>}
+          label={<span>Mô tả</span>}
           name="description"
           rules={[
             { required: true, message: "Vui lòng nhập giá mô tả dịch vụ!" },
@@ -210,11 +212,7 @@ const EditProduct = () => {
           )}
         </Form.Item>
         <Form.Item>
-          <Button
-            style={{ marginTop: 30 }}
-            htmlType="submit"
-            size="large"
-          >
+          <Button style={{ float: "right" }} htmlType="submit" size="large">
             {isAddLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (

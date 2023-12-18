@@ -102,9 +102,17 @@ const EditService = () => {
 
   return (
     <>
-    <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập sản phẩm #{id}
-      </h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật sản phẩm
+      </h2>
       <div>
         <Form
           form={form}
@@ -174,7 +182,7 @@ const EditService = () => {
           </Form.Item>
           <Form.Item>
             <Button
-              style={{ marginTop: 30 }}
+              style={{ float: "right" }}
               htmlType="submit"
               className="text-black transition-colors duration-300 dark:text-white"
               size="large"

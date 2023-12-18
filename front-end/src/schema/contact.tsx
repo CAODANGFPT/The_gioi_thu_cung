@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 export const ContactSchema = yup.object().shape({
   id: yup.number(),
-  phone: yup.number(),
+  phone: yup.string(),
   title: yup.string(),
   subject: yup.string(),
   user_id: yup.number(),
@@ -12,7 +12,7 @@ export const ContactSchema = yup.object().shape({
 
 export const ContactRequestSchema = yup.object().shape({
   id: yup.number(),
-  phone: yup.number(),
+  phone: yup.string(),
   title: yup.string(),
   subject: yup.string(),
   user_id: yup.number(),
@@ -22,7 +22,7 @@ export const ContactRequestSchema = yup.object().shape({
 
 export const ContactResponseSchema = yup.object().shape({
   id: yup.number(),
-  phone: yup.number(),
+  phone: yup.string(),
   title: yup.string(),
   subject: yup.string(),
   user_id: yup.number(),

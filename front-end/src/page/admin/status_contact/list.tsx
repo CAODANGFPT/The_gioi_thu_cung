@@ -99,7 +99,19 @@ const StatusContactAdmin: React.FC = () => {
   }, [filter.name]);
   return (
     <>
-      <h2 style={{marginBottom: 10}}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý trạng thái liên hệ
+      </h2>
+
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -119,9 +131,14 @@ const StatusContactAdmin: React.FC = () => {
       </div>
       <Link to="/admin/status_contact/add">
         <Button
-          type="primary"
+          type="text"
+          block
           icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
+          style={{
+            marginBottom: "1rem",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
         >
           THÊM TRẠNG THÁI LIÊN HỆ
         </Button>

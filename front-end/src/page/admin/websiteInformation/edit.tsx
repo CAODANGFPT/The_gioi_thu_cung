@@ -102,7 +102,17 @@ const EditWebsiteInformationAdmin = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập nhật website information</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật thông tin website
+      </h2>
       <Form
         form={form}
         name="basic"
@@ -180,10 +190,10 @@ const EditWebsiteInformationAdmin = () => {
 
         <Form.Item>
           <Button
-            style={{ marginTop: 30 }}
             htmlType="submit"
             className="text-black transition-colors duration-300 dark:text-white"
             size="large"
+            style={{ float: "right" }}
           >
             {isAddLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />

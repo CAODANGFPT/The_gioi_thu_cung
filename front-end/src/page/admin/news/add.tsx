@@ -75,7 +75,17 @@ const Addnews = () => {
 
   return (
     <>
-      <h2>Thêm bài đăng</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm bài đăng
+      </h2>
       <div>
         <Form
           form={form}
@@ -146,6 +156,7 @@ const Addnews = () => {
               htmlType="submit"
               className="text-black transition-colors duration-300 dark:text-white"
               size="large"
+              style={{ float: "right" }}
             >
               {isAddLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />

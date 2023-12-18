@@ -58,26 +58,38 @@ const AddPetHouse: React.FC = () => {
 
   return (
     <>
-      <h2 style={{marginBottom: 10}}>Thêm phòng</h2>
-    
-    <Form
-      form={form}
-      name="validateOnly"
-      layout="vertical"
-      autoComplete="off"
-      onFinish={handleFormSubmit}
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
       >
-      <Form.Item name="name" label="Tên phòng" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item>
-        <Space>
-          <Button type="primary" htmlType="submit">Thêm phòng</Button>
-          <Button htmlType="reset">Cài lại</Button>
-        </Space>
-      </Form.Item>
-    </Form>
-      </>
+        Thêm phòng
+      </h2>
+
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item name="name" label="Tên phòng" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Space style={{ float: "right" }}>
+            <Button type="primary" htmlType="submit">
+              Thêm phòng
+            </Button>
+            <Button htmlType="reset">Cài lại</Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

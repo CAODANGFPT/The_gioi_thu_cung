@@ -143,8 +143,20 @@ const UserAdmin: React.FC = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý người dùng
+      </h2>
+
       <div className="btn-table">
+        <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
             placeholder="Tìm kiếm tên"

@@ -108,7 +108,17 @@ const BannerAdmin: React.FC = () => {
       </Button> */}
 
       <div>
-        <h1 style={{ marginBottom: "1rem" }}>Quản lý banner website.</h1>
+        <h1
+          style={{
+            marginBottom: "1rem",
+            fontSize: "25px",
+            padding: "0.8rem",
+            borderRadius: "3px",
+            boxShadow: "0px 0px 5px #c3c3c3",
+          }}
+        >
+          Quản lý banner
+        </h1>
       </div>
       <TableAdmin columns={columns} data={data} />
       <div>
@@ -117,7 +127,7 @@ const BannerAdmin: React.FC = () => {
         >
           Ghi chú:
           <span
-            style={{ color: "red", fontWeight: "500", fontStyle: "normal" }}
+            style={{ color: "red", fontWeight: "500", marginLeft: "0.5rem" }}
           >
             Phần quản lý banner website chỉ có thể cập nhật không thể thêm và
             xóa!

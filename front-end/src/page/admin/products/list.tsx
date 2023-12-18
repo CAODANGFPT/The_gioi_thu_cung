@@ -3,6 +3,7 @@ import type { ColumnsType } from "antd/es/table";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
+import { PlusOutlined } from "@ant-design/icons";
 import { TProduct } from "../../../schema/products";
 import {
   useGetAllProductsQuery,
@@ -180,7 +181,18 @@ const ProductsAdmin: React.FC = () => {
 
   return (
     <>
-      <h2>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý sản phẩm
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"
@@ -228,10 +240,16 @@ const ProductsAdmin: React.FC = () => {
       <div></div>
       <Button
         onClick={() => navigate("add")}
-        type="primary"
-        style={{ marginBottom: "1rem" }}
+        type="text"
+        block
+        icon={<PlusOutlined />}
+        style={{
+          marginBottom: "1rem",
+          fontWeight: "500",
+          border: "1px solid #c3c3c3",
+        }}
       >
-        THÊM PRODUCTS
+        THÊM SẢN PHẨM
       </Button>
       <TableAdmin columns={columns} data={dataProduct} />
     </>

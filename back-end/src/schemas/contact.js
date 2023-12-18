@@ -2,9 +2,10 @@ import joi from "joi";
 
 export const contactSchema = joi.object({
     id: joi.number(),
-    phone: joi.number().required().messages({
+    phone: joi.string().regex(/^0\d{9}$/).required().messages({
         "String.empty": "Số điện thoại không được để trống",
         "any.required": "Trường số điện thoại là bắt buộc",
+        "string.pattern.base": "Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số",
     }),
     title: joi.string().required().messages({
         "String.empty": "Tên không được để trống",

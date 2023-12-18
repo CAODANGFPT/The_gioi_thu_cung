@@ -50,7 +50,17 @@ const AddService = () => {
   );
   return (
     <>
-      <h1>Thêm sản phẩm</h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm sản phẩm
+      </h2>
       <div>
         <Form
           name="basic"
@@ -119,7 +129,7 @@ const AddService = () => {
           </Form.Item>
           <Form.Item>
             <Button
-              style={{ marginTop: 30 }}
+              style={{ float: "right" }}
               htmlType="submit"
               className="text-black transition-colors duration-300 dark:text-white"
               size="large"

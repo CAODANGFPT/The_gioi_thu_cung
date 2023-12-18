@@ -1,7 +1,10 @@
 import React from "react";
 import type { FormInstance } from "antd";
 import { Button, Form, Input, Space, message } from "antd";
-import { useCreateCategoryMutation, useGetAllcategoryQuery } from "../../../services/category";
+import {
+  useCreateCategoryMutation,
+  useGetAllcategoryQuery,
+} from "../../../services/category";
 import { useNavigate } from "react-router-dom";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
@@ -50,24 +53,41 @@ const AddCategory: React.FC = () => {
   };
 
   return (
-    <Form
-      form={form}
-      name="validateOnly"
-      layout="vertical"
-      autoComplete="off"
-      onFinish={handleFormSubmit}
-    >
-      <Form.Item name="name" label="Tên danh mục" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
+    <>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm danh mục
+      </h2>
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Tên danh mục"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item>
-        <Space>
-          <SubmitButton form={form} />
-          <Button htmlType="reset">Reset</Button>
-        </Space>
-      </Form.Item>
-    </Form>
+        <Form.Item>
+          <Space style={{ float: "right" }}>
+            <SubmitButton form={form} />
+            <Button htmlType="reset">Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

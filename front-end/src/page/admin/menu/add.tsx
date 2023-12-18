@@ -75,7 +75,17 @@ const AddMenuAdmin: React.FC = () => {
 
   return (
     <>
-      <h2>Thêm Menu</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm Menu
+      </h2>
       <Form
         form={form}
         name="validateOnly"
@@ -99,7 +109,11 @@ const AddMenuAdmin: React.FC = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item name="menuType_id" label="Kiểu Menu">
+        <Form.Item
+          rules={[{ required: true, message: "Vui lòng chọn kiểu menu!" }]}
+          name="menuType_id"
+          label="Kiểu Menu"
+        >
           <Select>
             {menuType.data?.map((item: TMenuType) => (
               <Select.Option key={item.id} value={item.id}>
@@ -109,7 +123,7 @@ const AddMenuAdmin: React.FC = () => {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Space>
+          <Space style={{ float: "right" }}>
             <SubmitButton form={form} />
             <Button htmlType="reset">Reset</Button>
           </Space>

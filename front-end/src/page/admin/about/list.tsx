@@ -11,9 +11,9 @@ const AboutAdmin: React.FC = () => {
   const { data } = useAboutQuery();
 
   const [removeAbout] = useRemoveAboutMutation();
-  const createMarkup = (description: any) =>  {
+  const createMarkup = (description: any) => {
     return { __html: description };
-  }
+  };
   const confirm = (id: number) => {
     removeAbout(id)
       .then((response: any) => {
@@ -98,11 +98,27 @@ const AboutAdmin: React.FC = () => {
 
   return (
     <div>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý about
+      </h2>
       <Link to="/admin/about/add">
         <Button
-          type="primary"
+          type="text"
+          block
           icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
+          style={{
+            marginBottom: "1rem",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
         >
           THÊM ABOUT
         </Button>

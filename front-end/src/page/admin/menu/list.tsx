@@ -1,4 +1,4 @@
-import { Button, Popconfirm, message, Image } from "antd";
+import { Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -86,11 +86,28 @@ const MenuAdmin: React.FC = () => {
 
   return (
     <div>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý menu
+      </h2>
+
       <Link to="/admin/menu/add">
         <Button
-          type="primary"
+          type="text"
+          block
           icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
+          style={{
+            marginBottom: "1rem",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
         >
           THÊM MENU
         </Button>
