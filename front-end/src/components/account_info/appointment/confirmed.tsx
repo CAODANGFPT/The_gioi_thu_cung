@@ -5,13 +5,28 @@ import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import { Button, Tag } from "antd";
-
+import axios from "axios";
+const API_URL = "http://localhost:8080/api";
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
   const navigate = useNavigate();
   const handlePayment = (id: number | undefined, total: number | undefined) => {
+    const appoinmentId = id;
+    const amountAppointment = total;
+
     if (total !== undefined) {
-      navigate(`/payment/${id}/${total}`);
+      axios
+        .post(`${API_URL}/create-payment`, {
+          appointmentID: appoinmentId,
+          amount: amountAppointment,
+        })
+        .then((response) => {
+          localStorage.setItem(
+            "paymentInfo",
+            JSON.stringify({ appoinmentId, amountAppointment })
+          );
+          window.location.href = response.data.paymentUrl;
+        });
     } else {
       console.error("Không có thông tin thanh toán");
     }
