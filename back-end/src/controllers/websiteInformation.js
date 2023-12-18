@@ -22,8 +22,8 @@ export const showWebsiteInformationById = async (req, res) => {
 };
 export const create = async (req, res) => {
   try {
-    const { logo, email, phone, fb, zalo } = req.body;
-    const website_informationId = await WebsiteInformation.createWebsiteInformation(logo, email, phone, fb, zalo);
+    const { logo, email, phone, address, fb, zalo } = req.body;
+    const website_informationId = await WebsiteInformation.createWebsiteInformation(logo, email, phone, address, fb, zalo);
     res.json({ id: website_informationId });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -31,8 +31,8 @@ export const create = async (req, res) => {
 };
 export const update = async (req, res) => {
   try {
-    const { id, logo, email, phone, fb, zalo } = req.body;
-    await WebsiteInformation.updateWebsiteInformation(id, logo, email, phone, fb, zalo);
+    const { id, logo, email, phone, address, fb, zalo } = req.body;
+    await WebsiteInformation.updateWebsiteInformation(id, logo, email, phone, address, fb, zalo);
     res.json({ message: "WebsiteInformation updated thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

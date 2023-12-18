@@ -6,7 +6,7 @@ export const WebsiteInformationSchema = yup.object().shape({
   logo: yup.string(),
   email: yup.string(),
   phone: yup.number(),
-  logo_res: yup.string(),
+  address: yup.string(),
   fb: yup.string(),
   zalo: yup.string(),
 });
@@ -16,7 +16,7 @@ export const WebsiteInformationRequestSchema = yup.object().shape({
   logo: yup.string(),
   email: yup.string(),
   phone: yup.number(),
-  logo_res: yup.string(),
+  address: yup.string(),
   fb: yup.string(),
   zalo: yup.string(),
 });
@@ -26,7 +26,7 @@ export const WebsiteInformationResponseSchema = yup.object().shape({
   logo: yup.string(),
   email: yup.string(),
   phone: yup.number(),
-  logo_res: yup.string(),
+  address: yup.string(),
   fb: yup.string(),
   zalo: yup.string(),
 });

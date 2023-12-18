@@ -25,6 +25,9 @@ export const appointmentsSchema = joi.object({
     "String.empty": "total không được để trống",
   }),
   status_id: joi.number(),
+  paymentMethods_id: joi.number().required().messages({
+    "String.empty": "paymentMethods_id không được để trống",
+  }),
 });
 
 export const updateAppointmentStatusSchema = joi.object({

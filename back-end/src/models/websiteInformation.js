@@ -16,11 +16,11 @@ export default class WebsiteInformation {
             });
         });
     }
-    static createWebsiteInformation(logo, email, phone, fb, zalo) {
+    static createWebsiteInformation(logo, email, phone, address, fb, zalo) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO website_information ( logo, email, phone, fb, zalo) VALUES (?,?,?,?,?)",
-                [logo, email, phone, fb, zalo],
+                "INSERT INTO website_information ( logo, email, phone, fb, zalo) VALUES (?,?,?,?,?,?)",
+                [logo, email, phone, address, fb, zalo],
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results.insertId);
@@ -28,11 +28,11 @@ export default class WebsiteInformation {
             );
         });
     }
-    static updateWebsiteInformation(id, logo, email, phone, fb, zalo) {
+    static updateWebsiteInformation(id, logo, email, phone, address, fb, zalo) {
         return new Promise((resolve, reject) => {
             connection.query(
-                "UPDATE website_information SET logo = ?, email = ?, phone = ?,  fb = ?, zalo = ? WHERE id = ?",
-                [logo, email, phone, fb, zalo, id],
+                "UPDATE website_information SET logo = ?, email = ?, phone = ?, address = ?,  fb = ?, zalo = ? WHERE id = ?",
+                [logo, email, phone, address, fb, zalo, id],
                 (err) => {
                     if (err) reject(err);
                     resolve();

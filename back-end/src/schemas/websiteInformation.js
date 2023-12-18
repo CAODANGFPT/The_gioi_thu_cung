@@ -14,6 +14,10 @@ export const websiteInformationSchema = joi.object({
     "String.empty": "Số điện thoại không được để trống",
     "any.required": "Trường số điện thoại là bắt buộc",
   }),
+  address: joi.string().required().messages({
+    "String.empty": "Địa chỉ không được để trống",
+    "any.required": "Địa chỉ là trường bắt buộc",
+  }),
   fb: joi.string().required().messages({
     "String.empty": "Link facebook không được để trống",
     "any.required": "Link facebook là trường bắt buộc",
