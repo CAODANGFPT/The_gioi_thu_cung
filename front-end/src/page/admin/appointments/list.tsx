@@ -151,6 +151,23 @@ const AppointmentsAdmin: React.FC = () => {
       width: 100,
     },
     {
+      title: "Thời gian Ca",
+      key: "time",
+      width: 110,
+      render: (data) => (
+        <>
+          {data.start_time && data.end_time ? (
+            <div>
+              {dayjs(data.start_time).format("HH:mm")} -
+              {dayjs(data.end_time).format("HH:mm")}
+            </div>
+          ) : (
+            <div>null</div>
+          )}
+        </>
+      ),
+    },
+    {
       title: "Tên thú cưng",
       dataIndex: "pets",
       key: "pets",
@@ -166,56 +183,6 @@ const AppointmentsAdmin: React.FC = () => {
               </span>
             ))}
         </div>
-      ),
-    },
-    {
-      title: "Tên dịch vụ",
-      dataIndex: "services",
-      key: "services",
-      width: 100,
-      render: (services) => (
-        <div
-          style={{
-            display: "-webkit-box",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {services &&
-            Array.isArray(services) &&
-            services.map((service, serviceIndex) => (
-              <span key={serviceIndex}>
-                {service.name}
-                {serviceIndex < services.length - 1 ? ", " : ""}
-              </span>
-            ))}
-        </div>
-      ),
-    },
-
-    {
-      title: "Tên phòng",
-      dataIndex: "pethouse_name",
-      key: "pethouse_name",
-      width: 100,
-    },
-    {
-      title: "Thời gian Ca",
-      key: "time",
-      width: 110,
-      render: (data) => (
-        <>
-          {data.start_time && data.end_time ? (
-            <div>
-              {dayjs(data.start_time).format("HH:mm")} -
-              {dayjs(data.end_time).format("HH:mm")}
-            </div>
-          ) : (
-            <div>null</div>
-          )}
-        </>
       ),
     },
     {

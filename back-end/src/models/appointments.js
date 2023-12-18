@@ -77,12 +77,21 @@ export default class Appointments {
     pethouse_id,
     start_time,
     end_time,
-    total
+    total,
+    paymentMethods_id 
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment) VALUES (?,?,?,?,?,?,1,1)",
-        [day, user_id, pethouse_id, start_time, end_time, total],
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment, paymentMethods_id) VALUES (?,?,?,?,?,?,1,1,?)",
+        [
+          day,
+          user_id,
+          pethouse_id,
+          start_time,
+          end_time,
+          total,
+          paymentMethods_id,
+        ],
         (err, results) => {
           if (err) reject(err);
           resolve(results.insertId);

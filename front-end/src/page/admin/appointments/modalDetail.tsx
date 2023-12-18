@@ -82,7 +82,7 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                 />
                 <h2>Shop thú cưng - PetCare</h2>
                 <p>
-                  Email:{" "}
+                  Email:
                   {inforPetCare &&
                     inforPetCare.length > 0 &&
                     inforPetCare[0].email}
@@ -160,7 +160,12 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                 </tr>
                 <tr className="table_vertical">
                   <td className="text-left">Tổng số tiền</td>
-                  <td className="text-left">{dataDetail?.total}</td>
+                  <td className="text-left">
+                    {new Intl.NumberFormat("vi-VN").format(
+                      dataDetail?.total || 0
+                    )}{" "}
+                    VNĐ
+                  </td>
                 </tr>
                 <tr className="table_vertical">
                   <td className="text-left">Thanh toán</td>

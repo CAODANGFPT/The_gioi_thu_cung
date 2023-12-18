@@ -1,4 +1,13 @@
-import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
+import {
+  Avatar,
+  Button,
+  DatePicker,
+  Form,
+  Radio,
+  Select,
+  Space,
+  message,
+} from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -24,6 +33,7 @@ import { useServicesClientQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "./modalAddPet";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
 
 type TFinish = {
   petHouse_id: number;
@@ -54,12 +64,14 @@ const Appointment: React.FC = () => {
   const [valueId, setValueId] = useState<number | undefined>();
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
+  const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
   const { data: user } = useGetUserQuery();
   const { data: pethouse } = useGetAllpetHouseClientQuery();
   const { data: services } = useServicesClientQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
   const { data: breed } = useBreedQuery(idSpecies);
+  const { data: paymentMethods } = useGetAllPaymentMethodsQuery();
   const [createAppointment, { isLoading: loadingCreate }] =
     useAddAppointmentMutation();
   const [updateAppointment, { isLoading: loadingUpdate }] =
@@ -139,6 +151,7 @@ const Appointment: React.FC = () => {
       end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
       total: total,
       status_id: 1,
+      paymentMethods_id: paymentMethods_id,
     };
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
@@ -509,6 +522,11 @@ const Appointment: React.FC = () => {
       setTotalServices(totalServices);
     }
   };
+
+  const onChange = (e: any) => {
+    setPaymentMethods_id(e.target.value);
+  };
+
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20, color: "#00575c" }}>
@@ -559,7 +577,7 @@ const Appointment: React.FC = () => {
               <Select onChange={onChangePetHouse} options={optionsPetHouse} />
             </Form.Item>
             <Form.Item
-              label="Thời gian"
+              label={<div className="time">Thời gian</div>}
               style={{
                 gap: 20,
               }}
@@ -595,6 +613,58 @@ const Appointment: React.FC = () => {
                   disabled
                 />
               </Form.Item>
+            </Form.Item>
+            <Form.Item label="Phương thức thanh toán">
+              <Radio.Group
+                onChange={onChange}
+                value={paymentMethods_id}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  columnGap: 10,
+                }}
+              >
+                {paymentMethods &&
+                  paymentMethods.map((item) => (
+                    <Radio
+                      value={item.id}
+                      style={{
+                        width: 252,
+                        height: 172,
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "relative",
+                        border: "1px solid #00575c",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: 250,
+                          height: 170,
+                          overflow: "hidden",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
+                        src={item.image}
+                        alt="ảnh"
+                      />
+                      <p
+                        style={{
+                          zIndex: 10,
+                          position: "absolute",
+                          top: 7,
+                          left: 40,
+                          color: "#00575c",
+                          textShadow:
+                            "0 0 0.2em white, 0 0 0.2em white, 0 0 0.2em white",
+                        }}
+                      >
+                        {item.name}
+                      </p>
+                    </Radio>
+                  ))}
+              </Radio.Group>
             </Form.Item>
             <Form.Item label="Tổng số tiền">
               <div>
