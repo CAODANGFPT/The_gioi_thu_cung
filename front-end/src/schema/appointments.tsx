@@ -147,6 +147,7 @@ export const createAppointmentSchema = yup.object().shape({
   end_time: yup.string().required(),
   total: yup.number(),
   status_id: yup.number().required(),
+  paymentMethods_id: yup.number().required(),
 });
 
 export const createAppointmentAdminSchema = yup.object().shape({

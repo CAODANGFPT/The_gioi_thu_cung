@@ -121,6 +121,7 @@ export const create = async (req, res) => {
       start_time,
       end_time,
       total,
+      paymentMethods_id,
     } = req.body;
     const check = [];
 
@@ -151,7 +152,8 @@ export const create = async (req, res) => {
         pethouse_id,
         start_time,
         end_time,
-        total
+        total,
+        paymentMethods_id
       );
       for (const item of services) {
         await AppointmentsDetail.createAppointmentsServices(

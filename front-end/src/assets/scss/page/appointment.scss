@@ -23,6 +23,17 @@
     margin: 0 auto;
     @include Flex(flex, space-between, flex-start);
     @include Gap(90px, 0);
+    .time{
+      &::before{
+        display: inline-block;
+        margin-inline-end: 4px;
+        color: #ff4d4f;
+        font-size: 14px;
+        font-family: SimSun,sans-serif;
+        line-height: 1;
+        content: "*";
+      }
+    }
   }
   .label {
     &::before {
@@ -43,8 +54,8 @@
     background-color: $EagleGreen;
     border: 1px solid $EagleGreen;
     color: white;
-    &:hover{
-      color: white !important;  
+    &:hover {
+      color: white !important;
     }
   }
 
@@ -76,6 +87,22 @@
   .icon-close {
     &:hover {
       color: $SilverSand;
+    }
+  }
+  .ant-radio {
+    z-index: 100;
+    left: -40%;
+    top: 10px;
+  }
+
+  :where(.css-dev-only-do-not-override-2q8sxy).ant-radio-wrapper
+    .ant-radio-checked
+    .ant-radio-inner {
+    background-color: $EagleGreen;
+    border-color: $EagleGreen;
+
+    &:hover {
+      background-color: red;
     }
   }
 }
