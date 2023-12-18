@@ -64,6 +64,7 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+
       showStatusPayment: builder.query<TGetStatusPaymentSchema, number>({
         query: (id) => {
           return {
@@ -161,6 +162,15 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+      ListPaymentAppointment: builder.query<TAppointment[], number>({
+        query: (id) => {
+          return {
+            url: `/appointmentPrintData/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
     };
   },
 });
@@ -179,6 +189,7 @@ export const {
   useCancelHistoryAppointmentMutation,
   useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
+  useListPaymentAppointmentQuery,
 } = appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;

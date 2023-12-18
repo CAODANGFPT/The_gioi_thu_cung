@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import { Button, Tag } from "antd";
+import { Button, Tag, message } from "antd";
 
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
@@ -14,6 +14,13 @@ const ConfirmedAppointment: FC = () => {
       navigate(`/payment/${id}/${total}`);
     } else {
       console.error("Không có thông tin thanh toán");
+    }
+  };
+  const handlePrint = (id: number | undefined) => {
+    if (id !== undefined) {
+      navigate(`/print-invoices/${id}`);
+    } else {
+      message.warning("Không có thông tin hóa đơn");
     }
   };
   return (
@@ -105,6 +112,12 @@ const ConfirmedAppointment: FC = () => {
                               Thanh toán
                             </Button>
                           )}
+                          <Button
+                            onClick={() => handlePrint(item.id)}
+                            className="btn-done"
+                          >
+                            xem hóa đơn
+                          </Button>
                         </td>
                       </tr>
                     );

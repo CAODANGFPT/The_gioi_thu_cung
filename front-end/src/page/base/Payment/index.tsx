@@ -91,8 +91,8 @@ const PaymentPage = () => {
         });
 
       if (existingInvoice) {
-        console.log("Invoice đã tồn tại và method là cash.");
-        navigate(`/pay-cash`);
+        message.warning("hóa đơn đã tồn tại ");
+        navigate(`/account/confirmed-appointment`);
       } else {
         const response = await addInvoice({
           user_id: user?.id,
