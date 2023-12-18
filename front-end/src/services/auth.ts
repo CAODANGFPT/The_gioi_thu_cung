@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TRegisterAccount } from "../schema/registerAccount";
+import {
+  TRegisterAccount,
+  TRegisterAccountRequest,
+} from "../schema/registerAccount";
 import { SignInResponse, TSignIn } from "../schema/signIn";
 import { TResetPass } from "../schema/resetPassword";
 
@@ -11,7 +14,10 @@ const authApi = createApi({
   }),
   endpoints(builder) {
     return {
-      registerUser: builder.mutation<TRegisterAccount, Partial<TRegisterAccount>>({
+      registerUser: builder.mutation<
+        TRegisterAccountRequest,
+        Partial<TRegisterAccount>
+      >({
         query: (user) => {
           return {
             url: "/register",
@@ -45,7 +51,7 @@ const authApi = createApi({
 export const {
   useRegisterUserMutation,
   useLoginUserMutation,
-  useEmailPasswordUserMutation
+  useEmailPasswordUserMutation,
 } = authApi;
 export const authReducer = authApi.reducer;
 export default authApi;
