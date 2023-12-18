@@ -1,22 +1,16 @@
 @import "../utils/functions.scss";
 @import "../utils/variables.scss";
 @media print {
-  body {
-    visibility: hidden;
+  .btn-print {
+    display: none;
   }
 
-  .detailAppointment,
-  .detailAppointment * {
-    visibility: visible;
+  .detailAppointment_modal_close {
+    display: none;
   }
 
-  .detailAppointment_modal {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+  .infor-desc {
+    display: block !important;
   }
 }
 
@@ -403,11 +397,12 @@
     margin-top: 0.5rem;
   }
 
-  h3 {
-    float: left;
-    margin: 1rem 0;
-    text-transform: uppercase;
-  }
+}
+
+h3 {
+  float: left;
+  margin: 1rem 0;
+  text-transform: uppercase;
 }
 
 .btn-print {

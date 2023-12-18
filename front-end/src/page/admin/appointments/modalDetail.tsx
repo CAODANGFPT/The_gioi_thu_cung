@@ -1,5 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import "../../../assets/scss/page/orderPay.scss";
 import { TAppointment } from "../../../schema/appointments";
 import dayjs from "dayjs";
@@ -19,11 +19,13 @@ const DetailAppointment: FC<TDetailAppointment> = ({
   dataDetail,
 }) => {
   const componentRef = useRef<HTMLDivElement | null>(null);
+  const [printButtonVisible, setPrintButtonVisible] = useState(true);
 
   const handlePrint = useReactToPrint({
     content: () => {
       try {
         if (componentRef.current) {
+          setPrintButtonVisible(false);
           return componentRef.current;
         }
         return null;
@@ -32,10 +34,13 @@ const DetailAppointment: FC<TDetailAppointment> = ({
         return null;
       }
     },
+
+    onAfterPrint: () => {
+      setPrintButtonVisible(true);
+    },
   });
 
   const { data: inforPetCare } = useGetAllWebsiteInformationQuery();
-
   return (
     <>
       <div ref={componentRef}>
@@ -59,7 +64,12 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                   <CloseOutlined />
                 </div>
               </div>
-              <div className="infor-desc">
+              <div
+                className="infor-desc"
+                style={{
+                  display: "none",
+                }}
+              >
                 <img
                   src={
                     inforPetCare &&
@@ -83,10 +93,14 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                     inforPetCare.length > 0 &&
                     inforPetCare[0].phone}
                 </p>
-                <p>Sửa thêm trường địa chỉ ở đây nhé!</p>
-
-                <h3>chi tiết đơn hàng</h3>
+                <p>
+                  Địa chỉ:{" "}
+                  {inforPetCare &&
+                    inforPetCare.length > 0 &&
+                    inforPetCare[0].address}
+                </p>
               </div>
+              <h3>chi tiết đơn hàng</h3>
 
               <table className="table">
                 <tr className="table_vertical">

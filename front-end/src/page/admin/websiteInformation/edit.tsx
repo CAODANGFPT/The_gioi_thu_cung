@@ -46,7 +46,7 @@ const EditWebsiteInformationAdmin = () => {
       logo: websiteInformationById.data?.logo,
       email: websiteInformationById.data?.email,
       phone: websiteInformationById.data?.phone,
-      logo_res: websiteInformationById.data?.logo_res,
+      address: websiteInformationById.data?.address,
       fb: websiteInformationById.data?.fb,
       zalo: websiteInformationById.data?.zalo,
     });
@@ -56,7 +56,7 @@ const EditWebsiteInformationAdmin = () => {
     websiteInformationById.data?.logo,
     websiteInformationById.data?.email,
     websiteInformationById.data?.phone,
-    websiteInformationById.data?.logo_res,
+    websiteInformationById.data?.address,
     websiteInformationById.data?.fb,
     websiteInformationById.data?.zalo,
   ]);
@@ -69,18 +69,19 @@ const EditWebsiteInformationAdmin = () => {
   };
 
   const onFinish = async (values: TWebsiteInformation) => {
-    const { id, email, phone, fb, zalo } = values;
+    const { id, email, phone, address, fb, zalo } = values;
     const websiteInformationData = {
       id,
       logo: logo,
       email,
       phone,
+      address,
       fb,
       zalo,
     };
     try {
       await updateWebsiteInformation(websiteInformationData).unwrap();
-      message.success(" Update successfully");
+      message.success("Cập nhật thông tin PetCare thành công!");
       reset();
       navigate("/admin/websiteinformation");
     } catch (error) {
@@ -149,6 +150,14 @@ const EditWebsiteInformationAdmin = () => {
           label={<span className="">Phone</span>}
           name="phone"
           rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label={<span className="">Địa chỉ</span>}
+          name="address"
+          rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
         >
           <Input />
         </Form.Item>
