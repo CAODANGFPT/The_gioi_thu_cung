@@ -79,9 +79,20 @@ const HeaderBase = () => {
       <div className="frame32">
         {filteredMenuDataTop &&
           filteredMenuDataTop?.map((item) => (
-            <p key={item.id} className="frame32-title">
-              {item.name}
-            </p>
+            <p key={item.id}>
+                {item.link ? (
+                  <Link className="frame32-title" to={item.link}>
+                    {item.name}
+                  </Link>
+                ) : (
+                  <button
+                    className="title-button"
+                    onClick={handleBookAppointmentClick}
+                  >
+                    <div>{item.name}</div>
+                  </button>
+                )}
+              </p>
           ))}
         {user ? (
           <p className="frame32-title">
