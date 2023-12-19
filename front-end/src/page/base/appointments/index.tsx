@@ -34,6 +34,7 @@ import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "./modalAddPet";
 import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import axios from "axios";
 
 type TFinish = {
   petHouse_id: number;
@@ -48,7 +49,7 @@ type TFinish = {
   name: string;
   species_id: number;
 };
-
+const API_URL = "http://localhost:8080/api";
 const Appointment: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -155,8 +156,30 @@ const Appointment: React.FC = () => {
     };
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
+      console.log(resAppointment);
+
+      const appoinmentId = resAppointment.data.id;
+      const amountAppointment = total;
+
       message.success(resAppointment.data.message);
-      navigate("/account/wait-for-confirmation-appointment");
+
+      if (paymentMethods_id === 1) {
+        axios
+          .post(`${API_URL}/create-payment`, {
+            appointmentID: appoinmentId,
+            amount: amountAppointment,
+          })
+          .then((response) => {
+            localStorage.setItem(
+              "paymentInfo",
+              JSON.stringify({ appoinmentId, amountAppointment })
+            );
+            window.location.href = response.data.paymentUrl;
+          });
+      }
+      if (paymentMethods_id === 2) {
+        navigate("/account/wait-for-confirmation-appointment");
+      }
     } else {
       if (
         resAppointment.error &&
