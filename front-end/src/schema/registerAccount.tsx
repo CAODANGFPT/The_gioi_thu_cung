@@ -1,5 +1,5 @@
 import * as yup from "yup";
-
+const phoneRegExp = /^0\d{9}$/;
 export const RegisterAccountSchema = yup.object().shape({
   email: yup.string().trim(),
   name: yup.string().trim().required("Vui lòng nhập tên"),
@@ -13,7 +13,10 @@ export const RegisterAccountSchema = yup.object().shape({
   phone: yup
     .string()
     .trim()
-    .matches(/^\d+$/, "Số điện thoại chỉ được kí tự số")
+    .matches(
+      phoneRegExp,
+      "Số điện thoại phải bắt đầu bằng số 0 và phải là số nguyên."
+    )
     .min(10, "số điện thoại tối thiểu phải 10 kí tự")
     .required("Vui lòng điền số điện thoại"),
   address: yup.string().trim(),
@@ -28,4 +31,6 @@ export const RegisterAccountRequest = yup.object().shape({
   id: yup.number().required(),
 });
 
-export type TRegisterAccountRequest = yup.InferType<typeof RegisterAccountRequest>;
+export type TRegisterAccountRequest = yup.InferType<
+  typeof RegisterAccountRequest
+>;
