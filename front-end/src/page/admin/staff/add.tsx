@@ -3,6 +3,7 @@ import type { FormInstance } from "antd";
 import { Button, Form, Input, Space, message } from "antd";
 import { useCreateStaffMutation, useStaffQuery } from "../../../services/staff";
 import { useNavigate } from "react-router-dom";
+import "../../../assets/scss/admin/appointments.scss";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
   const [submittable, setSubmittable] = React.useState(false);

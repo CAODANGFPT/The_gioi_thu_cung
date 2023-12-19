@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { TAbout } from "../../../schema/about";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import "../../../assets/scss/admin/appointments.scss";
 
 const AddAbout: React.FC = () => {
   const [image, setImage] = useState<any | null>(null);
@@ -56,17 +57,7 @@ const AddAbout: React.FC = () => {
   );
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm about
-      </h2>
+      <h2 className="title-appoiment">Thêm about</h2>
       <Form
         name="validateOnly"
         layout="vertical"

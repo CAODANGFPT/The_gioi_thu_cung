@@ -6,6 +6,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { TBanner } from "../../../schema/banner";
+import "../../../assets/scss/admin/appointments.scss";
+
 import {
   useGetBannerByIdQuery,
   useUpdateBannerMutation,
@@ -93,17 +95,7 @@ const EditBanner = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật banner
-      </h2>
+      <h2 className="title-appoiment">Cập nhật banner</h2>
       <Form
         form={form}
         name="basic"

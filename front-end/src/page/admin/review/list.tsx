@@ -10,6 +10,7 @@ import {
 import dayjs from "dayjs";
 import { TBlockReview, TReview } from "../../../schema/review";
 import Search from "antd/es/input/Search";
+import "../../../assets/scss/admin/appointments.scss";
 
 const ReviewAdmin: React.FC = () => {
   const { data } = useReviewQuery();
@@ -127,18 +128,8 @@ const ReviewAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý đánh giá
-      </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 className="title-appoiment">Quản lý đánh giá</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search

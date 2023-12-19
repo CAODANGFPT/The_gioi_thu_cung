@@ -10,6 +10,7 @@ import {
 } from "../../../services/category";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
+import "../../../assets/scss/admin/appointments.scss";
 
 const CategoryAdmin: React.FC = () => {
   const [removePetHouse] = useRemoveCategoryMutation();
@@ -106,19 +107,9 @@ const CategoryAdmin: React.FC = () => {
   }, [filter.name]);
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý danh mục
-      </h2>
+      <h2 className="title-appoiment">Quản lý danh mục</h2>
 
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -149,6 +140,8 @@ const CategoryAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
+            float: "right",
           }}
         >
           THÊM DANH MỤC

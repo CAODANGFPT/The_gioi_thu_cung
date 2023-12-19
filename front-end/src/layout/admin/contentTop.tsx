@@ -23,7 +23,6 @@ const ContentTop: React.FC = () => {
         >
           <MenuIcon />
         </button>
-        <h3 className="content-top-title">Home</h3>
       </div>
       <div className="content-top-btn">
         <button className="notification-btn content-top-btn">

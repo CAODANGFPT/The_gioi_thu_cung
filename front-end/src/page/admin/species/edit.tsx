@@ -4,6 +4,8 @@ import {
   useUpdateSpeciesMutation,
   useGetSpeciesByIdQuery,
 } from "../../../services/species";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { Tspecies } from "../../../schema/species";
 import { useEffect } from "react";
 
@@ -54,17 +56,7 @@ const EditSpecies = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhập loại thú cưng
-      </h2>
+      <h2 className="title-appoiment">Cập nhập loại thú cưng</h2>
       <Form
         form={form}
         name="updateUserRoleForm"

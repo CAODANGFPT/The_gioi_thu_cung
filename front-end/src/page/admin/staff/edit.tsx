@@ -7,7 +7,8 @@ import {
 } from "../../../services/user";
 import { useRoleQuery } from "../../../services/role";
 import { TRole } from "../../../schema/role";
-import { TRoleUser } from "../../../schema/user";
+import { TRoleUser } from "../../../schema/user";import "../../../assets/scss/admin/appointments.scss";
+
 
 const confirm = () => {
   message.success("Cập nhật thành công.");
@@ -50,13 +51,7 @@ const EditStaff = () => {
   return (
     <>
       <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
+        className="title-appoiment"
       >
         Cập nhật vai trò nhân viên
       </h2>

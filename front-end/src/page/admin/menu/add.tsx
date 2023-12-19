@@ -13,6 +13,7 @@ import { TMenuAdd } from "../../../schema/menu";
 import { TMenuType } from "../../../schema/menuType";
 import { useAddMenuMutation } from "../../../services/menu";
 import { useMenuTypeQuery } from "../../../services/menuType";
+import "../../../assets/scss/admin/appointments.scss";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
   const [submit, setSubmit] = React.useState(false);
@@ -75,17 +76,7 @@ const AddMenuAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm Menu
-      </h2>
+      <h2 className="title-appoiment">Thêm Menu</h2>
       <Form
         form={form}
         name="validateOnly"

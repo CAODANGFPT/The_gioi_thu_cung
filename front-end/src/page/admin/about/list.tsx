@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TAbout } from "../../../schema/about";
 import { useAboutQuery, useRemoveAboutMutation } from "../../../services/about";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";import "../../../assets/scss/admin/appointments.scss";
+
 
 const AboutAdmin: React.FC = () => {
   const { data } = useAboutQuery();
@@ -99,13 +100,7 @@ const AboutAdmin: React.FC = () => {
   return (
     <div>
       <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
+        className="title-appoiment"
       >
         Quản lý about
       </h2>
@@ -118,6 +113,8 @@ const AboutAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%", 
+            float: "right"
           }}
         >
           THÊM ABOUT
