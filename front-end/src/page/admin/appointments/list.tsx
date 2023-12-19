@@ -8,6 +8,7 @@ import {
   Tag,
   message,
 } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -381,7 +382,18 @@ const AppointmentsAdmin: React.FC = () => {
 
   return (
     <>
-      <h2>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý thông tin đặt lịch chăm sóc thú cưng
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
         <div>
           <p style={{ margin: "10px 0" }}>Tên người đặt</p>
@@ -445,14 +457,20 @@ const AppointmentsAdmin: React.FC = () => {
       </div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Button
-          style={{ marginTop: 20, marginBottom: 20 }}
-          className="btn"
+          type="text"
+          block
+          icon={<PlusOutlined />}
+          style={{
+            margin: "1rem 1rem 1rem 0",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
           onClick={() => navigate("/admin/appointment/add")}
         >
           Thêm lịch đặt
         </Button>
         <Button
-          style={{ marginTop: 20, marginBottom: 20 }}
+          style={{ margin: "1rem 0", color: "white", background: "#7a7a7a" }}
           className="btn"
           onClick={() => exportToExcel()}
         >

@@ -529,9 +529,17 @@ const AppointmentsAdd: React.FC = () => {
 
   return (
     <div className="appointment-edit">
-      <h4 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
         Thêm lịch đặt
-      </h4>
+      </h2>
       <Form
         form={form}
         name="validateOnly"
@@ -703,6 +711,7 @@ const AppointmentsAdd: React.FC = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
+                  marginBottom: "3rem",
                 }}
               >
                 <Avatar size={200} src={User} />

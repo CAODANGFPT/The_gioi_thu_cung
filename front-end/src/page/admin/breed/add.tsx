@@ -73,6 +73,17 @@ const AddBreed: React.FC = () => {
 
   return (
     <>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm giống thú cưng
+      </h2>
       <h2 style={{ marginBottom: 10 }}>Thêm giống</h2>
       <Form
         form={form}
@@ -81,7 +92,11 @@ const AddBreed: React.FC = () => {
         autoComplete="off"
         onFinish={handleFormSubmit}
       >
-        <Form.Item name="species_id" label="Species">
+        <Form.Item
+          name="species_id"
+          label="Species"
+          rules={[{ required: true, message: "Vui lòng chọn giống!" }]}
+        >
           <Select>
             {species.data?.map((item: Tspecies) => (
               <Select.Option key={item.id} value={item.id}>
@@ -98,7 +113,7 @@ const AddBreed: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Space>
+          <Space style={{ float: "right" }}>
             <SubmitButton form={form} />
             <Button htmlType="reset">Reset</Button>
           </Space>

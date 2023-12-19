@@ -187,7 +187,18 @@ const OrderAdmin: React.FC = () => {
   };
   return (
     <>
-      <h2>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý thông tin đơn hàng
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"

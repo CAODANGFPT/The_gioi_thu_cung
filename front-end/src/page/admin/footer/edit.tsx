@@ -63,7 +63,17 @@ const EditFooterAdmin = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Cập nhật Footer</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật footer
+      </h2>
       <Form
         form={form}
         name="updateMenuTypeForm"
@@ -108,7 +118,7 @@ const EditFooterAdmin = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{ float: "right" }}>
             Cập nhật
           </Button>
         </Form.Item>
