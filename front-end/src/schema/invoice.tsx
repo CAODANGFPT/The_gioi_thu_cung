@@ -7,6 +7,7 @@ export const InvoiceSchema = yup.object().shape({
   amount: yup.number(),
   paymentMethod: yup.string(),
   appointments_id: yup.number(),
+  nameInvoice: yup.string(),
 });
 
 export const InvoiceOrderSchema = yup.object().shape({

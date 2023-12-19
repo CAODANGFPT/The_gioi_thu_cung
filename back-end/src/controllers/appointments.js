@@ -671,6 +671,106 @@ export const getAppointmentUserStatus = async (req, res) => {
     });
   }
 };
+export const getPrintData = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      try {
+        const appointment = await Appointments.getPrintDataById(req.params.id);
+
+        if (!appointment) {
+          return res.status(404).json({ error: "Không tìm thấy Data print" });
+        }
+
+        const printData = appointment.reduce((result, record) => {
+          if (record && record.id !== undefined) {
+            if (Array.isArray(result) && result.length > 0) {
+              const existingRecordIndex = result.findIndex(
+                (r) => r.id === record.id
+              );
+              if (existingRecordIndex === -1) {
+                result.push({
+                  id: record.id,
+                  day: record.day,
+                  services: [
+                    { id: record.serviceId, name: record.serviceName },
+                  ],
+                  pets: [{ id: record.petId, name: record.petName }],
+                  total: record.total,
+                  start_time: record.start_time,
+                  end_time: record.end_time,
+                  user_email: record.user_email,
+                  user_name: record.user_name,
+                  pethouse_name: record.pethouse_name,
+                  pethouse_id: record.pethouse_id,
+                  status_name: record.status_name,
+                  status_id: record.status_id,
+                  statusPaymentId: record.statusPaymentId,
+                  statusPaymentName: record.statusPaymentName,
+                });
+              } else {
+                const existingPetIndex = result[
+                  existingRecordIndex
+                ].pets.findIndex((pet) => pet.id === record.petId);
+                if (existingPetIndex === -1) {
+                  result[existingRecordIndex].pets.push({
+                    id: record.petId,
+                    name: record.petName,
+                  });
+                }
+                const existingServicesIndex = result[
+                  existingRecordIndex
+                ].services.findIndex(
+                  (services) => services.id === record.serviceId
+                );
+                if (existingServicesIndex === -1) {
+                  result[existingRecordIndex].services.push({
+                    id: record.serviceId,
+                    name: record.serviceName,
+                  });
+                }
+              }
+            } else {
+              result.push({
+                id: record.id,
+                day: record.day,
+                services: [{ id: record.serviceId, name: record.serviceName }],
+                pets: [{ id: record.petId, name: record.petName }],
+                total: record.total,
+                start_time: record.start_time,
+                end_time: record.end_time,
+                user_email: record.user_email,
+                user_name: record.user_name,
+                pethouse_name: record.pethouse_name,
+                pethouse_id: record.pethouse_id,
+                status_name: record.status_name,
+                status_id: record.status_id,
+                statusPaymentId: record.statusPaymentId,
+                statusPaymentName: record.statusPaymentName,
+              });
+            }
+          }
+          return result;
+        }, []);
+
+        res.json(printData);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
+  }
+};
 export const cancelHistoryAppointment = async (req, res) => {
   try {
     const { id } = req.body;
