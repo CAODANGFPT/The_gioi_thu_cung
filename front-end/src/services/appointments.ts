@@ -87,6 +87,16 @@ const appointmentApi = createApi({
         },
         invalidatesTags: ["Appointment"],
       }),
+      checkPetHouseAppointment: builder.mutation<any, any>({
+        query: (appointments) => {
+          return {
+            url: "/checkPetHouseAppointments",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
       addAppointmentAdmin: builder.mutation<
         AppointmentResponse,
         Partial<TCreateAppointmentAdmin>
@@ -187,6 +197,7 @@ export const {
   useUpdateAppointmentAdminMutation,
   useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
+  useCheckPetHouseAppointmentMutation,
   useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
   useListPaymentAppointmentQuery,

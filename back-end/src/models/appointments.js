@@ -21,6 +21,38 @@ export default class Appointments {
       );
     });
   }
+  static checkPetHouse(start_time, end_time) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT ph.id, ph.name
+        FROM pethouse ph
+        WHERE ph.id NOT IN (
+          SELECT DISTINCT a.pethouse_id
+          FROM appointments a
+          WHERE (
+            (? >= a.start_time AND ? < a.end_time)
+            OR (? > a.start_time AND ? <= a.end_time)
+            OR (a.start_time >= ? AND a.start_time < ?)
+            OR (a.end_time > ? AND a.end_time <= ?)
+          )
+        ) AND ph.is_delete = 0;`,
+        [
+          start_time,
+          start_time,
+          end_time,
+          end_time,
+          start_time,
+          end_time,
+          start_time,
+          end_time,
+        ],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
 
   static getStatusPaymentById(id) {
     return new Promise((resolve, reject) => {

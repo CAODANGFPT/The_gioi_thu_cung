@@ -19,6 +19,7 @@ import {
   updateStatusCancelAppointment,
   listPaymentAppointment,
   getPrintData,
+  checkPetHouse,
 } from "../controllers/appointments";
 import { checkPermission } from "../middlewares/checkPermission";
 
@@ -31,6 +32,7 @@ router.get("/getAllAppointmentData", listAppointmentData);
 router.get("/getAppointmentUser", getAppointmentUser);
 router.get("/getAppointmentUserStatus/:status_id", getAppointmentUserStatus);
 router.post("/searchAppointmentsAdmin", searchAppointmentsAdmin);
+router.post("/checkPetHouseAppointments", checkPetHouse);
 
 router.patch("/updateAdmin/:id", checkPermission, updateAdmin);
 router.post("/appointment", create);

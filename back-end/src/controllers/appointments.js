@@ -959,6 +959,23 @@ export const status_payment = async (req, res) => {
   }
 };
 
+
+export const checkPetHouse = async (req, res) => {
+  try {
+    const { start_time, end_time} = req.body;
+    const petHouse = await Appointments.checkPetHouse(
+      start_time, end_time
+    );
+
+    if (!petHouse) {
+      res.status(404).json({ error: "Không có phòng nào trống" });
+    } else {
+      res.json({petHouse });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const listPaymentAppointment = async (req, res) => {
   try {
     const listPaymentAppointment = await Appointments.getAppointmentDetails(
