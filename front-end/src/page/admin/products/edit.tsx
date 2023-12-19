@@ -19,6 +19,8 @@ import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "../../../services/products";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { useGetAllcategoryQuery } from "../../../services/category";
 import { Tcategory } from "../../../schema/category";
 const EditProduct = () => {
@@ -112,17 +114,7 @@ const EditProduct = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật sản phẩm
-      </h2>
+      <h2 className="title-appoiment">Cập nhật sản phẩm</h2>
       <Form
         form={form}
         name="basic"

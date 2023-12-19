@@ -11,6 +11,7 @@ import {
 import dayjs from "dayjs";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useGetUserQuery } from "../../../services/user";
+import "../../../assets/scss/admin/appointments.scss";
 
 const confirm = () => {
   message.success("Cập nhật tin tức thành công.");
@@ -100,13 +101,7 @@ const EditNews = () => {
   return (
     <>
       <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
+        className="title-appoiment"
       >
         Cập nhật tin tức
       </h2>

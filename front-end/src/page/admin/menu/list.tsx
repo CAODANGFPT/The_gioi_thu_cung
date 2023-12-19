@@ -4,6 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { useMenuQuery, useRemoveMenuMutation } from "../../../services/menu";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { TMenu } from "../../../schema/menu";
 import { PlusOutlined } from "@ant-design/icons";
 const MenuAdmin: React.FC = () => {
@@ -86,17 +88,7 @@ const MenuAdmin: React.FC = () => {
 
   return (
     <div>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý menu
-      </h2>
+      <h2 className="title-appoiment">Quản lý menu</h2>
 
       <Link to="/admin/menu/add">
         <Button
@@ -107,6 +99,8 @@ const MenuAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
+            float: "right",
           }}
         >
           THÊM MENU

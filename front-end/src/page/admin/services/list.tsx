@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { TServices } from "../../../schema/services";
+import "../../../assets/scss/admin/appointments.scss";
+
 import {
   useServicesQuery,
   useUpdateBlockServicesMutation,
@@ -141,18 +143,8 @@ const ServicesAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý dịch vụ
-      </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 className="title-appoiment">Quản lý dịch vụ</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -188,6 +180,8 @@ const ServicesAdmin: React.FC = () => {
           marginBottom: "1rem",
           fontWeight: "500",
           border: "1px solid #c3c3c3",
+          width: "13%",
+          float: "right",
         }}
       >
         THÊM DỊCH VỤ

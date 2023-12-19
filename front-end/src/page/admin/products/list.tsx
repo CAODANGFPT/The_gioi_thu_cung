@@ -10,6 +10,8 @@ import {
   useRemoveProductMutation,
   useSearchAddProductMutation,
 } from "../../../services/products";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { useGetAllcategoryQuery } from "../../../services/category";
 import Search from "antd/es/input/Search";
 import { Tcategory } from "../../../schema/category";
@@ -181,18 +183,8 @@ const ProductsAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý sản phẩm
-      </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 className="title-appoiment">Quản lý sản phẩm</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <Form
         name="validateOnly"
         className="search-appointments"
@@ -247,6 +239,8 @@ const ProductsAdmin: React.FC = () => {
           marginBottom: "1rem",
           fontWeight: "500",
           border: "1px solid #c3c3c3",
+          width: "15%",
+          float: "right",
         }}
       >
         THÊM SẢN PHẨM
