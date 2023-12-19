@@ -21,8 +21,6 @@ import { useCreatePetsMutation } from "../../../services/pets";
 import { useGetUserQuery } from "../../../services/user";
 import { useNavigate } from "react-router-dom";
 
-
-
 type TModalAddPet = {
   setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
   userId?: number;
@@ -42,7 +40,6 @@ type TModalAddPet = {
   setNamePet: React.Dispatch<React.SetStateAction<number | undefined>>;
   setValueId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
-
 
 const ModalAddPet: FC<TModalAddPet> = ({
   setIdSpecies,
@@ -67,7 +64,7 @@ const ModalAddPet: FC<TModalAddPet> = ({
     if (!isUserLoggedIn) {
       message.error("Vui lòng đăng nhập trước khi thêm thú cưng !");
       setTimeout(() => {
-        navigate('/SignIn');
+        navigate("/SignIn");
       }, 3000);
       return;
     }
@@ -140,14 +137,13 @@ const ModalAddPet: FC<TModalAddPet> = ({
     <>
       {openAddPest && (
         <>
-        
           <div
             className="modal-1"
             style={{
               position: "fixed",
               top: 60,
               left: "15%",
-              zIndex: 20,
+              zIndex: 100,
               width: "70%",
               background: "white",
             }}
@@ -264,7 +260,12 @@ const ModalAddPet: FC<TModalAddPet> = ({
               <Form.Item name="health_condition" label="Tình trạng sức khỏe">
                 <TextArea rows={4} />
               </Form.Item>
-              <Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
+              <Button
+                disabled={isLoading}
+                loading={isLoading}
+                type="primary"
+                htmlType="submit"
+              >
                 Submit
               </Button>
             </Form>
