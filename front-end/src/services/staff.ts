@@ -62,7 +62,19 @@ const staffApi = createApi({
         },
         invalidatesTags: ["Staff"],
       }),
+      updateRoleStaff: builder.mutation<TStaff, Partial<TStaff>>({
+        query: (user) => {
+          return {
+            url: `/updateRole`,
+            method: "PUT",
+            body: user,
+          };
+        },
+        invalidatesTags: ["Staff"],
+      }),
     };
+
+    
   },
 });
 

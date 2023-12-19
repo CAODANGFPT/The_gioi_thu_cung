@@ -47,7 +47,6 @@ import ServicesAdmin from "./page/admin/services/list";
 import AddSpecies from "./page/admin/species/add";
 import EditSpecies from "./page/admin/species/edit";
 import SpeciesAdmin from "./page/admin/species/list";
-import Add from "./page/admin/staff/add";
 import EditStaff from "./page/admin/staff/edit";
 import StaffAdmin from "./page/admin/staff/list";
 import AddStatusAdmin from "./page/admin/status_appointment/add";
@@ -259,7 +258,6 @@ function App() {
 
           <Route path="staff">
             <Route index element={<StaffAdmin />} />
-            <Route path="add" element={<Add />} />
             <Route path="edit/:id" element={<EditStaff />} />
           </Route>
 

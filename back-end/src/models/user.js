@@ -87,6 +87,18 @@ export default class User {
     });
   }
 
+  static getAllRoleStaff() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT users.id, users.email,users.phone,users.gender,users.name,users.img, users.role_id, users.is_delete, role.name as nameRole FROM users JOIN role on users.role_id = role.id WHERE role_id = 10",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+
   static resetPassword(email, password) {
     return new Promise((resolve, reject) => {
       connection.query(
