@@ -10,6 +10,7 @@ import {
   useStatusQuery,
 } from "../../../services/status_appointment";
 import Search from "antd/es/input/Search";
+import "../../../assets/scss/admin/appointments.scss";
 
 const StatusAdmin: React.FC = () => {
   const navigator = useNavigate();
@@ -104,18 +105,8 @@ const StatusAdmin: React.FC = () => {
 
   return (
     <div>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý trạng thái xác nhận đặt lịch
-      </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 className="title-appoiment">Quản lý trạng thái xác nhận đặt lịch</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
@@ -142,6 +133,8 @@ const StatusAdmin: React.FC = () => {
           marginBottom: "1rem",
           fontWeight: "500",
           border: "1px solid #c3c3c3",
+          width: "15%",
+          float: "right",
         }}
       >
         THÊM TRẠNG THÁI

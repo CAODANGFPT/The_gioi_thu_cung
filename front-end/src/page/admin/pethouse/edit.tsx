@@ -6,6 +6,7 @@ import {
 } from "../../../services/pethouse";
 import { TpetHouse } from "../../../schema/pethouse";
 import { useEffect } from "react";
+import "../../../assets/scss/admin/appointments.scss";
 
 const confirm = () => {
   message.success("Cập nhật trạng thái thành công.");
@@ -27,15 +28,12 @@ const EditPetHouse = () => {
     if (pethouse.data) {
       form.setFieldsValue({
         id: pethouse.data.id,
-        name: pethouse.data.name
+        name: pethouse.data.name,
       });
     }
   }, [pethouse.data, form]);
 
-  const onFinish = async (values: {
-    id: number;
-    name: string;
-  }) => {
+  const onFinish = async (values: { id: number; name: string }) => {
     try {
       const updatedPetHouse: TpetHouse = {
         id: Number(id),
@@ -61,36 +59,28 @@ const EditPetHouse = () => {
 
   return (
     <>
-      <h2 style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}>
-        Cập nhật phòng
-      </h2>
-        <Form
-        style={{marginTop : 20}}
-          form={form}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
+      <h2 className="title-appoiment">Cập nhật phòng</h2>
+      <Form
+        style={{ marginTop: 20 }}
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        layout="vertical"
+      >
+        <Form.Item
+          label="Trạng thái"
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập phòng" }]}
+          initialValue={pethouse.data ? pethouse.data.name : ""}
         >
-          <Form.Item
-            label="Trạng thái"
-            name="name"
-            rules={[{ required: true, message: "Vui lòng nhập phòng" }]}
-            initialValue={pethouse.data ? pethouse.data.name : ""}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ float: "right" }}>
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ float: "right" }}>
+            Cập nhật
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

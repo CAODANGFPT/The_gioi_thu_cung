@@ -529,17 +529,7 @@ const AppointmentsAdd: React.FC = () => {
 
   return (
     <div className="appointment-edit">
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm lịch đặt
-      </h2>
+      <h2 className="title-appoiment">Thêm lịch đặt</h2>
       <Form
         form={form}
         name="validateOnly"
@@ -663,7 +653,7 @@ const AppointmentsAdd: React.FC = () => {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Thêm
+                  Đặt lịch
                 </Button>
               </Space>
             </Form.Item>

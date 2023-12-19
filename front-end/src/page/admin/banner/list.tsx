@@ -7,7 +7,8 @@ import { TBanner } from "../../../schema/banner";
 import {
   useGetAllBannerQuery,
   useRemoveBannerMutation,
-} from "../../../services/banner";
+} from "../../../services/banner";import "../../../assets/scss/admin/appointments.scss";
+
 // import { PlusOutlined } from "@ant-design/icons";
 
 const BannerAdmin: React.FC = () => {
@@ -108,17 +109,11 @@ const BannerAdmin: React.FC = () => {
       </Button> */}
 
       <div>
-        <h1
-          style={{
-            marginBottom: "1rem",
-            fontSize: "25px",
-            padding: "0.8rem",
-            borderRadius: "3px",
-            boxShadow: "0px 0px 5px #c3c3c3",
-          }}
+        <h2
+          className="title-appoiment"
         >
           Quản lý banner
-        </h1>
+        </h2>
       </div>
       <TableAdmin columns={columns} data={data} />
       <div>

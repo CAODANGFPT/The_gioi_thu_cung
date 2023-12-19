@@ -6,6 +6,7 @@ import {
 } from "../../../services/status_contact";
 import { TStatusContact } from "../../../schema/status_contact";
 import { useEffect } from "react";
+import "../../../assets/scss/admin/appointments.scss";
 
 const confirm = () => {
   message.success("Cập nhật trạng thái thành công.");
@@ -56,17 +57,7 @@ const EditStatusContact = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật trạng thái liên hệ
-      </h2>
+      <h2 className="title-appoiment">Cập nhật trạng thái liên hệ</h2>
       <Form
         form={form}
         onFinish={onFinish}

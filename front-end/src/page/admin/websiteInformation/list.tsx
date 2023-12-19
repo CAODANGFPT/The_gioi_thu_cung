@@ -8,6 +8,7 @@ import {
   useGetAllWebsiteInformationQuery,
   useRemoveWebsiteInformationMutation,
 } from "../../../services/websiteInformation";
+import "../../../assets/scss/admin/appointments.scss";
 
 const WebsiteInformationAdmin: React.FC = () => {
   const { data } = useGetAllWebsiteInformationQuery();
@@ -111,17 +112,7 @@ const WebsiteInformationAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý thông tin website
-      </h2>
+      <h2 className="title-appoiment">Quản lý thông tin website</h2>
       <TableAdmin columns={columns} data={data} />
 
       <div>

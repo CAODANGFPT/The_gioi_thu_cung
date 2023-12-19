@@ -11,6 +11,7 @@ import {
 } from "../../../services/pethouse";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
+import "../../../assets/scss/admin/appointments.scss";
 
 const PetHouseAdmin: React.FC = () => {
   const [removePetHouse] = useRemovePetHouseMutation();
@@ -148,18 +149,8 @@ const PetHouseAdmin: React.FC = () => {
   }, [filter.name, filter.price]);
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý phòng
-      </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 className="title-appoiment">Quản lý phòng</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -189,6 +180,8 @@ const PetHouseAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
+            float: "right",
           }}
         >
           THÊM PHÒNG

@@ -382,18 +382,10 @@ const AppointmentsAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
+      <h2 className="title-appoiment">
         Quản lý thông tin đặt lịch chăm sóc thú cưng
       </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
         <div>
           <Input
@@ -454,7 +446,7 @@ const AppointmentsAdmin: React.FC = () => {
           Cài lại
         </Button>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="btn-option">
         <Button
           type="text"
           block
@@ -463,6 +455,7 @@ const AppointmentsAdmin: React.FC = () => {
             margin: "1rem 1rem 1rem 0",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
           }}
           onClick={() => navigate("/admin/appointment/add")}
         >

@@ -7,6 +7,7 @@ import TableAdmin from "../../../components/table";
 import { TRole } from "../../../schema/role";
 import { useRemoveRoleMutation, useRoleQuery } from "../../../services/role";
 import Search from "antd/es/input/Search";
+import "../../../assets/scss/admin/appointments.scss";
 
 const RoleAdmin: React.FC = () => {
   const { data } = useRoleQuery();
@@ -87,19 +88,9 @@ const RoleAdmin: React.FC = () => {
   }, [filter.name]);
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý vai trò
-      </h2>
+      <h2 className="title-appoiment">Quản lý vai trò</h2>
       <div className="btn-table">
-        <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+        <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
             placeholder="Tìm kiếm vai trò "
@@ -125,6 +116,8 @@ const RoleAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
+            float: "right",
           }}
         >
           THÊM VAI TRÒ

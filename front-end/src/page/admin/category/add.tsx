@@ -6,6 +6,7 @@ import {
   useGetAllcategoryQuery,
 } from "../../../services/category";
 import { useNavigate } from "react-router-dom";
+import "../../../assets/scss/admin/appointments.scss";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
   const [submittable, setSubmittable] = React.useState(false);
@@ -54,17 +55,7 @@ const AddCategory: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm danh mục
-      </h2>
+      <h2 className="title-appoiment">Thêm danh mục</h2>
       <Form
         form={form}
         name="validateOnly"
