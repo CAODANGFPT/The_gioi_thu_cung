@@ -21,7 +21,7 @@ import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentMutation,
   useCheckPetHouseAppointmentMutation,
-  useUpdateAppointmentMutation
+  useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import {
@@ -319,7 +319,7 @@ const Appointment: React.FC = () => {
             start_time: dayjs(value).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
             end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           });
-        
+
           console.log(petHouse);
           if ("data" in petHouse) {
             setPethouse(petHouse.data.petHouse);
@@ -351,6 +351,7 @@ const Appointment: React.FC = () => {
       setPet([]);
     }
   };
+
   const handleChangePets = (petValue: number[]) => {
     listPets(petValue);
     setDefaultValue(petValue);
@@ -435,10 +436,12 @@ const Appointment: React.FC = () => {
           newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
         }
         const petHouse = await checkPetHouse({
-          start_time: dayjs(form.getFieldValue("start_time")).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+          start_time: dayjs(form.getFieldValue("start_time")).format(
+            "YYYY-MM-DDTHH:mm:ssZ[Z]"
+          ),
           end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         });
-      
+
         console.log(petHouse);
         if ("data" in petHouse) {
           setPethouse(petHouse.data.petHouse);
@@ -453,6 +456,7 @@ const Appointment: React.FC = () => {
       setEndTime(null);
     }
   };
+
   const totalService = (value: number[]) => {
     if (services) {
       const servicesId =
@@ -521,6 +525,7 @@ const Appointment: React.FC = () => {
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
+                  placeholder=""
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
@@ -536,6 +541,7 @@ const Appointment: React.FC = () => {
                 rules={[{ required: true, message: "Không được để trống" }]}
               >
                 <DatePicker
+                  placeholder=""
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
                   value={endTime}

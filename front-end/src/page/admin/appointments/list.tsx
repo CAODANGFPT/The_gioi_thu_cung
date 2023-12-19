@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   DatePicker,
@@ -8,7 +9,6 @@ import {
   Tag,
   message,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -21,21 +21,22 @@ import {
   TAppointmentSchemaRes,
 } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
+import { TStatusPet } from "../../../schema/pets";
 import {
   useGetAllappointmentDataQuery,
   useSearchAddAppointmentMutation,
+  useUpdatePaymentAppointmentMutation,
   useUpdateStatusAppointmentMutation,
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
 import { useStatusQuery } from "../../../services/status_appointment";
 import DetailAppointment from "./modalDetail";
-import { useGetUserQuery } from "../../../services/user";
-import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
-import { TStatusPet } from "../../../schema/pets";
 
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
   const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  const [updatePaymentAppointment] = useUpdatePaymentAppointmentMutation();
   const [filter, setFilter] = useState({
     name: "",
     house: "",
@@ -96,6 +97,18 @@ const AppointmentsAdmin: React.FC = () => {
         setLoading(false);
       } else {
         message.error("Sửa trạng thái không thành công");
+        setLoading(false);
+      }
+    } else if (status_id === 4) {
+      const res = await updatePaymentAppointment({
+        id: id,
+        status_payment: 2,
+      });
+      if ("data" in res) {
+        message.success("Sửa trạng thái thanh toán thành công");
+        setLoading(false);
+      } else {
+        message.error("Sửa trạng thái thanh toán không thành công");
         setLoading(false);
       }
     }
@@ -255,7 +268,8 @@ const AppointmentsAdmin: React.FC = () => {
             </Button> */}
             {(data.status_id === 1 ||
               data.status_id === 2 ||
-              data.status_id === 3) && (
+              data.status_id === 3 ||
+              (data.status_id === 4 && data.statusPaymentId === 1)) && (
               <>
                 <Button
                   type="primary"
@@ -269,6 +283,8 @@ const AppointmentsAdmin: React.FC = () => {
                     ? "Thực hiện"
                     : data.status_id === 3
                     ? "Hoàn thành"
+                    : data.status_id === 4 && data.statusPaymentId === 1
+                    ? "Thanh toán"
                     : ""}
                 </Button>
 

@@ -909,6 +909,62 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
+export const updateAppointmentPayment = async (req, res) => {
+  try {
+    const { status_payment } = req.body;
+    const { error } = updateAppointmentStatusSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    await Appointments.updateAppointmentPayment(req.params.id, status_payment);
+    const appointment = await Appointments.getAppointmentsById(req.params.id);
+    console.log(appointment);
+    if (appointment.user_name && appointment.user_email) {
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: "hainv21123@gmail.com",
+          pass: "yfaqudeffxnjptla",
+        },
+      });
+
+      const mailOptions = {
+        from: "hainv21123@gmail.com",
+        to: appointment.user_email,
+        subject: "Xác nhận đặt lịch thành công",
+        html: `<div style="font-family: sans-serif; margin: 0 40px;">
+          <img
+            style="width: 200px"
+            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
+            alt=""
+          />
+          <p>Chào <span style="font-weight: 600">${appointment.user_name},</span></p>
+          <p>
+            Chúc mừng bạn đã đặt lịch thành công tại
+            <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
+          </p>
+          <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+          <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
+          <div style="text-align: right;">
+            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
+            <p>Trân trọng,</p>
+            <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
+          </div>
+        </div>`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
+
+    res.json({ message: "Cập nhật lịch hẹn thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const getAppointmentUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];

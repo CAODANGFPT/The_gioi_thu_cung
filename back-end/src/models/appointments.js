@@ -243,6 +243,19 @@ export default class Appointments {
     });
   }
 
+  static updateAppointmentPayment(id, status_payment) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE appointments SET status_payment = ? WHERE id = ?",
+        [status_payment, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+
   static cancelHistoryAppointment(id) {
     return new Promise((resolve, reject) => {
       connection.query(
