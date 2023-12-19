@@ -1,14 +1,28 @@
 import dayjs from "dayjs";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import { Button, Tag, message } from "antd";
+import { Button, Modal, Tag, message } from "antd";
+import PrintInvoice from "../../../page/base/printInvoice/index";
 
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
   const navigate = useNavigate();
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [isPrintInvoiceModalVisible, setIsPrintInvoiceModalVisible] =
+    useState(false);
+
+  const handleViewInvoice = (invoiceData: any) => {
+    setSelectedInvoice(invoiceData);
+    setIsPrintInvoiceModalVisible(true);
+  };
+
+  const handleClosePrintInvoiceModal = () => {
+    setIsPrintInvoiceModalVisible(false);
+  };
+
   const handlePayment = (id: number | undefined, total: number | undefined) => {
     if (total !== undefined) {
       navigate(`/payment/${id}/${total}`);
@@ -16,13 +30,19 @@ const ConfirmedAppointment: FC = () => {
       console.error("Không có thông tin thanh toán");
     }
   };
-  const handlePrint = (id: number | undefined) => {
+
+  const handlePrint = async (id: number | undefined) => {
     if (id !== undefined) {
-      navigate(`/print-invoices/${id}`);
+      handleViewInvoice(id);
     } else {
       message.warning("Không có thông tin hóa đơn");
     }
   };
+  useEffect(() => {
+    if (selectedInvoice) {
+      setIsPrintInvoiceModalVisible(true);
+    }
+  }, [selectedInvoice]);
   return (
     <>
       {listAppointment?.length ? (
@@ -133,6 +153,15 @@ const ConfirmedAppointment: FC = () => {
           </div>
           <div>Chưa có lịch nào</div>
         </div>
+      )}
+      {selectedInvoice && (
+        <Modal
+          visible={isPrintInvoiceModalVisible}
+          onCancel={handleClosePrintInvoiceModal}
+          footer={null}
+        >
+          <PrintInvoice invoiceData={selectedInvoice} />
+        </Modal>
       )}
     </>
   );

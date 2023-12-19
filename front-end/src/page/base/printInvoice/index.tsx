@@ -1,20 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
-import { useParams } from "react-router-dom";
 import { useListPaymentAppointmentQuery } from "../../../services/appointments";
 import "../../../assets/scss/page/printInvoice.scss";
 import { useGetInvoicesQuery } from "../../../services/invoice";
-
-const PrintInvoice = () => {
-  const { id } = useParams<{ id: string }>();
+import { TInvoice } from "../../../schema/invoice";
+import { useGetAllWebsiteInformationQuery } from "../../../services/websiteInformation";
+import { useReactToPrint } from "react-to-print";
+interface PrintInvoiceProps {
+  invoiceData: TInvoice;
+}
+const PrintInvoice: React.FC<PrintInvoiceProps> = ({ invoiceData }) => {
+  const { id } = invoiceData;
   const numberId = Number(id);
   const { data: listPaymentAppointment } =
     useListPaymentAppointmentQuery(numberId);
-  console.log("datatrave", listPaymentAppointment);
   const { data: listInvoice } = useGetInvoicesQuery(numberId);
+  const componentRef = useRef<HTMLDivElement | null>(null);
+  const [printButtonVisible, setPrintButtonVisible] = useState(true);
+  const handlePrint = useReactToPrint({
+    content: () => {
+      try {
+        if (componentRef.current) {
+          setPrintButtonVisible(false);
+          return componentRef.current;
+        }
+        return null;
+      } catch (error) {
+        console.error("Error in handlePrint:", error);
+        return null;
+      }
+    },
 
+    onAfterPrint: () => {
+      setPrintButtonVisible(true);
+    },
+  });
+  const { data: inforPetCare } = useGetAllWebsiteInformationQuery();
   return (
     <>
+      <div className="infor-desc">
+        <img
+          src={
+            inforPetCare &&
+            inforPetCare.length > 0 &&
+            typeof inforPetCare[0]?.logo === "string"
+              ? inforPetCare[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
+        />
+        <h2>Shop thú cưng - PetCare</h2>
+        <p>
+          Email:
+          {inforPetCare && inforPetCare.length > 0 && inforPetCare[0].email}
+        </p>
+        <p>
+          Số điện thoại:
+          {inforPetCare && inforPetCare.length > 0 && inforPetCare[0].phone}
+        </p>
+        <p>
+          Địa chỉ:
+          {inforPetCare && inforPetCare.length > 0 && inforPetCare[0].zalo}
+        </p>
+      </div>
       <div className="invoice-container">
         {listInvoice && listInvoice.length > 0 ? (
           <div className="cancelledAppointment">
@@ -107,7 +155,9 @@ const PrintInvoice = () => {
         ) : null}
 
         <div className="button-container">
-          <button onClick={() => window.print()}>In Hóa Đơn</button>
+          <button className="btn-print" onClick={handlePrint}>
+            In
+          </button>
         </div>
       </div>
     </>

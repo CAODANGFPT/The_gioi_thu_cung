@@ -1,3 +1,19 @@
+@import "../utils/functions.scss";
+@import "../utils/variables.scss";
+@media print {
+  .btn-print {
+    display: none;
+  }
+
+  .detailAppointment_modal_close {
+    display: none;
+  }
+
+  .infor-desc {
+    display: block !important;
+  }
+}
+
 .invoice-container {
   display: flex;
   flex-direction: column;
@@ -15,7 +31,7 @@
     text-align: center;
 
     .logo {
-      width: 140px;
+      width: 120px;
       margin-bottom: 20px;
     }
 
