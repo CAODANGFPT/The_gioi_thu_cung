@@ -50,24 +50,37 @@ const AddRoleAdmin: React.FC = () => {
   };
 
   return (
-    <Form
-      form={form}
-      name="validateOnly"
-      layout="vertical"
-      autoComplete="off"
-      onFinish={handleFormSubmit}
-    >
-      <Form.Item name="name" label="Vai trò" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
+    <>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm vai trò
+      </h2>
+      <Form
+        form={form}
+        name="validateOnly"
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleFormSubmit}
+      >
+        <Form.Item name="name" label="Vai trò" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
 
-      <Form.Item>
-        <Space>
-          <SubmitButton form={form} />
-          <Button htmlType="reset">Reset</Button>
-        </Space>
-      </Form.Item>
-    </Form>
+        <Form.Item>
+          <Space style={{ float: "right" }}>
+            <SubmitButton form={form} />
+            <Button htmlType="reset">Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

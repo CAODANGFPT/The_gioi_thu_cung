@@ -64,9 +64,17 @@ const EditMenuAdmin = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập Menu #{id}
-      </h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật menu
+      </h2>
       <div>
         <Form
           form={form}
@@ -92,7 +100,7 @@ const EditMenuAdmin = () => {
             ]}
             initialValue={menu.data ? menu.data.link : ""}
           >
-            <Input />
+            <Input disabled />
           </Form.Item>
 
           <Form.Item label="Kiểu Menu" name="menuType_id">
@@ -107,7 +115,7 @@ const EditMenuAdmin = () => {
             )}
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" style={{ float: "right" }}>
               Cập nhật
             </Button>
           </Form.Item>

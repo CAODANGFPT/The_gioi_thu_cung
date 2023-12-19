@@ -111,7 +111,32 @@ const WebsiteInformationAdmin: React.FC = () => {
 
   return (
     <>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý thông tin website
+      </h2>
       <TableAdmin columns={columns} data={data} />
+
+      <div>
+        <p
+          style={{ fontSize: "17px", fontWeight: "bold", fontStyle: "italic" }}
+        >
+          Ghi chú:
+          <span
+            style={{ color: "red", fontWeight: "500", marginLeft: "0.5rem" }}
+          >
+            Phần quản lý thông tin website chỉ có thể cập nhật không thể thêm và
+            xóa!
+          </span>
+        </p>
+      </div>
     </>
   );
 };

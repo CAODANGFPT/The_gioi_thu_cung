@@ -6,9 +6,10 @@ export const deliveryAddressSchema = joi.object({
     "String.empty": "Tên không được để trống",
     "any.required": "Trường tên là bắt buộc",
   }),
-  phone: joi.string().required().messages({
-    "String.empty": "phone không được để trống",
-    "any.required": "Trường phone là bắt buộc",
+  phone: joi.string().regex(/^0\d{9}$/).required().messages({
+    "String.empty": "Số điện thoại không được để trống",
+    "any.required": "Trường số điện thoại là bắt buộc",
+    "string.pattern.base": "Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số",
   }),
   address: joi.string().required().messages({
     "String.empty": "address không được để trống",

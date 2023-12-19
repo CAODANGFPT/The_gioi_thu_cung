@@ -106,7 +106,19 @@ const CategoryAdmin: React.FC = () => {
   }, [filter.name]);
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý danh mục
+      </h2>
+
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -130,9 +142,14 @@ const CategoryAdmin: React.FC = () => {
       </div>
       <Link to="/admin/category/add">
         <Button
-          type="primary"
           icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
+          type="text"
+          block
+          style={{
+            marginBottom: "1rem",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
         >
           THÊM DANH MỤC
         </Button>

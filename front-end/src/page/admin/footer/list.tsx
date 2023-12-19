@@ -92,7 +92,12 @@ const FooterAdmin: React.FC = () => {
       render: (footer: TFooter) => (
         <div>
           <Link to={`edit/${footer.id}`}>
-            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
+            <Button
+              className="btn-edit"
+              style={{
+                marginRight: "1rem",
+              }}
+            >
               Sửa
             </Button>
           </Link>
@@ -118,16 +123,26 @@ const FooterAdmin: React.FC = () => {
   return (
     <>
       <div>
-        <h1 style={{ marginBottom: "1rem" }}>Quản lý Footer website.</h1>
+        <h2
+          style={{
+            marginBottom: "1rem",
+            fontSize: "25px",
+            padding: "0.8rem",
+            borderRadius: "3px",
+            boxShadow: "0px 0px 5px #c3c3c3",
+          }}
+        >
+          Quản lý footer
+        </h2>
       </div>
       <TableAdmin columns={columns} data={data} />
       <div>
         <p
-          style={{ fontSize: "17px", fontWeight: "bold", fontStyle: "italic" }}
+          style={{ fontSize: "16px", fontWeight: "bold", fontStyle: "italic" }}
         >
           Ghi chú:
           <span
-            style={{ color: "red", fontWeight: "500", fontStyle: "normal" }}
+            style={{ color: "red", fontWeight: "500", marginLeft: "0.5rem" }}
           >
             Phần quản lý Footer website chỉ có thể cập nhật không thể thêm và
             xóa!

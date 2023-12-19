@@ -342,7 +342,7 @@ function App() {
         </Route>
         <Route path="payment/:id/:total" element={<PaymentPage />} />
         <Route path="callback" element={<CallbackVNPAY />} />
-        <Route path="print-invoice/:id" element={<PrintInvoice />} />
+        {/* <Route path="print-invoices/:id" element={<PrintInvoice />} /> */}
         <Route path="pay-cash" element={<PaymentCashPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

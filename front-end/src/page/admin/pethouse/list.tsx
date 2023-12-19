@@ -92,7 +92,11 @@ const PetHouseAdmin: React.FC = () => {
             okText="Đồng ý"
             cancelText="Không"
           >
-            <Button danger className="btn-delete" style={{ marginRight: "1rem" }}>
+            <Button
+              danger
+              className="btn-delete"
+              style={{ marginRight: "1rem" }}
+            >
               Xóa
             </Button>
           </Popconfirm>
@@ -144,7 +148,18 @@ const PetHouseAdmin: React.FC = () => {
   }, [filter.name, filter.price]);
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý phòng
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -167,9 +182,14 @@ const PetHouseAdmin: React.FC = () => {
       </div>
       <Link to="/admin/pethouse/add">
         <Button
-          type="primary"
+          type="text"
+          block
           icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
+          style={{
+            marginBottom: "1rem",
+            fontWeight: "500",
+            border: "1px solid #c3c3c3",
+          }}
         >
           THÊM PHÒNG
         </Button>

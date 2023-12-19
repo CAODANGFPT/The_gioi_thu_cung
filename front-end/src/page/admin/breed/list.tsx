@@ -138,7 +138,18 @@ const BreedAdmin: React.FC = () => {
   };
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý menu
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div
         className="btn-table"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -174,10 +185,15 @@ const BreedAdmin: React.FC = () => {
         </div>
       </div>
       <Button
-        type="primary"
         onClick={() => navigate("add")}
+        type="text"
+        block
         icon={<PlusOutlined />}
-        style={{ marginBottom: "1rem" }}
+        style={{
+          marginBottom: "1rem",
+          fontWeight: "500",
+          border: "1px solid #c3c3c3",
+        }}
       >
         THÊM GIỐNG
       </Button>

@@ -81,9 +81,17 @@ const EditAbout = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập About #{id}
-      </h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Cập nhật about
+      </h2>
       <div>
         <Form
           form={form}
@@ -127,7 +135,11 @@ const EditAbout = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ float: "right", marginTop: "2rem" }}
+            >
               Cập nhật
             </Button>
           </Form.Item>

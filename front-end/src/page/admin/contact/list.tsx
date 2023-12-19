@@ -40,7 +40,6 @@ const ContactAdmin: React.FC = () => {
       dataIndex: "phone",
       key: "phone",
       width: 150,
-      render: (phone) => <span>{phone ? `0${phone}` : ""}</span>,
     },
     {
       title: "Tiêu đề",
@@ -76,7 +75,7 @@ const ContactAdmin: React.FC = () => {
             <Button
               className="btn-edit"
               style={{ marginRight: "1rem" }}
-              disabled={contact.status_id === 1}
+              disabled={contact.status_id === 1 || contact.status_id === 7}
             >
               Sửa
             </Button>
@@ -94,7 +93,7 @@ const ContactAdmin: React.FC = () => {
             <Button
               danger
               className="btn-delete"
-              disabled={contact?.status_id === 1}
+              disabled={contact?.status_id === 1 || contact.status_id === 7}
             >
               Xóa
             </Button>
@@ -129,7 +128,18 @@ const ContactAdmin: React.FC = () => {
 
   return (
     <>
-      <h2 style={{ marginBottom: 10 }}>Tìm kiếm</h2>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Quản lý thông tin liên hệ từ khách hàng
+      </h2>
+      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div className="btn-table">
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search

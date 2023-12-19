@@ -24,7 +24,10 @@ export default class Contact {
     static getContactUser() {
         return new Promise((resolve, reject) => {
             connection.query(
-                "SELECT contact.id,contact.phone, contact.title, contact.subject, contact.user_id, contact.status_id , users.name as nameUser, status_contact.name as statusName FROM contact " + "JOIN status_contact on contact.status_id = status_contact.id " + "JOIN users on contact.user_id = users.id",
+                "SELECT contact.id, contact.phone, contact.title, contact.subject, contact.user_id, contact.status_id, users.name as nameUser, status_contact.name as statusName FROM contact " +
+                "JOIN status_contact ON contact.status_id = status_contact.id " +
+                "JOIN users ON contact.user_id = users.id " +
+                "ORDER BY contact.id DESC",  // Thêm ORDER BY để sắp xếp theo ID giảm dần
                 (err, results) => {
                     if (err) reject(err);
                     resolve(results);
@@ -32,6 +35,8 @@ export default class Contact {
             );
         });
     }
+
+
     static getContactById(id) {
         return new Promise((resolve, reject) => {
             connection.query(

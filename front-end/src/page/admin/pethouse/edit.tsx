@@ -61,9 +61,15 @@ const EditPetHouse = () => {
 
   return (
     <>
-      <h4 style={{ marginBottom: 20, color: "#00575c", fontSize: 20 }}>
-        Cập nhập phòng #{id}
-      </h4>
+      <h2 style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}>
+        Cập nhật phòng
+      </h2>
         <Form
         style={{marginTop : 20}}
           form={form}
@@ -80,7 +86,7 @@ const EditPetHouse = () => {
             <Input />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" style={{ float: "right" }}>
               Cập nhật
             </Button>
           </Form.Item>

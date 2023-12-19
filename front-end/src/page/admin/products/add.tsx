@@ -62,9 +62,17 @@ const AddProduct = () => {
   );
   return (
     <>
-      <h1 >
-        Thêm product
-      </h1>
+      <h2
+        style={{
+          marginBottom: "1rem",
+          fontSize: "25px",
+          padding: "0.8rem",
+          borderRadius: "3px",
+          boxShadow: "0px 0px 5px #c3c3c3",
+        }}
+      >
+        Thêm sản phẩm
+      </h2>
       <div>
         <Form
           name="basic"
@@ -78,7 +86,7 @@ const AddProduct = () => {
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
           >
-            <Input/>
+            <Input />
           </Form.Item>
           <Form.Item
             label={<span className="">Ảnh sản phẩm</span>}
@@ -106,18 +114,14 @@ const AddProduct = () => {
             </Upload>
           </Form.Item>
           <Form.Item
-            label={
-              <span>Giá sản phẩm</span>
-            }
+            label={<span>Giá sản phẩm</span>}
             name="price"
             rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
           >
-            <InputNumber
-              min={1}
-            />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
-            label={<span >Mô tả</span>}
+            label={<span>Mô tả</span>}
             name="description"
             rules={[
               { required: true, message: "Vui lòng nhập mô tả sản phẩm!" },
@@ -155,11 +159,7 @@ const AddProduct = () => {
             </Select>
           </Form.Item>
           <Form.Item>
-            <Button
-              style={{ marginTop: 30 }}
-              htmlType="submit"
-              size="large"
-            >
+            <Button style={{ float: "right" }} htmlType="submit" size="large">
               {isAddLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
