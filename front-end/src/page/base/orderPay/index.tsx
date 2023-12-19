@@ -26,7 +26,7 @@ const OrderPay: FC<Props> = () => {
   const [note, setNote] = useState<string | null>();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const [data] = useState<any>(location.state?.data);
   const [address, setAddress] = useState<TDeliveryAddress>();
   const { data: getAllPaymentMethods } = useGetAllPaymentMethodsQuery();
@@ -106,7 +106,11 @@ const OrderPay: FC<Props> = () => {
             .catch((error) => {
               console.error("Error", error);
             });
-        } else {
+        }
+        if (paymentMethods_id === 2) {
+          setTimeout(() => {
+            navigate("/account/to-pay");
+          }, 3000);
         }
       } else {
         message.error("Đặt thất bại");
@@ -179,8 +183,15 @@ const OrderPay: FC<Props> = () => {
                   </>
                 ) : (
                   <>
-                    <p style={{ margin: "10px 0", color: 'red' }}>Bạn chưa có địa chỉ nhận hàng</p>
-                    <p className="address" onClick={() => setOpenAddAddress(true)}>đăng ký địa chỉ ở đây!</p>
+                    <p style={{ margin: "10px 0", color: "red" }}>
+                      Bạn chưa có địa chỉ nhận hàng
+                    </p>
+                    <p
+                      className="address"
+                      onClick={() => setOpenAddAddress(true)}
+                    >
+                      đăng ký địa chỉ ở đây!
+                    </p>
                   </>
                 )}
               </div>
