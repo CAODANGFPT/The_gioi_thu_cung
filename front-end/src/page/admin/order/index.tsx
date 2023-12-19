@@ -329,6 +329,7 @@ const OrderAdmin: React.FC = () => {
     <>
       <h2 className="title-appoiment">Quản lý thông tin đơn hàng</h2>
       <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
+<<<<<<< HEAD
       <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
         <div>
           <Input
@@ -337,6 +338,45 @@ const OrderAdmin: React.FC = () => {
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200 }}
           />
+=======
+      <Form
+        name="validateOnly"
+        className="search-appointments"
+        layout="vertical"
+        autoComplete="off"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={{ marginTop: 10 }}
+      >
+        <div className="search-appointments-form">
+          <Form.Item name="nameUser">
+            <Input placeholder="Tên người đặt" />
+          </Form.Item>
+
+          <Form.Item name="time" style={{ width: "100%" }}>
+            <DatePicker
+              placeholder="Ngày"
+              style={{ width: "100%" }}
+              format="YYYY-MM-DD"
+              showNow={false}
+            />
+          </Form.Item>
+          <Form.Item name="status_id">
+            <Select options={optionsStatusOrder} placeholder="Trạng thái" />
+          </Form.Item>
+          <Form.Item name="paymentMethods_id">
+            <Select
+              options={optionPaymentMethods}
+              placeholder="Phương thức thanh toán"
+            />
+          </Form.Item>
+          <Form.Item name="status_payment" label="">
+            <Select
+              options={optionStatusPayment}
+              placeholder="Trạng thái thanh toán"
+            />
+          </Form.Item>
+>>>>>>> 9080586 (fix: fix layout admin)
         </div>
         <div>
           <DatePicker
