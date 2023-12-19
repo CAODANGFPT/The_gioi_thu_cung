@@ -100,7 +100,7 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                     inforPetCare[0].address}
                 </p>
               </div>
-              <h3>chi tiết đơn hàng</h3>
+              <h3>chi tiết</h3>
 
               <table className="table">
                 <tr className="table_vertical">
@@ -108,7 +108,7 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                   <td className="text-left">{dataDetail?.user_email}</td>
                 </tr>
                 <tr className="table_vertical">
-                  <td className="text-left">Tên</td>
+                  <td className="text-left">Tên chủ nhân</td>
                   <td className="text-left">{dataDetail?.user_name}</td>
                 </tr>
                 <tr className="table_vertical">
@@ -118,7 +118,7 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                   </td>
                 </tr>
                 <tr className="table_vertical">
-                  <td className="text-left">Ca</td>
+                  <td className="text-left">Thời gian thực hiện</td>
                   <td className="text-left">
                     <div>
                       {dayjs(dataDetail?.start_time).format("HH:mm")} -
@@ -141,7 +141,7 @@ const DetailAppointment: FC<TDetailAppointment> = ({
                   </td>
                 </tr>
                 <tr className="table_vertical">
-                  <td className="text-left">Tên dịch vụ</td>
+                  <td className="text-left">Dịch vụ đã làm</td>
                   <td className="text-left">
                     {Array.isArray(dataDetail?.services) &&
                       dataDetail?.services.map((service, serviceIndex) => (

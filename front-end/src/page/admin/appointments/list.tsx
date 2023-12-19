@@ -396,47 +396,46 @@ const AppointmentsAdmin: React.FC = () => {
       <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
       <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
         <div>
-          <p style={{ margin: "10px 0" }}>Tên người đặt</p>
           <Input
             value={filter?.name}
+            placeholder="Tên người đặt"
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200 }}
           />
         </div>
         <div>
-          <p style={{ margin: "10px 0" }}>Tên phòng</p>
           <Select
             options={optionsPetHouse}
+            placeholder="Tên phòng"
             onChange={(value) => handleFilterChange("house", value)}
-            value={filter.house}
+            value={filter.house || null}
             style={{ width: 200 }}
           />
         </div>
         <div>
-          <p style={{ margin: "10px 0" }}>Ngày đặt</p>
           <DatePicker
             style={{ width: 200 }}
             format="YYYY-MM-DD"
-            placeholder=""
+            placeholder="Ngày đặt"
             onChange={onChange}
           />
         </div>
         <div>
-          <p style={{ margin: "10px 0" }}>Thanh toán</p>
           <Select
             options={optionsPay}
             onChange={(value) => handleFilterChange("pay", value)}
-            value={filter.pay}
+            value={filter.pay || null}
             style={{ width: 200 }}
+            placeholder="Trạng thái thanh toán"
           />
         </div>
         <div>
-          <p style={{ margin: "10px 0" }}>Trạng thái</p>
           <Select
             options={optionsStatus}
             onChange={(value) => handleFilterChange("status", value)}
-            value={filter.status}
+            value={filter.status || null}
             style={{ width: 200 }}
+            placeholder="Trạng thái xác nhận"
           />
         </div>
         <Button

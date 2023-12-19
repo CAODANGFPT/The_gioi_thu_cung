@@ -139,10 +139,18 @@ const EditProfile: React.FC<EditProfileProps> = ({
           <Form.Item
             label={<span className="">Số điện thoại </span>}
             name="phone"
-            rules={[{ required: true, message: "Vui lòng số điện thoại!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập số điện thoại!" },
+              {
+                pattern: /^0[0-9]{9}$/, // Bắt đầu bằng số 0 và có đúng 10 ký tự
+                message:
+                  "Số điện thoại không hợp lệ! Bắt đầu bằng số 0 và có đúng 10 ký tự.",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             label={<span className="">Tên người dùng</span>}
             name="name"
