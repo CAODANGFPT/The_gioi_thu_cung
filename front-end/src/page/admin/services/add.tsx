@@ -3,6 +3,8 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useAddServicesMutation } from "../../../services/services";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { TServicesRequest } from "../../../schema/services";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -50,17 +52,7 @@ const AddService = () => {
   );
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm sản phẩm
-      </h2>
+      <h2 className="title-appoiment">Thêm sản phẩm</h2>
       <div>
         <Form
           name="basic"

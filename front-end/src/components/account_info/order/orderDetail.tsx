@@ -59,7 +59,7 @@ const DetailOrderPage: FC = () => {
                   Họ và tên: {data.address.name}
                 </div>
                 <div className="orderPay-address-title-item-user">
-                  Số điện thoại: +84{data.address.phone}
+                  Số điện thoại: {data.address.phone}
                 </div>
               </div>
               <div className="orderPay-address-title-item-user">
@@ -212,7 +212,7 @@ const DetailOrderPage: FC = () => {
                     Số điện thoại
                   </div>
                   <div className="orderPay-paymentMethods-money-box-item-price">
-                    +84{data.address.phone}
+                    {data.address.phone}
                   </div>
                 </div>
                 <div className="orderPay-paymentMethods-money-box-item">

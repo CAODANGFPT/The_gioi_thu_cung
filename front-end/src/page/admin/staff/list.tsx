@@ -1,24 +1,22 @@
-import { Button, Popconfirm, message } from "antd";
+import { Button, Image, Popconfirm, message } from "antd";
+import Search from "antd/es/input/Search";
 import type { ColumnsType } from "antd/es/table";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TableAdmin from "../../../components/table";
-import { TStaff } from "../../../schema/staff";
-import { useStaffQuery, useRemoveStaffMutation } from "../../../services/staff";
-import { PlusOutlined } from "@ant-design/icons";
-import Search from "antd/es/input/Search";
+import { TStatus } from "../../../schema/status";
+import { TUser } from "../../../schema/user";
+import {
+  useUpdateBlockUserMutation,
+  useGetAllStaffQuery,
+} from "../../../services/user";import "../../../assets/scss/admin/appointments.scss";
+
 
 const StaffAdmin: React.FC = () => {
-  const [removeStaff] = useRemoveStaffMutation();
-  const [dataStaff, setDataStaff] = useState<any | null>(null);
-  const { data } = useStaffQuery();
-  useEffect(() => {
-    if (data) {
-      setDataStaff(data);
-    }
-  }, [data]);
-
-  const [filter, setFilter] = useState({ name: ""});
+  const { data } = useGetAllStaffQuery();
+  const [listUser, setListUser] = useState<TUser[] | undefined>([]);
+  const [removeProducts] = useUpdateBlockUserMutation();
+  const [filter, setFilter] = useState({ name: "", email: "", phone: "" });
   const [openReset, setOpenReset] = useState<boolean>(false);
 
   const handleFilterChange = (fieldName: string, value: string) => {
@@ -26,24 +24,20 @@ const StaffAdmin: React.FC = () => {
   };
 
   const confirm = (id: number) => {
-    removeStaff(id)
-      .then((response: any) => {
-        if (response.error) {
-          message.error("Bạn không thể xóa vì có liên quan khóa ngoại");
-        } else {
-          message.success("Xóa thành công.");
-        }
-      })
-      .catch((error: any) => {
-        message.error("Có lỗi xảy ra khi xóa.");
-      });
+    removeProducts({ id: id, is_delete: 0 });
+    message.success("Mở khóa thành công.");
+  };
+
+  const confirmBlock = (id: number) => {
+    removeProducts({ id: id, is_delete: 1 });
+    message.success("Khóa thành công.");
   };
 
   const cancel = () => {
-    message.error("Xóa không thành công.");
+    message.error("Hủy thành công.");
   };
 
-  const columns: ColumnsType<TStaff> = [
+  const columns: ColumnsType<TStatus> = [
     {
       title: "STT",
       dataIndex: "id",
@@ -53,72 +47,135 @@ const StaffAdmin: React.FC = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Tên nhân viên",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       width: 150,
     },
     {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 150,
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "img",
+      key: "img",
+      width: 150,
+      render: (img) => <Image width={100} src={img} />,
+    },
+    {
+      title: "SĐT",
+      dataIndex: "phone",
+      key: "phone",
+      width: 150,
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "nameRole",
+      key: "nameRole",
+      width: 150,
+    },
+    {
       title: "Thao tác",
-      key: "action",
-      width: 100,
-      render: (staff: TStaff) => (
+      key: "id",
+      width: 200,
+      render: (user: TUser) => (
         <div>
-          <Link to={`edit/${staff.id}`}>
+          <Link to={`edit/${user.id}`}>
             <Button className="btn-edit" style={{ marginRight: "1rem" }}>
               Sửa
             </Button>
           </Link>
-          <Popconfirm
-            title="Xóa nhân viên."
-            description="Bạn có muốn xóa không?"
-            onConfirm={() =>
-              staff.id !== undefined ? confirm(staff.id) : undefined
-            }
-            onCancel={cancel}
-            okText="Đồng ý"
-            cancelText="Không"
-          >
-            <Button danger className="btn-delete">
-              Xóa
-            </Button>
-          </Popconfirm>
+          {user.is_delete ? (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn mở khóa không?"
+              onConfirm={() => confirm(user.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button type="primary" ghost>
+                Mở Khóa
+              </Button>
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Xóa trạng thái."
+              description="Bạn có muốn khóa không?"
+              onConfirm={() => confirmBlock(user.id)}
+              onCancel={cancel}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Button danger className="btn-delete">
+                Khóa
+              </Button>
+            </Popconfirm>
+          )}
         </div>
       ),
     },
   ];
 
   useEffect(() => {
-    const filteredData = data?.filter((item) =>
-      item.name?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    const filteredData = data?.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.name.trim().toLowerCase()) &&
+        item.email.toLowerCase().includes(filter.email.trim().toLowerCase()) &&
+        item.phone.toLowerCase().includes(filter.phone.trim().toLowerCase())
     );
-    setDataStaff(filteredData);
+    setListUser(filteredData);
   }, [data, filter]);
-  
 
   useEffect(() => {
-    if (filter.name === "") {
+    if (filter.email === "" && filter.phone === "" && filter.name === "") {
       setOpenReset(false);
     } else {
       setOpenReset(true);
     }
-  }, [filter.name]);
+  }, [filter.email, filter.name, filter.phone]);
+
+  useEffect(() => {
+    setListUser(data);
+  }, [data]);
 
   return (
-    <div>
-      <div
-        className="btn-table"
-        style={{ display: "flex", justifyContent: "space-between" }}
+    <>
+      <h2
+        className="title-appoiment"
       >
+        Quản lý nhân viên
+      </h2>
+
+      <div className="btn-table">
+        <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
         <div style={{ display: "flex", columnGap: 20 }}>
           <Search
-            placeholder="Tìm tên phòng"
+            placeholder="Tìm kiếm tên"
             value={filter?.name}
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: 200, marginBottom: 10 }}
           />
+          <Search
+            placeholder="Tìm kiếm email"
+            value={filter?.email}
+            onChange={(e) => handleFilterChange("email", e.target.value)}
+            // onSearch={(value) => handleFilterChange("email", value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Search
+            placeholder="Tìm kiếm số điện thoại"
+            value={filter?.phone}
+            type="number"
+            onChange={(e) => handleFilterChange("phone", e.target.value)}
+            // onSearch={(value) => handleFilterChange("phone", value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
           <Button
-            onClick={() => setFilter({ name: ""})}
+            onClick={() => setFilter({ name: "", email: "", phone: "" })}
             danger
             disabled={!openReset}
           >
@@ -126,17 +183,8 @@ const StaffAdmin: React.FC = () => {
           </Button>
         </div>
       </div>
-      <Link to="/admin/staff/add">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          style={{ marginBottom: "1rem" }}
-        >
-          THÊM NHÂN VIÊN
-        </Button>
-      </Link>
-      <TableAdmin columns={columns} data={dataStaff} />
-    </div>
+      <TableAdmin columns={columns} data={listUser} />
+    </>
   );
 };
 

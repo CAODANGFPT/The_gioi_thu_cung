@@ -8,6 +8,7 @@ import {
   useGetAllFooterQuery,
   useRemoveFooterMutation,
 } from "../../../services/footer";
+import "../../../assets/scss/admin/appointments.scss";
 
 const FooterAdmin: React.FC = () => {
   const { data } = useGetAllFooterQuery();
@@ -123,17 +124,7 @@ const FooterAdmin: React.FC = () => {
   return (
     <>
       <div>
-        <h2
-          style={{
-            marginBottom: "1rem",
-            fontSize: "25px",
-            padding: "0.8rem",
-            borderRadius: "3px",
-            boxShadow: "0px 0px 5px #c3c3c3",
-          }}
-        >
-          Quản lý footer
-        </h2>
+        <h2 className="title-appoiment">Quản lý footer</h2>
       </div>
       <TableAdmin columns={columns} data={data} />
       <div>

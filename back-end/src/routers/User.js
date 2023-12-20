@@ -5,6 +5,7 @@ import {
   getById,
   getUser,
   list,
+  listStaff,
   listUsersRole,
   searchUser,
   updateIsDelete,
@@ -26,5 +27,6 @@ router.get("/getUser", getUser);
 router.patch("/user/updatePassword", updatePassword);
 router.put("/updateUser/:id", updateUser);
 router.get("/Search", searchUser);
+router.get("/getAllStaff" , listStaff)
 
 export default router;

@@ -8,20 +8,19 @@ import {
   Form,
   Input,
   InputNumber,
+  Modal,
   Select,
   Upload,
   message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../../assets/scss/page/appointment.scss";
 import { TBreed } from "../../../schema/breed";
 import { Tspecies } from "../../../schema/species";
+import { useCreateBreedMutation } from "../../../services/breed";
 import { useCreatePetsMutation } from "../../../services/pets";
-import { useGetUserQuery } from "../../../services/user";
-import { useNavigate } from "react-router-dom";
-
-
 
 type TModalAddPet = {
   setIdSpecies: React.Dispatch<React.SetStateAction<number>>;
@@ -43,7 +42,6 @@ type TModalAddPet = {
   setValueId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-
 const ModalAddPet: FC<TModalAddPet> = ({
   setIdSpecies,
   species,
@@ -56,18 +54,31 @@ const ModalAddPet: FC<TModalAddPet> = ({
   user,
 }) => {
   const [openBreed, setOpenBreed] = useState<boolean>(false);
+  const [openModalBreed, setOpenModalBreed] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [createSPets, { isLoading }] = useCreatePetsMutation();
+  const [createBreed] = useCreateBreedMutation();
   const [form] = Form.useForm();
+  const [formModal] = Form.useForm();
   const navigate = useNavigate();
 
+  const optionsBreed = [
+    {
+      value: 0,
+      label: "Thêm giống mới",
+    },
+    ...(breed?.map((item: TBreed) => ({
+      value: item.id,
+      label: item.name,
+    })) || []),
+  ];
   const onFinish = async (values: any) => {
     const isUserLoggedIn = user?.id || (userId && userId > 0);
 
     if (!isUserLoggedIn) {
       message.error("Vui lòng đăng nhập trước khi thêm thú cưng !");
       setTimeout(() => {
-        navigate('/SignIn');
+        navigate("/SignIn");
       }, 3000);
       return;
     }
@@ -111,10 +122,35 @@ const ModalAddPet: FC<TModalAddPet> = ({
     console.log("Failed:", values);
   };
 
+  const onFinishModal = async (values: any) => {
+    const species_id = form.getFieldValue("species_id");
+    const res = await createBreed({
+      name: values.name,
+      species_id: species_id,
+    });
+    if ("data" in res) {
+      form.setFieldValue("breed_id", res.data.id);
+      setOpenModalBreed(false);
+      message.success("Thêm giống thành công");
+    } else {
+      message.error("Thêm giống không thành công");
+    }
+  };
+
+  const onFinishFailedModal = async (values: any) => {
+    console.log("Failed:", values);
+  };
+
   const onChangeSpecies = (value: number) => {
     setOpenBreed(true);
     setIdSpecies(value);
     form.resetFields(["breed_id"]);
+  };
+
+  const onChangeBreed = (value: number) => {
+    if (value === 0) {
+      setOpenModalBreed(true);
+    }
   };
 
   const handleImageChange = (info: any) => {
@@ -140,14 +176,13 @@ const ModalAddPet: FC<TModalAddPet> = ({
     <>
       {openAddPest && (
         <>
-        
           <div
             className="modal-1"
             style={{
               position: "fixed",
               top: 60,
               left: "15%",
-              zIndex: 20,
+              zIndex: 100,
               width: "70%",
               background: "white",
             }}
@@ -171,7 +206,10 @@ const ModalAddPet: FC<TModalAddPet> = ({
               </div>
               <div>
                 <p
-                  onClick={() => setOpenAddPest(false)}
+                  onClick={() => {
+                    setOpenAddPest(false);
+                    form.resetFields();
+                  }}
                   style={{ cursor: "pointer" }}
                 >
                   <CloseOutlined className="icon-close" />
@@ -253,25 +291,62 @@ const ModalAddPet: FC<TModalAddPet> = ({
                 label="Giống"
                 rules={[{ required: true }]}
               >
-                <Select disabled={!openBreed}>
-                  {breed?.map((item: TBreed) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+                <Select
+                  options={optionsBreed}
+                  disabled={!openBreed}
+                  onChange={onChangeBreed}
+                />
               </Form.Item>
               <Form.Item name="health_condition" label="Tình trạng sức khỏe">
                 <TextArea rows={4} />
               </Form.Item>
-              <Button disabled={isLoading} loading={isLoading} type="primary" htmlType="submit">
+              <Button
+                disabled={isLoading}
+                loading={isLoading}
+                type="primary"
+                htmlType="submit"
+              >
                 Submit
               </Button>
             </Form>
           </div>
-          <div onClick={() => setOpenAddPest(false)} className="background" />
+          <div className="background" />
         </>
       )}
+      <Modal
+        open={openModalBreed}
+        title="Thêm giống"
+        onCancel={() => {
+          form.resetFields(["breed_id"]);
+          formModal.resetFields();
+          setOpenModalBreed(false);
+        }}
+        footer=""
+      >
+        <Form
+          form={formModal}
+          name="validateOnly"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinishModal}
+          onFinishFailed={onFinishFailedModal}
+          autoComplete="off"
+        >
+          <Form.Item
+            name="name"
+            label="Tên"
+            rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button loading={isLoading} type="primary" htmlType="submit">
+              Thêm mới
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

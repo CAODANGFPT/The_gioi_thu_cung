@@ -7,7 +7,8 @@ import {
 import { TBreed } from "../../../schema/breed";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { Tspecies } from "../../../schema/species";
-import { useEffect } from "react";
+import { useEffect } from "react";import "../../../assets/scss/admin/appointments.scss";
+
 
 const confirm = () => {
   message.success("Cập nhật breed thành công.");
@@ -58,13 +59,7 @@ const EditBreed = () => {
   return (
     <>
       <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
+        className="title-appoiment"
       >
         Cập nhật giống thú cưng
       </h2>

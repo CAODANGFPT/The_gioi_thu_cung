@@ -1,21 +1,67 @@
 import dayjs from "dayjs";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imageNot from "../../../assets/image/notAppoiment.png";
 import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
-import { Button, Tag } from "antd";
-
+import { Button, Modal, Tag, message } from "antd";
+import PrintInvoice from "../../../page/base/printInvoice/index";
+import axios from "axios";
+const API_URL = "http://localhost:8080/api";
 const ConfirmedAppointment: FC = () => {
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(2);
   const navigate = useNavigate();
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [isPrintInvoiceModalVisible, setIsPrintInvoiceModalVisible] =
+    useState(false);
+
+  const handleViewInvoice = (invoiceData: any) => {
+    console.log(invoiceData);
+
+    setSelectedInvoice(invoiceData);
+    setIsPrintInvoiceModalVisible(true);
+  };
+
+  const handleClosePrintInvoiceModal = () => {
+    setIsPrintInvoiceModalVisible(false);
+  };
+
   const handlePayment = (id: number | undefined, total: number | undefined) => {
+    const appoinmentId = id;
+    const amountAppointment = total;
+
     if (total !== undefined) {
-      navigate(`/payment/${id}/${total}`);
+      axios
+        .post(`${API_URL}/create-payment`, {
+          appointmentID: appoinmentId,
+          amount: amountAppointment,
+        })
+        .then((response) => {
+          localStorage.setItem(
+            "paymentInfo",
+            JSON.stringify({ appoinmentId, amountAppointment })
+          );
+          window.location.href = response.data.paymentUrl;
+        });
     } else {
       console.error("Không có thông tin thanh toán");
     }
   };
+
+  const handlePrint = async (id: number | undefined) => {
+    console.log(id);
+
+    if (id !== undefined) {
+      handleViewInvoice(id);
+    } else {
+      message.warning("Không có thông tin hóa đơn");
+    }
+  };
+  useEffect(() => {
+    if (selectedInvoice) {
+      setIsPrintInvoiceModalVisible(true);
+    }
+  }, [selectedInvoice]);
   return (
     <>
       {listAppointment?.length ? (
@@ -105,6 +151,12 @@ const ConfirmedAppointment: FC = () => {
                               Thanh toán
                             </Button>
                           )}
+                          <Button
+                            onClick={() => handlePrint(item.id)}
+                            className="btn-done"
+                          >
+                            xem hóa đơn
+                          </Button>
                         </td>
                       </tr>
                     );
@@ -120,6 +172,15 @@ const ConfirmedAppointment: FC = () => {
           </div>
           <div>Chưa có lịch nào</div>
         </div>
+      )}
+      {selectedInvoice && (
+        <Modal
+          visible={isPrintInvoiceModalVisible}
+          onCancel={handleClosePrintInvoiceModal}
+          footer={null}
+        >
+          <PrintInvoice invoiceData={selectedInvoice} />
+        </Modal>
       )}
     </>
   );

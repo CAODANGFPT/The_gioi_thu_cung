@@ -9,22 +9,21 @@ import {
   message,
 } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
+import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/page/appointment.scss";
-import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentMutation,
-  useGetAppointmentTimeMutation,
+  useCheckPetHouseAppointmentMutation,
   useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
-import { useGetAllpetHouseClientQuery } from "../../../services/pethouse";
 import {
   useGetAllUserPetsQuery,
   useUserPetMutation,
@@ -48,9 +47,10 @@ type TFinish = {
   name: string;
   species_id: number;
 };
-
+const API_URL = "http://localhost:8080/api";
 const Appointment: React.FC = () => {
   const [form] = Form.useForm();
+  const [availablePetHouses, setAvailablePetHouses] = useState<TpetHouse[]>([]);
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
@@ -62,11 +62,11 @@ const Appointment: React.FC = () => {
   const [namePet, setNamePet] = useState<number>();
   const [defaultValue, setDefaultValue] = useState<number[]>([]);
   const [valueId, setValueId] = useState<number | undefined>();
-  const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
   const { data: user } = useGetUserQuery();
-  const { data: pethouse } = useGetAllpetHouseClientQuery();
+  const [pethouse, setPethouse] = useState<any[]>([]);
+
   const { data: services } = useServicesClientQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
@@ -76,10 +76,8 @@ const Appointment: React.FC = () => {
     useAddAppointmentMutation();
   const [updateAppointment, { isLoading: loadingUpdate }] =
     useUpdateAppointmentMutation();
-
-  const [getAppointmentTime] = useGetAppointmentTimeMutation();
+  const [checkPetHouse] = useCheckPetHouseAppointmentMutation();
   const [userPet] = useUserPetMutation();
-  const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
   const [appointmentData] = useState<any>(location.state?.appointmentData);
 
@@ -125,7 +123,9 @@ const Appointment: React.FC = () => {
 
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
-    label: item.name,
+    label: `${item.name} - ${new Intl.NumberFormat("vi-VN").format(
+      item.price
+    )}VNĐ - ${item.time}`,
   }));
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
@@ -155,8 +155,30 @@ const Appointment: React.FC = () => {
     };
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
+      console.log(resAppointment);
+
+      const appoinmentId = resAppointment.data.id;
+      const amountAppointment = total;
+
       message.success(resAppointment.data.message);
-      navigate("/account/wait-for-confirmation-appointment");
+
+      if (paymentMethods_id === 1) {
+        axios
+          .post(`${API_URL}/create-payment`, {
+            appointmentID: appoinmentId,
+            amount: amountAppointment,
+          })
+          .then((response) => {
+            localStorage.setItem(
+              "paymentInfo",
+              JSON.stringify({ appoinmentId, amountAppointment })
+            );
+            window.location.href = response.data.paymentUrl;
+          });
+      }
+      if (paymentMethods_id === 2) {
+        navigate("/account/wait-for-confirmation-appointment");
+      }
     } else {
       if (
         resAppointment.error &&
@@ -212,23 +234,6 @@ const Appointment: React.FC = () => {
     console.log("Failed:", values);
   };
 
-  const onChangePetHouse = async (value: number) => {
-    setServicesOpenTime(true);
-    form.setFieldValue("start_time", null);
-    setEndTime(null);
-    const res = await getAppointmentTime({ pethouse_id: value });
-    if ("data" in res) {
-      const formattedData = res.data.map((item) => ({
-        id: item.id,
-        start_time: dayjs(item.start_time).format("YYYY-MM-DD HH:mm:ss"),
-        end_time: dayjs(item.end_time)
-          .subtract(1, "second")
-          .format("YYYY-MM-DD HH:mm:ss"),
-      }));
-      setDisableTime(formattedData);
-    }
-  };
-
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     if (!current) {
       return false;
@@ -239,22 +244,6 @@ const Appointment: React.FC = () => {
   };
 
   const disabledDateTime = (current: Dayjs | null) => {
-    const servicesId =
-      services?.filter((service) => idServices.includes(service.id)) || [];
-    const totalMilliseconds = servicesId.reduce((total, service) => {
-      const regexResult = service.time.match(/(\d+):(\d+):(\d+)/);
-      if (regexResult) {
-        const [, hours, minutes, seconds] = regexResult;
-        const milliseconds =
-          parseInt(hours, 10) * 3600000 +
-          parseInt(minutes, 10) * 60000 +
-          parseInt(seconds, 10) * 1000;
-
-        return total + milliseconds * pet.length;
-      }
-
-      return total;
-    }, 0);
     return {
       disabledHours: () => {
         const defaultDisabledHours = Array.from(
@@ -269,83 +258,16 @@ const Appointment: React.FC = () => {
           );
 
           return [...defaultDisabledHours, ...currentDayDisabledHours];
-        } else {
-          let disabledHours: number[] = [];
-
-          disableTime.forEach(({ start_time, end_time }) => {
-            const startTime = dayjs(start_time);
-            const endTime = dayjs(end_time);
-
-            if (
-              current &&
-              current.isSame(startTime, "day") &&
-              current.isSame(endTime, "day")
-            ) {
-              let newStartTime = startTime.subtract(
-                totalMilliseconds,
-                "millisecond"
-              );
-              let newEndTime = endTime;
-              if (newEndTime.minute() > 0) {
-                newEndTime = newEndTime.subtract(1, "minute");
-              }
-              disabledHours = disabledHours.concat(
-                Array.from({ length: 24 }, (_, i) => i).filter(
-                  (hour) =>
-                    hour >= newStartTime.hour() + 1 && hour <= newEndTime.hour()
-                )
-              );
-            }
-          });
-          return [...defaultDisabledHours, ...disabledHours];
         }
-      },
-      disabledMinutes: () => {
-        let disabledMinutes: number[] = [];
 
-        disableTime.forEach(({ start_time, end_time }) => {
-          const startTime = dayjs(start_time);
-          const endTime = dayjs(end_time);
-
-          let newStartTime = startTime.subtract(
-            totalMilliseconds,
-            "millisecond"
-          );
-          if (
-            current &&
-            current.isSame(startTime, "day") &&
-            current.isSame(endTime, "day")
-          ) {
-            if (current.hour() === endTime.hour()) {
-              disabledMinutes = disabledMinutes.concat(
-                Array.from({ length: 60 }, (_, i) => i).filter(
-                  (minute) => minute <= endTime.minute()
-                )
-              );
-            }
-            if (current.hour() === newStartTime.hour()) {
-              if (newStartTime.hour() === 9) {
-                disabledMinutes = disabledMinutes.concat(
-                  Array.from({ length: 60 }, (_, i) => i).filter(
-                    (minute) => minute > 0
-                  )
-                );
-              } else {
-                disabledMinutes = disabledMinutes.concat(
-                  Array.from({ length: 60 }, (_, i) => i).filter(
-                    (minute) => minute > newStartTime.minute()
-                  )
-                );
-              }
-            }
-          }
-        });
-        return disabledMinutes;
+        return defaultDisabledHours;
       },
+      disabledMinutes: () => [],
+      disabledSeconds: () => [],
     };
   };
 
-  const onChangeTime = (value: Dayjs | null, dateString: string) => {
+  const onChangeTime = async (value: Dayjs | null, dateString: string) => {
     if (value) {
       const servicesId =
         services?.filter((service) => idServices.includes(service.id)) || [];
@@ -393,7 +315,17 @@ const Appointment: React.FC = () => {
               newEndTime = newEndTime.add(3, "millisecond");
             }
           }
+          const petHouse = await checkPetHouse({
+            start_time: dayjs(value).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+            end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+          });
 
+          console.log(petHouse);
+          if ("data" in petHouse) {
+            setPethouse(petHouse.data.petHouse);
+          } else {
+            message.error("Không có phòng trống trong giờ bạn chọn");
+          }
           setEndTime(newEndTime);
         } else {
           setEndTime(null);
@@ -419,6 +351,7 @@ const Appointment: React.FC = () => {
       setPet([]);
     }
   };
+
   const handleChangePets = (petValue: number[]) => {
     listPets(petValue);
     setDefaultValue(petValue);
@@ -456,7 +389,7 @@ const Appointment: React.FC = () => {
     }
   };
 
-  const functionEndTimeChange = (
+  const functionEndTimeChange = async (
     servicesValue?: number[],
     petValue?: number[]
   ) => {
@@ -502,7 +435,19 @@ const Appointment: React.FC = () => {
         if (newEndTime.hour() === 12 && newEndTime.minute() > 0) {
           newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
         }
+        const petHouse = await checkPetHouse({
+          start_time: dayjs(form.getFieldValue("start_time")).format(
+            "YYYY-MM-DDTHH:mm:ssZ[Z]"
+          ),
+          end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+        });
 
+        console.log(petHouse);
+        if ("data" in petHouse) {
+          setPethouse(petHouse.data.petHouse);
+        } else {
+          message.error("Không có phòng trống trong giờ bạn chọn");
+        }
         setEndTime(newEndTime);
       } else {
         setEndTime(null);
@@ -511,6 +456,7 @@ const Appointment: React.FC = () => {
       setEndTime(null);
     }
   };
+
   const totalService = (value: number[]) => {
     if (services) {
       const servicesId =
@@ -569,28 +515,17 @@ const Appointment: React.FC = () => {
                 options={optionsServices}
               />
             </Form.Item>
-            <Form.Item
-              name="petHouse_id"
-              label="Loại phòng"
-              rules={[{ required: true, message: "Không được để trống" }]}
-            >
-              <Select onChange={onChangePetHouse} options={optionsPetHouse} />
-            </Form.Item>
-            <Form.Item
-              label={<div className="time">Thời gian</div>}
-              style={{
-                gap: 20,
-              }}
-            >
+            <div style={{ display: "flex", gap: 10 }}>
               <Form.Item
                 name="start_time"
+                label="Thời gian bắt đầu"
                 rules={[{ required: true, message: "Không được để trống" }]}
                 style={{ width: "100%" }}
-                noStyle
               >
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
+                  placeholder=""
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
@@ -598,21 +533,28 @@ const Appointment: React.FC = () => {
                   }}
                   onChange={onChangeTime}
                   showNow={false}
-                  disabled={!servicesOpenTime}
                 />
               </Form.Item>
               <Form.Item
+                label="Thời gian kết thúc"
                 style={{ width: "100%" }}
-                noStyle
                 rules={[{ required: true, message: "Không được để trống" }]}
               >
                 <DatePicker
+                  placeholder=""
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
                   value={endTime}
                   disabled
                 />
               </Form.Item>
+            </div>
+            <Form.Item
+              name="petHouse_id"
+              label="Loại phòng"
+              rules={[{ required: true, message: "Không được để trống" }]}
+            >
+              <Select options={optionsPetHouse} />
             </Form.Item>
             <Form.Item label="Phương thức thanh toán">
               <Radio.Group

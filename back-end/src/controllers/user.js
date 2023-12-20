@@ -139,3 +139,13 @@ export const searchUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+export const listStaff = async (req, res) => {
+  try {
+    const staffs = await User.getAllRoleStaff();
+    res.json(staffs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

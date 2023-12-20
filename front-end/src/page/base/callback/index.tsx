@@ -94,16 +94,17 @@ const CallbackVNPAY: React.FC = () => {
       const paymentInfo = JSON.parse(
         localStorage.getItem("paymentInfo") || "{}"
       );
+      console.log(paymentInfo);
 
       try {
-        const amount = parseInt(paymentInfo.total, 10);
-        const appointmentId = parseInt(paymentInfo.id, 10);
+        const amount = parseInt(paymentInfo.amountAppointment, 10);
+        const Idappointment = parseInt(paymentInfo.appoinmentId, 10);
 
         await addInvoice({
           user_id: user?.id,
           paymentMethod: "VNPAY",
           amount: amount,
-          appointments_id: appointmentId,
+          appointments_id: Idappointment,
         });
       } catch (error) {
         console.error("Error adding invoice", error);

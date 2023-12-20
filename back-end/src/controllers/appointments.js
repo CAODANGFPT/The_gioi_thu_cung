@@ -548,6 +548,62 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
+export const updateAppointmentPayment = async (req, res) => {
+  try {
+    const { status_payment } = req.body;
+    const { error } = updateAppointmentStatusSchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    await Appointments.updateAppointmentPayment(req.params.id, status_payment);
+    const appointment = await Appointments.getAppointmentsById(req.params.id);
+    console.log(appointment);
+    if (appointment.user_name && appointment.user_email) {
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: "hainv21123@gmail.com",
+          pass: "yfaqudeffxnjptla",
+        },
+      });
+
+      const mailOptions = {
+        from: "hainv21123@gmail.com",
+        to: appointment.user_email,
+        subject: "Xác nhận đặt lịch thành công",
+        html: `<div style="font-family: sans-serif; margin: 0 40px;">
+          <img
+            style="width: 200px"
+            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
+            alt=""
+          />
+          <p>Chào <span style="font-weight: 600">${appointment.user_name},</span></p>
+          <p>
+            Chúc mừng bạn đã đặt lịch thành công tại
+            <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
+          </p>
+          <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+          <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
+          <div style="text-align: right;">
+            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
+            <p>Trân trọng,</p>
+            <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
+          </div>
+        </div>`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
+
+    res.json({ message: "Cập nhật lịch hẹn thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const getAppointmentUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -661,6 +717,106 @@ export const getAppointmentUserStatus = async (req, res) => {
         }, []);
 
         res.json(uniqueData);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  } catch (error) {
+    return res.status(401).json({
+      message: "Token không hợp lệ",
+    });
+  }
+};
+export const getPrintData = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Bạn chưa đăng nhập");
+    }
+    const decoded = jwt.verify(token, "duantotnghiep");
+    const user = await User.getUser(decoded.id);
+    if (!user) {
+      res.status(404).json({ error: "" });
+    } else {
+      try {
+        const appointment = await Appointments.getPrintDataById(req.params.id);
+
+        if (!appointment) {
+          return res.status(404).json({ error: "Không tìm thấy Data print" });
+        }
+
+        const printData = appointment.reduce((result, record) => {
+          if (record && record.id !== undefined) {
+            if (Array.isArray(result) && result.length > 0) {
+              const existingRecordIndex = result.findIndex(
+                (r) => r.id === record.id
+              );
+              if (existingRecordIndex === -1) {
+                result.push({
+                  id: record.id,
+                  day: record.day,
+                  services: [
+                    { id: record.serviceId, name: record.serviceName },
+                  ],
+                  pets: [{ id: record.petId, name: record.petName }],
+                  total: record.total,
+                  start_time: record.start_time,
+                  end_time: record.end_time,
+                  user_email: record.user_email,
+                  user_name: record.user_name,
+                  pethouse_name: record.pethouse_name,
+                  pethouse_id: record.pethouse_id,
+                  status_name: record.status_name,
+                  status_id: record.status_id,
+                  statusPaymentId: record.statusPaymentId,
+                  statusPaymentName: record.statusPaymentName,
+                });
+              } else {
+                const existingPetIndex = result[
+                  existingRecordIndex
+                ].pets.findIndex((pet) => pet.id === record.petId);
+                if (existingPetIndex === -1) {
+                  result[existingRecordIndex].pets.push({
+                    id: record.petId,
+                    name: record.petName,
+                  });
+                }
+                const existingServicesIndex = result[
+                  existingRecordIndex
+                ].services.findIndex(
+                  (services) => services.id === record.serviceId
+                );
+                if (existingServicesIndex === -1) {
+                  result[existingRecordIndex].services.push({
+                    id: record.serviceId,
+                    name: record.serviceName,
+                  });
+                }
+              }
+            } else {
+              result.push({
+                id: record.id,
+                day: record.day,
+                services: [{ id: record.serviceId, name: record.serviceName }],
+                pets: [{ id: record.petId, name: record.petName }],
+                total: record.total,
+                start_time: record.start_time,
+                end_time: record.end_time,
+                user_email: record.user_email,
+                user_name: record.user_name,
+                pethouse_name: record.pethouse_name,
+                pethouse_id: record.pethouse_id,
+                status_name: record.status_name,
+                status_id: record.status_id,
+                statusPaymentId: record.statusPaymentId,
+                statusPaymentName: record.statusPaymentName,
+              });
+            }
+          }
+          return result;
+        }, []);
+
+        res.json(printData);
       } catch (err) {
         res.status(500).json({ error: err.message });
       }
@@ -859,6 +1015,23 @@ export const status_payment = async (req, res) => {
   }
 };
 
+
+export const checkPetHouse = async (req, res) => {
+  try {
+    const { start_time, end_time} = req.body;
+    const petHouse = await Appointments.checkPetHouse(
+      start_time, end_time
+    );
+
+    if (!petHouse) {
+      res.status(404).json({ error: "Không có phòng nào trống" });
+    } else {
+      res.json({petHouse });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const listPaymentAppointment = async (req, res) => {
   try {
     const listPaymentAppointment = await Appointments.getAppointmentDetails(

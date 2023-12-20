@@ -9,6 +9,7 @@ import {
   useRemoveMenuTypeMutation,
   useMenuTypeQuery,
 } from "../../../services/menuType";
+import "../../../assets/scss/admin/appointments.scss";
 
 const MenuTypeAdmin: React.FC = () => {
   const { data } = useMenuTypeQuery();
@@ -67,17 +68,7 @@ const MenuTypeAdmin: React.FC = () => {
   ];
   return (
     <div>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Quản lý kiểu menu
-      </h2>
+      <h2 className="title-appoiment">Quản lý kiểu menu</h2>
       <Link to="/admin/menutype/add">
         <Button
           type="text"
@@ -87,6 +78,8 @@ const MenuTypeAdmin: React.FC = () => {
             marginBottom: "1rem",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "15%",
+            float: "right",
           }}
         >
           THÊM KIỂU MENU

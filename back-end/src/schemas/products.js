@@ -27,3 +27,11 @@ export const productsSchema = joi.object({
     "any.required": "Trường category_id là bắt buộc",
   }),
 });
+
+export const productsUpdateQuatitySchema = joi.object({
+  id: joi.number(),
+  quantity: joi.number().required().messages({
+    "Number.empty": " quantity không được để trống",
+    "any.required": "quantity là trường bắt buộc",
+  }),
+});

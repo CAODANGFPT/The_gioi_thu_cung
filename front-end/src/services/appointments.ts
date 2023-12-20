@@ -3,6 +3,7 @@ import {
   AppointmentResponse,
   TAppointment,
   TAppointmentUpdateSchema,
+  TAupdatePaymentAppointment,
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
@@ -64,6 +65,7 @@ const appointmentApi = createApi({
         },
         providesTags: ["Appointment"],
       }),
+
       showStatusPayment: builder.query<TGetStatusPaymentSchema, number>({
         query: (id) => {
           return {
@@ -80,6 +82,16 @@ const appointmentApi = createApi({
         query: (appointments) => {
           return {
             url: "/appointment",
+            method: "POST",
+            body: appointments,
+          };
+        },
+        invalidatesTags: ["Appointment"],
+      }),
+      checkPetHouseAppointment: builder.mutation<any, any>({
+        query: (appointments) => {
+          return {
+            url: "/checkPetHouseAppointments",
             method: "POST",
             body: appointments,
           };
@@ -115,6 +127,17 @@ const appointmentApi = createApi({
       >({
         query: (appointments) => ({
           url: `/appointmentStatus/${appointments.id}`,
+          method: "PUT",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
+      updatePaymentAppointment: builder.mutation<
+        TAppointment,
+        Partial<TAupdatePaymentAppointment>
+      >({
+        query: (appointments) => ({
+          url: `/appointmentPayment/${appointments.id}`,
           method: "PUT",
           body: appointments,
         }),
@@ -161,6 +184,15 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+      ListPaymentAppointment: builder.query<TAppointment[], number>({
+        query: (id) => {
+          return {
+            url: `/appointmentPrintData/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Appointment"],
+      }),
     };
   },
 });
@@ -174,11 +206,14 @@ export const {
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdatePaymentAppointmentMutation,
   useUpdateAppointmentAdminMutation,
   useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
+  useCheckPetHouseAppointmentMutation,
   useAddAppointmentAdminMutation,
   useGetAppointmentTimeMutation,
+  useListPaymentAppointmentQuery,
 } = appointmentApi;
 export const appointmentReducer = appointmentApi.reducer;
 export default appointmentApi;
