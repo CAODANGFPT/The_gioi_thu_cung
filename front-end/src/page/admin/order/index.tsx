@@ -54,6 +54,7 @@ const OrderAdmin: React.FC = () => {
     value: item.id,
     label: item.name,
   }));
+
   const exportToExcel = () => {
     const flattenData = dataOrder
       ? dataOrder.map((item: any) => ({
@@ -81,6 +82,7 @@ const OrderAdmin: React.FC = () => {
     XLSX.utils.book_append_sheet(wb, ws, "Đơn hàng");
     XLSX.writeFile(wb, `${orderNameFile}.xlsx`);
   };
+
   const columns: ColumnsType<any> = [
     {
       title: "STT",

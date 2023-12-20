@@ -3,6 +3,7 @@ import {
   AppointmentResponse,
   TAppointment,
   TAppointmentUpdateSchema,
+  TAupdatePaymentAppointment,
   TAupdateStatusAppointment,
   TCancelHistoryAppointment,
   TCreateAppointment,
@@ -131,6 +132,17 @@ const appointmentApi = createApi({
         }),
         invalidatesTags: ["Appointment"],
       }),
+      updatePaymentAppointment: builder.mutation<
+        TAppointment,
+        Partial<TAupdatePaymentAppointment>
+      >({
+        query: (appointments) => ({
+          url: `/appointmentPayment/${appointments.id}`,
+          method: "PUT",
+          body: appointments,
+        }),
+        invalidatesTags: ["Appointment"],
+      }),
       updateAppointmentAdmin: builder.mutation<TAppointment, any>({
         query: (appointments) => ({
           url: `/updateAdmin/${appointments.id}`,
@@ -194,6 +206,7 @@ export const {
   useAddAppointmentMutation,
   useSearchAddAppointmentMutation,
   useUpdateStatusAppointmentMutation,
+  useUpdatePaymentAppointmentMutation,
   useUpdateAppointmentAdminMutation,
   useUpdateAppointmentMutation,
   useCancelHistoryAppointmentMutation,
