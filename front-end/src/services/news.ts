@@ -9,7 +9,7 @@ const newsApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
-          headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", "Bearer " + token);
       }
       return headers;
     },
@@ -29,6 +29,15 @@ const newsApi = createApi({
         query: () => {
           return {
             url: "/newsTop3",
+            method: "GET",
+          };
+        },
+        providesTags: ["News"],
+      }),
+      newsTop8: builder.query<TNews[], void>({
+        query: () => {
+          return {
+            url: "/newsTop8",
             method: "GET",
           };
         },
@@ -60,21 +69,28 @@ const newsApi = createApi({
           };
         },
         providesTags: ["News"],
-
       }),
 
       updateNews: builder.mutation<TNews, TNews>({
         query: (updatedNews) => ({
-            url: `/news/${updatedNews.id}`,
-            method: "PUT",
-            body: updatedNews
+          url: `/news/${updatedNews.id}`,
+          method: "PUT",
+          body: updatedNews,
         }),
         invalidatesTags: ["News"],
-    }),
+      }),
     };
   },
 });
 
-export const { useNewsQuery,useNewsTop3Query, useAddNewsMutation, useRemoveNewsMutation, useUpdateNewsMutation, useNewsByIdQuery } =  newsApi;
+export const {
+  useNewsQuery,
+  useNewsTop3Query,
+  useNewsTop8Query,
+  useAddNewsMutation,
+  useRemoveNewsMutation,
+  useUpdateNewsMutation,
+  useNewsByIdQuery,
+} = newsApi;
 export const newsReducer = newsApi.reducer;
 export default newsApi;

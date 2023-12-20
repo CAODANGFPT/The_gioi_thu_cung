@@ -5,16 +5,20 @@ import ArrowRightIcon from "../../../assets/svg/arrowRightIcon";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import CarouselProduct from "../../../components/carouselProduct";
+import CarouselBlogs from "../../../components/carouselBlogs";
 import ServiceCard from "../../../components/serviceCard";
 import { useGetTop8ProductsQuery } from "../../../services/products";
 import { useServicesTop4Query } from "../../../services/services";
 import { useGetAllBannerQuery } from "../../../services/banner";
+import Blogs from "../../../components/blogs";
+import { useNewsTop8Query } from "../../../services/news";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
   const { data: listServices } = useServicesTop4Query();
   const { data: listTop8Products } = useGetTop8ProductsQuery();
   const { data: listBanner } = useGetAllBannerQuery();
+  const { data: newsTop8 } = useNewsTop8Query();
   return (
     <div className="bg">
       <div className="home">
@@ -82,8 +86,8 @@ const Home: React.FC = () => {
           productData={listTop8Products || []}
           name="Sản phẩm mới nhất "
         />
-        {/* <CarouselProduct productData={productData} name="Điểm đến mới" />
-        <CarouselProduct productData={productData} name="Siêu giảm giá" /> */}
+        <CarouselBlogs blogsData={newsTop8 || []} name="Tin tức mới nhất" />
+        {/* <CarouselProduct productData={productData} name="Siêu giảm giá" /> */}
         {/* <CarouseBlog blogData={blogData} /> */}
       </div>
     </div>

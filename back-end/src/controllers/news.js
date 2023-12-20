@@ -17,6 +17,14 @@ export const listTop3 = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const listTop8 = async (req, res) => {
+  try {
+    const list = await News.getTop8();
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const listNewsUsers = async (req, res) => {
   try {
     const news = await News.getNewsUsers();
