@@ -12,12 +12,9 @@
   padding: 2rem 0;
   margin: 10px 0px 30px 0px;
   .about_container {
-    max-width: $xl;
+    max-width: 1000px;
     margin: 0px auto;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     @include max-screen($xl) {
       max-width: 900px;
     }
@@ -26,7 +23,9 @@
       padding: 0 25px;
     }
     .about_logo{
-      width: 500px;
+      img{
+        width: 100%;
+      }
     }
     .about_title{
       color: #00575c;
