@@ -1,5 +1,8 @@
 import Products from "../models/products";
-import { productsSchema } from "../schemas/products";
+import {
+  productsSchema,
+  productsUpdateQuatitySchema,
+} from "../schemas/products";
 
 export const list = async (req, res) => {
   try {
@@ -85,6 +88,23 @@ export const update = async (req, res) => {
       category_id
     );
     res.json({ message: "Update product thành công" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateQuantity = async (req, res) => {
+  try {
+    const { quantity } = req.body;
+    const { error } = productsUpdateQuatitySchema.validate(req.body);
+    if (error) {
+      const errors = error.details.map((errorItem) => errorItem.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    await Products.updateQuantity(req.params.id, quantity);
+    res.json({ message: "Update quantity product thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

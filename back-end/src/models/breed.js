@@ -50,12 +50,12 @@ export default class Breed {
       connection.query(
         "INSERT INTO breed ( name, species_id) VALUES (?, ?)",
         [name, species_id],
-        (err) => {
+        (err, results) => {
           if (err) {
             console.error("Error inserting breed:", err);
             reject(err);
           } else {
-            resolve();
+            resolve(results.insertId);
           }
         }
       );
