@@ -11,15 +11,15 @@ const About = () => {
           about.map((item) => (
             <div key={item.id} className="about_container">
               
+              <div className="about_logo">
+                <img src={item.image} alt="" />
+              </div>
               <div className="about_title">
                 {typeof item.description === 'string' ? (
                   <div dangerouslySetInnerHTML={{ __html: item.description }} />
                 ) : (
                   <span>{item.description}</span>
                 )}
-              </div>
-              <div className="about_logo">
-                <img src={item.image} alt="" />
               </div>
             </div>
           ))}
