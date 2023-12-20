@@ -25,6 +25,33 @@ const dashboardApi = createApi({
         },
         providesTags: ["Dashboard"],
       }),
+      revenueToday: builder.query<any, void>({
+        query: () => {
+          return {
+            url: "/getRevenueToday",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+      getCountUserDay: builder.query<any, void>({
+        query: () => {
+          return {
+            url: "/getCountUserDay",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+      revenueThisMonth: builder.query<any, void>({
+        query: () => {
+          return {
+            url: "/getRevenueThisMonth",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
       total: builder.query<number, void>({
         query: () => {
           return {
@@ -34,10 +61,50 @@ const dashboardApi = createApi({
         },
         providesTags: ["Dashboard"],
       }),
+      totalRevenue: builder.query<any[], void>({
+        query: () => {
+          return {
+            url: "/totalRevenue",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+
+      // Appointments
+
+      revenueAppointmentsThisMonth: builder.query<any[], void>({
+        query: () => {
+          return {
+            url: "/getRevenueAppointmentsThisMonth",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+      revenueAppointmentsDay: builder.query<any[], void>({
+        query: () => {
+          return {
+            url: "/getRevenueAppointmentsDay",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+      // Appointments
     };
   },
 });
 
-export const { useListQuery, useTotalQuery } = dashboardApi;
+export const {
+  useRevenueAppointmentsThisMonthQuery,
+  useRevenueAppointmentsDayQuery,
+  useListQuery,
+  useTotalRevenueQuery,
+  useTotalQuery,
+  useRevenueTodayQuery,
+  useRevenueThisMonthQuery,
+  useGetCountUserDayQuery,
+} = dashboardApi;
 export const dashboardReducer = dashboardApi.reducer;
 export default dashboardApi;
