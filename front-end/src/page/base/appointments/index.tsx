@@ -131,7 +131,6 @@ const Appointment: React.FC = () => {
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
     value: item.id,
     label: item.name,
-    disabled: item.status_id === 1,
   }));
 
   const optionsPet = listPet?.map((item: TUserPets) => ({
@@ -569,6 +568,7 @@ const Appointment: React.FC = () => {
                 {paymentMethods &&
                   paymentMethods.map((item) => (
                     <Radio
+                      key={item.id}
                       value={item.id}
                       style={{
                         width: 252,
