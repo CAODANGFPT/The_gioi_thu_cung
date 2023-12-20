@@ -86,6 +86,18 @@ export default class Products {
       );
     });
   }
+  static updateQuantity(id, quantity) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE products SET quantity = ? WHERE id = ?",
+        [quantity, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
   static deleteProducts(id) {
     return new Promise((resolve, reject) => {
       connection.query(
