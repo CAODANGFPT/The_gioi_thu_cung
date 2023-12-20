@@ -17,6 +17,14 @@ export default class News {
       });
     });
   }
+  static getTop8() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT news.*, users.name as nameUser FROM news JOIN users ON news.user_id = users.id ORDER BY news.created_at DESC LIMIT 8", (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
   static getNewsUsers() {
     return new Promise((resolve, reject) => {
       connection.query(
