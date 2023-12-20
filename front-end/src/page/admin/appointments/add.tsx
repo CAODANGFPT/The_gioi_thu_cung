@@ -1,4 +1,13 @@
-import { Avatar, Button, DatePicker, Form, Select, Space, message } from "antd";
+import {
+  Avatar,
+  Button,
+  DatePicker,
+  Form,
+  Radio,
+  Select,
+  Space,
+  message,
+} from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -10,31 +19,27 @@ import { TGetAppointmentTime } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TPetsSchemaRes, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
+import { TUser } from "../../../schema/user";
 import {
   useAddAppointmentAdminMutation,
+  useCheckPetHouseAppointmentMutation,
   useGetAppointmentTimeMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
-import {
-  useGetAllpetHouseClientQuery,
-  useGetAllpetHouseQuery,
-} from "../../../services/pethouse";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import { useGetAllpetHouseClientQuery } from "../../../services/pethouse";
 import {
   useGetPetByIdPostMutation,
   useUserPetMutation,
 } from "../../../services/pets";
-import {
-  useServicesClientQuery,
-  useServicesQuery,
-} from "../../../services/services";
+import { useServicesClientQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import {
   useStatusPaymentQuery,
   useStatusQuery,
 } from "../../../services/status_appointment";
-import { useGetAllUserQuery, useGetUserQuery } from "../../../services/user";
+import { useGetAllUserQuery } from "../../../services/user";
 import ModalAddPet from "../../base/appointments/modalAddPet";
-import { TUser } from "../../../schema/user";
 import ModalAddUser from "../../base/appointments/modalAddUser";
 
 type TFinish = {
@@ -74,8 +79,7 @@ const AppointmentsAdd: React.FC = () => {
   const [valueId, setValueId] = useState<number | undefined>();
   const [disableTime, setDisableTime] = useState<TGetAppointmentTime[]>([]);
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
-  // const { data: user } = useGetUserQuery();
-  const { data: pethouse } = useGetAllpetHouseClientQuery();
+  const [pethouse, setPethouse] = useState<any[]>([]);
   const { data: services } = useServicesClientQuery();
   const { data: statusPayment } = useStatusPaymentQuery();
   const { data: statusAppointment } = useStatusQuery();
@@ -89,6 +93,9 @@ const AppointmentsAdd: React.FC = () => {
   const { id: idService } = useParams<{ id: string }>();
   const location = useLocation();
   const [appointmentData] = useState<any>(location.state?.appointmentData);
+  const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
+  const { data: paymentMethods } = useGetAllPaymentMethodsQuery();
+  const [checkPetHouse] = useCheckPetHouseAppointmentMutation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,8 +127,9 @@ const AppointmentsAdd: React.FC = () => {
 
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,
-    label: item.name,
-    disabled: item.is_delete === 1,
+    label: `${item.name} - ${new Intl.NumberFormat("vi-VN").format(
+      item.price
+    )}VNĐ - ${item.time}`,
   }));
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
@@ -158,6 +166,7 @@ const AppointmentsAdd: React.FC = () => {
       total: total,
       status_id: Number(values.status_id),
       status_payment: Number(values.status_payment),
+      paymentMethods_id: paymentMethods_id,
     };
     const resAppointment = await addAppointment(newData);
     if ("data" in resAppointment) {
@@ -316,7 +325,7 @@ const AppointmentsAdd: React.FC = () => {
     };
   };
 
-  const onChangeTime = (value: Dayjs | null, dateString: string) => {
+  const onChangeTime = async (value: Dayjs | null, dateString: string) => {
     if (value) {
       const servicesId =
         services?.filter((service) => idServices.includes(service.id)) || [];
@@ -364,7 +373,17 @@ const AppointmentsAdd: React.FC = () => {
               newEndTime = newEndTime.add(3, "millisecond");
             }
           }
+          const petHouse = await checkPetHouse({
+            start_time: dayjs(value).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+            end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+          });
 
+          console.log(petHouse);
+          if ("data" in petHouse) {
+            setPethouse(petHouse.data.petHouse);
+          } else {
+            message.error("Không có phòng trống trong giờ bạn chọn");
+          }
           setEndTime(newEndTime);
         } else {
           setEndTime(null);
@@ -527,6 +546,10 @@ const AppointmentsAdd: React.FC = () => {
     }
   };
 
+  const onChange = (e: any) => {
+    setPaymentMethods_id(e.target.value);
+  };
+
   return (
     <div className="appointment-edit">
       <h2 className="title-appoiment">Thêm lịch đặt</h2>
@@ -582,28 +605,17 @@ const AppointmentsAdd: React.FC = () => {
                 options={optionsServices}
               />
             </Form.Item>
-            <Form.Item
-              name="petHouse_id"
-              label="Loại phòng"
-              rules={[{ required: true, message: "Không được để trống" }]}
-            >
-              <Select onChange={onChangePetHouse} options={optionsPetHouse} />
-            </Form.Item>
-            <Form.Item
-              label="Thời gian"
-              style={{
-                gap: 20,
-              }}
-            >
+            <div style={{ display: "flex", gap: 10 }}>
               <Form.Item
                 name="start_time"
+                label="Thời gian bắt đầu"
                 rules={[{ required: true, message: "Không được để trống" }]}
                 style={{ width: "100%" }}
-                noStyle
               >
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
+                  placeholder=""
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
@@ -611,21 +623,81 @@ const AppointmentsAdd: React.FC = () => {
                   }}
                   onChange={onChangeTime}
                   showNow={false}
-                  disabled={!servicesOpenTime}
                 />
               </Form.Item>
               <Form.Item
+                label="Thời gian kết thúc"
                 style={{ width: "100%" }}
-                noStyle
                 rules={[{ required: true, message: "Không được để trống" }]}
               >
                 <DatePicker
+                  placeholder=""
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
                   value={endTime}
                   disabled
                 />
               </Form.Item>
+            </div>
+            <Form.Item
+              name="petHouse_id"
+              label="Loại phòng"
+              rules={[{ required: true, message: "Không được để trống" }]}
+            >
+              <Select options={optionsPetHouse} />
+            </Form.Item>
+            <Form.Item label="Phương thức thanh toán">
+              <Radio.Group
+                onChange={onChange}
+                value={paymentMethods_id}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  columnGap: 10,
+                }}
+              >
+                {paymentMethods &&
+                  paymentMethods.map((item) => (
+                    <Radio
+                      key={item.id}
+                      value={item.id}
+                      style={{
+                        width: 252,
+                        height: 172,
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "relative",
+                        border: "1px solid #00575c",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: 250,
+                          height: 170,
+                          overflow: "hidden",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                        }}
+                        src={item.image}
+                        alt="ảnh"
+                      />
+                      <p
+                        style={{
+                          zIndex: 10,
+                          position: "absolute",
+                          top: 7,
+                          left: 40,
+                          color: "#00575c",
+                          textShadow:
+                            "0 0 0.2em white, 0 0 0.2em white, 0 0 0.2em white",
+                        }}
+                      >
+                        {item.name}
+                      </p>
+                    </Radio>
+                  ))}
+              </Radio.Group>
             </Form.Item>
             <Form.Item
               name="status_payment"
