@@ -138,13 +138,13 @@ const SignIn = () => {
           </div>
           <br />
 
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
-          <div className="btn-flex">
+          {/* <div className="btn-flex">
             <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="login-icon-with">
@@ -163,7 +163,7 @@ const SignIn = () => {
                 Đăng nhập bằng Apple
               </Link>
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

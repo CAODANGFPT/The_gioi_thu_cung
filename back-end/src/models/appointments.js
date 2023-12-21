@@ -12,11 +12,11 @@ export default class Appointments {
   static getAppointmentsById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, users.name AS user_name,pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.id = ?",
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId,status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName,users.name AS user_name, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name,status_appointment.id AS status_id, appointments.paymentMethods_id AS paymentMethodsId, paymentMethods.name AS paymentMethodsName  FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id JOIN paymentMethods ON paymentMethods.id = appointments.paymentMethods_id WHERE appointments.id = ?",
         [id],
         (err, results) => {
           if (err) reject(err);
-          resolve(results[0]);
+          resolve(results);
         }
       );
     });
@@ -152,11 +152,12 @@ export default class Appointments {
     end_time,
     total,
     status_id,
-    status_payment
+    status_payment,
+    paymentMethods_id
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment) VALUES (?,?,?,?,?,?,?,?)",
+        "INSERT INTO appointments (day, user_id, pethouse_id, start_time, end_time, total,status_id,status_payment,paymentMethods_id) VALUES (?,?,?,?,?,?,?,?,?)",
         [
           day,
           user_id,
@@ -166,6 +167,7 @@ export default class Appointments {
           total,
           status_id,
           status_payment,
+          paymentMethods_id
         ],
         (err, results) => {
           if (err) reject(err);

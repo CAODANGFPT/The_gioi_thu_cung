@@ -115,14 +115,14 @@ const ResetPassword = () => {
           </div>
           <br />
 
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
           <div className="btn-flex">
-            <button className="btn-f bg-with">
+            {/* <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="login-icon-with">
                 Đăng nhập bằng google
@@ -139,7 +139,7 @@ const ResetPassword = () => {
               <Link to="" className="login-icon-with">
                 Đăng nhập bằng Apple
               </Link>
-            </button>
+            </button> */}
           </div>
         </form>
       </div>
