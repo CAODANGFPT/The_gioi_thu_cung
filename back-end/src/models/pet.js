@@ -75,7 +75,7 @@ export default class Pet {
   ) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id,status_id ,health_condition) VALUES (?, ?, ?, ?, ?, ?, ?,2, ?)",
+        "INSERT INTO pets (img, name, age, gender, user_id, species_id, breed_id,status_id ,health_condition,id_delete ) VALUES (?, ?, ?, ?, ?, ?, ?,2, ?, 0)",
         [
           img,
           name,
