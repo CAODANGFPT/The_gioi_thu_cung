@@ -35,6 +35,18 @@ export default class Order {
       );
     });
   }
+  static getOrderProductById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT orders.id, products.id AS productId, detailOrder.quantity as quantity, products.quantity as productQuantity FROM orders JOIN detailOrder ON orders.id = detailOrder.orderId JOIN products ON detailOrder.productId = products.id JOIN users ON orders.user_id = users.id WHERE orders.id = ? ",
+        [id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static createOrder(
     user_id,
     total,
@@ -84,11 +96,11 @@ export default class Order {
       );
     });
   }
-  static updateStatusPaymentOrder(id, status_payment ) {
+  static updateStatusPaymentOrder(id, status_payment) {
     return new Promise((resolve, reject) => {
       connection.query(
         "UPDATE status_payment  SET status_payment  = ? WHERE id = ?",
-        [status_payment , id],
+        [status_payment, id],
         (err) => {
           if (err) reject(err);
           resolve();

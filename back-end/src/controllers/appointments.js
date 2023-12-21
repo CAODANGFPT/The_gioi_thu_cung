@@ -723,11 +723,7 @@ export const updateAppointmentStatus = async (req, res) => {
       });
     }
     await Appointments.updateAppointmentStatus(req.params.id, status_id);
-    const appointment = await Appointments.getAppointmentDataById(
-      req.params.id
-    );
-    console.log(appointment);
-
+    const appointment = await Appointments.getAppointmentsById(req.params.id);
     if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
@@ -926,8 +922,8 @@ export const updateAppointmentPayment = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
 
