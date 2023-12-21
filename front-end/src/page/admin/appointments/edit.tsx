@@ -12,7 +12,7 @@ import { TPets, TUserPets } from "../../../schema/pets";
 import { TServices } from "../../../schema/services";
 import {
   useGetAppointmentTimeMutation,
-  useUpdateAppointmentAdminMutation
+  useUpdateAppointmentAdminMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
@@ -80,7 +80,6 @@ const AppointmentEdit: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      
       if (appointmentData) {
         const petIds = appointmentData.pets?.map(
           (item: { id: number }) => item.id
@@ -115,12 +114,18 @@ const AppointmentEdit: React.FC = () => {
 
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
     value: item.id,
-    label: item.name
-  }));
-  const optionsStatusAppointment = statusAppointment?.map((item: any) => ({
-    value: item.id,
     label: item.name,
   }));
+  const optionsStatusAppointment = [
+    {
+      value: 2,
+      label: "Đã xác nhận",
+    },
+    {
+      value: 3,
+      label: "Thực hiện",
+    },
+  ];
   const optionsStatusPayment = statusPayment?.map((item: any) => ({
     value: item.id,
     label: item.name,
@@ -148,7 +153,7 @@ const AppointmentEdit: React.FC = () => {
     if ("data" in resAppointment) {
       message.success("Sửa thành công");
       navigate("/admin/appointment");
-    }else {
+    } else {
       if (
         resAppointment.error &&
         "status" in resAppointment.error &&
@@ -583,9 +588,7 @@ const AppointmentEdit: React.FC = () => {
               label="Thanh toán"
               rules={[{ required: true, message: "Không được để trống" }]}
             >
-              <Select
-                options={optionsStatusPayment}
-              />
+              <Select options={optionsStatusPayment} />
             </Form.Item>
             <Form.Item
               name="status_id"
@@ -593,7 +596,7 @@ const AppointmentEdit: React.FC = () => {
               rules={[{ required: true, message: "Không được để trống" }]}
             >
               <Select options={optionsStatusAppointment} />
-            </Form.Item>  
+            </Form.Item>
             <Form.Item label="Tổng số tiền">
               <div>
                 <span style={{ fontSize: 24, color: "#00575c" }}>

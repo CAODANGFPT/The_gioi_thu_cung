@@ -36,12 +36,7 @@ const ToShip: React.FC = () => {
                   </div>
                 </div>
               ))}
-              <div className="toShip-box-bottom">
-                <div className="toShip-box-bottom-action">
-                  <div className="toShip-box-bottom-action-abort">
-                    Hủy đơn hàng
-                  </div>
-                </div>
+              <div className="toShip-box-bottom" style={{justifyContent: 'flex-end'}}>
                 <div className="toShip-box-bottom-total">
                   Thành tiền:{" "}
                   <span>
