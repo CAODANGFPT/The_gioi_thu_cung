@@ -412,6 +412,15 @@ export const updateStatusOrder = async (req, res) => {
   try {
     const { id, status_id } = req.body;
     const orderId = await Orders.updateStatusOrder(id, status_id);
+    if (status_id === 5) {
+      const data = await Orders.getOrderProductById(id);
+      data.map((item) =>
+        Products.updateQuantity(
+          item.productId,
+          item.quantity + item.productQuantity
+        )
+      );
+    }
     res.json({ id: orderId, message: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
