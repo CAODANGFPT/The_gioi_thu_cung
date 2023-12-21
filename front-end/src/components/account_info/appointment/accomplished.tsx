@@ -116,14 +116,14 @@ const AccomplishedAppointment: FC = () => {
                           >
                             Đặt lại
                           </Button>
-                          {item.statusPaymentId === 1 && (
+                          {/* {item.statusPaymentId === 1 && (
                             <Button
                               onClick={() => handlePayment(item.id, item.total)}
                               className="btn-done"
                             >
                               Thanh toán
                             </Button>
-                          )}
+                          )} */}
                         </td>
                       </tr>
                     );

@@ -98,7 +98,7 @@ const DoingAppointment: FC = () => {
                           </Tag>
                         </td>
                         <td className="action">
-                          <div>
+                          {/* <div>
                             {typeof item.total === "number" &&
                             typeof item.id === "number" ? (
                               <Button
@@ -113,7 +113,7 @@ const DoingAppointment: FC = () => {
                             ) : (
                               <p>Không có thông tin thanh toán</p>
                             )}
-                          </div>
+                          </div> */}
                         </td>
                       </tr>
                     );

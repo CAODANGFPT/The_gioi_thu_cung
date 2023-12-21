@@ -15,6 +15,7 @@ import {
   TResetPassword,
 } from "../../../../schema/resetPassword";
 import { useResetPasswordUserMutation } from "../../../../services/user";
+import { message } from "antd";
 
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -39,9 +40,12 @@ const ResetPassword = () => {
         };
         const response = await resetPassword(data);
         if ("error" in response) {
-          alert("Đổi mật khẩu thất bại");
+          message.error("Đổi mật khẩu thất bại !");
         } else {
-          alert("Đổi mật khẩu Thành công");
+          message.success("Đổi mật khẩu thành công !");
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
         }
       } catch (error) {
         navigate("/signin");
@@ -102,20 +106,20 @@ const ResetPassword = () => {
           </div>
 
           <button className="btn-f bg-submit" type="submit">
-            đăng nhập
+            Đổi mật khẩu
           </button>
 
-          <div className="forgot-phone">
+          {/* <div className="forgot-phone">
             <Link to="" className="text-login">
               Quên mật khẩu
             </Link>
             <Link to="" className="text-login">
               Login with phone number
             </Link>
-          </div>
+          </div> */}
           <br />
 
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
@@ -140,7 +144,7 @@ const ResetPassword = () => {
                 Đăng nhập bằng Apple
               </Link>
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
