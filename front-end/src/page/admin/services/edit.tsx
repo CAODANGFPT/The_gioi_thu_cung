@@ -15,6 +15,8 @@ import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../../assets/scss/page/servicesAdmin.scss";
 import { TServicesRequest } from "../../../schema/services";
+import "../../../assets/scss/admin/appointments.scss";
+
 import {
   useServicesByIdQuery,
   useUpdateServicesMutation,
@@ -102,17 +104,7 @@ const EditService = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật sản phẩm
-      </h2>
+      <h2 className="title-appoiment">Cập nhật sản phẩm</h2>
       <div>
         <Form
           form={form}

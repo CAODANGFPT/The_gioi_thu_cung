@@ -9,6 +9,7 @@ import {
   useUpdateFooterMutation,
 } from "../../../services/footer";
 import ReactQuill from "react-quill";
+import "../../../assets/scss/admin/appointments.scss";
 
 const EditFooterAdmin = () => {
   const { TextArea } = Input;
@@ -63,17 +64,7 @@ const EditFooterAdmin = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật footer
-      </h2>
+      <h2 className="title-appoiment">Cập nhật footer</h2>
       <Form
         form={form}
         name="updateMenuTypeForm"

@@ -137,6 +137,15 @@ export type TAupdateStatusAppointment = yup.InferType<
   typeof updateStatusAppointmentSchema
 >;
 
+export const updatePaymentAppointmentSchema = yup.object().shape({
+  id: yup.number().required(),
+  status_payment: yup.number().required(),
+});
+
+export type TAupdatePaymentAppointment = yup.InferType<
+  typeof updatePaymentAppointmentSchema
+>;
+
 export const createAppointmentSchema = yup.object().shape({
   day: yup.string().required(),
   pet: yup.array().of(yup.number()),

@@ -151,7 +151,7 @@ export default class Appointments {
         ],
         (err, results) => {
           if (err) reject(err);
-          resolve(results.insertId);
+          resolve(results?.insertId);
         }
       );
     });
@@ -235,6 +235,19 @@ export default class Appointments {
       connection.query(
         "UPDATE appointments SET status_id = ? WHERE id = ?",
         [status_id, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+
+  static updateAppointmentPayment(id, status_payment) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE appointments SET status_payment = ? WHERE id = ?",
+        [status_payment, id],
         (err) => {
           if (err) reject(err);
           resolve();

@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useGetAllcategoryQuery } from "../../../services/category";
+import "../../../assets/scss/admin/appointments.scss";
+
 import { Tcategory } from "../../../schema/category";
 const AddProduct = () => {
   const category = useGetAllcategoryQuery();
@@ -62,17 +64,7 @@ const AddProduct = () => {
   );
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm sản phẩm
-      </h2>
+      <h2 className="title-appoiment">Thêm sản phẩm</h2>
       <div>
         <Form
           name="basic"

@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import "../../../assets/scss/admin/appointments.scss";
 
 import { Button, Form, Input, message } from "antd";
 import { TRole } from "../../../schema/role";
@@ -50,17 +51,7 @@ const EditRole = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhật vai trò
-      </h2>
+      <h2 className="title-appoiment">Cập nhật vai trò</h2>
       <Form
         form={form}
         name="updateRoleForm"

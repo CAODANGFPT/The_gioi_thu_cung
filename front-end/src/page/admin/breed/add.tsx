@@ -13,6 +13,7 @@ import { TBreedAdd } from "../../../schema/breed";
 import { Tspecies } from "../../../schema/species";
 import { useCreateBreedMutation } from "../../../services/breed";
 import { useGetAllspeciesQuery } from "../../../services/species";
+import "../../../assets/scss/admin/appointments.scss";
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
   const [submit, setSubmit] = React.useState(false);
@@ -73,17 +74,7 @@ const AddBreed: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Thêm giống thú cưng
-      </h2>
+      <h2 className="title-appoiment">Thêm giống thú cưng</h2>
       <h2 style={{ marginBottom: 10 }}>Thêm giống</h2>
       <Form
         form={form}

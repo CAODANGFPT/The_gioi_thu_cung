@@ -15,7 +15,7 @@ export default class Products {
   static getTop8Products() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT products.id, products.name, products.description, products.price, products.img, category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ORDER BY products.id DESC LIMIT 8",
+        "SELECT products.id, products.name, products.description, products.price, products.img, products.quantity, category.name AS nameCategory FROM products JOIN category ON products.category_id = category.id ORDER BY products.id DESC LIMIT 8",
         (err, results) => {
           if (err) reject(err);
           resolve(results);
@@ -79,6 +79,18 @@ export default class Products {
       connection.query(
         "UPDATE products SET name = ?,description = ?,price = ?,img = ?,quantity = ?,category_id = ? WHERE id = ?",
         [name, description, price, img, quantity, category_id, id],
+        (err) => {
+          if (err) reject(err);
+          resolve();
+        }
+      );
+    });
+  }
+  static updateQuantity(id, quantity) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE products SET quantity = ? WHERE id = ?",
+        [quantity, id],
         (err) => {
           if (err) reject(err);
           resolve();

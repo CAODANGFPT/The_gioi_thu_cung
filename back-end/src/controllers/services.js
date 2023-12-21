@@ -18,7 +18,14 @@ export const listClient = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
+export const getTop1Services = async (req, res) => {
+  try {
+    const services = await Services.getTop1Services();
+    res.json(services);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const getTop4Services = async (req, res) => {
   try {
     const services = await Services.getTop4Services();

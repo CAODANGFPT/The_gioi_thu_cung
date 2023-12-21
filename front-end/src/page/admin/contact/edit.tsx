@@ -8,6 +8,7 @@ import {
 import { useGetAllstatusContactQuery } from "../../../services/status_contact";
 import { TStatusContact } from "../../../schema/status_contact";
 import { TStaContact } from "../../../schema/contact";
+import "../../../assets/scss/admin/appointments.scss";
 
 const confirm = () => {
   message.success("Cập nhật thành công.");
@@ -50,17 +51,7 @@ const EditContact = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
-        Cập nhập Trạng Thái Liên Hệ
-      </h2>
+      <h2 className="title-appoiment">Cập nhập Trạng Thái Liên Hệ</h2>
       <Form
         form={form}
         name="updateUserRoleForm"

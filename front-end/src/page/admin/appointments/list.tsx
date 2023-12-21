@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   DatePicker,
@@ -8,10 +9,9 @@ import {
   Tag,
   message,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import "../../../assets/scss/admin/appointments.scss";
@@ -21,21 +21,20 @@ import {
   TAppointmentSchemaRes,
 } from "../../../schema/appointments";
 import { TpetHouse } from "../../../schema/pethouse";
+import { TStatusPet } from "../../../schema/pets";
 import {
   useGetAllappointmentDataQuery,
   useSearchAddAppointmentMutation,
+  useUpdatePaymentAppointmentMutation,
   useUpdateStatusAppointmentMutation,
 } from "../../../services/appointments";
 import { useGetAllpetHouseQuery } from "../../../services/pethouse";
+import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
 import { useStatusQuery } from "../../../services/status_appointment";
 import DetailAppointment from "./modalDetail";
-import { useGetUserQuery } from "../../../services/user";
-import { useGetAllStatusPaymentQuery } from "../../../services/statusPayment";
-import { TStatusPet } from "../../../schema/pets";
 
 const AppointmentsAdmin: React.FC = () => {
   const navigate = useNavigate();
-  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
   const [filter, setFilter] = useState({
     name: "",
     house: "",
@@ -46,26 +45,11 @@ const AppointmentsAdmin: React.FC = () => {
   const [dataAppoiment, setDataAppoiment] = useState<TAppointment[]>();
   const [openReset, setOpenReset] = useState<boolean>(false);
   const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingCancel, setLoadingCancel] = useState<boolean>(false);
   const [dataDetail, setDataDetail] = useState<TAppointment>();
   const { data } = useGetAllappointmentDataQuery();
   const { data: petHouse } = useGetAllpetHouseQuery();
-  const [searchAddAppointment] = useSearchAddAppointmentMutation();
   const { data: petStatus } = useStatusQuery();
   const { data: dataPay } = useGetAllStatusPaymentQuery();
-
-  const confirm = async (id: number) => {
-    setLoadingCancel(true);
-    const res = await updateStatusAppointment({ id: id, status_id: 5 });
-    if ("data" in res) {
-      message.success("Hủy lịch đặt thành công");
-      setLoadingCancel(false);
-    } else {
-      message.error("Hủy lịch đặt không thành công");
-      setLoadingCancel(false);
-    }
-  };
 
   const optionsPetHouse = petHouse?.map((item: TpetHouse) => ({
     value: item.id,
@@ -83,23 +67,6 @@ const AppointmentsAdmin: React.FC = () => {
     value: item.id,
     label: item.name,
   }));
-
-  const redirectToAppointment = async (id: number, status_id: number) => {
-    if (status_id === 1 || status_id === 2 || status_id === 3) {
-      setLoading(true);
-      const res = await updateStatusAppointment({
-        id: id,
-        status_id: status_id + 1,
-      });
-      if ("data" in res) {
-        message.success("Sửa trạng thái thành công");
-        setLoading(false);
-      } else {
-        message.error("Sửa trạng thái không thành công");
-        setLoading(false);
-      }
-    }
-  };
 
   const exportToExcel = () => {
     const flattenData = dataAppoiment?.map((item: any) => ({
@@ -199,7 +166,7 @@ const AppointmentsAdmin: React.FC = () => {
       key: "statusPaymentName",
       width: 150,
       render: (data) => (
-        <Tag color={data.statusPaymentId === 1 ? "red" : "cyan"}>
+        <Tag color={data.statusPaymentId === 1 ? "red" : "green"}>
           {data.statusPaymentName}
         </Tag>
       ),
@@ -241,50 +208,13 @@ const AppointmentsAdmin: React.FC = () => {
               rowGap: 10,
             }}
           >
-            {/* <Button
-              onClick={() => redirectToAppointment(data)}
-              className="btn-edit"
-              style={{ marginRight: "1rem" }}
-              disabled={
-                data.status_id === 4 ||
-                data.status_id === 5 ||
-                data.statusPaymentId === 2
-              }
-            >
-              Sửa
-            </Button> */}
             {(data.status_id === 1 ||
               data.status_id === 2 ||
-              data.status_id === 3) && (
+              data.status_id === 3 ||
+              (data.status_id === 4 && data.statusPaymentId === 1)) && (
               <>
-                <Button
-                  type="primary"
-                  onClick={() => redirectToAppointment(data.id, data.status_id)}
-                  className="btn-edit"
-                  loading={loading}
-                >
-                  {data.status_id === 1
-                    ? "Xác nhận"
-                    : data.status_id === 2
-                    ? "Thực hiện"
-                    : data.status_id === 3
-                    ? "Hoàn thành"
-                    : ""}
-                </Button>
-
-                <Popconfirm
-                  onConfirm={() => confirm(data.id)}
-                  title="Hủy lịch"
-                  description="Bạn có chắc chắn hủy lịch này không?"
-                >
-                  <Button
-                    danger
-                    className="btn-delete"
-                    disabled={data.status_id === 4 || data.status_id === 5}
-                  >
-                    Hủy
-                  </Button>
-                </Popconfirm>
+                <ButtonSuccess data={data} />
+                <ButtonCancel data={data} />
               </>
             )}
           </div>
@@ -301,27 +231,6 @@ const AppointmentsAdmin: React.FC = () => {
       ),
     },
   ];
-
-  // const onFinish = async (values: any) => {
-  //   if (values.start_time) {
-  //     values.start_time = dayjs(values.start_time).format("YYYY-MM-DD");
-  //   }
-  //   const { nameUser, pethouse_id, start_time, status_id } = values;
-
-  //   const servicesData = {
-  //     nameUser,
-  //     pethouse_id,
-  //     start_time: start_time,
-  //     status_id,
-  //   };
-
-  //   try {
-  //     const data: any = await searchAddAppointment(servicesData).unwrap();
-  //     setDataAppoiment(data.uniqueData);
-  //   } catch (error) {
-  //     message.error("Không tìm thấy bài nào phù hợp");
-  //   }
-  // };
 
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     if (date) {
@@ -382,18 +291,10 @@ const AppointmentsAdmin: React.FC = () => {
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
-      >
+      <h2 className="title-appoiment">
         Quản lý thông tin đặt lịch chăm sóc thú cưng
       </h2>
-      <h2 style={{ color: "red", margin: "0.5rem" }}>Tìm kiếm</h2>
+      <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
       <div style={{ display: "flex", columnGap: 20, alignItems: "flex-end" }}>
         <div>
           <Input
@@ -454,7 +355,7 @@ const AppointmentsAdmin: React.FC = () => {
           Cài lại
         </Button>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="btn-option">
         <Button
           type="text"
           block
@@ -463,6 +364,7 @@ const AppointmentsAdmin: React.FC = () => {
             margin: "1rem 1rem 1rem 0",
             fontWeight: "500",
             border: "1px solid #c3c3c3",
+            width: "13%",
           }}
           onClick={() => navigate("/admin/appointment/add")}
         >
@@ -487,3 +389,92 @@ const AppointmentsAdmin: React.FC = () => {
 };
 
 export default AppointmentsAdmin;
+
+const ButtonSuccess = ({ data }: { data: any }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+  const [updatePaymentAppointment] = useUpdatePaymentAppointmentMutation();
+
+  const redirectToAppointment = async (id: number, status_id: number) => {
+    if (status_id === 1 || status_id === 2 || status_id === 3) {
+      setLoading(true);
+      const res = await updateStatusAppointment({
+        id: id,
+        status_id: status_id + 1,
+      });
+      if ("data" in res) {
+        message.success("Sửa trạng thái thành công");
+        setLoading(false);
+      } else {
+        message.error("Sửa trạng thái không thành công");
+        setLoading(false);
+      }
+    } else if (status_id === 4) {
+      const res = await updatePaymentAppointment({
+        id: id,
+        status_payment: 2,
+      });
+      if ("data" in res) {
+        message.success("Sửa trạng thái thanh toán thành công");
+        setLoading(false);
+      } else {
+        message.error("Sửa trạng thái thanh toán không thành công");
+        setLoading(false);
+      }
+    }
+  };
+
+  return (
+    <Button
+      type="primary"
+      onClick={() => redirectToAppointment(data.id, data.status_id)}
+      className="btn-edit"
+      loading={loading}
+    >
+      {data.status_id === 1
+        ? "Xác nhận"
+        : data.status_id === 2
+        ? "Thực hiện"
+        : data.status_id === 3
+        ? "Hoàn thành"
+        : data.status_id === 4 && data.statusPaymentId === 1
+        ? "Thanh toán"
+        : ""}
+    </Button>
+  );
+};
+
+const ButtonCancel = ({ data }: { data: any }) => {
+  const [loadingCancel, setLoadingCancel] = useState<boolean>(false);
+
+  const [updateStatusAppointment] = useUpdateStatusAppointmentMutation();
+
+  const confirm = async (id: number) => {
+    setLoadingCancel(true);
+    const res = await updateStatusAppointment({ id: id, status_id: 5 });
+    if ("data" in res) {
+      message.success("Hủy lịch đặt thành công");
+      setLoadingCancel(false);
+    } else {
+      message.error("Hủy lịch đặt không thành công");
+      setLoadingCancel(false);
+    }
+  };
+
+  return (
+    <Popconfirm
+      onConfirm={() => confirm(data.id)}
+      title="Hủy lịch"
+      description="Bạn có chắc chắn hủy lịch này không?"
+    >
+      <Button
+        danger
+        loading={loadingCancel}
+        className="btn-delete"
+        disabled={data.status_id === 4 || data.status_id === 5}
+      >
+        Hủy
+      </Button>
+    </Popconfirm>
+  );
+};

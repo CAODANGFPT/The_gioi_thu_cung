@@ -6,6 +6,7 @@ import {
 } from "../../../services/status_pet";
 import { TStatusPet } from "../../../schema/status_pet";
 import { useEffect } from "react";
+import "../../../assets/scss/admin/appointments.scss";
 
 const confirm = () => {
   message.success("Cập nhật trạng thái thành công.");
@@ -57,13 +58,7 @@ const EditStatusPet = () => {
   return (
     <>
       <h2
-        style={{
-          marginBottom: "1rem",
-          fontSize: "25px",
-          padding: "0.8rem",
-          borderRadius: "3px",
-          boxShadow: "0px 0px 5px #c3c3c3",
-        }}
+        className="title-appoiment"
       >
         Cập nhập trạng thái thú cưng
       </h2>

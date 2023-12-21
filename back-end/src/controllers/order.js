@@ -4,6 +4,7 @@ import OrderDetail from "../models/detailOrder";
 import Carts from "../models/carts";
 
 import jwt from "jsonwebtoken";
+import Products from "../models/products";
 
 export const getOrderUser = async (req, res) => {
   try {
@@ -391,7 +392,9 @@ export const createOrderUser = async (req, res) => {
     );
     for (const item of products) {
       await Carts.deleteCartsByProductId(user_id, item.id);
-
+      const res = await Products.getProductById(item.id);
+      const quantityProducts = res.quantity - item.quantity;
+      await Products.updateQuantity(item.id, quantityProducts);
       await OrderDetail.createDetailOrder(
         orderId,
         item.id,
@@ -409,6 +412,15 @@ export const updateStatusOrder = async (req, res) => {
   try {
     const { id, status_id } = req.body;
     const orderId = await Orders.updateStatusOrder(id, status_id);
+    if (status_id === 5) {
+      const data = await Orders.getOrderProductById(id);
+      data.map((item) =>
+        Products.updateQuantity(
+          item.productId,
+          item.quantity + item.productQuantity
+        )
+      );
+    }
     res.json({ id: orderId, message: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });

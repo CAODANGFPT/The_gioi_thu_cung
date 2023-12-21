@@ -74,8 +74,8 @@ const ShoppingCart = () => {
   };
 
   const handleDecreaseQuantity = (id: number) => {
-    const cart = dataOrder.map((cartItem: { id: number; quantity: number }) =>
-      cartItem.id === id && cartItem.quantity < 40
+    const cart = dataOrder.map((cartItem: { id: number; quantity: number, productQuantity: number}) =>
+      cartItem.id === id && cartItem.quantity < cartItem.productQuantity
         ? { ...cartItem, quantity: cartItem.quantity + 1 }
         : cartItem
     );

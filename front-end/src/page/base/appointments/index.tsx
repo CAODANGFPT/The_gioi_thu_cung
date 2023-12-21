@@ -12,7 +12,8 @@ import { RangePickerProps } from "antd/es/date-picker";
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../../../assets/image/logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/page/appointment.scss";
 import { TpetHouse } from "../../../schema/pethouse";
@@ -21,7 +22,7 @@ import { TServices } from "../../../schema/services";
 import {
   useAddAppointmentMutation,
   useCheckPetHouseAppointmentMutation,
-  useUpdateAppointmentMutation
+  useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
 import {
@@ -131,7 +132,6 @@ const Appointment: React.FC = () => {
   const optionsPetHouse = pethouse?.map((item: TpetHouse) => ({
     value: item.id,
     label: item.name,
-    disabled: item.status_id === 1,
   }));
 
   const optionsPet = listPet?.map((item: TUserPets) => ({
@@ -147,8 +147,8 @@ const Appointment: React.FC = () => {
       pet: values.pet,
       user_id: user?.id,
       services: values.services,
-      start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      start_time: dayjs(values.start_time).format("YYYY-MM-DD HH:mm:ss"),
+      end_time: dayjs(endTime).format("YYYY-MM-DD HH:mm:ss"),
       total: total,
       status_id: 1,
       paymentMethods_id: paymentMethods_id,
@@ -319,7 +319,7 @@ const Appointment: React.FC = () => {
             start_time: dayjs(value).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
             end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           });
-        
+
           console.log(petHouse);
           if ("data" in petHouse) {
             setPethouse(petHouse.data.petHouse);
@@ -351,6 +351,7 @@ const Appointment: React.FC = () => {
       setPet([]);
     }
   };
+
   const handleChangePets = (petValue: number[]) => {
     listPets(petValue);
     setDefaultValue(petValue);
@@ -425,6 +426,21 @@ const Appointment: React.FC = () => {
           totalMilliseconds,
           "millisecond"
         );
+        if (newEndTime.hour() > 18) {
+          const currentHour = newEndTime.hour();
+          const currentMinute = newEndTime.minute();
+          const remainingMinutes = (currentHour - 18) * 60 + currentMinute;
+          const remainingHours = Math.floor(remainingMinutes / 60);
+          const remainingMinutesAfterHours = remainingMinutes % 60;
+          newEndTime = newEndTime.add(1, "day");
+          newEndTime = newEndTime
+            .hour(9)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .add(remainingHours, "hours")
+            .add(remainingMinutesAfterHours, "minutes");
+        }
         if (
           form.getFieldValue("start_time").hour() < 12 &&
           newEndTime.hour() > 12
@@ -435,10 +451,12 @@ const Appointment: React.FC = () => {
           newEndTime = newEndTime.add(1, "hour").add(1, "millisecond");
         }
         const petHouse = await checkPetHouse({
-          start_time: dayjs(form.getFieldValue("start_time")).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+          start_time: dayjs(form.getFieldValue("start_time")).format(
+            "YYYY-MM-DDTHH:mm:ssZ[Z]"
+          ),
           end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         });
-      
+
         console.log(petHouse);
         if ("data" in petHouse) {
           setPethouse(petHouse.data.petHouse);
@@ -453,6 +471,7 @@ const Appointment: React.FC = () => {
       setEndTime(null);
     }
   };
+
   const totalService = (value: number[]) => {
     if (services) {
       const servicesId =
@@ -468,7 +487,15 @@ const Appointment: React.FC = () => {
   const onChange = (e: any) => {
     setPaymentMethods_id(e.target.value);
   };
-
+  if (!user) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20, color: "#00575c" }}>
@@ -521,6 +548,7 @@ const Appointment: React.FC = () => {
                 <DatePicker
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
+                  placeholder=""
                   disabledDate={disabledDate}
                   disabledTime={disabledDateTime}
                   showTime={{
@@ -536,6 +564,7 @@ const Appointment: React.FC = () => {
                 rules={[{ required: true, message: "Không được để trống" }]}
               >
                 <DatePicker
+                  placeholder=""
                   style={{ width: "100%" }}
                   format="YYYY-MM-DD HH:mm"
                   value={endTime}
@@ -563,6 +592,7 @@ const Appointment: React.FC = () => {
                 {paymentMethods &&
                   paymentMethods.map((item) => (
                     <Radio
+                      key={item.id}
                       value={item.id}
                       style={{
                         width: 252,
