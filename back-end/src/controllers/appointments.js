@@ -821,7 +821,7 @@ export const updateAppointmentStatus = async (req, res) => {
       uniqueData[0].services.length > 0
         ? uniqueData[0].services.join(", ")
         : "No pet name available";
-    if (appointment.user_name && appointment.user_email) {
+    if (uniqueData[0].user_name && uniqueData[0].user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
@@ -831,8 +831,8 @@ export const updateAppointmentStatus = async (req, res) => {
       });
 
       const mailOptions = {
-        from: "hainv21123@gmail.com",
-        to: appointment.user_email,
+        from: "petcare.fpt@gmail.com",
+        to: uniqueData[0].user_email,
         subject: "Xác nhận đặt lịch thành công",
         html: `<div
         style="
