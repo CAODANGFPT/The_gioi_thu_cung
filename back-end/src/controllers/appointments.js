@@ -302,7 +302,7 @@ export const create = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(start_time).format("DD-MM-YYYY HH:mm:ss")}</span
+                  >${dayjs(start_time).format("HH:mm DD-MM-YYYY ")}</span
                 >
               </td>
             </tr>
@@ -317,7 +317,7 @@ export const create = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(end_time).format("DD-MM-YYYY HH:mm:ss")}</span
+                  >${dayjs(end_time).format("HH:mm DD-MM-YYYY ")}</span
                 >
               </td>
             </tr>
@@ -572,7 +572,7 @@ export const createAdmin = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(start_time).format("DD-MM-YYYY HH:mm:ss")}</span
+                  >${dayjs(start_time).format("HH:mm DD-MM-YYYY")}</span
                 >
               </td>
             </tr>
@@ -587,7 +587,7 @@ export const createAdmin = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(end_time).format("DD-MM-YYYY HH:mm:ss")}</span
+                  >${dayjs(end_time).format("HH:mm DD-MM-YYYY")}</span
                 >
               </td>
             </tr>
@@ -931,7 +931,7 @@ export const updateAppointmentStatus = async (req, res) => {
           >
             <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
             <span style="display: inline-block; padding-left: 10px"
-              >${dayjs(uniqueData[0].start_time)}</span
+              >${dayjs(uniqueData[0].start_time).format("HH:mm DD-MM-YYYY")}</span
             >
           </td>
         </tr>
@@ -946,7 +946,7 @@ export const updateAppointmentStatus = async (req, res) => {
         >
           <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
           <span style="display: inline-block; padding-left: 10px"
-            >>${dayjs(uniqueData[0].end_time)}</span
+            >>${dayjs(uniqueData[0].end_time).format("HH:mm DD-MM-YYYY")}</span
           >
         </td>
       </tr>
@@ -1493,7 +1493,7 @@ export const updateStatusCancelAppointment = async () => {
               >
                 <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(uniqueData[0].start_time)}</span
+                  >${dayjs(uniqueData[0].start_time).format("HH:mm DD-MM-YYYY")}</span
                 >
               </td>
             </tr>
@@ -1508,7 +1508,7 @@ export const updateStatusCancelAppointment = async () => {
             >
               <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
               <span style="display: inline-block; padding-left: 10px"
-                >>${dayjs(uniqueData[0].end_time)}</span
+                >>${dayjs(uniqueData[0].end_time).format("HH:mm DD-MM-YYYY")}</span
               >
             </td>
           </tr>
