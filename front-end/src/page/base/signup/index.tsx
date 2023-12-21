@@ -23,9 +23,8 @@ const SignUp = () => {
   return (
     <div className="signUp">
       <div className="singUp-top">
-        <img src={logo} alt="logo" />
-        <Link to="" className="help">
-          Trợ giúp?
+        <Link to="/">
+          <img src={logo} alt="logo" />
         </Link>
       </div>
       <div className="singUp-bottom">
@@ -43,7 +42,7 @@ const SignUp = () => {
             <input
               className="btn-f"
               type="text"
-              placeholder="Số điện thoại/Tên tài khoản/Email"
+              placeholder="Vui lòng điền Email"
               id="email"
               name="email"
               value={formik.values.email}
@@ -58,13 +57,13 @@ const SignUp = () => {
             tiếp theo
           </button>
           <br />
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
-          <div className="btn-flex">
+          {/* <div className="btn-flex">
             <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="google">
@@ -83,8 +82,8 @@ const SignUp = () => {
                 Đăng nhập bằng Apple
               </Link>
             </button>
-          </div>
-          <p className="rule">
+          </div> */}
+          {/* <p className="rule">
             Bằng việc đăng ký, bạn đồng ý với
             <Link to="" className="rule-click">
               Điều khoản dịch vụ
@@ -94,7 +93,7 @@ const SignUp = () => {
               Chính sách quyền riêng tư
             </Link>
             của Meow
-          </p>
+          </p> */}
         </form>
       </div>
     </div>

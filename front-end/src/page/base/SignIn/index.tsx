@@ -55,11 +55,9 @@ const SignIn = () => {
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {
-              userRoleId === 1 ||
-              userRoleId === 10 
+              userRoleId === 1 || userRoleId === 10
                 ? navigate("/admin")
                 : navigate("/");
-
             }, 100);
           }
         }
@@ -71,9 +69,8 @@ const SignIn = () => {
   return (
     <div className="singIn">
       <div className="singin-top">
-        <img src={logo} alt="logo" />
-        <Link to="" className="help">
-          Trợ giúp?
+        <Link to="/">
+          <img src={logo} alt="logo" />
         </Link>
       </div>
       <div className="singin-bottom">
@@ -138,13 +135,13 @@ const SignIn = () => {
           </div>
           <br />
 
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
-          <div className="btn-flex">
+          {/* <div className="btn-flex">
             <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="login-icon-with">
@@ -163,7 +160,7 @@ const SignIn = () => {
                 Đăng nhập bằng Apple
               </Link>
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

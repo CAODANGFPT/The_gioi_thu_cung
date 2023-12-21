@@ -70,29 +70,29 @@ const HeaderBase = () => {
   };
   return (
     <div className="headerBase">
-      <div className="frame29">
+      {/* <div className="frame29">
         <p className="frame29-title1">
           Miễn phí vận chuyển<span> khi mua $20</span>
         </p>
         <p className="frame29-title2">Chi tiết</p>
-      </div>
+      </div> */}
       <div className="frame32">
         {filteredMenuDataTop &&
           filteredMenuDataTop?.map((item) => (
             <p key={item.id}>
-                {item.link ? (
-                  <Link className="frame32-title" to={item.link}>
-                    {item.name}
-                  </Link>
-                ) : (
-                  <button
-                    className="title-button"
-                    onClick={handleBookAppointmentClick}
-                  >
-                    <div>{item.name}</div>
-                  </button>
-                )}
-              </p>
+              {item.link ? (
+                <Link className="frame32-title" to={item.link}>
+                  {item.name}
+                </Link>
+              ) : (
+                <button
+                  className="title-button"
+                  onClick={handleBookAppointmentClick}
+                >
+                  <div>{item.name}</div>
+                </button>
+              )}
+            </p>
           ))}
         {user ? (
           <p className="frame32-title">
@@ -122,7 +122,7 @@ const HeaderBase = () => {
             alt="Ảnh logo"
           />
         </Link>
-        <form className="frame31">
+        {/* <form className="frame31">
           <SearchIcon />
           <input
             className="frame33"
@@ -140,13 +140,13 @@ const HeaderBase = () => {
           <button className="Rectangle29">
             <SearchIcon />
           </button>
-        </form>
-        <form className="frame31-2">
+        </form> */}
+        {/* <form className="frame31-2">
           <input className="frame33" type="text" placeholder="Tìm kiếm" />
           <button className="Rectangle29">
             <SearchIcon />
           </button>
-        </form>
+        </form> */}
         <div className="frame51">
           <Dropdown
             overlay={<ModalUser />}

@@ -52,9 +52,9 @@ const ResetPassword = () => {
     <div className="singIn">
       <div className="singin-top">
         <img src={logo} alt="logo" />
-        <Link to="" className="help">
+        {/* <Link to="" className="help">
           Trợ giúp?
-        </Link>
+        </Link> */}
       </div>
       <div className="singin-bottom">
         <img className="img-bg" src={banner} alt="" />

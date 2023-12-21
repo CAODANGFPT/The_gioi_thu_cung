@@ -6,11 +6,13 @@ import "../../../assets/scss/page/registerAccount.scss";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
-import { RegisterAccountSchema, TRegisterAccount } from "../../../schema/registerAccount";
+import {
+  RegisterAccountSchema,
+  TRegisterAccount,
+} from "../../../schema/registerAccount";
 import { useRegisterUserMutation } from "../../../services/auth";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterAccount = () => {
   const location = useLocation();
@@ -54,10 +56,10 @@ const RegisterAccount = () => {
   return (
     <div className="registerAccount">
       <div className="singUp-top">
-        <img src={logo} alt="logo" className="signup_logo"/>
-        <Link to="" className="help">
+        <img src={logo} alt="logo" className="signup_logo" />
+        {/* <Link to="" className="help">
           Trợ giúp?
-        </Link>
+        </Link> */}
       </div>
       <div className="singUp-bottom">
         <img className="img-bg" src={banner} alt="" />
@@ -140,7 +142,7 @@ const RegisterAccount = () => {
           <button className="btn-submit" type="submit">
             tiếp theo
           </button>
-          <p className="rule">
+          {/* <p className="rule">
             Bằng việc đăng ký, bạn đồng ý với
             <Link to="" className="rule-click">
               Điều khoản dịch vụ
@@ -150,7 +152,7 @@ const RegisterAccount = () => {
               Chính sách quyền riêng tư
             </Link>
             của Meow
-          </p>
+          </p> */}
         </form>
       </div>
       <ToastContainer />

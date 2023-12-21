@@ -10,6 +10,7 @@ import {
   TResetPass,
 } from "../../../../schema/resetPassword";
 import { useEmailPasswordUserMutation } from "../../../../services/auth";
+import { message } from "antd";
 
 const ForgotPassword = () => {
   const [resetPassword] = useEmailPasswordUserMutation();
@@ -20,13 +21,12 @@ const ForgotPassword = () => {
     validationSchema: ResetPassRequestSchema,
     onSubmit: async (values) => {
       try {
-        const response = await resetPassword(values);        
+        const response = await resetPassword(values);
         if ("error" in response) {
-          alert("Tài khoản mật khẩu không chính xác");
-
+          message.error("Email không chính xác !");
         } else {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            alert("Vui lòng check mail");
+          localStorage.setItem("user", JSON.stringify(response.data));
+          message.success("Vui lòng check email !");
         }
       } catch (error) {
         console.error("Lỗi", error);
@@ -38,9 +38,9 @@ const ForgotPassword = () => {
     <div className="resetPassword">
       <div className="resetPassword-top">
         <img src={logo} alt="logo" />
-        <Link to="" className="help">
+        {/* <Link to="" className="help">
           Trợ giúp?
-        </Link>
+        </Link> */}
       </div>
       <div className="resetPassword-bottom">
         <div className="f-resetPassword">
@@ -68,13 +68,13 @@ const ForgotPassword = () => {
             </button>
           </form>
           <br />
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
-          <div className="btn-flex">
+          {/* <div className="btn-flex">
             <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="social">
@@ -93,7 +93,7 @@ const ForgotPassword = () => {
                 Đăng nhập bằng Apple
               </Link>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
