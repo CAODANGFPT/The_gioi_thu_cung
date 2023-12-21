@@ -75,7 +75,7 @@ export const sendResetLinkEmail = async (req, res) => {
     service: "Gmail",
     auth: {
       user: "petcare.fpt@gmail.com",
-      pass: "ikhpbmeyqskpupcz",
+          pass: "ikhpbmeyqskpupcz",
     },
   });
   const hashedEmail = await bcrypt.hash(

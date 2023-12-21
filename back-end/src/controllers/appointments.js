@@ -780,7 +780,6 @@ export const updateAppointmentPayment = async (req, res) => {
     await Appointments.updateAppointmentPayment(req.params.id, status_payment);
     const appointment = await Appointments.getAppointmentsById(req.params.id);
     console.log(appointment);
-
     if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
