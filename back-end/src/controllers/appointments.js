@@ -773,7 +773,8 @@ export const updateAppointmentStatus = async (req, res) => {
     }
     await Appointments.updateAppointmentStatus(req.params.id, status_id);
     const appointment = await Appointments.getAppointmentsById(req.params.id);
-
+    const petNamesArray = [];
+    const servicesArray = [];
     const uniqueData = appointment.reduce((result, record) => {
       if (record && record.id !== undefined) {
         if (Array.isArray(result) && result.length > 0) {
@@ -781,6 +782,8 @@ export const updateAppointmentStatus = async (req, res) => {
             (r) => r.id === record.id
           );
           if (existingRecordIndex === -1) {
+            petNamesArray.push(record.serviceName);
+            servicesArray.push( record.petName);
             result.push({
               id: record.id,
               day: record.day,
@@ -804,6 +807,7 @@ export const updateAppointmentStatus = async (req, res) => {
               (pet) => pet.id === record.petId
             );
             if (existingPetIndex === -1) {
+              petNamesArray.push(record.serviceName);
               result[existingRecordIndex].pets.push({
                 id: record.petId,
                 name: record.petName,
@@ -815,6 +819,7 @@ export const updateAppointmentStatus = async (req, res) => {
               (services) => services.id === record.serviceId
             );
             if (existingServicesIndex === -1) {
+              servicesArray.push(record.petName);
               result[existingRecordIndex].services.push({
                 id: record.serviceId,
                 name: record.serviceName,
@@ -845,12 +850,12 @@ export const updateAppointmentStatus = async (req, res) => {
       return result;
     }, []);
     const servicesNamesString =
-      uniqueData[0].services.length > 0
-        ? uniqueData[0].services.join(", ")
+    servicesArray.length > 0
+        ? servicesArray.join(", ")
         : "No pet name available";
     const petNamesString =
-      uniqueData[0].services.length > 0
-        ? uniqueData[0].services.join(", ")
+    petNamesArray.length > 0
+        ? petNamesArray.join(", ")
         : "No pet name available";
     if (uniqueData[0].user_name && uniqueData[0].user_email) {
       const transporter = nodemailer.createTransport({
