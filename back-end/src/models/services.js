@@ -20,6 +20,17 @@ export default class Services {
       });
     });
   }
+  static getTop1Services() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM services ORDER BY id LIMIT 1;",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getTop4Services() {
     return new Promise((resolve, reject) => {
       connection.query(

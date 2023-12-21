@@ -119,14 +119,16 @@ const DetailProduct: React.FC = () => {
           <div className="detail-left">
             <h2 className="name">{product?.name}</h2>
             <p className="view">
-              <span className="view-title">20,000 đã mua</span>
-              <span style={{ border: "none" }}>4.5</span>
+              <span className="view-title" style={{ border: "none" }}>
+                {product?.quantity} còn
+              </span>
+              {/* <span style={{ border: "none" }}>4.5</span>
               <Rate
                 style={{ marginLeft: 5 }}
                 allowHalf
                 disabled
                 defaultValue={4.5}
-              />
+              /> */}
             </p>
             <div className="img">
               <img src={product?.img} alt="anh" />
@@ -136,56 +138,65 @@ const DetailProduct: React.FC = () => {
           <div className="detail-right">
             <h2 className="name">{product?.name}</h2>
             <p className="view">
-              <span className="view-title">20,000 đã mua</span>
-              <span style={{ border: "none" }}>4.5</span>
+              <span className="view-title" style={{ border: "none" }}>
+                {product?.quantity} còn
+              </span>
+              {/* <span style={{ border: "none" }}>4.5</span>
               <Rate
                 style={{ marginLeft: 5 }}
                 allowHalf
                 disabled
                 defaultValue={4.5}
-              />
+              /> */}
             </p>
             <h1>
               {new Intl.NumberFormat("vi-VN").format(product?.price ?? 0)} VNĐ
             </h1>
-            <div className="quantity">
-              <label htmlFor="">Số lượng: </label>
-              <div className="quantity-input">
-                <button
-                  className="tru"
-                  style={
-                    quantity > 1
-                      ? { cursor: "pointer" }
-                      : { cursor: "not-allowed" }
-                  }
-                  onClick={() => Tru()}
+            {product?.quantity != 0 ? (
+              <>
+                <div className="quantity">
+                  <label htmlFor="">Số lượng: </label>
+                  <div className="quantity-input">
+                    <button
+                      className="tru"
+                      style={
+                        quantity > 1
+                          ? { cursor: "pointer" }
+                          : { cursor: "not-allowed" }
+                      }
+                      onClick={() => Tru()}
+                    >
+                      -
+                    </button>
+                    <input type="text" value={quantity} readOnly />
+                    <button
+                      style={
+                        product?.quantity === quantity
+                          ? { cursor: "not-allowed" }
+                          : { cursor: "pointer" }
+                      }
+                      className="cong"
+                      onClick={() => Cong()}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className="add-to-cart"
+                  style={{ marginBottom: 10 }}
+                  onClick={() => addToCart()}
                 >
-                  -
-                </button>
-                <input type="text" value={quantity} readOnly />
-                <button
-                  style={
-                    product?.quantity === quantity
-                      ? { cursor: "not-allowed" }
-                      : { cursor: "pointer" }
-                  }
-                  className="cong"
-                  onClick={() => Cong()}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            <div
-              className="add-to-cart"
-              style={{ marginBottom: 10 }}
-              onClick={() => addToCart()}
-            >
-              <button>
-                <ShoppingCartIcon />
-                <p>Thêm vào giỏ hàng</p>
-              </button>
-            </div>
+                  <button>
+                    <ShoppingCartIcon />
+                    <p>Thêm vào giỏ hàng</p>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div style={{ margin: "10px 0", fontSize: 30 }}>Hết hàng</div>
+            )}
+
             <div className="share">
               Chia sẻ:
               <FacebookShareButton

@@ -9,47 +9,80 @@
   text-decoration: none;
 }
 
+.bg-007db8 {
+  background-color: #007db8;
+}
+
+.bg-030f39 {
+  background-color: #030f39;
+}
+
+.bg-369b8a {
+  background-color: #369b8a;
+}
+
 .dashBoard {
-  width: 100%;
-
   padding: 20px;
-  .col-2 {
-    margin-bottom: 8px;
+  width: 100%;
+  background-color: white;
+  h2 {
+    margin-bottom: 10px;
   }
-  .sceen-dashBoard {
-    .row-dashBoard {
-      margin-bottom: 8px;
-    }
-  }
-  .line {
-    margin-bottom: 40px;
-    h2 {
-      color: $EagleGreen;
-      text-transform: uppercase;
-      padding: 14px;
-      text-align: center;
-    }
-  }
-  .chart-flex {
-    text-align: center;
 
-    @include Flex(flex, space-between, center);
+  &-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
 
-    .bar {
-      h2 {
-        color: $EagleGreen;
-        text-transform: uppercase;
-        padding: 14px;
+    &-item {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      height: 150px;
+      background-image: url("../../image/bg-chart.png");
+      background-position: 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: white;
+
+      &-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        line-height: 1.2;
       }
-      width: 48%;
     }
-    .pie {
-      h2 {
-        color: $EagleGreen;
-        text-transform: uppercase;
-        padding: 14px;
+  }
+  .line{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    &-box{
+      border: 0.5px solid #d8d8d8;
+      border-radius: 5px;
+      padding: 15px 10px;
+      box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+      &-title{
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &-btn{
+          display: flex;
+          gap: 10px;
+          div{
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid white;
+            &:hover {
+              border: 1px solid #030f39;
+            }
+          }
+        }
       }
-      width: 48%;
     }
   }
 }

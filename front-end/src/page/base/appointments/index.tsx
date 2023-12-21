@@ -12,7 +12,8 @@ import { RangePickerProps } from "antd/es/date-picker";
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../../../assets/image/logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
 import "../../../assets/scss/page/appointment.scss";
 import { TpetHouse } from "../../../schema/pethouse";
@@ -497,7 +498,15 @@ const Appointment: React.FC = () => {
   const onChange = (e: any) => {
     setPaymentMethods_id(e.target.value);
   };
-
+  if (!user) {
+    return (
+      <div className="login-now">
+        <p>Bạn chưa đăng nhập.</p>
+        <img src={logo} alt="logo" />
+        <Link to="/SignIn">Đăng nhập ngay</Link>
+      </div>
+    );
+  }
   return (
     <div className="appointment">
       <h1 style={{ marginBottom: 20, color: "#00575c" }}>

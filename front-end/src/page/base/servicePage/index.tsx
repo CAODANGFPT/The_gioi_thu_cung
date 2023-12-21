@@ -1,17 +1,19 @@
 import { Rate } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import banner from "../../../assets/image/banner.png";
 import "../../../assets/scss/page/servicesPage.scss";
 import { TServices } from "../../../schema/services";
-import { useServicesClientQuery } from "../../../services/services";
+import {
+  useServicesClientQuery,
+  useServicesTop1Query,
+} from "../../../services/services";
 
 const ServicePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState<TServices[]>();
   const { data: listService } = useServicesClientQuery();
-
+  const { data: dataServiceTop1 } = useServicesTop1Query();
   useEffect(() => {
     if (location.pathname !== "/service") {
       setData(listService);
@@ -25,24 +27,27 @@ const ServicePage = () => {
       </div>
       <div className="serviceCardContainer">
         <div className="Filter">
-          <h2>New Feat</h2>
-          <div className="Filter-box">
-            <div className="title-box">HỆ THỐNG DỊCH VỤ</div>
-            <img src={banner} alt="" />
-            <div className="text-box">dịch vụ được dùng nhiều nhất</div>
-          </div>
-          <div className="Filter-box">
-            <div className="title-box">HỆ THỐNG DỊCH VỤ</div>
-            <img src={banner} alt="" />
-            <div className="text-box">dịch vụ được dùng nhiều nhất</div>
-          </div>
+          <h2>Dịch vụ mới</h2>
+          {dataServiceTop1 &&
+            dataServiceTop1.map((item) => (
+              <div
+                onClick={() => {
+                  navigate(`/service/${item.id}`);
+                }}
+                key={item.id}
+                className="Filter-box"
+              >
+                <div className="title-box">{item.name}</div>
+                <img className="imgfilter" src={item.image} alt="" />
+              </div>
+            ))}
         </div>
         <div className="serviceCard">
           <div className="content">
             {data?.map((item) => (
               <div
                 key={item.id}
-                style={{cursor: 'pointer'}}
+                style={{ cursor: "pointer" }}
                 className="card"
                 onClick={() => navigate(`/service/${item.id}`)}
               >

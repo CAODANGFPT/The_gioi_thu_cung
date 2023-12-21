@@ -20,7 +20,11 @@ const Product: FC<ProductProps> = ({ item }) => {
         <div className="price">
           {new Intl.NumberFormat("vi-VN").format(item.price ?? 0)} VNĐ
         </div>
-        <div className="sold">10 sold</div>
+        {item.quantity !== 0 ? (
+          <div className="sold"> {item.quantity} sản phẩm</div>
+        ) : (
+          <div className="sold">Hết hàng</div>
+        )}
       </div>
     </div>
   );

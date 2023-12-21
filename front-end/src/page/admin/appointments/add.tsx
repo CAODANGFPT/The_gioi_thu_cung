@@ -86,7 +86,7 @@ const AppointmentsAdd: React.FC = () => {
   const { data: getAllUser, refetch } = useGetAllUserQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: breed } = useBreedQuery(idSpecies);
-  const [addAppointment] = useAddAppointmentAdminMutation();
+  const [addAppointment, { isLoading }] = useAddAppointmentAdminMutation();
   const [getPetByUserId] = useGetPetByIdPostMutation();
   const [getAppointmentTime] = useGetAppointmentTimeMutation();
   const [userPet] = useUserPetMutation();
@@ -696,7 +696,7 @@ const AppointmentsAdd: React.FC = () => {
 
             <Form.Item>
               <Space>
-                <Button type="primary" htmlType="submit">
+                <Button loading={isLoading} type="primary" htmlType="submit">
                   Đặt lịch
                 </Button>
               </Space>

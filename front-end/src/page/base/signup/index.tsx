@@ -41,6 +41,7 @@ const SignUp = () => {
           </p>
           <div className="input-flex">
             <input
+            style={{marginTop: "10px"}}
               className="btn-f"
               type="text"
               placeholder="Số điện thoại/Tên tài khoản/Email"
@@ -58,14 +59,14 @@ const SignUp = () => {
             tiếp theo
           </button>
           <br />
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
           <div className="btn-flex">
-            <button className="btn-f bg-with">
+            {/* <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="google">
                 Đăng nhập bằng google
@@ -82,7 +83,7 @@ const SignUp = () => {
               <Link to="" className="google">
                 Đăng nhập bằng Apple
               </Link>
-            </button>
+            </button> */}
           </div>
           <p className="rule">
             Bằng việc đăng ký, bạn đồng ý với
