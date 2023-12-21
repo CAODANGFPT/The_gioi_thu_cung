@@ -12,6 +12,7 @@ import { useServicesTop4Query } from "../../../services/services";
 import { useGetAllBannerQuery } from "../../../services/banner";
 import Blogs from "../../../components/blogs";
 import { useNewsTop8Query } from "../../../services/news";
+import { useGetAllWebsiteInformationQuery } from "../../../services/websiteInformation";
 
 const Home: React.FC = () => {
   const navigator = useNavigate();
@@ -19,6 +20,8 @@ const Home: React.FC = () => {
   const { data: listTop8Products } = useGetTop8ProductsQuery();
   const { data: listBanner } = useGetAllBannerQuery();
   const { data: newsTop8 } = useNewsTop8Query();
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
+
   return (
     <div className="bg">
       <div className="home">

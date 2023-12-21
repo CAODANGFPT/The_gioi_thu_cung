@@ -15,6 +15,7 @@ import FacebookIcon from "../../../assets/svg/facebookIcon";
 import GoogleIcon from "../../../assets/svg/googleIcon";
 import { useLoginUserMutation } from "../../../services/auth";
 import { useGetUserQuery } from "../../../services/user";
+import { useGetAllWebsiteInformationQuery } from "../../../services/websiteInformation";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const SignIn = () => {
   const [loginForm] = useLoginUserMutation();
   const { data: user, isLoading, isError, isSuccess } = useGetUserQuery();
   const currentTime = new Date().getTime();
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
 
   useEffect(() => {
     if (!isLoading) {
@@ -55,11 +57,9 @@ const SignIn = () => {
             await localStorage.setItem("token", response.data?.accessToken);
             message.success("Đăng nhập thành công");
             setTimeout(() => {
-              userRoleId === 1 ||
-              userRoleId === 10 
+              userRoleId === 1 || userRoleId === 10
                 ? navigate("/admin")
                 : navigate("/");
-
             }, 100);
           }
         }
@@ -71,7 +71,16 @@ const SignIn = () => {
   return (
     <div className="singIn">
       <div className="singin-top">
-        <img src={logo} alt="logo" />
+        <img
+          src={
+            listWebsiteInformation &&
+            listWebsiteInformation.length > 0 &&
+            typeof listWebsiteInformation[0]?.logo === "string"
+              ? listWebsiteInformation[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
+        />
         <Link to="" className="help">
           Trợ giúp?
         </Link>

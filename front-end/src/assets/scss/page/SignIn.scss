@@ -13,7 +13,7 @@
   font-family: $fontFamily;
 
   .singin-top {
-    padding: 20px;
+    padding: 10px 20px;
     margin: 0 100px;
     @include Flex(flex, space-between, center);
 
@@ -32,7 +32,7 @@
   }
 
   img {
-    width: 200px;
+    width: 100px;
   }
 
   .singin-bottom {

@@ -99,12 +99,14 @@ const Appointment: React.FC = () => {
           }
         } else if (appointmentData.type === 2) {
           setServicesOpenTime(true);
+          setIsPetServiceSelected(true);
           form.setFieldsValue({
             services: serviceId,
             pet: petIds,
-            petHouse_id: appointmentData.pethouse_id,
+            // petHouse_id: appointmentData.pethouse_id,
           });
         } else if (appointmentData.type === 3) {
+          setIsPetServiceSelected(true);
           form.setFieldsValue({
             services: serviceId,
             pet: petIds,
@@ -469,7 +471,7 @@ const Appointment: React.FC = () => {
         });
         if ("data" in petHouse) {
           if (petHouse.data.petHouse.length > 0) {
-          setPethouse(petHouse.data.petHouse);
+            setPethouse(petHouse.data.petHouse);
           } else {
             message.error("Không có phòng trống trong giờ bạn chọn");
           }

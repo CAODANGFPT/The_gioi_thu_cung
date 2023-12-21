@@ -6,16 +6,20 @@ import "../../../assets/scss/page/registerAccount.scss";
 import EyesCloseIcon from "../../../assets/svg/eyesCloseIcon";
 import banner from "../../../assets/image/background.png";
 import EyesOpenIcon from "../../../assets/svg/eyesOpenIcon";
-import { RegisterAccountSchema, TRegisterAccount } from "../../../schema/registerAccount";
+import {
+  RegisterAccountSchema,
+  TRegisterAccount,
+} from "../../../schema/registerAccount";
 import { useRegisterUserMutation } from "../../../services/auth";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGetAllWebsiteInformationQuery } from "../../../services/websiteInformation";
 
 const RegisterAccount = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
 
   const [registerForm] = useRegisterUserMutation();
 
@@ -54,7 +58,17 @@ const RegisterAccount = () => {
   return (
     <div className="registerAccount">
       <div className="singUp-top">
-        <img src={logo} alt="logo" className="signup_logo"/>
+        <img
+          src={
+            listWebsiteInformation &&
+            listWebsiteInformation.length > 0 &&
+            typeof listWebsiteInformation[0]?.logo === "string"
+              ? listWebsiteInformation[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
+          className="signup_logo"
+        />
         <Link to="" className="help">
           Trợ giúp?
         </Link>

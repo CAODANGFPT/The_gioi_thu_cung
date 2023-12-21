@@ -13,7 +13,7 @@
   font-family: $fontFamily;
 
   .singUp-top {
-    padding: 20px;
+    padding: 10px 20px;
     margin: 0 100px;
     @include Flex(flex, space-between, center);
 
@@ -30,9 +30,11 @@
       color: $EagleGreen;
     }
   }
+
   img {
-    width: 200px;
-}
+    width: 100px;
+  }
+
   .singUp-bottom {
     position: relative;
     text-align: center;
@@ -184,6 +186,7 @@
           color: white;
         }
       }
+
       @include max-screen($xxl) {
         width: 100%;
         text-align: start;

@@ -13,18 +13,20 @@
   font-family: $fontFamily;
 
   .singUp-top {
-    padding: 20px;
+    padding: 10px 20px;
     margin: 0 100px;
     @include Flex(flex, space-between, center);
 
     @include max-screen($xxl) {
       display: none;
     }
+
     @include max-screen($xl) {
       margin: 0 50px;
     }
-    .signup_logo{
-      width: 200px;
+
+    .signup_logo {
+      width: 100px;
     }
 
     .help {
