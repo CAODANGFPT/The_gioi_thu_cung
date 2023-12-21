@@ -1,14 +1,15 @@
+import dayjs from "dayjs";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import Appointments from "../models/appointments";
 import AppointmentsDetail from "../models/appointmentsDetail";
-import Services from "../models/services";
-import User from "../models/user";
-import { updateAppointmentStatusSchema } from "../schemas/appointments";
-import nodemailer from "nodemailer";
-import jwt from "jsonwebtoken";
+import PaymentMethods from "../models/paymentMethods";
 import Pet from "../models/pet";
 import Pethouse from "../models/pethouse";
-import PaymentMethods from "../models/paymentMethods";
-import dayjs from "dayjs";
+import Services from "../models/services";
+import Status from "../models/status_appointment";
+import User from "../models/user";
+import { updateAppointmentStatusPaymentSchema, updateAppointmentStatusSchema } from "../schemas/appointments";
 
 export const list = async (req, res) => {
   try {
@@ -211,9 +212,9 @@ export const create = async (req, res) => {
       }).format(total);
 
       const mailOptions = {
-        from: email,
+        from: "petcare.fpt@gmail.com",
         to: email,
-        subject: "Thông tin đặt lịch chăm sóc",
+        subject: "Thông tin đặt lịch chăm sóc thú cưng PetCare",
         html: `   <div
         style="
           text-align: center;
@@ -231,9 +232,9 @@ export const create = async (req, res) => {
           />
         </div>
   
-        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
-        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
-        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <h1 style="color: #00575c; text-align: center">Shop thú cưng - PetCare</h1>
+        <div style="text-align: center">Email:petcare.fpt@gmail.com</div>
+        <div style="text-align: center">SĐT:0988824760</div>
         <div style="text-align: center">
           ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
         </div>
@@ -301,7 +302,7 @@ export const create = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(start_time)}</span
+                  >${dayjs(start_time).format("DD-MM-YYYY HH:mm:ss")}</span
                 >
               </td>
             </tr>
@@ -316,21 +317,8 @@ export const create = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(end_time)}</span
+                  >${dayjs(end_time).format("DD-MM-YYYY HH:mm:ss")}</span
                 >
-              </td>
-            </tr>
-            <tr style="background-color: #f2f2f2">
-              <td
-                style="
-                  padding: 10px;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                "
-              >
-                <span style="font-weight: 600">Tổng tiền: </span>
-                <span>${formattedTotal}</span>
               </td>
             </tr>
             <tr style="background-color: #ffffff">
@@ -346,6 +334,34 @@ export const create = async (req, res) => {
                 <span style="display: inline-block; padding-left: 10px"
                   >${nameMethods}</span
                 >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+            <td
+              style="
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span style="font-weight: 600">Trạng thái: </span>
+              <span style="display: inline-block; padding-left: 10px"
+                >Đang chờ xử lý</span
+              >
+            </td>
+          </tr>
+          <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Tổng tiền: </span>
+                <span>${formattedTotal}</span>
               </td>
             </tr>
           </table>
@@ -459,14 +475,14 @@ export const createAdmin = async (req, res) => {
       const nameMethods = await PaymentMethods.getStatusPaymentNameById(
         paymentMethods_id
       );
-
+      const setStatus = await Status.getIdStatus(status_id);
       const formattedTotal = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
       }).format(total);
 
       const mailOptions = {
-        from: email,
+        from: "petcare.fpt@gmail.com",
         to: email,
         subject: "Thông tin đặt lịch chăm sóc",
         html: `   <div
@@ -486,9 +502,9 @@ export const createAdmin = async (req, res) => {
           />
         </div>
   
-        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
-        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
-        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <h1 style="color: #00575c; text-align: center">Shop thú cưng - PetCare</h1>
+        <div style="text-align: center">Email:petcare.fpt@gmail.com</div>
+        <div style="text-align: center">SĐT:0988824760</div>
         <div style="text-align: center">
           ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
         </div>
@@ -556,7 +572,7 @@ export const createAdmin = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(start_time)}</span
+                  >${dayjs(start_time).format("DD-MM-YYYY HH:mm:ss")}</span
                 >
               </td>
             </tr>
@@ -571,21 +587,8 @@ export const createAdmin = async (req, res) => {
               >
                 <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
                 <span style="display: inline-block; padding-left: 10px"
-                  >${dayjs(end_time)}</span
+                  >${dayjs(end_time).format("DD-MM-YYYY HH:mm:ss")}</span
                 >
-              </td>
-            </tr>
-            <tr style="background-color: #f2f2f2">
-              <td
-                style="
-                  padding: 10px;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                "
-              >
-                <span style="font-weight: 600">Tổng tiền: </span>
-                <span>${formattedTotal}</span>
               </td>
             </tr>
             <tr style="background-color: #ffffff">
@@ -603,6 +606,34 @@ export const createAdmin = async (req, res) => {
                 >
               </td>
             </tr>
+            <tr style="background-color: #ffffff">
+            <td
+              style="
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span style="font-weight: 600">Trạng thái: </span>
+              <span style="display: inline-block; padding-left: 10px"
+                >${setStatus.name}</span
+              >
+            </td>
+          </tr>
+            <tr style="background-color: #f2f2f2">
+            <td
+              style="
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span style="font-weight: 600">Tổng tiền: </span>
+              <span>${formattedTotal}</span>
+            </td>
+          </tr>
           </table>
           <div style="margin: 15px 0">
           <div>Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
@@ -851,9 +882,9 @@ export const updateAppointmentStatus = async (req, res) => {
           />
         </div>
   
-        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
-        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
-        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <h1 style="color: #00575c; text-align: center">Shop thú cưng -PetCare</h1>
+        <div style="text-align: center">Email:petcare.fpt@gmail.com</div>
+        <div style="text-align: center">SĐT:0988824760</div>
         <div style="text-align: center">
           ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
         </div>
@@ -987,7 +1018,7 @@ export const updateAppointmentStatus = async (req, res) => {
 export const updateAppointmentPayment = async (req, res) => {
   try {
     const { status_payment } = req.body;
-    const { error } = updateAppointmentStatusSchema.validate(req.body);
+    const { error } = updateAppointmentStatusPaymentSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
       return res.status(400).json({

@@ -34,3 +34,9 @@ export const updateAppointmentStatusSchema = joi.object({
   id: joi.number().required(),
   status_id: joi.number().required(),
 });
+
+
+export const updateAppointmentStatusPaymentSchema = joi.object({
+  id: joi.number().required(),
+  status_payment: joi.number().required(),
+});
