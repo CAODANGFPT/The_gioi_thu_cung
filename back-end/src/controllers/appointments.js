@@ -7,6 +7,8 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import Pet from "../models/pet";
 import Pethouse from "../models/pethouse";
+import paymentMethods from "../models/paymentMethods";
+import Status from "../models/status_appointment";
 
 export const list = async (req, res) => {
   try {
@@ -191,6 +193,9 @@ export const create = async (req, res) => {
         petNamesArray.length > 0
           ? petNamesArray.join(", ")
           : "No pet name available";
+      const nameMethods = await paymentMethods.getStatusPaymentNameById(
+        paymentMethods_id
+      );
       const { email, name } = await User.getUser(user_id);
       const transporter = nodemailer.createTransport({
         service: "Gmail",
@@ -204,36 +209,152 @@ export const create = async (req, res) => {
         currency: "VND",
       }).format(total);
 
+      const appointmentDate = new Date(day);
+      const formattedDate = appointmentDate.toISOString().split("T")[0];
+
       const mailOptions = {
         from: email,
         to: email,
         subject: "Thông tin đặt lịch chăm sóc",
-        html: `  <div style="background-color: white; border: 5px solid #5ebdc2; width: 390px; padding: 30px 25px;">
-          <div style="display: flex; align-items: center; justify-content: center;">
-            <img style="width: 100%;" src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png" alt="">
-          </div>
-          <div style="margin-top: 30px;">
-            <div style="font-weight: 600;">Chào ${name}</div>
-            <div style="margin: 15px 0;">Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
-            <div style="margin: 15px 0;">Đây là thông tin lịch đặt của bạn: </div>
-            <div style="display: flex; gap: 5px; margin: 15px 0;">
-              <span style="font-weight: 600;" >Tên người đặt:</span>
-              <span  style="padding-left: 10px;">${name}</span>
-            </div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Dịch vụ: </span> <span sty  style="padding-left: 10px;">${servicesNamesString}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Pet: </span> <span  style="padding-left: 10px;">${petNamesString}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bạn đặt: </span> <span  style="padding-left: 10px;">${day}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bắt đầu lịch: </span> <span  style="padding-left: 10px;">${start_time}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian kết lịch: </span> <span  style="padding-left: 10px;">${end_time}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Tổng tiền: </span> <span  style="padding-left: 10px;">${formattedTotal}    </span></div>
-            <div>
-              Nếu bạn có gì thắc mắc có thể liên hệ số điện thoại: <a href="tel:0917397543">0917397543</a> hoặc gửi email: hai20112030@gmail.com
-            </div>
-            <div>
-              Thân mếm
-            </div>
-          </div>
-        </div>`,
+        html: `   <div
+        style="
+          text-align: center;
+          background-color: white;
+          border: 5px solid #5ebdc2;
+          width: 390px;
+          padding: 30px 25px;
+        "
+      >
+        <div style="display: flex; align-items: center; justify-content: center">
+          <img
+            style="width: 100%"
+            src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
+            alt=""
+          />
+        </div>
+  
+        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <div style="text-align: center">
+          ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+        </div>
+        <div style="margin-top: 30px; font-family: Arial, sans-serif">
+          <table style="width: 100%; border-collapse: collapse">
+            <tr>
+              <td style="font-weight: 600; padding: 10px; text-align: center">
+                Chào ${name}
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Tên người đặt:</span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${name}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Dịch vụ: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${servicesNamesString}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Pet: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${petNamesString}</span
+                >
+              </td>
+            </tr>
+  
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${formattedDate}-${start_time}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${formattedDate}-${end_time}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Tổng tiền: </span>
+                <span>${formattedTotal}</span>
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Phương thức thanh toán: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${nameMethods}</span
+                >
+              </td>
+            </tr>
+          </table>
+          <div style="margin: 15px 0">
+          <div>Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
+        </div>
+      </div>`,
       };
 
       await transporter.sendMail(mailOptions);
@@ -339,37 +460,136 @@ export const createAdmin = async (req, res) => {
         style: "currency",
         currency: "VND",
       }).format(total);
-
+      const appointmentDate = new Date(day);
+      const formattedDate = appointmentDate.toISOString().split("T")[0];
       const mailOptions = {
         from: email,
         to: email,
         subject: "Thông tin đặt lịch chăm sóc",
-        html: `  <div style="background-color: white; border: 5px solid #5ebdc2; width: 390px; padding: 30px 25px;">
-          <div style="display: flex; align-items: center; justify-content: center;">
-            <img style="width: 100%;" src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png" alt="">
-          </div>
-          <div style="margin-top: 30px;">
-            <div style="font-weight: 600;">Chào ${name}</div>
-            <div style="margin: 15px 0;">Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
-            <div style="margin: 15px 0;">Đây là thông tin lịch đặt của bạn: </div>
-            <div style="display: flex; gap: 5px; margin: 15px 0;">
-              <span style="font-weight: 600;" >Tên người đặt:</span>
-              <span  style="padding-left: 10px;">${name}</span>
-            </div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Dịch vụ: </span> <span sty  style="padding-left: 10px;">${servicesNamesString}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Pet: </span> <span  style="padding-left: 10px;">${petNamesString}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bạn đặt: </span> <span  style="padding-left: 10px;">${day}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian bắt đầu lịch: </span> <span  style="padding-left: 10px;">${start_time}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Thời gian kết lịch: </span> <span  style="padding-left: 10px;">${end_time}</span></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0;"><span style="font-weight: 600;">Tổng tiền: </span> <span  style="padding-left: 10px;">${formattedTotal}    </span></div>
-            <div>
-              Nếu bạn có gì thắc mắc có thể liên hệ số điện thoại: <a href="tel:0917397543">0917397543</a> hoặc gửi email: hai20112030@gmail.com
-            </div>
-            <div>
-              Thân mếm
-            </div>
-          </div>
-        </div>`,
+        html: `  <div
+        style="
+          text-align: center;
+          background-color: white;
+          border: 5px solid #5ebdc2;
+          width: 390px;
+          padding: 30px 25px;
+        "
+      >
+        <div style="display: flex; align-items: center; justify-content: center">
+          <img
+            style="width: 100%"
+            src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
+            alt=""
+          />
+        </div>
+  
+        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <div style="text-align: center">
+          ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+        </div>
+        <div style="margin-top: 30px; font-family: Arial, sans-serif">
+          <table style="width: 100%; border-collapse: collapse">
+            <tr>
+              <td style="font-weight: 600; padding: 10px; text-align: center">
+                Chào ${name}
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Tên người đặt:</span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${name}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Dịch vụ: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${servicesNamesString}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Pet: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${petNamesString}</span
+                >
+              </td>
+            </tr>
+  
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${formattedDate}-${start_time}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${formattedDate}-${end_time}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Tổng tiền: </span>
+                <span>${formattedTotal}</span>
+              </td>
+            </tr>
+          </table>
+          <div style="margin: 15px 0">
+          <div>Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
+        </div>
+      </div>`,
       };
 
       await transporter.sendMail(mailOptions);
@@ -503,8 +723,11 @@ export const updateAppointmentStatus = async (req, res) => {
       });
     }
     await Appointments.updateAppointmentStatus(req.params.id, status_id);
-    const appointment = await Appointments.getAppointmentsById(req.params.id);
+    const appointment = await Appointments.getAppointmentDataById(
+      req.params.id
+    );
     console.log(appointment);
+
     if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
@@ -513,30 +736,168 @@ export const updateAppointmentStatus = async (req, res) => {
           pass: "yfaqudeffxnjptla",
         },
       });
+      const appointmentDate = new Date(appointment.day);
 
+      const formattedDate = appointmentDate.toISOString().split("T")[0];
+      const startTime = new Date(appointment.start_time);
+      const formattedStartTime = startTime.toLocaleTimeString("en-US", {
+        hour12: false,
+        timeZone: "Asia/Ho_Chi_Minh",
+      });
+
+      const endTime = new Date(appointment.end_time);
+      const formattedEndTime = endTime.toLocaleTimeString("en-US", {
+        hour12: false,
+        timeZone: "Asia/Ho_Chi_Minh",
+      });
+      const statusName = await Status.getStatusNameById(status_id);
+      const formattedTotal = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(appointment.total);
       const mailOptions = {
         from: "hainv21123@gmail.com",
         to: appointment.user_email,
-        subject: "Xác nhận đặt lịch thành công",
-        html: `<div style="font-family: sans-serif; margin: 0 40px;">
+        subject: "Thay đổi trạng thái lịch đặt",
+        html: `<div
+        style="
+          text-align: center;
+          background-color: white;
+          border: 5px solid #5ebdc2;
+          width: 390px;
+          padding: 30px 25px;
+        "
+      >
+        <div style="display: flex; align-items: center; justify-content: center">
           <img
-            style="width: 200px"
-            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
+            style="width: 100%"
+            src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
             alt=""
           />
-          <p>Chào <span style="font-weight: 600">${appointment.user_name},</span></p>
-          <p>
-            Chúc mừng bạn đã đặt lịch thành công tại
-            <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
-          </p>
-          <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
-          <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
-          <div style="text-align: right;">
-            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
-            <p>Trân trọng,</p>
-            <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
-          </div>
-        </div>`,
+        </div>
+  
+        <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <div style="text-align: center">
+          ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+        </div>
+        <div style="margin-top: 30px; font-family: Arial, sans-serif">
+          <table style="width: 100%; border-collapse: collapse">
+            <tr>
+              <td style="font-weight: 600; padding: 10px; text-align: center">
+                Chào ${appointment.user_email}
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; padding: 10px; text-align: center">
+                trạng thái lịch đặt ${statusName}
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+            <td
+              style="
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span style="font-weight: 600">Tên Thú cưng:</span>
+              <span style="display: inline-block; padding-left: 10px"
+                >${appointment.petName}</span
+              >
+            </td>
+          </tr>
+          <tr style="background-color: #f2f2f2">
+          <td
+            style="
+              padding: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <span style="font-weight: 600">Thời gian bắt đầu lịch: </span>
+            <span style="display: inline-block; padding-left: 10px"
+              >${formattedDate} ${formattedStartTime}</span
+            >
+          </td>
+        </tr>
+        <tr style="background-color: #ffffff">
+        <td
+          style="
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span style="font-weight: 600">Thời gian kết thúc lịch: </span>
+          <span style="display: inline-block; padding-left: 10px"
+            >${formattedDate} ${formattedEndTime}</span
+          >
+        </td>
+      </tr>
+      <tr style="background-color: #f2f2f2">
+              <td
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span style="font-weight: 600">Dịch vụ: </span>
+                <span style="display: inline-block; padding-left: 10px"
+                  >${appointment.serviceName}</span
+                >
+              </td>
+            </tr>
+            <tr style="background-color: #ffffff">
+            <td
+              style="
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span style="font-weight: 600">Tổng tiền: </span>
+              <span>${formattedTotal}</span>
+            </td>
+          </tr>
+          <tr style="background-color: #f2f2f2">
+          <td
+            style="
+              padding: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <span style="font-weight: 600">Tên phòng: </span>
+            <span>${appointment.pethouse_name}</span>
+          </td>
+        </tr>
+        <tr style="background-color: #ffffff">
+        <td
+          style="
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span style="font-weight: 600">Trạng thái thanh toán: </span>
+          <span>${appointment.statusPaymentName}</span>
+        </td>
+      </tr>
+          </table>
+          <div style="margin: 15px 0">
+          <div>Cảm ơn bạn đặt lịch chăm sóc thú cưng ở cửa hàng chúng tôi</div>
+        </div>
+      </div>`,
       };
 
       await transporter.sendMail(mailOptions);
@@ -959,18 +1320,15 @@ export const status_payment = async (req, res) => {
   }
 };
 
-
 export const checkPetHouse = async (req, res) => {
   try {
-    const { start_time, end_time} = req.body;
-    const petHouse = await Appointments.checkPetHouse(
-      start_time, end_time
-    );
+    const { start_time, end_time } = req.body;
+    const petHouse = await Appointments.checkPetHouse(start_time, end_time);
 
     if (!petHouse) {
       res.status(404).json({ error: "Không có phòng nào trống" });
     } else {
-      res.json({petHouse });
+      res.json({ petHouse });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });

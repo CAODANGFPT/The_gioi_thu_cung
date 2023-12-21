@@ -78,6 +78,19 @@ export default class Appointments {
     });
   }
 
+  static getAppointmentDataById(appointmentId) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT appointments.id, appointmentServices.service_id AS serviceId, status_payment.id AS statusPaymentId, status_payment.name AS statusPaymentName, users.name AS user_name, services.name AS serviceName, appointmentPets.pet_id AS petId, pets.name AS petName, appointments.day, appointments.total, appointments.start_time, appointments.end_time, users.email AS user_email, pethouse.name AS pethouse_name, pethouse.id AS pethouse_id, status_appointment.name AS status_name, status_appointment.id AS status_id FROM appointments JOIN users ON appointments.user_id = users.id JOIN pethouse ON appointments.pethouse_id = pethouse.id JOIN status_appointment ON appointments.status_id = status_appointment.id JOIN appointmentServices ON appointments.id = appointmentServices.appointment_id JOIN services ON appointmentServices.service_id = services.id JOIN appointmentPets ON appointments.id = appointmentPets.appointment_id JOIN status_payment ON appointments.status_payment = status_payment.id JOIN pets ON appointmentPets.pet_id = pets.id WHERE appointments.id = ?",
+        [appointmentId],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results[0]);
+        }
+      );
+    });
+  }
+
   static getAppointmentUser(id) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -122,7 +135,7 @@ export default class Appointments {
     start_time,
     end_time,
     total,
-    paymentMethods_id 
+    paymentMethods_id
   ) {
     return new Promise((resolve, reject) => {
       connection.query(

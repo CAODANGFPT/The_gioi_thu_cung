@@ -21,7 +21,26 @@ export default class Status {
       );
     });
   }
-
+  static getStatusNameById(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT name FROM status_appointment WHERE id = ?",
+        [id],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            // Kiểm tra xem có kết quả trả về hay không
+            if (results && results.length > 0) {
+              resolve(results[0].name);
+            } else {
+              resolve(null); // hoặc có thể trả về một giá trị mặc định nếu không có kết quả
+            }
+          }
+        }
+      );
+    });
+  }
   static addStatus(name) {
     return new Promise((resolve, reject) => {
       connection.query(

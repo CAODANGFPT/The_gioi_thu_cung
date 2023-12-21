@@ -1,6 +1,5 @@
 import PaymentMethods from "../models/paymentMethods";
 
-
 export const getAll = async (req, res) => {
   try {
     const paymentMethods = await PaymentMethods.getAllPaymentMethods();
@@ -9,4 +8,3 @@ export const getAll = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-

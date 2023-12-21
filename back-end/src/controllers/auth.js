@@ -92,19 +92,33 @@ export const sendResetLinkEmail = async (req, res) => {
       from: email,
       to: email,
       subject: "Thông tin khóa",
-      html: `<div style="font-family: sans-serif; margin: 0 40px;">
-        <img
-          style="width: 200px"
-          src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
-          alt=""
-        />
+      html: `<div style="
+      text-align: center;
+      background-color: white;
+      border: 5px solid #5ebdc2;
+      width: 390px;
+      padding: 30px 25px;
+    ">
+      <div style="display: flex; align-items: center; justify-content: center">
+      <img
+      style="width: 100%"
+        src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
+        alt=""
+      />
+      </div>
+      <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+      <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+      <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+      <div style="text-align: center">
+        ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+      </div>
         <p>Chào <span style="font-weight: 600">${checkEmail.name},</span></p>
         <p>
           Bạn đã yêu cầu đổi mật khẩu tại
           <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
         </p>
         <p>Bạn vui lòng truy cập vào liên kết dưới đây để thay đổi mật khẩu</p>
-        <div style="padding: 20px 0 20px 40px">
+        <div style="text-align:center">
           <a
             href="http://localhost:3000/reset-password?email=${encodeURIComponent(
               email
@@ -124,7 +138,7 @@ export const sendResetLinkEmail = async (req, res) => {
           </a>
         </div>
         <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
-        <div style="text-align: right;">
+        <div style="text-align: center;">
     
           <p>Nếu Bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
           <p>Trân trọng,</p>
