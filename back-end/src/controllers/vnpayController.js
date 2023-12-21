@@ -33,8 +33,8 @@ export const handleVnPayCallback = async (req, res) => {
         const transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
-            user: "hainv21123@gmail.com",
-            pass: "yfaqudeffxnjptla",
+            user: "petcare.fpt@gmail.com",
+            pass: "ikhpbmeyqskpupcz",
           },
         });
         const mailOptions = {
@@ -88,8 +88,8 @@ export const handleVnPayCallback = async (req, res) => {
         const transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
-            user: "hainv21123@gmail.com",
-            pass: "yfaqudeffxnjptla",
+            user: "petcare.fpt@gmail.com",
+            pass: "ikhpbmeyqskpupcz",
           },
         });
         const mailOptions = {

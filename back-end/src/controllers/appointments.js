@@ -200,8 +200,8 @@ export const create = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
       const formattedTotal = new Intl.NumberFormat("vi-VN", {
@@ -452,8 +452,8 @@ export const createAdmin = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
       const formattedTotal = new Intl.NumberFormat("vi-VN", {
@@ -732,8 +732,8 @@ export const updateAppointmentStatus = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
       const appointmentDate = new Date(appointment.day);
@@ -1175,8 +1175,8 @@ export const updateStatusCancelAppointment = async () => {
           const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
-              user: "hainv21123@gmail.com",
-              pass: "yfaqudeffxnjptla",
+              user: "petcare.fpt@gmail.com",
+              pass: "ikhpbmeyqskpupcz",
             },
           });
           const mailOptions = {
