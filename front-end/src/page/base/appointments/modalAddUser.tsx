@@ -56,7 +56,7 @@ const ModalAddUser: FC<TModalAddPet> = ({
               position: "fixed",
               top: 60,
               left: "15%",
-              zIndex: 20,
+              zIndex: 100,
               width: "70%",
               background: "white",
             }}

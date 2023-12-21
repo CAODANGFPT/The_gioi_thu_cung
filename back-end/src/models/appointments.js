@@ -151,7 +151,7 @@ export default class Appointments {
         ],
         (err, results) => {
           if (err) reject(err);
-          resolve(results.insertId);
+          resolve(results?.insertId);
         }
       );
     });

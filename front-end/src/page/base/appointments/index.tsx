@@ -146,8 +146,8 @@ const Appointment: React.FC = () => {
       pet: values.pet,
       user_id: user?.id,
       services: values.services,
-      start_time: dayjs(values.start_time).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
-      end_time: dayjs(endTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
+      start_time: dayjs(values.start_time).format("YYYY-MM-DD HH:mm:ss"),
+      end_time: dayjs(endTime).format("YYYY-MM-DD HH:mm:ss"),
       total: total,
       status_id: 1,
       paymentMethods_id: paymentMethods_id,
@@ -425,6 +425,21 @@ const Appointment: React.FC = () => {
           totalMilliseconds,
           "millisecond"
         );
+        if (newEndTime.hour() > 18) {
+          const currentHour = newEndTime.hour();
+          const currentMinute = newEndTime.minute();
+          const remainingMinutes = (currentHour - 18) * 60 + currentMinute;
+          const remainingHours = Math.floor(remainingMinutes / 60);
+          const remainingMinutesAfterHours = remainingMinutes % 60;
+          newEndTime = newEndTime.add(1, "day");
+          newEndTime = newEndTime
+            .hour(9)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .add(remainingHours, "hours")
+            .add(remainingMinutesAfterHours, "minutes");
+        }
         if (
           form.getFieldValue("start_time").hour() < 12 &&
           newEndTime.hour() > 12
