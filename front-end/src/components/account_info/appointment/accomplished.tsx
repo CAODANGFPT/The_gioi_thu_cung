@@ -5,14 +5,29 @@ import "../../../assets/scss/page/account/appointment.scss";
 import { useGetAppointmentUserStatusQuery } from "../../../services/appointments";
 import { useNavigate } from "react-router-dom";
 import { Button, Tag } from "antd";
-
+import axios from "axios";
+const API_URL = "http://localhost:8080/api";
 const AccomplishedAppointment: FC = () => {
   const navigate = useNavigate();
   const { data: listAppointment } = useGetAppointmentUserStatusQuery(4);
 
   const handlePayment = (id: number | undefined, total: number | undefined) => {
+    const appoinmentId = id;
+    const amountAppointment = total;
+
     if (total !== undefined) {
-      navigate(`/payment/${id}/${total}`);
+      axios
+        .post(`${API_URL}/create-payment`, {
+          appointmentID: appoinmentId,
+          amount: amountAppointment,
+        })
+        .then((response) => {
+          localStorage.setItem(
+            "paymentInfo",
+            JSON.stringify({ appoinmentId, amountAppointment })
+          );
+          window.location.href = response.data.paymentUrl;
+        });
     } else {
       console.error("Không có thông tin thanh toán");
     }
@@ -116,14 +131,14 @@ const AccomplishedAppointment: FC = () => {
                           >
                             Đặt lại
                           </Button>
-                          {/* {item.statusPaymentId === 1 && (
+                          {item.statusPaymentId === 1 && (
                             <Button
                               onClick={() => handlePayment(item.id, item.total)}
                               className="btn-done"
                             >
                               Thanh toán
                             </Button>
-                          )} */}
+                          )}
                         </td>
                       </tr>
                     );
