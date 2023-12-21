@@ -14,7 +14,6 @@ import "../../../assets/scss/admin/appointments.scss";
 
 const ReviewAdmin: React.FC = () => {
   const { data } = useReviewQuery();
-  console.log(data);
   const [updateBlockReview] = useUpdateBlockReviewMutation();
 
   const [filter, setFilter] = useState({ name: "" });
@@ -115,7 +114,6 @@ const ReviewAdmin: React.FC = () => {
       item.user_name?.toLowerCase().includes(filter.name.trim().toLowerCase())
     );
     setListReview(filteredData);
-    console.log(filteredData);
   }, [data, filter]);
 
   useEffect(() => {

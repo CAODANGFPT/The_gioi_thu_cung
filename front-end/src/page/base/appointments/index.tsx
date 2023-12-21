@@ -154,13 +154,9 @@ const Appointment: React.FC = () => {
     };
     const resAppointment = await createAppointment(newData);
     if ("data" in resAppointment) {
-      console.log(resAppointment);
-
       const appoinmentId = resAppointment.data.id;
       const amountAppointment = total;
-
       message.success(resAppointment.data.message);
-
       if (paymentMethods_id === 1) {
         axios
           .post(`${API_URL}/create-payment`, {
@@ -318,12 +314,12 @@ const Appointment: React.FC = () => {
             start_time: dayjs(value).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
             end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           });
-
-          console.log(petHouse);
           if ("data" in petHouse) {
-            setPethouse(petHouse.data.petHouse);
-          } else {
-            message.error("Không có phòng trống trong giờ bạn chọn");
+            if (petHouse.data.length > 0) {
+              setPethouse(petHouse.data.petHouse);
+            } else {
+              message.error("Không có phòng trống trong giờ bạn chọn");
+            }
           }
           setEndTime(newEndTime);
         } else {
@@ -344,6 +340,7 @@ const Appointment: React.FC = () => {
       }));
       const pets = await userPet({ data: petData });
       if ("data" in pets) {
+        form.setFieldValue("pet" , value);
         setPet(pets.data);
       }
     } else {
@@ -455,12 +452,12 @@ const Appointment: React.FC = () => {
           ),
           end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         });
-
-        console.log(petHouse);
         if ("data" in petHouse) {
-          setPethouse(petHouse.data.petHouse);
-        } else {
-          message.error("Không có phòng trống trong giờ bạn chọn");
+          if (petHouse.data.length > 0) {
+            setPethouse(petHouse.data.petHouse);
+          } else {
+            message.error("Không có phòng trống trong giờ bạn chọn");
+          }
         }
         setEndTime(newEndTime);
       } else {

@@ -241,7 +241,6 @@ const AppointmentsAdmin: React.FC = () => {
   };
 
   const handleFilterChange = (fieldName: string, value: string) => {
-    console.log(fieldName, value);
     setFilter({ ...filter, [fieldName]: value });
   };
 

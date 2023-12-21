@@ -16,8 +16,6 @@ const ConfirmedAppointment: FC = () => {
     useState(false);
 
   const handleViewInvoice = (invoiceData: any) => {
-    console.log(invoiceData);
-
     setSelectedInvoice(invoiceData);
     setIsPrintInvoiceModalVisible(true);
   };
@@ -49,8 +47,6 @@ const ConfirmedAppointment: FC = () => {
   };
 
   const handlePrint = async (id: number | undefined) => {
-    console.log(id);
-
     if (id !== undefined) {
       handleViewInvoice(id);
     } else {

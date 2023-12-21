@@ -17,8 +17,6 @@ const CarouselBlogs: FC<Props> = ({ blogsData, name }) => {
   const handleNext = () => {
     if (carouselRef.current) {
       const { currentSlide, totalItems } = carouselRef.current.state;
-      console.log(carouselRef.current.state);
-
       if (currentSlide === totalItems - 4) {
         carouselRef.current.goToSlide(0);
       } else {
