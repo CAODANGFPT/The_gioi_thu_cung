@@ -41,21 +41,35 @@ export const handleVnPayCallback = async (req, res) => {
           from: email,
           to: email,
           subject: "Thanh Toán Thành Công",
-          html: ` <div style="font-family: sans-serif; margin: 0 40px;">
-          <img
-            style="width: 200px"
-            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
-            alt=""
-          />
-          <p>Chào <span style="font-weight: 600">${email},</span></p>
+          html: ` <div style="
+          text-align: center;
+          background-color: white;
+          border: 5px solid #5ebdc2;
+          width: 390px;
+          padding: 30px 25px;
+        ">
+        <div style="display: flex; align-items: center; justify-content: center">
+        <img
+          style="width: 100%"
+          src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
+          alt=""
+        />
+      </div>
+      <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+        <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+        <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+        <div style="text-align: center">
+          ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+        </div>
+          <p>Chào <span style="font-weight: 600">${email}</span></p>
           <p>
             Cảm ơn bạn đã thanh toán lịch hẹn ${onlyID} chăm sóc thú cưng thành công tại
             <span style="font-weight: 600">Website Đặt lịch chăm sóc thú cưng PetCare</span>
           </p>
           <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
           <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
-          <div style="text-align: right;">
-            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
+          <div style="text-align: center;">
+            <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi</p>
             <p>Trân trọng,</p>
             <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
           </div>
@@ -82,12 +96,26 @@ export const handleVnPayCallback = async (req, res) => {
           from: email,
           to: email,
           subject: "Thanh Toán Thành Công",
-          html: ` <div style="font-family: sans-serif; margin: 0 40px;">
-          <img
-            style="width: 200px"
-            src="https://res.cloudinary.com/dksgvucji/image/upload/v1698334367/samples/logo2_bmcqc2.png"
-            alt=""
-          />
+          html: ` <div style="
+          text-align: center;
+          background-color: white;
+          border: 5px solid #5ebdc2;
+          width: 390px;
+          padding: 30px 25px;
+        ">
+        <div style="display: flex; align-items: center; justify-content: center">
+        <img
+          style="width: 100%"
+          src="https://res.cloudinary.com/dszse8bzk/image/upload/v1703001954/cctk43pofdqlvcgxkmqa.jpg"
+          alt=""
+        />
+      </div>
+      <h1 style="color: #5ebdc2; text-align: center">Shop thú cưng -PetCare</h1>
+      <div style="text-align: center">EMAIL:PETCARE.FPT@GMAIL.COM</div>
+      <div style="text-align: center">SỐ ĐIỆN THOẠI:0988824760</div>
+      <div style="text-align: center">
+        ĐỊA CHỈ: SỐ 9, ĐƯỜNG TRỊNH VĂN BÔ, NAM TỪ LIÊM, HN
+      </div>
           <p>Chào <span style="font-weight: 600">${email},</span></p>
           <p>
           Cảm ơn bạn đã thanh toán đơn hàng ${onlyID}thành công tại
@@ -95,7 +123,7 @@ export const handleVnPayCallback = async (req, res) => {
           </p>
           <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
           <p style="width: 100%;height: 1px; background-color: #00575C;"></p>
-          <div style="text-align: right;">
+          <div style="text-align: center;">
             <p>Nếu bạn có bất kỳ câu hỏi nào, xin liên hệ với chúng tôi tại</p>
             <p>Trân trọng,</p>
             <p style="font-weight: 600;">Ban quản trị Website Đặt lịch chăm sóc thú cưng PetCare</p>
