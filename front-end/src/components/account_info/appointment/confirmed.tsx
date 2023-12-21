@@ -16,8 +16,6 @@ const ConfirmedAppointment: FC = () => {
     useState(false);
 
   const handleViewInvoice = (invoiceData: any) => {
-    console.log(invoiceData);
-
     setSelectedInvoice(invoiceData);
     setIsPrintInvoiceModalVisible(true);
   };
@@ -49,8 +47,6 @@ const ConfirmedAppointment: FC = () => {
   };
 
   const handlePrint = async (id: number | undefined) => {
-    console.log(id);
-
     if (id !== undefined) {
       handleViewInvoice(id);
     } else {
@@ -143,14 +139,17 @@ const ConfirmedAppointment: FC = () => {
                           </Tag>
                         </td>
                         <td className="action">
-                          {item.statusPaymentId === 1 && (
-                            <Button
-                              onClick={() => handlePayment(item.id, item.total)}
-                              className="btn-done"
-                            >
-                              Thanh toán
-                            </Button>
-                          )}
+                          {item.statusPaymentId === 1 &&
+                            item.paymentMethods_id === 1 && (
+                              <Button
+                                onClick={() =>
+                                  handlePayment(item.id, item.total)
+                                }
+                                className="btn-done"
+                              >
+                                Thanh toán
+                              </Button>
+                            )}
                           <Button
                             onClick={() => handlePrint(item.id)}
                             className="btn-done"

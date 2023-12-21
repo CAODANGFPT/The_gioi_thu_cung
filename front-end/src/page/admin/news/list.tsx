@@ -15,7 +15,6 @@ const NewsAdmin: React.FC = () => {
   const [removeNews] = useRemoveNewsMutation();
 
   const { data } = useNewsQuery();
-  console.log(data);
   const [filter, setFilter] = useState({ name: "" });
   const [listNews, setListNews] = useState<TNews[] | undefined>([]);
   const [openReset, setOpenReset] = useState<boolean>(false);
@@ -143,8 +142,6 @@ const NewsAdmin: React.FC = () => {
       item.nameUser?.toLowerCase().includes(filter.name.trim().toLowerCase())
     );
     setListNews(filteredData);
-    console.log(data);
-    console.log("filter", filteredData);
   }, [data, filter]);
 
   useEffect(() => {

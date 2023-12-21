@@ -54,7 +54,6 @@ const PaymentPage = () => {
       .then((appointmentResponse) => {
         const appointmentData = appointmentResponse.data;
         if (appointmentData.status_payment === 2) {
-          console.log("Đơn hàng đã được thanh toán");
           message.warning("Đơn hàng đã được thanh toán");
           return;
         }
@@ -90,7 +89,6 @@ const PaymentPage = () => {
     const appointmentData = statusPaymentResponse.data;
 
     if (appointmentData.status_payment === 2) {
-      console.log("Đơn hàng đã được thanh toán");
       message.warning("Đơn hàng đã được thanh toán");
       return;
     }
@@ -115,8 +113,6 @@ const PaymentPage = () => {
           amount: amount,
           appointments_id: appointmentId,
         });
-
-        console.log("Invoice creation response:", response);
         navigate(`/pay-cash`);
       }
     } catch (error) {

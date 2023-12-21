@@ -163,8 +163,6 @@ const ShoppingCart = () => {
       );
     }
   }, [orderReturn]);
-
-  console.log(checkedItems);
   if (!user) {
     return (
       <div className="login-now">

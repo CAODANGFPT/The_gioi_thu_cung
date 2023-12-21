@@ -142,7 +142,6 @@ export const create = async (req, res) => {
     } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
-      console.log(namesString);
       res
         .status(400)
         .json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
@@ -410,7 +409,6 @@ export const createAdmin = async (req, res) => {
     } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
-      console.log(namesString);
       res
         .status(400)
         .json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
@@ -669,7 +667,6 @@ export const update = async (req, res) => {
     } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
-      console.log(namesString);
       res
         .status(400)
         .json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
@@ -729,7 +726,6 @@ export const updateAdmin = async (req, res) => {
     } else if (check.length > 0) {
       const names = check.map((service) => service.name);
       const namesString = names.join(", ");
-      console.log(namesString);
       res
         .status(400)
         .json({ message: `Dịch vụ ${namesString} hiện tại cửa hàng tạm khóa` });
@@ -1032,7 +1028,6 @@ export const updateAppointmentPayment = async (req, res) => {
     }
     await Appointments.updateAppointmentPayment(req.params.id, status_payment);
     const appointment = await Appointments.getAppointmentsById(req.params.id);
-    console.log(appointment);
     if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
@@ -1142,6 +1137,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                   status_id: record.status_id,
                   statusPaymentId: record.statusPaymentId,
                   statusPaymentName: record.statusPaymentName,
+                  paymentMethods_id: record.paymentMethodsId,
                 });
               } else {
                 const existingPetIndex = result[
@@ -1182,6 +1178,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                 status_id: record.status_id,
                 statusPaymentId: record.statusPaymentId,
                 statusPaymentName: record.statusPaymentName,
+                paymentMethods_id: record.paymentMethodsId,
               });
             }
           }

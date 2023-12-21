@@ -44,7 +44,6 @@ const ListProduct: React.FC = () => {
   const [products, setProducts] = useState<TProduct[] | undefined>();
 
   const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log("checked = ", checkedValues);
     setCate(checkedValues);
   };
 

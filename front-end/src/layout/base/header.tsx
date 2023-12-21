@@ -52,7 +52,6 @@ const HeaderBase = () => {
     menuData && menuData?.filter((item) => item.menuType_id === 6);
 
   const handleBookAppointmentClick = () => {
-    // console.log("Clicked on ĐẶT LỊCH CHĂM SÓC");
     navigate(
       listBanner && listBanner.length > 0 && listBanner[0].link
         ? listBanner[0].link

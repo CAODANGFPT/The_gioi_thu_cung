@@ -94,8 +94,6 @@ const CallbackVNPAY: React.FC = () => {
       const paymentInfo = JSON.parse(
         localStorage.getItem("paymentInfo") || "{}"
       );
-      console.log(paymentInfo);
-
       try {
         const amount = parseInt(paymentInfo.amountAppointment, 10);
         const Idappointment = parseInt(paymentInfo.appoinmentId, 10);
