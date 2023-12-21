@@ -7,9 +7,12 @@ import FacebookIcon2 from "../../../assets/svg/facebookIcon2";
 import GoogleIcon from "../../../assets/svg/googleIcon";
 import { SignUpRequestSchema, TSignUp } from "../../../schema/signUp";
 import banner from "../../../assets/image/background.png";
+import { useGetAllWebsiteInformationQuery } from "../../../services/websiteInformation";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
+
   const formik = useFormik<TSignUp>({
     initialValues: {
       email: "",
@@ -23,7 +26,16 @@ const SignUp = () => {
   return (
     <div className="signUp">
       <div className="singUp-top">
-        <img src={logo} alt="logo" />
+        <img
+          src={
+            listWebsiteInformation &&
+            listWebsiteInformation.length > 0 &&
+            typeof listWebsiteInformation[0]?.logo === "string"
+              ? listWebsiteInformation[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
+        />
         <Link to="" className="help">
           Trợ giúp?
         </Link>
@@ -41,7 +53,7 @@ const SignUp = () => {
           </p>
           <div className="input-flex">
             <input
-            style={{marginTop: "10px"}}
+              style={{ marginTop: "10px" }}
               className="btn-f"
               type="text"
               placeholder="Số điện thoại/Tên tài khoản/Email"

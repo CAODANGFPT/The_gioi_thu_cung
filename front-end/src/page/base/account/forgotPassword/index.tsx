@@ -10,9 +10,12 @@ import {
   TResetPass,
 } from "../../../../schema/resetPassword";
 import { useEmailPasswordUserMutation } from "../../../../services/auth";
+import { useGetAllWebsiteInformationQuery } from "../../../../services/websiteInformation";
 
 const ForgotPassword = () => {
   const [resetPassword] = useEmailPasswordUserMutation();
+  const { data: listWebsiteInformation } = useGetAllWebsiteInformationQuery();
+
   const formik = useFormik<TResetPass>({
     initialValues: {
       email: "",
@@ -20,13 +23,12 @@ const ForgotPassword = () => {
     validationSchema: ResetPassRequestSchema,
     onSubmit: async (values) => {
       try {
-        const response = await resetPassword(values);        
+        const response = await resetPassword(values);
         if ("error" in response) {
           alert("Tài khoản mật khẩu không chính xác");
-
         } else {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            alert("Vui lòng check mail");
+          localStorage.setItem("user", JSON.stringify(response.data));
+          alert("Vui lòng check mail");
         }
       } catch (error) {
         console.error("Lỗi", error);
@@ -37,7 +39,16 @@ const ForgotPassword = () => {
   return (
     <div className="resetPassword">
       <div className="resetPassword-top">
-        <img src={logo} alt="logo" />
+        <img
+          src={
+            listWebsiteInformation &&
+            listWebsiteInformation.length > 0 &&
+            typeof listWebsiteInformation[0]?.logo === "string"
+              ? listWebsiteInformation[0]?.logo
+              : undefined
+          }
+          alt="Ảnh logo"
+        />
         <Link to="" className="help">
           Trợ giúp?
         </Link>
