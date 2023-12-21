@@ -195,8 +195,8 @@ export const create = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
       const formattedTotal = new Intl.NumberFormat("vi-VN", {
@@ -331,8 +331,8 @@ export const createAdmin = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
       const formattedTotal = new Intl.NumberFormat("vi-VN", {
@@ -504,13 +504,12 @@ export const updateAppointmentStatus = async (req, res) => {
     }
     await Appointments.updateAppointmentStatus(req.params.id, status_id);
     const appointment = await Appointments.getAppointmentsById(req.params.id);
-    console.log(appointment);
     if (appointment.user_name && appointment.user_email) {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
 
@@ -565,8 +564,8 @@ export const updateAppointmentPayment = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-          user: "hainv21123@gmail.com",
-          pass: "yfaqudeffxnjptla",
+          user: "petcare.fpt@gmail.com",
+          pass: "ikhpbmeyqskpupcz",
         },
       });
 
@@ -870,8 +869,8 @@ export const updateStatusCancelAppointment = async () => {
           const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
-              user: "hainv21123@gmail.com",
-              pass: "yfaqudeffxnjptla",
+              user: "petcare.fpt@gmail.com",
+              pass: "ikhpbmeyqskpupcz",
             },
           });
           const mailOptions = {
@@ -1015,18 +1014,15 @@ export const status_payment = async (req, res) => {
   }
 };
 
-
 export const checkPetHouse = async (req, res) => {
   try {
-    const { start_time, end_time} = req.body;
-    const petHouse = await Appointments.checkPetHouse(
-      start_time, end_time
-    );
+    const { start_time, end_time } = req.body;
+    const petHouse = await Appointments.checkPetHouse(start_time, end_time);
 
     if (!petHouse) {
       res.status(404).json({ error: "Không có phòng nào trống" });
     } else {
-      res.json({petHouse });
+      res.json({ petHouse });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
