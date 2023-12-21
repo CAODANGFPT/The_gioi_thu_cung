@@ -50,7 +50,6 @@ type TFinish = {
 const API_URL = "http://localhost:8080/api";
 const Appointment: React.FC = () => {
   const [form] = Form.useForm();
-  const [availablePetHouses, setAvailablePetHouses] = useState<TpetHouse[]>([]);
   const navigate = useNavigate();
   const [pet, setPet] = useState<TPets[]>([]);
   const [openAddPest, setOpenAddPest] = useState<boolean>(false);
@@ -66,7 +65,8 @@ const Appointment: React.FC = () => {
   const [paymentMethods_id, setPaymentMethods_id] = useState<number>(1);
   const { data: user } = useGetUserQuery();
   const [pethouse, setPethouse] = useState<any[]>([]);
-
+  const [isPetServiceSelected, setIsPetServiceSelected] =
+    useState<boolean>(false);
   const { data: services } = useServicesClientQuery();
   const { data: species } = useGetAllspeciesQuery();
   const { data: listPet } = useGetAllUserPetsQuery();
@@ -315,11 +315,11 @@ const Appointment: React.FC = () => {
             end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           });
           if ("data" in petHouse) {
-            // if (petHouse.data.length > 0) {
-            setPethouse(petHouse.data.petHouse);
-            // } else {
-            //   message.error("Không có phòng trống trong giờ bạn chọn");
-            // }
+            if (petHouse.data.petHouse.length > 0) {
+              setPethouse(petHouse.data.petHouse);
+            } else {
+              message.error("Không có phòng trống trong giờ bạn chọn");
+            }
           }
           setEndTime(newEndTime);
         } else {
@@ -354,6 +354,11 @@ const Appointment: React.FC = () => {
     if (form.getFieldValue("start_time")) {
       functionEndTimeChange(undefined, petValue);
     }
+    if (form.getFieldValue("services")) {
+      setIsPetServiceSelected(
+        petValue.length > 0 && form.getFieldValue("services").length > 0
+      );
+    }
   };
 
   useEffect(() => {
@@ -371,14 +376,23 @@ const Appointment: React.FC = () => {
   }, [defaultValue, valueId]);
 
   const handleChangeService = (value: number[]) => {
+    console.log(value);
+
     if (value.length > 0) {
       totalService(value);
       setServicesOpenTime(true);
       setIdServices(value);
+      if (form.getFieldValue("pet")) {
+        setIsPetServiceSelected(
+          form.getFieldValue("pet").length > 0 && value.length > 0
+        );
+      }
       if (form.getFieldValue("start_time")) {
         functionEndTimeChange(value);
       }
     } else {
+      form.resetFields(["start_time"]);
+      setIsPetServiceSelected(false);
       setServicesOpenTime(false);
       setTotal(0);
       setEndTime(null);
@@ -453,11 +467,11 @@ const Appointment: React.FC = () => {
           end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         });
         if ("data" in petHouse) {
-          // if (petHouse.data.length > 0) {
+          if (petHouse.data.petHouse.length > 0) {
           setPethouse(petHouse.data.petHouse);
-          // } else {
-          //   message.error("Không có phòng trống trong giờ bạn chọn");
-          // }
+          } else {
+            message.error("Không có phòng trống trong giờ bạn chọn");
+          }
         }
         setEndTime(newEndTime);
       } else {
@@ -542,6 +556,7 @@ const Appointment: React.FC = () => {
                   showTime={{
                     defaultValue: dayjs("09:00:00", "HH:mm:ss"),
                   }}
+                  disabled={!isPetServiceSelected}
                   onChange={onChangeTime}
                   showNow={false}
                 />

@@ -34,8 +34,8 @@ export default class Appointments {
             OR (? > a.start_time AND ? <= a.end_time)
             OR (a.start_time >= ? AND a.start_time < ?)
             OR (a.end_time > ? AND a.end_time <= ?)
-          )
-        ) AND ph.is_delete = 0;`,
+          ) AND a.status_id <> 5
+        ) AND ph.is_delete = 0 ;`,
         [
           start_time,
           start_time,
