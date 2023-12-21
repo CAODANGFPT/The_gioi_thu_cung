@@ -99,20 +99,20 @@ const DoingAppointment: FC = () => {
                         </td>
                         <td className="action">
                           <div>
-                            {typeof item.total === "number" &&
-                            typeof item.id === "number" ? (
-                              <Button
-                                className="btn-done"
-                                onClick={() => {
-                                  handlePayment(item.id, item.total);
-                                  navigate(`/payment/${item.id}/${item.total}`);
-                                }}
-                              >
-                                Thanh toán
-                              </Button>
-                            ) : (
-                              <p>Không có thông tin thanh toán</p>
-                            )}
+                            {item.statusPaymentId === 1 &&
+                              item.paymentMethods_id === 1 && (
+                                <Button
+                                  className="btn-done"
+                                  onClick={() => {
+                                    handlePayment(item.id, item.total);
+                                    navigate(
+                                      `/payment/${item.id}/${item.total}`
+                                    );
+                                  }}
+                                >
+                                  Thanh toán
+                                </Button>
+                              )}
                           </div>
                         </td>
                       </tr>

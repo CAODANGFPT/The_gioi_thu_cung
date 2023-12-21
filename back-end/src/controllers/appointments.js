@@ -664,6 +664,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                   status_id: record.status_id,
                   statusPaymentId: record.statusPaymentId,
                   statusPaymentName: record.statusPaymentName,
+                  paymentMethods_id: record.paymentMethodsId,
                 });
               } else {
                 const existingPetIndex = result[
@@ -704,6 +705,7 @@ export const getAppointmentUserStatus = async (req, res) => {
                 status_id: record.status_id,
                 statusPaymentId: record.statusPaymentId,
                 statusPaymentName: record.statusPaymentName,
+                paymentMethods_id: record.paymentMethodsId,
               });
             }
           }

@@ -315,11 +315,11 @@ const Appointment: React.FC = () => {
             end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
           });
           if ("data" in petHouse) {
-            if (petHouse.data.length > 0) {
-              setPethouse(petHouse.data.petHouse);
-            } else {
-              message.error("Không có phòng trống trong giờ bạn chọn");
-            }
+            // if (petHouse.data.length > 0) {
+            setPethouse(petHouse.data.petHouse);
+            // } else {
+            //   message.error("Không có phòng trống trong giờ bạn chọn");
+            // }
           }
           setEndTime(newEndTime);
         } else {
@@ -340,7 +340,7 @@ const Appointment: React.FC = () => {
       }));
       const pets = await userPet({ data: petData });
       if ("data" in pets) {
-        form.setFieldValue("pet" , value);
+        form.setFieldValue("pet", value);
         setPet(pets.data);
       }
     } else {
@@ -453,11 +453,11 @@ const Appointment: React.FC = () => {
           end_time: dayjs(newEndTime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"),
         });
         if ("data" in petHouse) {
-          if (petHouse.data.length > 0) {
-            setPethouse(petHouse.data.petHouse);
-          } else {
-            message.error("Không có phòng trống trong giờ bạn chọn");
-          }
+          // if (petHouse.data.length > 0) {
+          setPethouse(petHouse.data.petHouse);
+          // } else {
+          //   message.error("Không có phòng trống trong giờ bạn chọn");
+          // }
         }
         setEndTime(newEndTime);
       } else {
