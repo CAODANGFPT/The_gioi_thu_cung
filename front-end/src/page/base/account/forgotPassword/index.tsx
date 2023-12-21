@@ -68,14 +68,14 @@ const ForgotPassword = () => {
             </button>
           </form>
           <br />
-          <div className="or">
+          {/* <div className="or">
             <div className="or-border" />
             <div className="or-title">Hoặc</div>
             <div className="or-border" />
-          </div>
+          </div> */}
 
           <div className="btn-flex">
-            <button className="btn-f bg-with">
+            {/* <button className="btn-f bg-with">
               <GoogleIcon />
               <Link to="" className="social">
                 Đăng nhập bằng google
@@ -92,7 +92,7 @@ const ForgotPassword = () => {
               <Link to="" className="social">
                 Đăng nhập bằng Apple
               </Link>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

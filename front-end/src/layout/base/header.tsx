@@ -70,12 +70,12 @@ const HeaderBase = () => {
   };
   return (
     <div className="headerBase">
-      <div className="frame29">
+      {/* <div className="frame29">
         <p className="frame29-title1">
           Miễn phí vận chuyển<span> khi mua $20</span>
         </p>
         <p className="frame29-title2">Chi tiết</p>
-      </div>
+      </div> */}
       <div className="frame32">
         {filteredMenuDataTop &&
           filteredMenuDataTop?.map((item) => (
