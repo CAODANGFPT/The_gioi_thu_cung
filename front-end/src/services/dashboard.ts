@@ -91,12 +91,36 @@ const dashboardApi = createApi({
         },
         providesTags: ["Dashboard"],
       }),
+      scheduleStatusAppointment: builder.query<any[], void>({
+        query: () => {
+          return {
+            url: "/getSCheduleStatusAppointment",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
       // Appointments
+
+      //order
+      scheduleStatusOrder: builder.query<any[], void>({
+        query: () => {
+          return {
+            url: "/sCheduleStatusOrder",
+            method: "GET",
+          };
+        },
+        providesTags: ["Dashboard"],
+      }),
+      //order
+
     };
   },
 });
 
 export const {
+  useScheduleStatusAppointmentQuery,
+  useScheduleStatusOrderQuery,
   useRevenueAppointmentsThisMonthQuery,
   useRevenueAppointmentsDayQuery,
   useListQuery,

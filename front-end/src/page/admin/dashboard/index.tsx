@@ -6,6 +6,8 @@ import {
   useRevenueAppointmentsThisMonthQuery,
   useRevenueThisMonthQuery,
   useRevenueTodayQuery,
+  useScheduleStatusAppointmentQuery,
+  useScheduleStatusOrderQuery,
   useTotalRevenueQuery,
 } from "../../../services/dashboard";
 import { Bar, Line, Pie, Column } from "@ant-design/charts";
@@ -13,23 +15,34 @@ import dayjs from "dayjs";
 
 const DashBoard = () => {
   const { data: revenueToday } = useRevenueTodayQuery();
-
   const { data: revenueThisMonth } = useRevenueThisMonthQuery();
-  console.log(revenueThisMonth);
-  
   const { data: countUserDay } = useGetCountUserDayQuery();
   const { data: revenueAppointmentsThisMonth } =
     useRevenueAppointmentsThisMonthQuery();
   const { data: revenueAppointmentsDay } = useRevenueAppointmentsDayQuery();
+  const { data: scheduleStatusAppointment } =
+    useScheduleStatusAppointmentQuery();
+  const { data: scheduleStatusOrder } = useScheduleStatusOrderQuery();
   const [lineData, setLineData] = useState<any[]>([]);
+  const [scheduleStatusAppointmentData, setScheduleStatusAppointmentData] =
+    useState<any[]>([]);
+  const [scheduleStatusOrderData, setScheduleStatusOrderData] = useState<any[]>(
+    []
+  );
   const [lineDataAppointments, setLineDataAppointments] = useState<any[]>([]);
-  console.log(revenueAppointmentsThisMonth);
-
   const [chartType, setChartType] = useState("column");
   const [chartTypeAppointments, setChartTypeAppointments] = useState("column");
 
   const currentDate = dayjs().format("DD-MM-YYYY");
   const { data: totalRevenue } = useTotalRevenueQuery();
+  const generateRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
   useEffect(() => {
     if (revenueToday) {
       const dataChart = [
@@ -51,8 +64,41 @@ const DashBoard = () => {
       ];
       setLineDataAppointments(dataChart);
     }
-  }, [currentDate, revenueAppointmentsDay, revenueToday]);
+    if (scheduleStatusAppointment) {
+      const data =
+        scheduleStatusAppointment?.map((data) => ({
+          type: `${data.name}`,
+          value: data.status_count,
+        })) ?? [];
+      setScheduleStatusAppointmentData(data);
+    }
 
+    if (scheduleStatusOrder) {
+      const data =
+        scheduleStatusOrder?.map((data) => ({
+          type: `${data.name}`,
+          value: data.status_count,
+        })) ?? [];
+      setScheduleStatusOrderData(data);
+    }
+  }, [
+    currentDate,
+    revenueAppointmentsDay,
+    revenueToday,
+    scheduleStatusAppointment,
+    scheduleStatusOrder,
+  ]);
+
+  const pieConfig = {
+    data: scheduleStatusAppointmentData,
+    angleField: "value",
+    colorField: "type",
+  };
+  const pieConfig1 = {
+    data: scheduleStatusOrderData,
+    angleField: "value",
+    colorField: "type",
+  };
   const lineConfig = {
     data: lineData,
     xField: "type",
@@ -180,7 +226,7 @@ const DashBoard = () => {
             )}{" "}
             VNĐ
           </div>
-          <div className="dashBoard-box-item-subTitle">DOANH THU THÁNG</div>
+          <div className="dashBoard-box-item-subTitle">DOANH THU THÁNG NÀY</div>
         </div>
         <div className="dashBoard-box-item bg-369b8a">
           <div className="dashBoard-box-item-title">{countUserDay?.count}</div>
@@ -217,6 +263,18 @@ const DashBoard = () => {
           ) : (
             <Line {...lineConfigAppointments} />
           )}
+        </div>
+        <div className="line-box">
+          <div className="line-box-title">
+            <h2>Phân phối trạng thái lịch</h2>
+          </div>
+          <Pie {...pieConfig} />
+        </div>
+        <div className="line-box">
+          <div className="line-box-title">
+            <h2>Phân phối trạng thái đơn hàng</h2>
+          </div>
+          <Pie {...pieConfig1} />
         </div>
       </div>
     </div>

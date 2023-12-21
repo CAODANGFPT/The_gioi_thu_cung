@@ -117,3 +117,21 @@ export const getRevenueAppointmentsDay = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const sCheduleStatusAppointment = async (req, res) => {
+  try {
+    const data = await Dashboard.getSCheduleStatusAppointment();
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const sCheduleStatusOrder = async (req, res) => {
+  try {
+    const data = await Dashboard.getSCheduleStatusOrder();
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

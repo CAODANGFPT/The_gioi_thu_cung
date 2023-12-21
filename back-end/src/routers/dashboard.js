@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { checkPermission } from "../middlewares/checkPermission";
 import {
   getCountUserDay,
   getRevenueAppointmentsDay,
@@ -7,9 +6,12 @@ import {
   getRevenueThisMonth,
   getRevenueToday,
   list,
+  sCheduleStatusAppointment,
+  sCheduleStatusOrder,
   total,
-  totalRevenue,
+  totalRevenue
 } from "../controllers/dashboard";
+import { checkPermission } from "../middlewares/checkPermission";
 const router = Router();
 
 router.get("/dashboard", checkPermission, list);
@@ -22,4 +24,7 @@ router.get("/getCountUserDay", getCountUserDay);
 // Appointments
 router.get("/getRevenueAppointmentsThisMonth", getRevenueAppointmentsThisMonth);
 router.get("/getRevenueAppointmentsDay", getRevenueAppointmentsDay);
+router.get("/getSCheduleStatusAppointment", sCheduleStatusAppointment);
+router.get("/sCheduleStatusOrder", sCheduleStatusOrder);
+
 export default router;

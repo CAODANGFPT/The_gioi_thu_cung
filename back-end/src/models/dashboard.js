@@ -13,6 +13,30 @@ export default class Dashboard {
       );
     });
   }
+
+  
+  static getSCheduleStatusAppointment() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT status_id,status_appointment.name, COUNT(*) as status_count FROM appointments JOIN status_appointment ON appointments.status_id = status_appointment.id GROUP BY status_id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
+  static getSCheduleStatusOrder() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT status_id,status_order.name, COUNT(*) as status_count FROM orders JOIN status_order ON orders.status_id = status_order.id GROUP BY status_id",
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  }
   static getMonthlyRevenue(year, month) {
     return new Promise((resolve, reject) => {
       connection.query(
