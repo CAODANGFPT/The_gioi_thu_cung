@@ -36,11 +36,12 @@ import paymentMethodsRoutes from "./routers/paymentMethods";
 import deliveryAddressRoutes from "./routers/deliveryAddress";
 import statusPaymentRouters from "./routers/statusPayment";
 import footerRouters from "./routers/footer";
-
+import messageRouter from "./routers/message";
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/api", messageRouter);
 app.use("/api", bannerRouter);
 app.use("/api", servicesRouter);
 app.use("/api", authRouter);
