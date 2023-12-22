@@ -14,6 +14,7 @@ export const ServicesRequestSchema = yup.object().shape({
   id: yup.number(),
   name: yup.string().required(),
   image: yup.string().required(),
+  time: yup.string().required(),
   description: yup.string().required(),
   price: yup.number().required(),
 });
