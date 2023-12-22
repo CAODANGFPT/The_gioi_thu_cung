@@ -82,7 +82,16 @@ const pethouseApi = createApi({
         },
         invalidatesTags: ["PetHouse"],
       }),
-
+      petHousePost: builder.mutation<any, any>({
+        query: (petHouse) => {
+          return {
+            url: `/petHousePost`,
+            method: "POST",
+            body: petHouse,
+          };
+        },
+        invalidatesTags: ["PetHouse"],
+      }),
       checkPetHouse: builder.mutation<TpetHouse[], any>({
         query: (id) => {
           return {
@@ -100,6 +109,7 @@ const pethouseApi = createApi({
 export const {
   useGetAllpetHouseClientQuery,
   useGetAllpetHouseQuery,
+  usePetHousePostMutation,
   usePetHouseByIdQuery,
   useUpdatePetHouseMutation,
   useCreatePetHouseMutation,

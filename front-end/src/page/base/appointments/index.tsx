@@ -12,9 +12,9 @@ import { RangePickerProps } from "antd/es/date-picker";
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import logo from "../../../assets/image/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import avatarPet from "../../../assets/image/avatar-pet.jpeg";
+import logo from "../../../assets/image/logo.png";
 import "../../../assets/scss/page/appointment.scss";
 import { TpetHouse } from "../../../schema/pethouse";
 import { TPets, TUserPets } from "../../../schema/pets";
@@ -25,6 +25,8 @@ import {
   useUpdateAppointmentMutation,
 } from "../../../services/appointments";
 import { useBreedQuery } from "../../../services/breed";
+import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
+import { usePetHousePostMutation } from "../../../services/pethouse";
 import {
   useGetAllUserPetsQuery,
   useUserPetMutation,
@@ -33,7 +35,6 @@ import { useServicesClientQuery } from "../../../services/services";
 import { useGetAllspeciesQuery } from "../../../services/species";
 import { useGetUserQuery } from "../../../services/user";
 import ModalAddPet from "./modalAddPet";
-import { useGetAllPaymentMethodsQuery } from "../../../services/paymentMethods";
 
 type TFinish = {
   petHouse_id: number;
@@ -81,6 +82,7 @@ const Appointment: React.FC = () => {
   const [userPet] = useUserPetMutation();
   const location = useLocation();
   const [appointmentData] = useState<any>(location.state?.appointmentData);
+  const [petHouseData] = usePetHousePostMutation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,6 +116,27 @@ const Appointment: React.FC = () => {
             start_time: dayjs(appointmentData.start_time),
           });
           setEndTime(dayjs(appointmentData.end_time));
+          const petHouse = await checkPetHouse({
+            start_time: dayjs(appointmentData.start_time).format(
+              "YYYY-MM-DDTHH:mm:ssZ[Z]"
+            ),
+            end_time: dayjs(appointmentData.end_time).format(
+              "YYYY-MM-DDTHH:mm:ssZ[Z]"
+            ),
+          });
+          if ("data" in petHouse) {
+            if (petHouse.data.petHouse.length > 0) {
+              const data = await petHouseData({ id:appointmentData?.pethouse_id });
+              if ("data" in data) {
+                console.log(data.data);
+                
+                setPethouse([data.data, ...petHouse.data.petHouse]);
+                console.log([data.data, ...petHouse.data.petHouse]);
+               }
+            } else {
+              message.error("Không có phòng trống trong giờ bạn chọn");
+            }
+          }
         }
         listPets(petIds);
         setDefaultValue(petIds);
@@ -122,7 +145,7 @@ const Appointment: React.FC = () => {
       }
     };
     fetchData();
-  }, [appointmentData, form, services]);
+  }, [appointmentData, checkPetHouse, form, petHouseData, services]);
 
   const optionsServices = services?.map((item: TServices) => ({
     value: item.id,

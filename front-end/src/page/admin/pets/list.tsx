@@ -92,35 +92,7 @@ const PetsAdmin: React.FC = () => {
       dataIndex: "nameBreed",
       key: "nameBreed",
       width: 150,
-    },
-    {
-      title: "Thao tác",
-      key: "action",
-      width: 150,
-      render: (pets: TPets) => (
-        <div>
-          <Link to="URL">
-            <Button className="btn-edit" style={{ marginRight: "1rem" }}>
-              Sửa
-            </Button>
-          </Link>
-          <Popconfirm
-            title="Xóa trạng thái."
-            description="Bạn có muốn xóa không?"
-            onConfirm={() =>
-              pets.id !== undefined ? confirm(pets.id) : undefined
-            }
-            onCancel={cancel}
-            okText="Đồng ý"
-            cancelText="Không"
-          >
-            <Button danger className="btn-delete">
-              Xóa
-            </Button>
-          </Popconfirm>
-        </div>
-      ),
-    },
+    }
   ];
 
   useEffect(() => {
