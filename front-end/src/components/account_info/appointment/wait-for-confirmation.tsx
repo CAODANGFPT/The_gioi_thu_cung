@@ -128,6 +128,9 @@ const WaitForConfirmation: FC = () => {
                   })}
               </tbody>
             </table>
+            <p style={{ color: "red", marginTop: "10px" }}>
+              Chú ý: Nếu như hủy sẽ không hoàn lại tiền!
+            </p>
           </div>
         </div>
       ) : (

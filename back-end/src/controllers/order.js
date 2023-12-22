@@ -430,7 +430,7 @@ export const updateStatusOrder = async (req, res) => {
 export const updateStatusPaymentOrder = async (req, res) => {
   try {
     const { id, status_payment } = req.body;
-    const orderId = await Orders.updateStatusOrder(id, status_payment);
+    const orderId = await Orders.updateStatusPaymentOrder(id, status_payment);
     res.json({ id: orderId, message: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });

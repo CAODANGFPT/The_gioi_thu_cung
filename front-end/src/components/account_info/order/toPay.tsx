@@ -71,6 +71,9 @@ const ToPay: React.FC = () => {
                 </div>
               </div>
             </div>
+            <p style={{ color: "red", margin: "10px" }}>
+              Chú ý: Nếu như hủy sẽ không hoàn lại tiền!
+            </p>
           </div>
         ))
       ) : (
