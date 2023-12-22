@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Upload, message } from "antd";
+import { Button, Form, Input, InputNumber, TimePicker, Upload, message } from "antd";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "../../../assets/scss/page/servicesAdmin.scss";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 const AddService = () => {
   const [image, setImage] = useState<any | null>(null);
   const [value, setValue] = useState("");
+
   const [addServices, { reset, isLoading: isAddLoading }] =
     useAddServicesMutation();
   const navigate = useNavigate();
@@ -25,20 +27,21 @@ const AddService = () => {
     }
   };
   const onFinish = async (values: TServicesRequest) => {
-    const { name, price, description } = values;
+    const { name, price, description, time } = values;
     const servicesData = {
       name,
       price,
+      time: dayjs(time).format("HH:mm:00"),
       image: image,
       description,
     };
     try {
       await addServices(servicesData).unwrap();
-      message.success("Product added successfully");
+      message.success("Thêm dịch vụ thành công");
       reset();
-      navigate("/admin/services");
+      navigate("/admin/services");      
     } catch (error) {
-      message.error("Failed to add product");
+      message.error("Thêm dịch vụ thất bại");
     }
   };
   const onFinishFailed = async (values: any) => {
@@ -106,6 +109,22 @@ const AddService = () => {
             />
           </Form.Item>
           <Form.Item
+            label={
+              <span className="text-base dark:text-white">Thời gian làm</span>
+            }
+            name="time"
+            rules={[
+              { required: true, message: "Vui lòng chọn thời gian làm!" },
+            ]}
+          >
+            <TimePicker
+              style={{ width: "100%" }}
+              format="HH:mm"
+              allowClear={false}
+            />
+          </Form.Item>
+
+          <Form.Item
             label={<span className="text-base dark:text-white">Mô tả</span>}
             name="description"
             rules={[
@@ -121,7 +140,7 @@ const AddService = () => {
           </Form.Item>
           <Form.Item>
             <Button
-              style={{ float: "right" }}
+              style={{ float: "right", marginTop: 40}}
               htmlType="submit"
               className="text-black transition-colors duration-300 dark:text-white"
               size="large"

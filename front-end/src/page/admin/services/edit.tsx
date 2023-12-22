@@ -4,6 +4,7 @@ import {
   Form,
   Input,
   InputNumber,
+  TimePicker,
   Upload,
   UploadFile,
   message,
@@ -21,6 +22,7 @@ import {
   useServicesByIdQuery,
   useUpdateServicesMutation,
 } from "../../../services/services";
+import dayjs from "dayjs";
 const EditService = () => {
   const [image, setImage] = useState<string | undefined>();
   const [fileList, setFileList] = useState<UploadFile[]>([
@@ -53,6 +55,7 @@ const EditService = () => {
       id: servicesById.data?.id,
       name: servicesById.data?.name,
       price: servicesById.data?.price,
+      time: dayjs(servicesById.data?.time, "HH:mm:ss"),
       image: servicesById.data?.image,
       description: servicesById.data?.description,
     });
@@ -63,6 +66,7 @@ const EditService = () => {
     servicesById.data?.price,
     servicesById.data?.image,
     servicesById.data?.description,
+    servicesById.data?.time,
   ]);
 
   const handleImageChange = ({ fileList: newFileList }: any) => {
@@ -73,11 +77,12 @@ const EditService = () => {
   };
 
   const onFinish = async (values: TServicesRequest) => {
-    const { id, name, price, description } = values;
+    const { id, name, price, time, description } = values;
     const servicesData = {
       id,
       name,
       price,
+      time: dayjs(time).format("HH:mm:00"),
       image: image,
       description,
     };
@@ -159,6 +164,21 @@ const EditService = () => {
             />
           </Form.Item>
           <Form.Item
+            label={
+              <span className="text-base dark:text-white">Thời gian làm</span>
+            }
+            name="time"
+            rules={[
+              { required: true, message: "Vui lòng chọn thời gian làm!" },
+            ]}
+          >
+            <TimePicker
+              style={{ width: "100%" }}
+              format="HH:mm"
+              allowClear={false}
+            />
+          </Form.Item>
+          <Form.Item
             label={<span className="text-base dark:text-white">Mô tả</span>}
             name="description"
             rules={[
@@ -174,7 +194,7 @@ const EditService = () => {
           </Form.Item>
           <Form.Item>
             <Button
-              style={{ float: "right" }}
+              style={{ float: "right", marginTop: 40 }}
               htmlType="submit"
               className="text-black transition-colors duration-300 dark:text-white"
               size="large"
@@ -182,7 +202,7 @@ const EditService = () => {
               {isAddLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                "Thêm dịch vụ"
+                "Câp nhập dịch vụ"
               )}
             </Button>
           </Form.Item>

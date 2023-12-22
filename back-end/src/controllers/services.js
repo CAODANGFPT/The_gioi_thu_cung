@@ -50,7 +50,7 @@ export const showById = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { name, image, description, price } = req.body;
+    const { name, image, description, price, time } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -62,7 +62,8 @@ export const create = async (req, res) => {
       name,
       description,
       image,
-      price
+      price,
+      time
     );
     res.json({ id: servicesId });
   } catch (err) {
@@ -80,7 +81,7 @@ export const checkServices = async (req, res) => {
 };
 export const update = async (req, res) => {
   try {
-    const { name, image, description, price } = req.body;
+    const { name, image, description, price, time } = req.body;
     const { error } = servicesSchema.validate(req.body);
     if (error) {
       const errors = error.details.map((errorItem) => errorItem.message);
@@ -94,7 +95,7 @@ export const update = async (req, res) => {
       return res.status(404).json({ error: "Service không tồn tại" });
     }
 
-    await Services.updateServices(serviceId, name, image, description, price);
+    await Services.updateServices(serviceId, name, image, description, price, time);
     res.json({ message: "Dịch vụ đã được cập nhật thành công" });
   } catch (err) {
     res.status(500).json({ error: err });

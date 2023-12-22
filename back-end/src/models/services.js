@@ -67,11 +67,11 @@ export default class Services {
     });
   }
 
-  static createServices(name, description, price, image) {
+  static createServices(name, description, price, image, time) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO services (name, description,image,price) VALUES (?, ?,?,?)",
-        [name, description, price, image],
+        "INSERT INTO services (name, description,image,price, time) VALUES (?, ?,?,?, ?)",
+        [name, description, price, image, time],
         (err, results) => {
           if (err) {
             reject(err);
@@ -83,10 +83,10 @@ export default class Services {
     });
   }
 
-  static updateServices(id, name, image, description, price) {
+  static updateServices(id, name, image, description, price, time) {
     const updateSql =
-      "UPDATE services SET name = ?,image = ?, description = ?, price = ? WHERE id = ?";
-    const values = [name, image, description, price, id];
+      "UPDATE services SET name = ?,image = ?, description = ?, price = ?, time =?  WHERE id = ?";
+    const values = [name, image, description, price, time, id];
     return new Promise((resolve, reject) => {
       connection.query(updateSql, values, (err) => {
         if (err) reject(err);
