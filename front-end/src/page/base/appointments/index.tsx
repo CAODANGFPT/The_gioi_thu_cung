@@ -108,6 +108,7 @@ const Appointment: React.FC = () => {
             // petHouse_id: appointmentData.pethouse_id,
           });
         } else if (appointmentData.type === 3) {
+          setEndTime(dayjs(appointmentData.end_time));
           setIsPetServiceSelected(true);
           form.setFieldsValue({
             services: serviceId,

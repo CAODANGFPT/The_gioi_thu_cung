@@ -437,7 +437,7 @@ const ButtonSuccess = ({ data }: { data: any }) => {
   return (
     <Button
       type="primary"
-      onClick={() => redirectToAppointment(data.id, data.status_id)}
+      onClick={() => redirectToAppointment(data.id, data.status.id)}
       className="btn-edit"
       loading={loading}
     >
@@ -459,7 +459,7 @@ const ButtonReturn = ({ data }: { data: any }) => {
   const [updateStatusOrder] = useUpdateOrderStatusMutation();
 
   const redirectToAppointment = async (id: number) => {
-    if (data.statusPayment.id === 2) {
+    // if (data.statusPayment.id === 2) {
       setLoading(true);
       const res = await updateStatusOrder({
         id: id,
@@ -472,7 +472,7 @@ const ButtonReturn = ({ data }: { data: any }) => {
         message.error("Sửa trạng thái không thành công");
         setLoading(false);
       }
-    }
+    // }
   };
 
   return (
