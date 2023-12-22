@@ -30,6 +30,20 @@ export const showById = async (req, res) => {
   }
 };
 
+
+export const postShowById = async (req, res) => {
+  try {
+    const pethouse = await Pethouse.getPethouseById(req.body.id);
+    if (!pethouse) {
+      res.status(404).json({ error: "Pethouse không tồn tại" });
+    } else {
+      res.json(pethouse);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+ 
 export const create = async (req, res) => {
   try {
     const { name } = req.body;

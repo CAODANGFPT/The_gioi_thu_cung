@@ -79,6 +79,12 @@ const ServicesAdmin: React.FC = () => {
       width: 150,
     },
     {
+      title: "Thời gian làm",
+      dataIndex: "time",
+      key: "time",
+      width: 150,
+    },
+    {
       title: "Thao tác",
       key: "id",
       width: 100,
